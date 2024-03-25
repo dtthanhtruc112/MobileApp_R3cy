@@ -1,18 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:padding="10dp"
+    android:orientation="vertical">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/txtFont"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Đây là font Inter"
+        android:textSize="26sp"
+        android:gravity="center_vertical"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/txtSound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Âm thanh thông báo"
+        android:textSize="26sp"/>
+
+    <Button
+        android:id="@+id/btnButton"
+        android:layout_width="130dp"
+        android:layout_height="60dp"
+        android:text="Button"
+        android:background="@drawable/btn_blue"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/btnButton2"
+        android:layout_width="130dp"
+        android:layout_height="60dp"
+        android:text="Button"
+        android:background="@drawable/btn_grey"
+        android:textSize="24sp"
+        android:layout_marginTop="10dp"/>
+
+
+    <Button
+        android:id="@+id/btnButton3"
+        android:layout_width="130dp"
+        android:layout_height="60dp"
+        android:text="Button"
+        android:background="@drawable/btn_blue_stroke"
+        android:textSize="24sp"
+        android:layout_marginTop="10dp"/>
+
+
+</LinearLayout>
