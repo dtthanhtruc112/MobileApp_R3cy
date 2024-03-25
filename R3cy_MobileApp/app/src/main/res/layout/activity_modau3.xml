@@ -40,14 +40,13 @@
         android:id="@+id/btnOpen"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:text="Bắt đầu"
-        android:textSize="23sp"
-        android:background="@drawable/rounded_borders"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/blue"
         android:layout_marginTop="40dp"
-        android:textAllCaps="false"/>
-
+        android:background="@drawable/rounded_borders"
+        android:backgroundTint="@color/blue"
+        android:text="Bắt đầu"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="23sp" />
 
 
 </LinearLayout>

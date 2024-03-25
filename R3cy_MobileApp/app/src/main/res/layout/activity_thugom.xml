@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Thu gom"
-            android:textColor="#31B9F4"
+            android:textColor="@color/blue"
             android:textSize="26sp"
             android:textStyle="bold" />
 
@@ -42,7 +42,7 @@
         android:layout_marginTop="96dp"
         android:gravity="center"
         android:text="Chúng tôi thu gom nhựa"
-        android:textColor="#31B9F4"
+        android:textColor="@color/blue"
         android:textSize="23sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +55,7 @@
         android:gravity="center"
         android:padding="20dp"
         android:text="Nếu bạn có các sản phẩm từ nhựa không còn sử dụng, bạn có thể mang đến R3cy hoặc R3cy sẽ đến tận nơi để thu gom và mua lại hoặc cảm ơn bạn bằng voucher sản phẩm, tuỳ theo tình trạng của nhựa."
-        android:textColor="#31B9F4"
+        android:textColor="@color/blue"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -65,7 +65,7 @@
         android:layout_height="match_parent"
         android:layout_marginStart="4dp"
         android:layout_marginTop="276dp"
-        android:background="#EEFAFF"
+        android:background="@color/light_blue"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -76,7 +76,7 @@
             android:layout_marginTop="40dp"
             android:gravity="center"
             android:text="Điều kiện thu gom"
-            android:textColor="#3771C8"
+            android:textColor="@color/dark_blue"
             android:textSize="23sp"
             android:textStyle="bold" />
 
@@ -87,7 +87,7 @@
             android:layout_marginTop="15dp"
             android:gravity="center_vertical"
             android:text="• Nhựa thu gom không quá giòn, vỡ vụn do nắng mưa"
-            android:textColor="#3771C8"
+            android:textColor="@color/dark_blue"
             android:textSize="15sp" />
 
         <TextView
@@ -97,7 +97,7 @@
             android:layout_marginTop="5dp"
             android:gravity="center_vertical"
             android:text="• Không giới hạn số lượng nhựa"
-            android:textColor="#3771C8"
+            android:textColor="@color/dark_blue"
             android:textSize="15sp" />
 
         <TextView
@@ -106,7 +106,7 @@
             android:layout_marginTop="40dp"
             android:gravity="center"
             android:text="Cách thức thu gom"
-            android:textColor="#3771C8"
+            android:textColor="@color/dark_blue"
             android:textSize="23sp"
             android:textStyle="bold" />
 
@@ -118,7 +118,7 @@
             android:layout_marginEnd="30dp"
             android:gravity="center_vertical"
             android:text="• Bạn có thể đem trực tiếp tới: 669 QL 1, KP. 3, P. Linh Xuân, TP. Thủ Đức, TP. Hồ Chí Minh."
-            android:textColor="#3771C8"
+            android:textColor="@color/dark_blue"
             android:textSize="15sp" />
 
         <TextView
@@ -129,7 +129,7 @@
             android:layout_marginEnd="30dp"
             android:gravity="center_vertical"
             android:text="• Bạn có thể liên hệ để R3cy đến thu gom qua:"
-            android:textColor="#3771C8"
+            android:textColor="@color/dark_blue"
             android:textSize="15sp" />
 
         <TextView
@@ -140,7 +140,7 @@
             android:layout_marginEnd="30dp"
             android:gravity="center_vertical"
             android:text="• Phone: 0123 456 789"
-            android:textColor="#3771C8"
+            android:textColor="@color/dark_blue"
             android:textSize="15sp" />
 
         <TextView
@@ -151,7 +151,7 @@
             android:layout_marginEnd="30dp"
             android:gravity="center_vertical"
             android:text="• Facebook: https://www.facebook.com/r3cyofficial"
-            android:textColor="#3771C8"
+            android:textColor="@color/dark_blue"
             android:textSize="15sp" />
 
         <TextView
@@ -162,7 +162,7 @@
             android:layout_marginEnd="30dp"
             android:gravity="center_vertical"
             android:text="• Email: info@r3cy.com"
-            android:textColor="#3771C8"
+            android:textColor="@color/dark_blue"
             android:textSize="15sp" />
 
 
