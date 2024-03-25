@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AboutUs"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="15dp"
+                android:layout_marginLeft="15dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_arrow_back">
+                </ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cửa hàng"
+                    android:textColor="#31B9F4"
+                    android:textSize="11sp"
+                    android:textStyle="bold">
+                </TextView>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chào mừng đến với R3cy!"
+                android:textColor="#3771C8"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:layout_gravity="center">
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Được thiết kế và sản xuất thủ công tại một xưởng ở Thành phố Hồ Chí Minh, R3cy mang trên mình
+câu chuyện đầy ý nghĩa với thành phố. 
+R3cy mong muốn tạo ra các vật dụng không chỉ
+bền chắc, đẹp mắt mà còn cùng bạn góp phần
+bảo vệ môi trường."
+
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:textColor="#31B9F4"
+                android:textSize="13sp"
+                android:gravity="center">
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#EEFAFF"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="330dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:src="@drawable/about_pdt" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="R3cy là cái tên với sự kết hợp giữa 3 nguyên tắc quen thuộc là reduce, reuse và recycle."
+                    android:textColor="#3771C8"
+                    android:textSize="11sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="“R3cy - tái chế cho môi trường thêm xanh”"
+                    android:textColor="#3771C8"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="15dp"
+                    android:layout_gravity="center"/>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quy trình sản xuất"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:paddingTop="15dp"
+                android:textColor="#3771C8" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hạn chế carbon trong mọi công đoạn sản xuất."
+                android:textSize="11sp"
+                android:layout_gravity="center"
+                android:paddingTop="8dp"
+                android:textColor="#3771C8"/>
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp">
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/xetai"
+                        android:layout_marginRight="30dp"/>
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/lamsach"
+                        android:layout_marginRight="30dp"/>
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/mayep"
+                        android:layout_marginRight="30dp"/>
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/giaohang"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp">
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginRight="20dp"
+                        android:textSize="11sp"
+                        android:textColor="#3771C8"
+                        android:text="Thu gom nhựa
+không còn sử dụng"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginRight="20dp"
+                        android:textSize="11sp"
+                        android:textColor="#3771C8"
+                        android:text="Làm sạch nhựa"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginRight="20dp"
+                        android:textSize="11sp"
+                        android:textColor="#3771C8"
+                        android:text="Xay, ép nhựa
+và thiết kế sản phẩm"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:textSize="11sp"
+                        android:textColor="#3771C8"
+                        android:text="Giao hàng tới bạn"
+                        android:gravity="center"/>
+                </TableRow>
+            </TableLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#EEFAFF"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="330dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:src="@drawable/thugom" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thu gom nhựa"
+                    android:textColor="#3771C8"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:paddingLeft="15dp"
+                    android:paddingBottom="10dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="R3cy liên hệ và tìm gặp các cơ sở sản xuất, thu gom nhựa để mua lại nhựa cũ hoặc nhựa lỗi trong quá trình sản xuất. Hoặc R3cy có thể nhận nhựa quyên góp từ các bạn."
+                    android:textColor="#3771C8"
+                    android:textSize="11sp"
+                    android:paddingBottom="10dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="XIN LIÊN HỆ NẾU BẠN CÓ NHỰA"
+                    android:textColor="#3771C8"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="15dp"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="330dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:src="@drawable/vesinh" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vệ sinh nhựa"
+                    android:textColor="#3771C8"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:paddingLeft="15dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="Nhựa thu về sẽ được tẩy rửa sạch sẽ bằng các vật liệu an toàn cho môi trường và sức khoẻ con người, như baking soda, giấm ăn, cồn sát trùng, v.v."
+                    android:textColor="#3771C8"
+                    android:textSize="11sp"
+                    android:paddingBottom="15dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#EEFAFF">
+
+                <TextView
+                    android:paddingTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thiết kế và sản xuất"
+                    android:textColor="#3771C8"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:paddingLeft="15dp"
+                    android:paddingBottom="10dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="Nhựa sẽ được ép và xay nhỏ, sau đó được chọn phối dựa trên bản thiết kế. Việc chọn phối màu các lô nhựa sẽ được thực hiện thủ công. Nên các sản phẩm của R3cy hiếm khi nào giống nhau hoàn toàn."
+                    android:textColor="#3771C8"
+                    android:textSize="11sp"
+                    android:paddingBottom="15dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Giao hàng"
+                    android:textColor="#3771C8"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:paddingLeft="15dp"
+                    android:paddingBottom="10dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="Cuối cùng, các sản phẩm của R3cy sẽ được giao tới các bạn ngay khi hoàn thiện."
+                    android:textColor="#3771C8"
+                    android:textSize="11sp"
+                    android:paddingBottom="15dp"/>
+
+            </LinearLayout>
+
+            <Button
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#31B9F4"
+                android:text="Xem sản phẩm"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:background="@drawable/rounded_borders"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="Những người bạn ở R3cy"
+                android:textColor="#3771C8"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:paddingBottom="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="R3cy ra đời vào đầu mùa mưa năm 2023, khi 5 người bạn cư dân của Sài Gòn nhìn thấy những sản phẩm từ nhựa và rác thải nhựa bị bỏ đi rất nhiều. Tại R3cy, chúng tôi luôn nỗ lực cải tiến những sản phẩm đã có, và nghiên cứu tái chế thêm nhiều chất liệu nhựa khác trong tương lai."
+                android:textColor="#3771C8"
+                android:textSize="11sp"
+                android:paddingBottom="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="Liên hệ với chúng tôi theo các phương thức sau:"
+                android:textColor="#3771C8"
+                android:textSize="11sp"
+                android:paddingBottom="15dp"/>
+
+            <TableLayout
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_corners"
+                android:layout_gravity="center"
+                android:padding="5dp">
+
+                <TableRow
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:src="@drawable/icon_place"/>
+                    <TextView
+                        android:maxWidth="200dp"
+                        android:text="Số 669 QL 1, KP. 3, P. Linh Xuân,
+TP. Thủ Đức, TP. Hồ Chí Minh"
+                        android:textColor="#3771C8"
+                        android:textSize="11sp"
+                        android:paddingLeft="5dp"
+                        android:layout_gravity="center_vertical"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:src="@drawable/icon_email"/>
+                    <TextView
+                        android:maxWidth="200dp"
+                        android:text="info@r3cy.com"
+                        android:textColor="#3771C8"
+                        android:textSize="11sp"
+                        android:paddingLeft="5dp"
+                        android:layout_gravity="center_vertical"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:src="@drawable/icon_phone"/>
+                    <TextView
+                        android:maxWidth="200dp"
+                        android:text="0123-456-789"
+                        android:textColor="#3771C8"
+                        android:textSize="11sp"
+                        android:paddingLeft="5dp"
+                        android:layout_gravity="center_vertical"/>
+                </TableRow>
+
+            </TableLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
