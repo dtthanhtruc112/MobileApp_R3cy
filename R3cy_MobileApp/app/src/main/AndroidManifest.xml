@@ -22,6 +22,27 @@
             android:name=".FAQsPage"
             android:exported="false" />
         <activity
+            android:name=".Signin.ForgotPass_Newpass"
+            android:exported="false" />
+        <activity
+            android:name=".Signin.ForgotPass_OTPCode"
+            android:exported="false" />
+        <activity
+            android:name=".Signin.ForgotPass_Email"
+            android:exported="false" />
+        <activity
+            android:name=".Signup"
+            android:exported="false" />
+        <activity
+            android:name=".Signin.Signin_Main"
+            android:exported="false" />
+        <activity
+            android:name=".AboutUs"
+            android:exported="false" />
+        <activity
+            android:name=".CustomProduct"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
