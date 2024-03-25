@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Modau.Modau2"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:gravity="center_horizontal">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:src="@drawable/modau_2"
+        android:layout_marginTop="50dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        android:text="Mua hàng nhanh chóng"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:text="Dễ dàng mua hàng, giao hàng nhanh chóng và tiện lợi cùng R3CY"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/black"/>
+
+    <Button
+        android:id="@+id/btnOpen"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:text="Tiếp tục"
+        android:textSize="23sp"
+        android:backgroundTint="@color/blue"
+        android:background="@drawable/rounded_borders"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/white"
+        android:textAllCaps="false"/>
+
+</LinearLayout>
