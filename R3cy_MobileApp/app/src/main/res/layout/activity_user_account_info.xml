@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserAccount_Info"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/txttrolai"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/baseline_arrow_back_ios_new_24"
+        android:layout_gravity="left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@id/txttaikhoancuatoi"
+
+        />
+
+    <TextView
+        android:id="@+id/txttaikhoancuatoi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thông tin tài khoản"
+        android:textColor="#31B9F4"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/txttrolai"
+        />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imv_uservatar"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        app:civ_border_width="5dp"
+        app:civ_border_color="#31B9F4"
+        android:background="@drawable/useraccount_avatar_background"
+        app:layout_constraintTop_toBottomOf="@id/txttaikhoancuatoi"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/iconpen"
+        android:scaleType="centerCrop"/>
+
+
+
+    <ImageView
+        android:id="@+id/iconpen"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/pencilline"
+        android:background="@drawable/useraccount_background_icon_ava"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.20"
+        app:layout_constraintHorizontal_bias="0.59"
+        />
+    <TextView
+        android:id="@+id/txtTen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thảo Nguyên"
+        android:textColor="#31B9F4"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iconpen"
+        />
+
+    <ImageView
+        android:id="@+id/background_image"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/useraccount_info_background"
+        app:layout_constraintTop_toBottomOf="@id/txtTen"
+        app:layout_constraintBottom_toTopOf="@id/btnchinhsua"
+        />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start"
+        app:barrierMargin="95dp"
+        app:constraint_referenced_ids="barrier2, barrier1" />
+
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="email, gioitinh, name, phone_number, username" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="editusername, editgioitinh_nam, editname, editphonenumber, editemail, ngaysinh" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Họ và tên"
+        android:textSize="13sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:background="@drawable/useraccount_info_background"
+        app:layout_constraintBaseline_toBaselineOf="@id/editname"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <EditText
+        android:id="@+id/editname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="17"
+        android:inputType="text"
+        android:hint="Nhập họ và tên"
+        android:layout_marginTop="30dp"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@id/barrier3"
+        app:layout_constraintTop_toBottomOf="@id/txtTen"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Tên đăng nhập"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintBaseline_toBaselineOf="@id/editusername"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <EditText
+        android:id="@+id/editusername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="17"
+        android:inputType="text"
+        android:hint="Nhập tên đăng nhập"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@id/barrier3"
+        app:layout_constraintTop_toBottomOf="@id/editname"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+    <TextView
+        android:id="@+id/phone_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Số điện thoại"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintBaseline_toBaselineOf="@id/editphonenumber"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <EditText
+        android:id="@+id/editphonenumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="17"
+        android:inputType="text"
+        android:hint="Nhập số điện thoại"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@id/barrier3"
+        app:layout_constraintTop_toBottomOf="@id/editusername"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Email"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintBaseline_toBaselineOf="@id/editemail"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <EditText
+        android:id="@+id/editemail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="17"
+        android:inputType="text"
+        android:hint="Nhập email"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@id/barrier3"
+        app:layout_constraintTop_toBottomOf="@id/editphonenumber"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+    <TextView
+        android:id="@+id/gioitinh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Giới tính"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintBaseline_toBaselineOf="@id/editgioitinh_nam"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <CheckBox
+        android:id="@+id/editgioitinh_nam"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:text="Nam"
+
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@id/barrier3"
+        app:layout_constraintTop_toBottomOf="@id/editemail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.13"
+
+        />
+    <CheckBox
+        android:id="@+id/editgioitinh_nu"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+
+        android:inputType="text"
+        android:text="Nữ"
+        android:textSize="11sp"
+        app:layout_constraintStart_toEndOf="@id/editgioitinh_nam"
+        app:layout_constraintBaseline_toBaselineOf="@id/editgioitinh_nam"
+        app:layout_constraintTop_toBottomOf="@id/editemail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.20"
+
+        />
+    <CheckBox
+        android:id="@+id/editgioitinh_khac"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+
+        android:inputType="text"
+        android:text="Khác"
+        android:textSize="11sp"
+        app:layout_constraintStart_toEndOf="@id/editgioitinh_nu"
+        app:layout_constraintTop_toBottomOf="@id/editemail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.27"
+
+        />
+    <TextView
+        android:id="@+id/birthday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Ngày sinh"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintBaseline_toBaselineOf="@id/ngaysinh"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gioitinh"
+        />
+    <EditText
+        android:id="@+id/ngaysinh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Nhập ngày sinh"
+        android:ems="17"
+        android:inputType="text"
+        android:textSize="11sp"
+        app:layout_constraintTop_toBottomOf="@id/editgioitinh_nu"
+        app:layout_constraintStart_toStartOf="@id/barrier3"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:id="@+id/btnchinhsua"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chỉnh sửa"
+        android:textSize="17sp"
+        android:backgroundTint="#31B9F4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/background_image"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
