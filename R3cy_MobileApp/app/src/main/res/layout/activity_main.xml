@@ -8,6 +8,9 @@
     android:padding="10dp"
     android:orientation="vertical">
 
+<<<<<<< HEAD
+
+=======
     <TextView
         android:id="@+id/txtFont"
         android:layout_width="match_parent"
@@ -52,5 +55,6 @@
         android:textSize="24sp"
         android:layout_marginTop="10dp"/>
 
+>>>>>>> 02a900c714ffcb132e1a581ae63a197c64d6fa89
 
 </LinearLayout>
