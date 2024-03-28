@@ -13,6 +13,12 @@
         android:theme="@style/Theme.R3cy_MobileApp"
         tools:targetApi="31">
         <activity
+            android:name=".Product.Product_detail"
+            android:exported="false" />
+        <activity
+            android:name=".Product.Product_List"
+            android:exported="false" />
+        <activity
             android:name=".DoiDiem_ChiTiet"
             android:exported="false" />
         <activity
