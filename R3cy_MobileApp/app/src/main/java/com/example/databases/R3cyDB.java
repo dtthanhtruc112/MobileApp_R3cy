@@ -27,6 +27,7 @@ public class R3cyDB extends SQLiteOpenHelper {
     public static final String TBl_VOUCHER_SHIP = "VOUCHERSHIP";
     public static final String TBL_WISHLIST = "WISHLIST";
     public static final String TBL_BLOG = "BLOG";
+    public static final String TBL_CUSTOMPRODUCT = "CUSTOMPRODUCT";
 
     // Các cột của bảng Customer
     public static final String CUSTOMER_ID = "CustomerID";
@@ -148,6 +149,16 @@ public class R3cyDB extends SQLiteOpenHelper {
     public static final String BLOG_CONTENT = "BlogContent";
 
 
+    // Các cột của bảng CUSTOMPRODUCT
+    public static final String CUSTOMPRODUCT_ID = "CustomID";
+    public static final String CUSTOMPRODUCT_NAME = "CusName";
+    public static final String CUSTOMPRODUCT_PHONE = "CusPhone";
+    public static final String CUSTOMPRODUCT_EMAIL = "CusEmail";
+    public static final String CUSTOMPRODUCT_TITLE = "CustomTitle";
+    public static final String CUSTOMPRODUCT_DESFILE = "DesFile";
+
+
+
 //    Tạo constructor
 
 
@@ -169,6 +180,7 @@ public class R3cyDB extends SQLiteOpenHelper {
         db.execSQL(CREATE_TBL_VOUCHERSHIP);
         db.execSQL(CREATE_TBL_WISHLIST);
         db.execSQL(CREATE_TBL_BLOG);
+        db.execSQL(CREATE_TBL_CUSTOMPRODUCT);
     }
 
     @Override
@@ -185,6 +197,7 @@ public class R3cyDB extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TBl_VOUCHER_SHIP);
         db.execSQL("DROP TABLE IF EXISTS " + TBL_WISHLIST);
         db.execSQL("DROP TABLE IF EXISTS " + TBL_BLOG);
+        db.execSQL("DROP TABLE IF EXISTS " + TBL_CUSTOMPRODUCT);
 
         // Tạo lại bảng mới
         onCreate(db);
@@ -344,7 +357,18 @@ public class R3cyDB extends SQLiteOpenHelper {
             BLOG_AUTHOR + " TEXT," +
             BLOG_CONTENT + " BLOB" +
             ")";
+    // Câu lệnh tạo bảng CUSTOMPRODUCT
+    private static final String CREATE_TBL_CUSTOMPRODUCT = "CREATE TABLE IF NOT EXISTS " + TBL_CUSTOMPRODUCT + "(" +
+            CUSTOMPRODUCT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            CUSTOMPRODUCT_NAME + " TEXT," +
+            CUSTOMPRODUCT_PHONE + " TEXT," +
+            CUSTOMPRODUCT_EMAIL + " TEXT," +
+            CUSTOMPRODUCT_TITLE + " TEXT," +
+            CUSTOMPRODUCT_DESFILE + " BLOB" +
+            ")";
 
-
-
+    //SELECT...
+//    INSERT. UPDATE, DELETE
+//    Ktra table có dữ liệu không
+//    Thêm dữ liệu mẫu
 }
