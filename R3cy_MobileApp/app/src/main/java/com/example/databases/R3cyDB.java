@@ -321,7 +321,7 @@ public class R3cyDB extends SQLiteOpenHelper {
             GENDER + " INTEGER NOT NULL DEFAULT 1," +
             EMAIL + " TEXT NOT NULL," +
             PHONE + " TEXT," +
-            PASSWORD + " BLOB NOT NULL," +
+            PASSWORD + " TEXT NOT NULL," +
             MEMBERSHIP_SCORE + " INTEGER NOT NULL DEFAULT 0," +
             BIRTHDAY + " DATE," +
             CUSTOMER_THUMB + " BLOB," +
@@ -431,6 +431,24 @@ public void createSampleDataVoucher(){
         execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM60%', 'GIẢM 60% ĐƠN HÀNG TRÊN 300000', 5000, 2024/04/15, 2024/05/20, 'percent', 0.6, 300000, 30000, 30)");
         execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40K', 'GIẢM 40K ĐƠN HÀNG TRÊN 400000 ', 10000, 2024/04/15, 2024/05/20, 'value', 400000, 400000, 40000, 30)");
         execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'FREESHIP', 'MIỄN PHÍ VẬN CHUYỂN', 20000, 2024/04/15, 2024/05/20, 'value', 1, 500000, 60000, 30)");
+    }
+}
+
+// Kiểm tra bảng Customer
+public int numbOfRowsCustomer(){
+        Cursor c = getData("SELECT * FROM " + TBL_CUSTOMER);
+        int numberOfRows = c.getCount();
+        c.close();
+        return numberOfRows;
+}
+
+public void createSampleDataCustomer(){
+    if (numbOfRowsCustomer() == 0){
+        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'Lê Thị Tuyết Anh', 'anhltt', '0911235896','anhltt21411@gmail.com', 'anhltt21411@', 'Nữ', '01/02/2003', null, 'Thường', 500)");
+        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'Đặng Thị Thanh Trúc', 'trucdtt', '0910587896','trucdtt21411@gmail.com', 'trucdtt21411@', 'Nữ', '01/10/2003', null, 'Đồng', 2000)");
+        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'Đặng Lê Như Quỳnh', 'quynhdln', '0923535896','quynhdln21411@gmail.com', 'quynhdln21411@', 'Nữ', '15/02/2003', null, 'Bạc', 7000)");
+        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'Hồ Lê Thanh Trúc', 'truchlt', '0971237410','truchlt21411@gmail.com', 'truchlt21411@', 'Nữ', '21/08/2003', null, 'Vàng', 15000 )");
+        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'Nguyễn Thảo Nguyên', 'nguyennt', '0956335872','nguyennt21411@gmail.com', 'nguyennt21411@', 'Nữ', '11/12/2003', null, 'Kim Cương', 22000 )");
     }
 }
 
