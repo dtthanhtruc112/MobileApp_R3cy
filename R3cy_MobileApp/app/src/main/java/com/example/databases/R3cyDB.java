@@ -1,16 +1,32 @@
 package com.example.databases;
 
 import static android.os.Build.PRODUCT;
+import static android.provider.MediaStore.Images.Media.getBitmap;
+
+//import static androidx.appcompat.graphics.drawable.DrawableContainerCompat.Api21Impl.getResources;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
+import com.example.models.Product;
+import com.example.r3cy_mobileapp.R;
+
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 public class R3cyDB extends SQLiteOpenHelper {
+    Context context;
     // Tên cơ sở dữ liệu
     public static final String DATABASE_NAME = "r3cy_database.db";
     // Phiên bản cơ sở dữ liệu
@@ -159,6 +175,20 @@ public class R3cyDB extends SQLiteOpenHelper {
     public static final String CUSTOMPRODUCT_TITLE = "CustomTitle";
     public static final String CUSTOMPRODUCT_DESFILE = "DesFile";
 
+//Tạo hàm getProductByCategory
+//    public List<Product> getProductsByCategory(String category) {
+//        String sql = "SELECT * FROM PRODUCT WHERE category = ?";
+//        SQLiteDatabase db = getReadableDatabase();
+//        Cursor cursor = db.rawQuery(sql, new String[]{category});
+//        List<Product> products = new ArrayList<>();
+//        while (cursor.moveToNext()) {
+//            // ... (process cursor data and create Product objects)
+//            products.add(product);
+//        }
+//        cursor.close();
+//        db.close();
+//        return products;
+//    }
 
 
 //    Tạo constructor
@@ -166,6 +196,7 @@ public class R3cyDB extends SQLiteOpenHelper {
 
     public R3cyDB(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -410,6 +441,8 @@ public int numbOfRowsVoucher(){
     return numberOfRows;
 }
 
+
+
 //    Thêm dữ liệu mẫu
 
 // Dữ liệu mẫu Coupon
@@ -451,6 +484,72 @@ public void createSampleDataCustomer(){
         execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'Nguyễn Thảo Nguyên', 'nguyennt', '0956335872','nguyennt21411@gmail.com', 'nguyennt21411@', 'Nữ', '11/12/2003', null, 'Kim Cương', 22000 )");
     }
 }
+
+    //    Kiểm tra bảng Product
+    public int numbOfRowsProduct(){
+        Cursor c = getData("SELECT * FROM " + TBl_PRODUCT);
+        int numberOfRows = c.getCount();
+        c.close();
+        return numberOfRows;
+    }
+
+    public void createSampleDataProduct(){
+        if (numbOfRowsProduct() == 0){
+            SQLiteDatabase db = this.getWritableDatabase();
+
+//            SẢN PHẨM 1
+            // Chuyển đổi drawable images thành byte arrays
+            byte[] dgd_diaThumb = getByteArrayFromDrawable(context.getResources().getDrawable(R.drawable.dgd_dia1));
+            byte[] dgd_dia1 = getByteArrayFromDrawable(context.getResources().getDrawable(R.drawable.dgd_dia1));
+            byte[] dgd_dia2 = getByteArrayFromDrawable(context.getResources().getDrawable(R.drawable.dgd_dia2));
+            byte[] dgd_dia3 = getByteArrayFromDrawable(context.getResources().getDrawable(R.drawable.dgd_dia3));
+
+            // Chèn byte array vào database bằng dấu hỏi chấm
+            SQLiteStatement statement = db.compileStatement("INSERT INTO " + TBl_PRODUCT + " VALUES(null, ?, ?, ?, 120000, 100000, ?, 60, 4.5, 100, 1, ?, ?, ?, '2024-04-03', 1)");
+            statement.bindString(1, "Đĩa nhỏ");
+            statement.bindString(2, "Đồ gia dụng");
+            statement.bindBlob(3, dgd_diaThumb);
+            statement.bindString(4, "Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường. Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu. Thiết kế nhỏ gọn và tiện lợi làm cho sản phẩm trở thành người bạn đồng hành lý tưởng, không chỉ phục vụ nhu cầu hàng ngày mà còn thúc đẩy ý thức về một lối sống bền vững. Đĩa nhỏ từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian sống mà còn là một biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc  giữ gìn cho hành tinh xanh của chúng ta. Hãy chọn lựa thông minh và hòa mình vào những giải pháp bảo vệ môi trường với sản phẩm độc đáo này.");
+            statement.bindBlob(5, dgd_dia1);
+            statement.bindBlob(6, dgd_dia2);
+            statement.bindBlob(7, dgd_dia3);
+            statement.executeInsert();
+
+//            /            SẢN PHẨM 2
+            // Chuyển đổi drawable images thành byte arrays
+            byte[] dgd_xaphongThumb = getByteArrayFromDrawable(context.getResources().getDrawable(R.drawable.dgd_dia1));
+            byte[] dgd_xaphong1 = getByteArrayFromDrawable(context.getResources().getDrawable(R.drawable.dgd_dia1));
+            byte[] dgd_xaphong2 = getByteArrayFromDrawable(context.getResources().getDrawable(R.drawable.dgd_dia2));
+            byte[] dgd_xaphong3 = getByteArrayFromDrawable(context.getResources().getDrawable(R.drawable.dgd_dia3));
+
+            // Chèn byte array vào database bằng dấu hỏi chấm
+            statement = db.compileStatement("INSERT INTO " + TBl_PRODUCT + " VALUES(null, ?, ?, ?, 170000, 150000, ?, 60, 4.7, 120, 1, ?, ?, ?, '2024-04-11', 1)");
+            statement.bindString(1, "Khay đựng xà phòng");
+            statement.bindString(2, "Đồ gia dụng");
+            statement.bindBlob(3, dgd_xaphongThumb);
+            statement.bindString(4, "Khay đựng bánh xà phòng từ nhựa tái chế là sự kết hợp hoàn hảo giữa tính thực tế và cam kết với môi trường. Với nguyên liệu là nhựa tái chế, sản phẩm này không chỉ giúp giảm lượng chất thải nhựa mà còn thể hiện tinh thần chăm sóc đối với hành tinh xanh của chúng ta. Thiết kế của khay đựng bánh xà phòng không chỉ đơn giản mà còn linh hoạt, phù hợp với mọi không gian nhà tắm. Sự sáng tạo trong cách sử dụng nguyên liệu tái chế không chỉ làm cho sản phẩm trở nên độc đáo mà còn đặt ra một tiêu chí mới cho việc chọn lựa sản phẩm gia dụng có trách nhiệm với môi trường. Khay đựng bánh xà phòng từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian nhà tắm mà còn là một bước nhỏ nhưng ý nghĩa trong hành trình chung của chúng ta để bảo vệ và giữ gìn cho hành tinh xanh, trong từng lựa chọn hàng ngày của chúng ta.");
+            statement.bindBlob(5, dgd_xaphong1);
+            statement.bindBlob(6, dgd_xaphong2);
+            statement.bindBlob(7, dgd_xaphong3);
+            statement.executeInsert();
+
+
+
+            db.close();
+
+        }
+        }
+
+
+    private byte[] getByteArrayFromDrawable(Drawable drawable){
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
+        return stream.toByteArray();
+    }
+
+
 
 
 }

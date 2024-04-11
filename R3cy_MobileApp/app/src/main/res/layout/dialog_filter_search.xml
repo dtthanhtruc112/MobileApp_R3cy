@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="20dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/dialog_boloc_ic"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lọc theo"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:layout_gravity="center"
+        android:textColor="@color/black"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/filter_phobien"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phổ biến"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            android:layout_marginBottom="15dp"/>
+
+        <TextView
+            android:id="@+id/filter_moinhat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mới nhất"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            android:layout_marginBottom="15dp"/>
+
+        <TextView
+            android:id="@+id/filter_minprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giá: Từ thấp đến cao"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            android:layout_marginBottom="15dp"/>
+
+        <TextView
+            android:id="@+id/filter_maxprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giá: Từ cao đến thấp"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            android:layout_marginBottom="50dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
