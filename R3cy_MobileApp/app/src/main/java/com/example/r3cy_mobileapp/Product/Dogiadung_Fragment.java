@@ -52,15 +52,20 @@ public class Dogiadung_Fragment extends Fragment {
         binding = FragmentDogiadungBinding.inflate(inflater, container, false);
         View rootView = binding.getRoot();
 
+        rvProducts = binding.rvProducts;
 
-        RecyclerView rvProducts = binding.rvProducts;
-        rvProducts.setLayoutManager(new GridLayoutManager(requireContext(), 2));
-        List<Product> productList = new ArrayList<>(products);
-        adapter = new ProductAdapter(getContext(), R.layout.viewholder_category_list, productList);
-        rvProducts.setAdapter(adapter);
+        // Kiểm tra null trước khi gọi setLayoutManager() và gán adapter
+        if (rvProducts != null) {
+            rvProducts.setLayoutManager(new GridLayoutManager(requireContext(), 2));
 
-       loadData();
-       addEvents();
+            adapter = new ProductAdapter(getContext(), R.layout.viewholder_category_list, products);
+            rvProducts.setAdapter(adapter);
+
+            loadData();
+            addEvents();
+        } else {
+            // Xử lý trường hợp RecyclerView là null
+        }
         return rootView;
 
     }

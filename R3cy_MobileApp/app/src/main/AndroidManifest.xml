@@ -20,7 +20,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".Product.Product_List"
+            android:name=".UserAccount_Main"
             android:exported="false" />
         <activity
             android:name=".DoiDiem_ChiTiet"
@@ -83,7 +83,7 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".UserAccount_Main"
+            android:name=".Product.Product_List"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
