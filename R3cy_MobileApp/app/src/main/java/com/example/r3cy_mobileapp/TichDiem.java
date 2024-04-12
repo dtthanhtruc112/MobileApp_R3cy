@@ -12,6 +12,7 @@ import com.example.adapter.CouponAdapter;
 import com.example.adapter.CouponAdapterRecycler;
 import com.example.databases.R3cyDB;
 import com.example.models.Coupon;
+import com.example.r3cy_mobileapp.Product.Product_List;
 import com.example.r3cy_mobileapp.databinding.ActivityTichDiemBinding;
 
 import java.text.ParseException;
@@ -34,8 +35,10 @@ public class TichDiem extends AppCompatActivity {
 
         db = new R3cyDB(this);
         db.createSampleDataCoupon();
+        db.createSampleDataCustomer();
         
         loadData();
+        addEvents();
     }
 
     private void loadData() {
@@ -99,5 +102,23 @@ public class TichDiem extends AppCompatActivity {
             }
         });
         binding.rcvCoupon.setAdapter(adapter);
+    }
+
+    private void addEvents() {
+        binding.btnTichluy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TichDiem.this, Product_List.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.btnDoidiem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TichDiem.this, DoiDiem.class);
+                startActivity(intent);
+            }
+        });
     }
 }
