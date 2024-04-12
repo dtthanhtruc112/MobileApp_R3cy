@@ -68,7 +68,7 @@ public class Product_Detail extends AppCompatActivity {
             int ProductID = intent.getIntExtra("ProductID", -1);
 
             // Truy vấn dữ liệu sản phẩm từ cơ sở dữ liệu
-            Product product = db.getProductById(PRODUCT_ID);
+            Product product = db.getProductById(ProductID);
 
             // Hiển thị thông tin sản phẩm trên giao diện
             showProductDetail(product);
