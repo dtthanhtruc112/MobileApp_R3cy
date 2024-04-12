@@ -23,14 +23,14 @@ import java.util.List;
 
 import me.relex.circleindicator.CircleIndicator3;
 
-public class Product_detail extends AppCompatActivity {
+public class Product_Detail extends AppCompatActivity {
     ActivityProductDetailBinding binding;
     private ViewPager2 mViewPager2;
     private CircleIndicator3 mCircleIndicator3;
     private List<Photo> photos;
-    TextView txtQuantity; txtProductName, txtSalePrice, txtProductDescription, txtProductRate;
+    TextView txtQuantity, txtProductName, txtSalePrice, txtProductDescription, txtProductRate;
     ImageView btnIncreaseQuantity;
-    ImageView btnDecreaseQuantity; imvProductThumb;
+    ImageView btnDecreaseQuantity, imvProductThumb;
     private List<Integer> imageResourceIds;
     private PhotoViewpager2Adapter adapter;
     private int quantity = 1; //Giá trị mặc định số lượng là 1
@@ -135,13 +135,13 @@ public class Product_detail extends AppCompatActivity {
         binding.txtProductName.setText(product.getProductName());
         binding.txtSalePrice.setText(String.format("%.0f đ", product.getSalePrice()));
         binding.txtProductDescription.setText(product.getProductDescription());
-//        binding.txtProductRate.setText(String.valueOf(product.getProductRate()));
+        binding.txtProductRate.setText(String.valueOf(product.getProductRate()));
 //        binding.txtDiscuss.setText(product.getDiscussContent());
         // Cập nhật ViewPager2 adapter với danh sách hình ảnh sản phẩm
         List<Integer> imageResourceIds = new ArrayList<>();
         imageResourceIds.add(product.getProductThumb());
-        imageResourceIds.add(product.getListImage1());
-        imageResourceIds.add(product.getListImage2());
+//        imageResourceIds.add(product.getListImage1());
+//        imageResourceIds.add(product.getListImage2());
         adapter = new PhotoViewpager2Adapter(imageResourceIds);
         mViewPager2.setAdapter(adapter);
         mCircleIndicator3.setViewPager(mViewPager2);
