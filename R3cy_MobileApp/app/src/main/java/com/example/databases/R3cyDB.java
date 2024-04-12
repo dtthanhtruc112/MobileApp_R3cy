@@ -144,6 +144,7 @@ public class R3cyDB extends SQLiteOpenHelper {
     public static final String COUPON_TITLE = "CouponTitle";
     public static final String SCORE_MIN = "ScoreMin";
     public static final String COUPON_TYPE = "CouponType";
+    public static final String COUPON_CATEGORY = "CouponCategory";
     public static final String VALID_DATE = "ValidDate";
     public static final String EXPIRE_DATE = "ExpireDate";
     public static final String MIN_ORDER_VALUE = "MinOrderValue";
@@ -210,7 +211,6 @@ public class R3cyDB extends SQLiteOpenHelper {
         db.execSQL(CREATE_TBL_ADDRESS);
         db.execSQL(CREATE_TBL_CART);
         db.execSQL(CREATE_TBL_COUPON);
-        db.execSQL(CREATE_TBL_VOUCHERSHIP);
         db.execSQL(CREATE_TBL_WISHLIST);
         db.execSQL(CREATE_TBL_BLOG);
         db.execSQL(CREATE_TBL_CUSTOMPRODUCT);
@@ -337,6 +337,7 @@ public class R3cyDB extends SQLiteOpenHelper {
             COUPON_TITLE + " TEXT NOT NULL," +
             SCORE_MIN + " INTEGER NOT NULL," +
             COUPON_TYPE + " TEXT NOT NULL," +
+            COUPON_CATEGORY + " TEXT NOT NULL," +
             VALID_DATE + " DATE NOT NULL," +
             EXPIRE_DATE + " DATE NOT NULL," +
             MIN_ORDER_VALUE + " REAL NOT NULL," +
@@ -360,19 +361,6 @@ public class R3cyDB extends SQLiteOpenHelper {
             "PRIMARY KEY (" + CUSTOMER_ID + " AUTOINCREMENT)" +
             ")";
     // Câu lệnh tạo bảng VoucherShip
-    private static final String CREATE_TBL_VOUCHERSHIP = "CREATE TABLE IF NOT EXISTS " + TBl_VOUCHER_SHIP + "(" +
-            VOUCHER_SHIP_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-            VOUCHER_SHIP_CODE + " TEXT NOT NULL," +
-            VOUCHER_SHIP_TITLE + " TEXT," +
-            SCORE_MIN + " INTEGER NOT NULL," +
-            VALID_DATE + " DATE," +
-            EXPIRE_DATE + " DATE," +
-            DISCOUNT_TYPE + " TEXT," +
-            VOUCHER_SHIP_VALUE + " REAL," +
-            MIN_ORDER_VALUE + " REAL," +
-            MAXIMUM_DISCOUNT + " REAL," +
-            MAXIMUM_USERS + " INTEGER DEFAULT 20" +
-            ")";
 
     // Câu lệnh tạo bảng Wishlist
     private static final String CREATE_TBL_WISHLIST = "CREATE TABLE IF NOT EXISTS " + TBL_WISHLIST + "(" +
@@ -433,13 +421,6 @@ public int numbOfRowsCoupon(){
     return numberOfRows;
 }
 
-//Kiểm tra bảng VoucherShip
-public int numbOfRowsVoucher(){
-    Cursor c = getData("SELECT * FROM " + TBl_VOUCHER_SHIP);
-    int numberOfRows = c.getCount();
-    c.close();
-    return numberOfRows;
-}
 
 
 
@@ -448,24 +429,20 @@ public int numbOfRowsVoucher(){
 // Dữ liệu mẫu Coupon
 public void createSampleDataCoupon(){
     if (numbOfRowsCoupon() == 0){
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM10%', 'GIẢM 10% CHO THÀNH VIÊN MỚI, GIẢM TỐI ĐA 30K', 100, 'percent', 2024/04/15, 2024/05/20, 100000, 30000, 0.10, 10)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% CHÀO MỪNG THÁNG 4, GIẢM TỐI ĐA 60K', 1000, 'percent', 2024/04/15, 2024/05/20, 200000, 60000, 0.20, 10)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM30%', 'GIẢM 30% TRI ÂN THÀNH VIÊN BẠC, GIẢM TỐI ĐA 90K', 5000, 'percent', 2024/04/15, 2024/05/20, 300000, 90000, 0.30, 10)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM120K', 'GIẢM 120K CHÀO MỪNG THÁNG 5', 10000, 'value', 2024/04/15, 2024/05/20, 400000, 120000, 120000, 10)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM150K', 'GIẢM 150K TRI ÂN THÀNH VIÊN KIM CƯƠNG', 20000, 'value', 2024/04/15, 2024/05/20, 500000, 150000, 150000, 10)");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM10%', 'GIẢM 10% ĐƠN HÀNG CHO THÀNH VIÊN MỚI, GIẢM TỐI ĐA 30K', 100, 'percent', 'order', 2024/04/15, 2024/05/20, 100000, 30000, 0.10, 10)");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% ĐƠN HÀNG CHÀO MỪNG THÁNG 4, GIẢM TỐI ĐA 60K', 1000, 'percent', 'order', 2024/04/15, 2024/05/20, 200000, 60000, 0.20, 10)");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM30%', 'GIẢM 30% ĐƠN HÀNG TRI ÂN THÀNH VIÊN BẠC, GIẢM TỐI ĐA 90K', 5000, 'percent', 'order', 2024/04/15, 2024/05/20, 300000, 90000, 0.30, 10)");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM120K', 'GIẢM 120K ĐƠN HÀNG CHÀO MỪNG THÁNG 5', 10000, 'value', 'order', 2024/04/15, 2024/05/20, 400000, 120000, 120000, 10)");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM150K', 'GIẢM 150K ĐƠN HÀNG TRI ÂN THÀNH VIÊN KIM CƯƠNG', 20000, 'value', 'order', 2024/04/15, 2024/05/20, 500000, 150000, 150000, 10)");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 100000', 100, 'percent', 'ship', 2024/04/15, 2024/05/20, 100000, 30000, 0.20, 30)");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40%', 'GIẢM 40% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 200000', 1000, 'percent', 'ship', 2024/04/15, 2024/05/20, 200000, 30000, 0.40, 30)");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM60%', 'GIẢM 60% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 300000', 5000, 'percent', 'ship', 2024/04/15, 2024/05/20, 300000, 30000, 0.6, 30)");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40K', 'GIẢM 40K PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 400000 ', 10000, 'value', 'ship', 2024/04/15, 2024/05/20, 400000, 40000, 400000, 30)");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'FREESHIP', 'MIỄN PHÍ VẬN CHUYỂN', 20000, 'value', 'ship', 2024/04/15, 2024/05/20, 500000, 60000, 1, 30)");
     }
 }
 
-// Dữ liệu mẫu VoucherSHip
-public void createSampleDataVoucher(){
-    if (numbOfRowsVoucher() == 0){
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% ĐƠN HÀNG TRÊN 100000', 100, 2024/04/15, 2024/05/20, 'percent', 0.20, 100000, 30000, 30)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40%', 'GIẢM 40% ĐƠN HÀNG TRÊN 200000', 1000, 2024/04/15, 2024/05/20, 'percent', 0.40, 200000, 30000, 30)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM60%', 'GIẢM 60% ĐƠN HÀNG TRÊN 300000', 5000, 2024/04/15, 2024/05/20, 'percent', 0.6, 300000, 30000, 30)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40K', 'GIẢM 40K ĐƠN HÀNG TRÊN 400000 ', 10000, 2024/04/15, 2024/05/20, 'value', 400000, 400000, 40000, 30)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'FREESHIP', 'MIỄN PHÍ VẬN CHUYỂN', 20000, 2024/04/15, 2024/05/20, 'value', 1, 500000, 60000, 30)");
-    }
-}
+
 
 // Kiểm tra bảng Customer
 public int numbOfRowsCustomer(){

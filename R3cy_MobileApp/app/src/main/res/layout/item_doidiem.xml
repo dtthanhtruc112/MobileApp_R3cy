@@ -28,6 +28,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/txtCode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Giảm  8%"
@@ -36,6 +37,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/txtTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Đơn tối thiểu 500k Giảm tối đa 30k"
@@ -57,6 +59,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/txtScore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="300"
