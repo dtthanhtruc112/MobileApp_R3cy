@@ -1,6 +1,7 @@
 package com.example.databases;
 
 import static android.os.Build.PRODUCT;
+import static android.os.Build.RADIO;
 import static android.provider.MediaStore.Images.Media.getBitmap;
 
 //import static androidx.appcompat.graphics.drawable.DrawableContainerCompat.Api21Impl.getResources;
@@ -28,6 +29,7 @@ import java.util.List;
 public class R3cyDB extends SQLiteOpenHelper {
     Context context;
     // Tên cơ sở dữ liệu
+
     public static final String DATABASE_NAME = "r3cy_database.db";
     // Phiên bản cơ sở dữ liệu
     public static final int DATABASE_VERSION = 1;
@@ -716,7 +718,51 @@ public void createSampleDataCustomer(){
         return stream.toByteArray();
     }
 
+    public Product getProductById( int ProductID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Product product = null;
+        String[] projection = {
+                PRODUCT_ID,
+                PRODUCT_NAME,
+                SALE_PRICE,
+                PRODUCT_DESCRIPTION,
+                PRODUCT_RATE,
+                PRODUCT_IMG1,
+                PRODUCT_IMG2,
+                PRODUCT_IMG3
+        };
+        String selection = PRODUCT_IMG3 + " = ? ";
+        String[] selectionArgs = {String.valueOf(ProductID)};
+        Cursor cursor = db.query(
+                PRODUCT,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+        if (cursor != null && cursor.moveToFirst()) {
+
+            int idIndex = cursor.getColumnIndexOrThrow(PRODUCT_ID);
+            int nameIndex = cursor.getColumnIndexOrThrow(PRODUCT_NAME);
+            int descriptionIndex = cursor.getColumnIndexOrThrow(PRODUCT_DESCRIPTION);
+            int salePriceIndex = cursor.getColumnIndexOrThrow(SALE_PRICE);
+            int rateIndex = cursor.getColumnIndexOrThrow(PRODUCT_RATE);
+            // Lấy dữ liệu từ cột tương ứng trong Cursor
+            int id = cursor.getInt(idIndex);
+            String name = cursor.getString(nameIndex);
+            String description = cursor.getString(descriptionIndex);
+            // Tạo một đối tượng Product từ dữ liệu
+            product = new Product(id, name, description, ...);
+            cursor.close();
+
+        }
+        return product;
+        }
+    }
 
 
 
-}
+
+
