@@ -15,7 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
             android:layout_marginTop="32dp"
             android:background="@drawable/rounded_corners"
             android:gravity="center"
@@ -43,14 +42,23 @@
 
         </LinearLayout>
 
-        <ImageView
+
+        <LinearLayout
             android:id="@+id/imageView4"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/banner1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout8" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_HomeBanner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
