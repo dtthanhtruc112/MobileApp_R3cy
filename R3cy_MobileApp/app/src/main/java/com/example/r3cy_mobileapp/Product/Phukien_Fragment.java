@@ -60,7 +60,7 @@ public class Phukien_Fragment extends Fragment {
 //                    Product selectedProduct = (Product) adapter.getItem(position);
 
                     // Tạo Intent và gửi thông tin sản phẩm sang Product_Detail Activity
-                    Intent intent = new Intent(requireContext(), Product_Detail.class);
+                    Intent intent = new Intent(requireContext(), Product_detail.class);
 //                    intent.putExtra("product", selectedProduct);
                     startActivity(intent);
                 }

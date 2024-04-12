@@ -23,7 +23,7 @@ import java.util.List;
 
 import me.relex.circleindicator.CircleIndicator3;
 
-public class Product_Detail extends AppCompatActivity {
+public class Product_detail extends AppCompatActivity {
     ActivityProductDetailBinding binding;
     private ViewPager2 mViewPager2;
     private CircleIndicator3 mCircleIndicator3;
@@ -135,7 +135,7 @@ public class Product_Detail extends AppCompatActivity {
         binding.txtProductName.setText(product.getProductName());
         binding.txtSalePrice.setText(String.format("%.0f đ", product.getSalePrice()));
         binding.txtProductDescription.setText(product.getProductDescription());
-        binding.txtProductRate.setText(String.valueOf(product.getProductRate()));
+//        binding.txtProductRate.setText(String.valueOf(product.getProductRate()));
 //        binding.txtDiscuss.setText(product.getDiscussContent());
         // Cập nhật ViewPager2 adapter với danh sách hình ảnh sản phẩm
         List<Integer> imageResourceIds = new ArrayList<>();
