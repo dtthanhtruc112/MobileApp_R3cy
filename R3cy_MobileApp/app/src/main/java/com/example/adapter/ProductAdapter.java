@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.models.Product;
-import com.example.r3cy_mobileapp.Product.Product_Detail;
+import com.example.r3cy_mobileapp.Product.Product_detail;
 import com.example.r3cy_mobileapp.R;
 
 import java.util.ArrayList;
@@ -72,7 +72,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, Product_Detail.class);
+                Intent intent = new Intent(context, Product_detail.class);
                 intent.putExtra("productId", product.getProductId());
                 context.startActivity(intent);
             }
