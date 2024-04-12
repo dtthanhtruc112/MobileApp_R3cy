@@ -64,22 +64,27 @@ public class DoiDiem extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        coupons.add(new Coupon(
-                c.getInt(0),  // COUPON_ID
-                c.getString(1),  // COUPON_CODE
-                c.getString(2),  // COUPON_TITLE
-                c.getInt(3),  // SCORE_MIN
-                c.getString(4),  // COUPON_TYPE
-                c.getString(5),  // COUPON_CATEGORY
-                validDate,  // VALID_DATE
-                expireDate,  // EXPIRE_DATE
-                c.getDouble(8),  // MIN_ORDER_VALUE
-                c.getDouble(9),  // MAXIMUM_DISCOUNT
-                c.getDouble(10),  // COUPON_VALUE
-                c.getInt(11)  // MAXIMUM_USERS
-        ));
+        while (c.moveToNext()) {
+            coupons.add(new Coupon(
+                    c.getInt(0),  // COUPON_ID
+                    c.getString(1),  // COUPON_CODE
+                    c.getString(2),  // COUPON_TITLE
+                    c.getInt(3),  // SCORE_MIN
+                    c.getString(4),  // COUPON_TYPE
+                    c.getString(5),  // COUPON_CATEGORY
+                    validDate,  // VALID_DATE
+                    expireDate,  // EXPIRE_DATE
+                    c.getDouble(8),  // MIN_ORDER_VALUE
+                    c.getDouble(9),  // MAXIMUM_DISCOUNT
+                    c.getDouble(10),  // COUPON_VALUE
+                    c.getInt(11)  // MAXIMUM_USERS
+            ));
+        }
+        c.close();
+
 
         adapter = new CouponAdapter(this, R.layout.item_doidiem, coupons);
         binding.lvCoupon.setAdapter(adapter);
+
     }
 }
