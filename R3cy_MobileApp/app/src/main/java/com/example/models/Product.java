@@ -1,171 +1,171 @@
 package com.example.models;
 
 public class Product {
-    private int productId;
-    private String productName;
-    private String category;
-    private byte[] productThumb;
-    private double productPrice;
-    private double salePrice;
-    private String productDescription;
-    private int inventory;
-    private double productRate;
-    private int soldQuantity;
-    private int status;
-    private byte[] productImg1;
-    private byte[] productImg2;
-    private byte[] productImg3;
-    private String createdDate;
-    private int hot;
+    private int ProductID;
+    private String ProductName;
+    private double ProductPrice;
+    private String ProductDescription;
+    private byte[] ProductThumb;
+    private int Hot;
+    private String Category;
+    private int Inventory;
+    private double ProductRate;
+    private double SalePrice;
+    private int SoldQuantity;
+    private String CreatedDate;
+    private int Status;
+    private byte[] img1;
+    private byte[] img2;
+    private byte[] img3;
+
 
 //    constructor
 
-    public Product(int productId, String productName, String category, byte[] productThumb, double productPrice, double salePrice, String productDescription, int inventory, double productRate, int soldQuantity, int status, byte[] productImg1, byte[] productImg2, byte[] productImg3, String createdDate, int hot) {
-        this.productId = productId;
-        this.productName = productName;
-        this.category = category;
-        this.productThumb = productThumb;
-        this.productPrice = productPrice;
-        this.salePrice = salePrice;
-        this.productDescription = productDescription;
-        this.inventory = inventory;
-        this.productRate = productRate;
-        this.soldQuantity = soldQuantity;
-        this.status = status;
-        this.productImg1 = productImg1;
-        this.productImg2 = productImg2;
-        this.productImg3 = productImg3;
-        this.createdDate = createdDate;
-        this.hot = hot;
+
+    public Product(int productID, String productName, double productPrice, String productDescription, byte[] productThumb, int hot, String category, int inventory, double productRate, double salePrice, int soldQuantity, String createdDate, int status, byte[] img1, byte[] img2, byte[] img3) {
+        ProductID = productID;
+        ProductName = productName;
+        ProductPrice = productPrice;
+        ProductDescription = productDescription;
+        ProductThumb = productThumb;
+        Hot = hot;
+        Category = category;
+        Inventory = inventory;
+        ProductRate = productRate;
+        SalePrice = salePrice;
+        SoldQuantity = soldQuantity;
+        CreatedDate = createdDate;
+        Status = status;
+        this.img1 = img1;
+        this.img2 = img2;
+        this.img3 = img3;
     }
 
-//    getter and setter
-
-    public int getProductId() {
-        return productId;
+    public int getProductID() {
+        return ProductID;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setProductID(int productID) {
+        ProductID = productID;
     }
 
     public String getProductName() {
-        return productName;
+        return ProductName;
     }
 
     public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public byte[] getProductThumb() {
-        return productThumb;
-    }
-
-    public void setProductThumb(byte[] productThumb) {
-        this.productThumb = productThumb;
+        ProductName = productName;
     }
 
     public double getProductPrice() {
-        return productPrice;
+        return ProductPrice;
     }
 
     public void setProductPrice(double productPrice) {
-        this.productPrice = productPrice;
-    }
-
-    public double getSalePrice() {
-        return salePrice;
-    }
-
-    public void setSalePrice(double salePrice) {
-        this.salePrice = salePrice;
+        ProductPrice = productPrice;
     }
 
     public String getProductDescription() {
-        return productDescription;
+        return ProductDescription;
     }
 
     public void setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
+        ProductDescription = productDescription;
     }
 
-    public int getInventory() {
-        return inventory;
+    public byte[] getProductThumb() {
+        return ProductThumb;
     }
 
-    public void setInventory(int inventory) {
-        this.inventory = inventory;
-    }
-
-    public double getProductRate() {
-        return productRate;
-    }
-
-    public void setProductRate(double productRate) {
-        this.productRate = productRate;
-    }
-
-    public int getSoldQuantity() {
-        return soldQuantity;
-    }
-
-    public void setSoldQuantity(int soldQuantity) {
-        this.soldQuantity = soldQuantity;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public byte[] getProductImg1() {
-        return productImg1;
-    }
-
-    public void setProductImg1(byte[] productImg1) {
-        this.productImg1 = productImg1;
-    }
-
-    public byte[] getProductImg2() {
-        return productImg2;
-    }
-
-    public void setProductImg2(byte[] productImg2) {
-        this.productImg2 = productImg2;
-    }
-
-    public byte[] getProductImg3() {
-        return productImg3;
-    }
-
-    public void setProductImg3(byte[] productImg3) {
-        this.productImg3 = productImg3;
-    }
-
-    public String getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(String createdDate) {
-        this.createdDate = createdDate;
+    public void setProductThumb(byte[] productThumb) {
+        ProductThumb = productThumb;
     }
 
     public int getHot() {
-        return hot;
+        return Hot;
     }
 
     public void setHot(int hot) {
-        this.hot = hot;
+        Hot = hot;
+    }
+
+    public String getCategory() {
+        return Category;
+    }
+
+    public void setCategory(String category) {
+        Category = category;
+    }
+
+    public int getInventory() {
+        return Inventory;
+    }
+
+    public void setInventory(int inventory) {
+        Inventory = inventory;
+    }
+
+    public double getProductRate() {
+        return ProductRate;
+    }
+
+    public void setProductRate(double productRate) {
+        ProductRate = productRate;
+    }
+
+    public double getSalePrice() {
+        return SalePrice;
+    }
+
+    public void setSalePrice(double salePrice) {
+        SalePrice = salePrice;
+    }
+
+    public int getSoldQuantity() {
+        return SoldQuantity;
+    }
+
+    public void setSoldQuantity(int soldQuantity) {
+        SoldQuantity = soldQuantity;
+    }
+
+    public String getCreatedDate() {
+        return CreatedDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        CreatedDate = createdDate;
+    }
+
+    public int getStatus() {
+        return Status;
+    }
+
+    public void setStatus(int status) {
+        Status = status;
+    }
+
+    public byte[] getImg1() {
+        return img1;
+    }
+
+    public void setImg1(byte[] img1) {
+        this.img1 = img1;
+    }
+
+    public byte[] getImg2() {
+        return img2;
+    }
+
+    public void setImg2(byte[] img2) {
+        this.img2 = img2;
+    }
+
+    public byte[] getImg3() {
+        return img3;
+    }
+
+    public void setImg3(byte[] img3) {
+        this.img3 = img3;
     }
 }

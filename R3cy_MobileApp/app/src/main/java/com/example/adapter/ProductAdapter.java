@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.models.Product;
-import com.example.r3cy_mobileapp.Product.Product_detail;
+//import com.example.r3cy_mobileapp.Product.Product_detail;
 import com.example.r3cy_mobileapp.R;
 
 import java.util.ArrayList;
@@ -32,13 +32,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         this.products = products;
     }
 
-    public void setData(List<Product> productList) {
-        this.products = productList;
+    public void setData(List<Product> products) {
+        this.products = products;
         notifyDataSetChanged(); // Cập nhật lại giao diện người dùng khi dữ liệu thay đổi
     }
 
     public void setProducts(List<Product> products) {
         this.products = products;
+        notifyDataSetChanged();
 
     }
 
@@ -58,7 +59,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         if (holder.txtProductDescription != null) {
             holder.txtProductDescription.setText(product.getProductDescription());
         }
-        holder.txtProductRate.setText((int) product.getProductRate());
+        holder.txtProductRate.setText(String.valueOf(product.getProductRate())); // Sửa dòng này
         holder.txtCategory.setText(product.getCategory());
 
         // Hiển thị ảnh sản phẩm
@@ -72,9 +73,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, Product_detail.class);
-                intent.putExtra("productId", product.getProductId());
-                context.startActivity(intent);
+//                Intent intent = new Intent(context, Product_detail.class);
+//                intent.putExtra("productId", product.getProductID());
+//                context.startActivity(intent);
             }
         });
 

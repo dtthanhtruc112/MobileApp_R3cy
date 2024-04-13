@@ -25,7 +25,7 @@
             android:name=".Product.Product_Search"
             android:exported="false" />
         <activity
-            android:name=".Product.Product_detail"
+            android:name=".Product.Product_Detail"
             android:exported="false" />
         <activity
             android:name=".UserAccount_Main"
@@ -36,9 +36,7 @@
         <activity
             android:name=".DoiDiem"
             android:exported="false" />
-        <activity
-            android:name=".TichDiem"
-            android:exported="false" />
+        
         <activity
             android:name=".Thugom"
             android:exported="false" />
@@ -89,6 +87,9 @@
             android:exported="false" />
         <activity
             android:name=".Checkout"
+            android:exported="false" />
+        <activity
+            android:name=".TichDiem"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

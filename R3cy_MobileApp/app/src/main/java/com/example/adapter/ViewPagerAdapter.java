@@ -29,40 +29,8 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        Fragment fragment = fragments.get(position);
-        //Kiểm tra và đặt dữ liệu sản phẩm cho từng fragment
-        if (fragment instanceof Dogiadung_Fragment) {
-            Bundle bundle = new Bundle();
-            ArrayList<Product> filteredProducts = new ArrayList<>();
-            for (Product product : products) {
-                if ("Đồ gia dụng".equals(product.getCategory())) {
-                    filteredProducts.add(product);
-                }
-            }
-            bundle.putSerializable("products", filteredProducts);
-            fragment.setArguments(bundle);
-        } else if (fragment instanceof Dotrangtri_Fragment) {
-            Bundle bundle = new Bundle();
-            ArrayList<Product> filteredProducts = new ArrayList<>();
-            for (Product product : products) {
-                if ("Đồ trang trí".equals(product.getCategory())) {
-                    filteredProducts.add(product);
-                }
-            }
-            bundle.putSerializable("products", filteredProducts);
-            fragment.setArguments(bundle);
-        } else if (fragment instanceof Phukien_Fragment) {
-            Bundle bundle = new Bundle();
-            ArrayList<Product> filteredProducts = new ArrayList<>();
-            for (Product product : products) {
-                if ("Phụ kiện".equals(product.getCategory())) {
-                    filteredProducts.add(product);
-                }
-            }
-            bundle.putSerializable("products", filteredProducts);
-            fragment.setArguments(bundle);
-        }
-        return fragment;
+        return fragments.get(position);
+
     }
 
     @Override

@@ -51,12 +51,16 @@ public class Product_List extends AppCompatActivity implements ProductInterface 
         mTabLayout.getTabAt(0).setText("Đồ gia dụng");
         mTabLayout.getTabAt(1).setText("Đồ trang trí");
         mTabLayout.getTabAt(2).setText("Phụ kiện");
+
+
+
     }
 
     // Thêm phương thức getProducts() để trả về danh sách sản phẩm
     private List<Product> getProducts() {
         return products;
     }
+
     private List<Fragment> getFragments() {
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(new Dogiadung_Fragment());
@@ -68,9 +72,9 @@ public class Product_List extends AppCompatActivity implements ProductInterface 
     //    @Override
     public void replaceFragment(Product p) {
 //        chuyển sang product_detail và truyền dữ liệu sản phẩm
-//        Intent intent = new Intent(Product_List.this, Product_Detail.class);
+        Intent intent = new Intent(Product_List.this, Product_Detail.class);
 //        intent.putExtra("product", p);
-//        startActivity(intent);
+        startActivity(intent);
     }
 
 
