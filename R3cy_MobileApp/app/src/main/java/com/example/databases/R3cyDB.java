@@ -2,6 +2,9 @@ package com.example.databases;
 
 //import static androidx.appcompat.graphics.drawable.DrawableContainerCompat.Api21Impl.getResources;
 
+import static java.sql.DriverManager.getConnection;
+
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,6 +20,9 @@ import android.util.Log;
         import com.example.r3cy_mobileapp.R;
 
 import java.io.ByteArrayOutputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class R3cyDB extends SQLiteOpenHelper {
     Context context;
@@ -145,6 +151,7 @@ public class R3cyDB extends SQLiteOpenHelper {
     public static final String MAXIMUM_DISCOUNT = "MaximumDiscount";
     public static final String COUPON_VALUE = "CouponValue";
     public static final String MAXIMUM_USERS = "MaximumUsers";
+    public static final String CUSTOMER_IDS  = "Customer_IDs";
 
     // Các cột của bảng VoucherShip
     public static final String VOUCHER_SHIP_ID = "VoucherShipID";
@@ -340,8 +347,10 @@ public class R3cyDB extends SQLiteOpenHelper {
             MIN_ORDER_VALUE + " REAL NOT NULL," +
             MAXIMUM_DISCOUNT + " REAL NOT NULL," +
             COUPON_VALUE + " REAL NOT NULL," +
-            MAXIMUM_USERS + " INTEGER DEFAULT 10" +
+            MAXIMUM_USERS + " INTEGER DEFAULT 10," +
+            CUSTOMER_IDS + " TEXT DEFAULT '[]'" + // Thêm cột CUSTOMER_IDS kiểu TEXT mặc định là một mảng JSON rỗng
             ")";
+
     // Câu lệnh tạo bảng Customer
     private static final String CREATE_TBL_CUSTOMER = "CREATE TABLE IF NOT EXISTS " + TBL_CUSTOMER + "(" +
             CUSTOMER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -424,20 +433,33 @@ public int numbOfRowsCoupon(){
 //    Thêm dữ liệu mẫu
 
 // Dữ liệu mẫu Coupon
-public void createSampleDataCoupon(){
-    if (numbOfRowsCoupon() == 0){
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM10%', 'GIẢM 10% ĐƠN HÀNG CHO THÀNH VIÊN MỚI, GIẢM TỐI ĐA 30K', 100, 'percent', 'order', 2024/04/15, 2024/05/20, 100000, 30000, 0.10, 10)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% ĐƠN HÀNG CHÀO MỪNG THÁNG 4, GIẢM TỐI ĐA 60K', 1000, 'percent', 'order', 2024/04/15, 2024/05/20, 200000, 60000, 0.20, 10)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM30%', 'GIẢM 30% ĐƠN HÀNG TRI ÂN THÀNH VIÊN BẠC, GIẢM TỐI ĐA 90K', 5000, 'percent', 'order', 2024/04/15, 2024/05/20, 300000, 90000, 0.30, 10)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM120K', 'GIẢM 120K ĐƠN HÀNG CHÀO MỪNG THÁNG 5', 10000, 'value', 'order', 2024/04/15, 2024/05/20, 400000, 120000, 120000, 10)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM150K', 'GIẢM 150K ĐƠN HÀNG TRI ÂN THÀNH VIÊN KIM CƯƠNG', 20000, 'value', 'order', 2024/04/15, 2024/05/20, 500000, 150000, 150000, 10)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 100000', 100, 'percent', 'ship', 2024/04/15, 2024/05/20, 100000, 30000, 0.20, 30)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40%', 'GIẢM 40% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 200000', 1000, 'percent', 'ship', 2024/04/15, 2024/05/20, 200000, 30000, 0.40, 30)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM60%', 'GIẢM 60% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 300000', 5000, 'percent', 'ship', 2024/04/15, 2024/05/20, 300000, 30000, 0.6, 30)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40K', 'GIẢM 40K PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 400000 ', 10000, 'value', 'ship', 2024/04/15, 2024/05/20, 400000, 40000, 400000, 30)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'FREESHIP', 'MIỄN PHÍ VẬN CHUYỂN', 20000, 'value', 'ship', 2024/04/15, 2024/05/20, 500000, 60000, 1, 30)");
+public void createSampleDataCoupon() {
+    if (numbOfRowsCoupon() == 0) {
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM10%', 'GIẢM 10% ĐƠN HÀNG CHO THÀNH VIÊN MỚI, GIẢM TỐI ĐA 30K', 100, 'percent', 'order', '2024-04-15', '2024-05-20', 100000, 30000, 0.10, 10, '[1, 2, 3]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% ĐƠN HÀNG CHÀO MỪNG THÁNG 4, GIẢM TỐI ĐA 60K', 1000, 'percent', 'order', '2024-04-15', '2024-05-20', 200000, 60000, 0.20, 10, '[4, 5, 6]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM30%', 'GIẢM 30% ĐƠN HÀNG TRI ÂN THÀNH VIÊN BẠC, GIẢM TỐI ĐA 90K', 5000, 'percent', 'order', '2024-04-15', '2024-05-20', 300000, 90000, 0.30, 10, '[7, 8, 9]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM120K', 'GIẢM 120K ĐƠN HÀNG CHÀO MỪNG THÁNG 5', 10000, 'value', 'order', '2024-04-15', '2024-05-20', 400000, 120000, 120000, 10, '[10, 11, 12]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM150K', 'GIẢM 150K ĐƠN HÀNG TRI ÂN THÀNH VIÊN KIM CƯƠNG', 20000, 'value', 'order', '2024-04-15', '2024-05-20', 500000, 150000, 150000, 10, '[13, 14, 15]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 100000', 100, 'percent', 'ship', '2024-04-15', '2024-05-20', 100000, 30000, 0.20, 30, '[16, 17, 18]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40%', 'GIẢM 40% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 200000', 1000, 'percent', 'ship', '2024-04-15', '2024-05-20', 200000, 30000, 0.40, 30, '[19, 20, 21]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM60%', 'GIẢM 60% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 300000', 5000, 'percent', 'ship', '2024-04-15', '2024-05-20', 300000, 30000, 0.6, 30, '[22, 23, 24]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40K', 'GIẢM 40K PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 400000 ', 10000, 'value', 'ship', '2024-04-15', '2024-05-20', 400000, 40000, 400000, 30, '[25, 26, 27]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'FREESHIP', 'MIỄN PHÍ VẬN CHUYỂN', 20000, 'value', 'ship', '2024-04-15', '2024-05-20', 500000, 60000, 1, 30, '[28, 29, 30]')");
     }
 }
+
+//Cập nhật coupon khi có người đổi điểm lấy quà
+// Method to add a new customer_id to the existing array in customer_ids field based on coupon_id
+public void addCustomerIdToCoupon(int couponId, int newCustomerId) {
+    String sql = "UPDATE " + TBl_COUPON +
+            " SET " + CUSTOMER_IDS + " = JSON_ARRAY_APPEND(" + CUSTOMER_IDS + ", '$', '" + newCustomerId + "') " +
+            "WHERE " + COUPON_ID + " = " + couponId;
+
+    execSql(sql);
+}
+
+
+
 
 
 
@@ -460,13 +482,33 @@ public void createSampleDataCustomer(){
 }
 
 // Ràng buộc Hạng tvien với Score
-public void applyMembershipTypeConstraint() {
-    execSql("UPDATE " + TBL_CUSTOMER + " SET " + CUSTOMER_TYPE + " = 'Thường' WHERE " + MEMBERSHIP_SCORE + " >= 0 AND " + MEMBERSHIP_SCORE + " < 1000");
-    execSql("UPDATE " + TBL_CUSTOMER + " SET " + CUSTOMER_TYPE + " = 'Đồng' WHERE " + MEMBERSHIP_SCORE + " >= 1000 AND " + MEMBERSHIP_SCORE + " < 5000");
-    execSql("UPDATE " + TBL_CUSTOMER + " SET " + CUSTOMER_TYPE + " = 'Bạc' WHERE " + MEMBERSHIP_SCORE + " >= 5000 AND " + MEMBERSHIP_SCORE + " < 10000");
-    execSql("UPDATE " + TBL_CUSTOMER + " SET " + CUSTOMER_TYPE + " = 'Vàng' WHERE " + MEMBERSHIP_SCORE + " >= 10000 AND " + MEMBERSHIP_SCORE + " < 20000");
-    execSql("UPDATE " + TBL_CUSTOMER + " SET " + CUSTOMER_TYPE + " = 'Kim Cương' WHERE " + MEMBERSHIP_SCORE + " >= 20000");
+// Update điểm và hạng thành viên
+public void updateCustomerMembership(int customerId, int newMembershipScore) {
+    SQLiteDatabase db = this.getWritableDatabase();
+    ContentValues values = new ContentValues();
+    values.put(MEMBERSHIP_SCORE, newMembershipScore);
+
+    String newCustomerType = calculateCustomerType(newMembershipScore); // Tính toán loại khách hàng mới dựa trên điểm thành viên mới
+    values.put(CUSTOMER_TYPE, newCustomerType);
+
+    db.update(TBL_CUSTOMER, values, CUSTOMER_ID + " = ?", new String[]{String.valueOf(customerId)});
+    db.close();
 }
+
+    public String calculateCustomerType(int membershipScore) {
+        if (membershipScore >= 0 && membershipScore < 1000) {
+            return "Thường";
+        } else if (membershipScore >= 1000 && membershipScore < 5000) {
+            return "Đồng";
+        } else if (membershipScore >= 5000 && membershipScore < 10000) {
+            return "Bạc";
+        } else if (membershipScore >= 10000 && membershipScore < 20000) {
+            return "Vàng";
+        } else {
+            return "Kim Cương";
+        }
+    }
+
 
     public String getNextMembershipType(String currentType) {
         String nextType = null;

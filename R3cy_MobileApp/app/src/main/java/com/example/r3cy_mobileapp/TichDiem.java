@@ -20,6 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class TichDiem extends AppCompatActivity {
 
@@ -49,38 +50,42 @@ public class TichDiem extends AppCompatActivity {
         binding.rcvCoupon.setLayoutManager(layoutManager);
 
         // Load data
-        coupons = new ArrayList<>();
+        ArrayList<Coupon> coupons = new ArrayList<>();
         Cursor c = db.getData("SELECT * FROM " + R3cyDB.TBl_COUPON);
 
         while (c.moveToNext()) {
-            String validDateString = c.getString(6); // Lấy chuỗi ngày tháng từ cột VALID_DATE
-            String expireDateString = c.getString(7); // Lấy chuỗi ngày tháng từ cột EXPIRE_DATE
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); // Định dạng ngày tháng trong cơ sở dữ liệu
-            Date validDate = null;
-            Date expireDate = null;
-
             try {
-                validDate = dateFormat.parse(validDateString); // Chuyển đổi chuỗi thành đối tượng ngày tháng
-                expireDate = dateFormat.parse(expireDateString); // Chuyển đổi chuỗi thành đối tượng ngày tháng
-            } catch (ParseException e) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                Date validDate = dateFormat.parse(c.getString(6));
+                Date expireDate = dateFormat.parse(c.getString(7));
+
+                ArrayList<Integer> customerIds = new ArrayList<>();
+                String customerIdsString = c.getString(12);
+                if (customerIdsString != null && !customerIdsString.isEmpty()) {
+                    String[] ids = customerIdsString.replaceAll("\\[|\\]", "").split(",\\s*");
+                    for (String id : ids) {
+                        customerIds.add(Integer.parseInt(id.trim()));
+                    }
+                }
+
+                coupons.add(new Coupon(
+                        c.getInt(0),
+                        c.getString(1),
+                        c.getString(2),
+                        c.getInt(3),
+                        c.getString(4),
+                        c.getString(5),
+                        validDate,
+                        expireDate,
+                        c.getDouble(8),
+                        c.getDouble(9),
+                        c.getDouble(10),
+                        c.getInt(11),
+                        customerIds
+                ));
+            } catch (ParseException | NumberFormatException e) {
                 e.printStackTrace();
             }
-
-            coupons.add(new Coupon(
-                    c.getInt(0),  // COUPON_ID
-                    c.getString(1),  // COUPON_CODE
-                    c.getString(2),  // COUPON_TITLE
-                    c.getInt(3),  // SCORE_MIN
-                    c.getString(4),  // COUPON_TYPE
-                    c.getString(5),  // COUPON_CATEGORY
-                    validDate,  // VALID_DATE
-                    expireDate,  // EXPIRE_DATE
-                    c.getDouble(8),  // MIN_ORDER_VALUE
-                    c.getDouble(9),  // MAXIMUM_DISCOUNT
-                    c.getDouble(10),  // COUPON_VALUE
-                    c.getInt(11)  // MAXIMUM_USERS
-            ));
         }
         c.close();
 
