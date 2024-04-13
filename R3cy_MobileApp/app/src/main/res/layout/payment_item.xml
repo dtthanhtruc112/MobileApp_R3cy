@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:layout_marginBottom="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginBottom="10dp">
+        <ImageView
+            android:id="@+id/imv_ProductImage"
+            android:layout_width="93dp"
+            android:layout_height="93dp"
+            android:src="@drawable/pk_bongtai_hcn1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="15dp"/>
+        <LinearLayout
+            android:id="@+id/productInfoLayout"
+            android:layout_alignTop="@id/imv_ProductImage"
+            android:layout_toEndOf="@id/imv_ProductImage"
+            android:layout_alignBottom="@id/imv_ProductImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/txtproductName"
+                    android:layout_alignTop="@id/imv_ProductImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Bông tai hình chữ nhật"
+                    android:textStyle="bold"
+                    android:textColor="@color/blue"
+                    android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/txtproductCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Phụ kiện"
+                    android:textSize="11sp"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/productInfoLayout"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="100dp"
+                        android:layout_weight="5"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/txtproductPrice"
+                            android:text="250.000"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            />
+                        <TextView
+                            android:text="₫ "
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textSize="14sp"
+                            android:textColor="@color/black"
+                            android:gravity="center_vertical"
+                            android:layout_gravity="top"/>
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:layout_width="100dp"
+                        android:layout_weight="5"
+                        android:layout_height="wrap_content"
+                        android:gravity="end">
+                        <TextView
+                            android:id="@+id/productQuantity"
+                            android:text="1 "
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textSize="14sp"
+                            android:textColor="@color/black" />
+                        <TextView
+                            android:text="sản phẩm "
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textSize="14sp"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </FrameLayout>
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>
