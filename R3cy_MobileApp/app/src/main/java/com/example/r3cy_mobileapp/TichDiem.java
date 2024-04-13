@@ -35,7 +35,7 @@ public class TichDiem extends AppCompatActivity {
 
         db = new R3cyDB(this);
         db.createSampleDataCoupon();
-        db.createSampleDataCustomer();
+//        db.createSampleDataCustomer();
         
         loadData();
         addEvents();
@@ -45,26 +45,25 @@ public class TichDiem extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         binding.rcvCoupon.setLayoutManager(layoutManager);
 
-
-//        Load data
+        // Load data
         coupons = new ArrayList<>();
         Cursor c = db.getData("SELECT * FROM " + R3cyDB.TBl_COUPON);
-        // Trong vòng lặp while
-        String validDateString = c.getString(6); // Lấy chuỗi ngày tháng từ cột VALID_DATE
-        String expireDateString = c.getString(7); // Lấy chuỗi ngày tháng từ cột EXPIRE_DATE
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); // Định dạng ngày tháng trong cơ sở dữ liệu
-        Date validDate = null;
-        Date expireDate = null;
-
-        try {
-            validDate = dateFormat.parse(validDateString); // Chuyển đổi chuỗi thành đối tượng ngày tháng
-            expireDate = dateFormat.parse(expireDateString); // Chuyển đổi chuỗi thành đối tượng ngày tháng
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
         while (c.moveToNext()) {
+            String validDateString = c.getString(6); // Lấy chuỗi ngày tháng từ cột VALID_DATE
+            String expireDateString = c.getString(7); // Lấy chuỗi ngày tháng từ cột EXPIRE_DATE
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); // Định dạng ngày tháng trong cơ sở dữ liệu
+            Date validDate = null;
+            Date expireDate = null;
+
+            try {
+                validDate = dateFormat.parse(validDateString); // Chuyển đổi chuỗi thành đối tượng ngày tháng
+                expireDate = dateFormat.parse(expireDateString); // Chuyển đổi chuỗi thành đối tượng ngày tháng
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             coupons.add(new Coupon(
                     c.getInt(0),  // COUPON_ID
                     c.getString(1),  // COUPON_CODE
@@ -82,27 +81,10 @@ public class TichDiem extends AppCompatActivity {
         }
         c.close();
 
-        adapter = new CouponAdapterRecycler(this, coupons, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Lấy vị trí của item được chọn từ tag
-                int position = (int) v.getTag();
-
-                // Lấy coupon tại vị trí đó
-                Coupon clickedCoupon = coupons.get(position);
-
-                // Tạo một Bundle và đưa thông tin của coupon vào
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("COUPON", clickedCoupon);
-
-                // Tạo Intent để chuyển đến trang mới và đính kèm Bundle
-                Intent intent = new Intent(TichDiem.this, DoiDiem_ChiTiet.class);
-                intent.putExtra("Package", bundle);
-                startActivity(intent);
-            }
-        });
+        adapter = new CouponAdapterRecycler(this, coupons);
         binding.rcvCoupon.setAdapter(adapter);
     }
+
 
     private void addEvents() {
         binding.btnTichluy.setOnClickListener(new View.OnClickListener() {

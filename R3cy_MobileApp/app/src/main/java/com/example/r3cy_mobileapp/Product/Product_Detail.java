@@ -68,10 +68,10 @@ public class Product_Detail extends AppCompatActivity {
             int ProductID = intent.getIntExtra("ProductID", -1);
 
             // Truy vấn dữ liệu sản phẩm từ cơ sở dữ liệu
-            Product product = db.getProductById(ProductID);
+//            Product product = db.getProductById(ProductID);
 
             // Hiển thị thông tin sản phẩm trên giao diện
-            showProductDetail(product);
+//            showProductDetail(product);
         }
 
 
@@ -139,7 +139,7 @@ public class Product_Detail extends AppCompatActivity {
 //        binding.txtDiscuss.setText(product.getDiscussContent());
         // Cập nhật ViewPager2 adapter với danh sách hình ảnh sản phẩm
         List<Integer> imageResourceIds = new ArrayList<>();
-        imageResourceIds.add(product.getProductThumb());
+//        imageResourceIds.add(product.getProductThumb());
 //        imageResourceIds.add(product.getListImage1());
 //        imageResourceIds.add(product.getListImage2());
         adapter = new PhotoViewpager2Adapter(imageResourceIds);

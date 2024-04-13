@@ -2,9 +2,12 @@ package com.example.r3cy_mobileapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 
 import com.example.adapter.CouponAdapter;
 import com.example.databases.R3cyDB;
@@ -32,6 +35,7 @@ public class DoiDiem extends AppCompatActivity {
         createDb();
 
 
+
     }
 
     @Override
@@ -49,22 +53,26 @@ public class DoiDiem extends AppCompatActivity {
     private void loadData() {
         coupons = new ArrayList<>();
         Cursor c = db.getData("SELECT * FROM " + R3cyDB.TBl_COUPON);
-        // Trong vòng lặp while
-        String validDateString = c.getString(6); // Lấy chuỗi ngày tháng từ cột VALID_DATE
-        String expireDateString = c.getString(7); // Lấy chuỗi ngày tháng từ cột EXPIRE_DATE
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); // Định dạng ngày tháng trong cơ sở dữ liệu
-        Date validDate = null;
-        Date expireDate = null;
-
-        try {
-            validDate = dateFormat.parse(validDateString); // Chuyển đổi chuỗi thành đối tượng ngày tháng
-            expireDate = dateFormat.parse(expireDateString); // Chuyển đổi chuỗi thành đối tượng ngày tháng
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
         while (c.moveToNext()) {
+            // Trong vòng lặp while
+            String validDateString = c.getString(6); // Lấy chuỗi ngày tháng từ cột VALID_DATE
+            String expireDateString = c.getString(7); // Lấy chuỗi ngày tháng từ cột EXPIRE_DATE
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); // Định dạng ngày tháng trong cơ sở dữ liệu
+            Date validDate = null;
+            Date expireDate = null;
+
+            Log.d("CouponDates", "Valid Date: " + validDate);
+            Log.d("CouponDates", "Expire Date: " + expireDate);
+
+            try {
+                validDate = dateFormat.parse(validDateString); // Chuyển đổi chuỗi thành đối tượng ngày tháng
+                expireDate = dateFormat.parse(expireDateString); // Chuyển đổi chuỗi thành đối tượng ngày tháng
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             coupons.add(new Coupon(
                     c.getInt(0),  // COUPON_ID
                     c.getString(1),  // COUPON_CODE
@@ -87,4 +95,6 @@ public class DoiDiem extends AppCompatActivity {
         binding.lvCoupon.setAdapter(adapter);
 
     }
+
+
 }
