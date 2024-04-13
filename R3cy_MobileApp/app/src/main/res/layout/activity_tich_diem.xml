@@ -88,7 +88,7 @@
                 <TextView
                     android:id="@+id/txtNextScore"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:text="1000 "
                     android:textColor="@color/blue"
@@ -164,7 +164,8 @@
                     android:text="VÀNG"
                     android:textColor="@color/dark_blue"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textAllCaps="true"/>
 
 
             </LinearLayout>

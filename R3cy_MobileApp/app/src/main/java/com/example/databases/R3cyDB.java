@@ -208,6 +208,7 @@ public class R3cyDB extends SQLiteOpenHelper {
         db.execSQL(CREATE_TBL_WISHLIST);
         db.execSQL(CREATE_TBL_BLOG);
         db.execSQL(CREATE_TBL_CUSTOMPRODUCT);
+        db.execSQL(CREATE_TBL_CUSTOMER);
     }
 
     @Override
@@ -225,6 +226,7 @@ public class R3cyDB extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TBL_WISHLIST);
         db.execSQL("DROP TABLE IF EXISTS " + TBL_BLOG);
         db.execSQL("DROP TABLE IF EXISTS " + TBL_CUSTOMPRODUCT);
+        db.execSQL("DROP TABLE IF EXISTS " + TBL_CUSTOMER);
 
         // Tạo lại bảng mới
         onCreate(db);
@@ -342,7 +344,7 @@ public class R3cyDB extends SQLiteOpenHelper {
             ")";
     // Câu lệnh tạo bảng Customer
     private static final String CREATE_TBL_CUSTOMER = "CREATE TABLE IF NOT EXISTS " + TBL_CUSTOMER + "(" +
-            CUSTOMER_ID + " INTEGER NOT NULL UNIQUE," +
+            CUSTOMER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             USERNAME + " TEXT," +
             FULLNAME + " TEXT," +
             GENDER + " INTEGER NOT NULL DEFAULT 1," +
@@ -352,9 +354,9 @@ public class R3cyDB extends SQLiteOpenHelper {
             MEMBERSHIP_SCORE + " INTEGER NOT NULL DEFAULT 0," +
             BIRTHDAY + " DATE," +
             CUSTOMER_THUMB + " BLOB," +
-            CUSTOMER_TYPE + " TEXT," +
-            "PRIMARY KEY (" + CUSTOMER_ID + " AUTOINCREMENT)" +
+            CUSTOMER_TYPE + " TEXT" +
             ")";
+
     // Câu lệnh tạo bảng VoucherShip
 
     // Câu lệnh tạo bảng Wishlist
@@ -456,6 +458,63 @@ public void createSampleDataCustomer(){
         execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'nguyennt', 'Nguyễn Thảo Nguyên', 'Nữ', 'nguyennt21411@gmail.com', '0956335872', 'nguyennt21411@', 22000, '11/12/2003', null, 'Kim Cương' )");
     }
 }
+
+// Ràng buộc Hạng tvien với Score
+public void applyMembershipTypeConstraint() {
+    execSql("UPDATE " + TBL_CUSTOMER + " SET " + CUSTOMER_TYPE + " = 'Thường' WHERE " + MEMBERSHIP_SCORE + " >= 0 AND " + MEMBERSHIP_SCORE + " < 1000");
+    execSql("UPDATE " + TBL_CUSTOMER + " SET " + CUSTOMER_TYPE + " = 'Đồng' WHERE " + MEMBERSHIP_SCORE + " >= 1000 AND " + MEMBERSHIP_SCORE + " < 5000");
+    execSql("UPDATE " + TBL_CUSTOMER + " SET " + CUSTOMER_TYPE + " = 'Bạc' WHERE " + MEMBERSHIP_SCORE + " >= 5000 AND " + MEMBERSHIP_SCORE + " < 10000");
+    execSql("UPDATE " + TBL_CUSTOMER + " SET " + CUSTOMER_TYPE + " = 'Vàng' WHERE " + MEMBERSHIP_SCORE + " >= 10000 AND " + MEMBERSHIP_SCORE + " < 20000");
+    execSql("UPDATE " + TBL_CUSTOMER + " SET " + CUSTOMER_TYPE + " = 'Kim Cương' WHERE " + MEMBERSHIP_SCORE + " >= 20000");
+}
+
+    public String getNextMembershipType(String currentType) {
+        String nextType = null;
+        switch (currentType) {
+            case "Thường":
+                nextType = "Đồng";
+                break;
+            case "Đồng":
+                nextType = "Bạc";
+                break;
+            case "Bạc":
+                nextType = "Vàng";
+                break;
+            case "Vàng":
+                nextType = "Kim Cương";
+                break;
+            case "Kim Cương":
+                // Nếu đã ở mức cuối cùng, không có mức tiếp theo
+                break;
+            default:
+                // Xử lý trường hợp không xác định
+                break;
+        }
+        return nextType;
+    }
+
+    public int getNextMembershipTarget(int currentScore) {
+        int nextTarget = 0;
+
+        if (currentScore >= 0 && currentScore < 1000) {
+            nextTarget = 999;
+        } else if (currentScore >= 1000 && currentScore < 5000) {
+            nextTarget = 4999;
+        } else if (currentScore >= 5000 && currentScore < 10000) {
+            nextTarget = 9999;
+        } else if (currentScore >= 10000 && currentScore < 20000) {
+            nextTarget = 19999;
+        } else if (currentScore >= 20000) {
+            // Nếu đã đạt mức điểm cao nhất, không có mục tiêu tiếp theo
+            nextTarget = currentScore;
+        }
+
+        return nextTarget;
+    }
+
+
+
+
 
     //    Kiểm tra bảng Product
     public int numbOfRowsProduct(){

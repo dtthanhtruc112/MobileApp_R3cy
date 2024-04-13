@@ -12,6 +12,7 @@ import com.example.adapter.CouponAdapter;
 import com.example.adapter.CouponAdapterRecycler;
 import com.example.databases.R3cyDB;
 import com.example.models.Coupon;
+import com.example.models.Customer;
 import com.example.r3cy_mobileapp.Product.Product_List;
 import com.example.r3cy_mobileapp.databinding.ActivityTichDiemBinding;
 
@@ -25,6 +26,7 @@ public class TichDiem extends AppCompatActivity {
     ActivityTichDiemBinding binding;
     CouponAdapterRecycler adapter;
     ArrayList<Coupon> coupons;
+    Customer customer;
     R3cyDB db;
 
     @Override
@@ -35,9 +37,10 @@ public class TichDiem extends AppCompatActivity {
 
         db = new R3cyDB(this);
         db.createSampleDataCoupon();
-//        db.createSampleDataCustomer();
+        db.createSampleDataCustomer();
         
         loadData();
+        getDataCustomer();
         addEvents();
     }
 
@@ -83,6 +86,41 @@ public class TichDiem extends AppCompatActivity {
 
         adapter = new CouponAdapterRecycler(this, coupons);
         binding.rcvCoupon.setAdapter(adapter);
+    }
+
+    private void getDataCustomer() {
+        Cursor c1 = db.getData("SELECT * FROM " + R3cyDB.TBL_CUSTOMER);
+        if (c1.moveToFirst()){
+            customer = new Customer(c1.getInt(0),
+                    c1.getString(1),
+                    c1.getString(2),
+                    c1.getInt(3),
+                    c1.getString(4),
+                    c1.getString(5),
+                    c1.getString(6),
+                    c1.getInt(7),
+                    c1.getString(8),
+                    c1.getBlob(9),
+                    c1.getString(10)
+            );
+        }
+        c1.close();
+
+        binding.txtCurrentClass.setText(customer.getCustomerType());
+        binding.txtCurrentScore.setText(String.valueOf(customer.getMembershipScore()));
+
+// Lấy thông tin về loại hạng tiếp theo và mục tiêu điểm tiếp theo
+        String txtNextClass = db.getNextMembershipType(customer.getCustomerType());
+        binding.txtNextClass.setText(txtNextClass);
+        int txtNextScore = db.getNextMembershipTarget(customer.getMembershipScore());
+        binding.txtNextScore.setText(String.valueOf(txtNextScore));
+
+// Tính toán chênh lệch điểm giữa nextscore và current score
+        int scoreDifference = txtNextScore - customer.getMembershipScore();
+        binding.txtScoreLeft.setText(String.valueOf(scoreDifference));
+
+
+
     }
 
 
