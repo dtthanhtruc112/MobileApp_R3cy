@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:layout_marginBottom="10dp">
+
+    <CheckBox
+        android:id="@+id/chk_ProductBuy"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_gravity="center_vertical|right"
+        android:layout_marginEnd="20dp"
+        android:buttonTint="@color/blue"/>
+
+    <ImageView
+        android:id="@+id/imv_ProductImage"
+        android:layout_width="93dp"
+        android:layout_height="93dp"
+        android:src="@drawable/pk_bongtai_hcn1"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="15dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/txt_ProductName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bông tai hình chữ nhật"
+            android:textStyle="bold"
+            android:textColor="@color/blue"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/txt_ProductCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Phụ kiện"
+            android:textSize="11sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
+            <LinearLayout
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:background="@drawable/rounded_border"
+                android:layout_marginBottom="5dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/btnDecreaseQuantity"
+                    android:layout_width="10dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/decrease_quantity_ic"
+                    android:layout_marginEnd="10dp"/>
+
+                <TextView
+                    android:id="@+id/txtQuantity"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:text="75"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/blue" />
+
+                <ImageView
+                    android:id="@+id/btnIncreaseQuantity"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/increase_quantity_ic"/>
+            </LinearLayout>
+        </LinearLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txt_ProductPrice"
+                    android:text="250.000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:text="₫ "
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="top"/>
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+
+</LinearLayout>
