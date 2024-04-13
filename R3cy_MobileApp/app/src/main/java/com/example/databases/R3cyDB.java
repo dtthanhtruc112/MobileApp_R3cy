@@ -449,11 +449,11 @@ public int numbOfRowsCustomer(){
 
 public void createSampleDataCustomer(){
     if (numbOfRowsCustomer() == 0){
-        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'Lê Thị Tuyết Anh', 'anhltt', '0911235896','anhltt21411@gmail.com', 'anhltt21411@', 'Nữ', '01/02/2003', null, 'Thường', 500)");
-        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'Đặng Thị Thanh Trúc', 'trucdtt', '0910587896','trucdtt21411@gmail.com', 'trucdtt21411@', 'Nữ', '01/10/2003', null, 'Đồng', 2000)");
-        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'Đặng Lê Như Quỳnh', 'quynhdln', '0923535896','quynhdln21411@gmail.com', 'quynhdln21411@', 'Nữ', '15/02/2003', null, 'Bạc', 7000)");
-        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'Hồ Lê Thanh Trúc', 'truchlt', '0971237410','truchlt21411@gmail.com', 'truchlt21411@', 'Nữ', '21/08/2003', null, 'Vàng', 15000 )");
-        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'Nguyễn Thảo Nguyên', 'nguyennt', '0956335872','nguyennt21411@gmail.com', 'nguyennt21411@', 'Nữ', '11/12/2003', null, 'Kim Cương', 22000 )");
+        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'anhltt', 'Lê Thị Tuyết Anh', 'Nữ', 'anhltt21411@gmail.com', '0911235896', 'anhltt21411@', 500, '01/02/2003', null, 'Thường')");
+        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'trucdtt', 'Đặng Thị Thanh Trúc', 'Nữ', 'trucdtt21411@gmail.com', '0910587896', 'trucdtt21411@', 2000, '01/10/2003', null, 'Đồng')");
+        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'quynhdln', 'Đặng Lê Như Quỳnh', 'Nữ', 'quynhdln21411@gmail.com', '0923535896', 'quynhdln21411@', 7000, '15/02/2003', null, 'Bạc')");
+        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'truchlt', 'Hồ Lê Thanh Trúc', 'Nữ', 'truchlt21411@gmail.com', '0971237410', 'truchlt21411@', 1500, '21/08/2003', null, 'Vàng')");
+        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'nguyennt', 'Nguyễn Thảo Nguyên', 'Nữ', 'nguyennt21411@gmail.com', '0956335872', 'nguyennt21411@', 22000, '11/12/2003', null, 'Kim Cương' )");
     }
 }
 
