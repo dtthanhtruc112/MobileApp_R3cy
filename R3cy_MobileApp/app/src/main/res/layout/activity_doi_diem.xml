@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DoiDiem">
+    tools:context=".DoiDiem"
+    android:background="@color/white">
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -16,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/btnBack"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="20dp"
@@ -26,7 +28,7 @@
             android:layout_height="wrap_content"
             android:text="Đổi điểm"
             android:textColor="@color/blue"
-            android:textSize="26sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -35,6 +37,7 @@
         android:id="@+id/lvCoupon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:padding="10dp"/>
