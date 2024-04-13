@@ -17,6 +17,9 @@ import android.util.Log;
         import com.example.r3cy_mobileapp.R;
 
 import java.io.ByteArrayOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class R3cyDB extends SQLiteOpenHelper {
     Context context;
@@ -438,6 +441,72 @@ public void createSampleDataCoupon(){
         execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'FREESHIP', 'MIỄN PHÍ VẬN CHUYỂN', 20000, 'value', 'ship', 2024/04/15, 2024/05/20, 500000, 60000, 1, 30)");
     }
 }
+    public int numbOfRowsOrder(){
+        Cursor c = getData("SELECT * FROM " + TBl_ORDER);
+        int numberOfRows = c.getCount();
+        c.close();
+        return numberOfRows;
+    }
+    public boolean insertDataOrder(String ORDER_ID, String CUSTOMER_ID, String ORDER_DATE, String PAYMENT_METHOD, String PAYMENT_ID, String COUPON_ID, double TOTAL_ORDER_VALUE, String ORDER_STATUS, String ORDER_NOTE, String DELIVERY_DATE, String DISCOUNT, double SHIPPING_FEE, double TOTAL_AMOUNT, String PAYMENT_STATUS, String ADDRESS_ID) {
+        SQLiteDatabase database = getWritableDatabase();
+        String sql = "INSERT INTO " + TBl_ORDER + "(" +
+                ORDER_ID + ", " +
+                ORDER_CUSTOMER_ID + ", " +
+                ORDER_DATE + ", " +
+                PAYMENT_METHOD + ", " +
+                PAYMENT_ID + ", " +
+                COUPON_ID + ", " +
+                TOTAL_ORDER_VALUE + ", " +
+                ORDER_STATUS + ", " +
+                ORDER_NOTE + ", " +
+                DELIVERY_DATE + ", " +
+                DISCOUNT + ", " +
+                SHIPPING_FEE + ", " +
+                TOTAL_AMOUNT + ", " +
+                PAYMENT_STATUS + ", " +
+                ADDRESS_ID +
+                ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+        SQLiteStatement statement = database.compileStatement(sql);
+
+// Chuyển đổi chuỗi ngày tháng thành đối tượng Date
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Date date;
+        try {
+            date = sdf.parse(ORDER_DATE);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+        statement.bindString(1, ORDER_ID);
+        statement.bindString(2, ORDER_CUSTOMER_ID);
+        statement.bindString(3, ORDER_DATE);
+        statement.bindString(4, PAYMENT_METHOD);
+        statement.bindString(5, PAYMENT_ID);
+        statement.bindString(6, COUPON_ID);
+        statement.bindDouble(7, TOTAL_ORDER_VALUE);
+        statement.bindString(8, ORDER_STATUS);
+        statement.bindString(9, ORDER_NOTE);
+        statement.bindString(10, DELIVERY_DATE);
+        statement.bindString(11, DISCOUNT);
+        statement.bindDouble(12, SHIPPING_FEE);
+        statement.bindDouble(13, TOTAL_AMOUNT);
+        statement.bindString(14, PAYMENT_STATUS);
+        statement.bindString(15, ADDRESS_ID);
+
+
+        long result = statement.executeInsert();
+        boolean  success = result != -1;
+        Log.d("DatabaseHelper", "Insert data result: " + success);
+        return success;
+    }
+    public void createSampleDataOrder(){
+        insertDataOrder(null,null,"14-04-2024","COD", null, null, 235000, "Đang giao", "Che tên sản phẩm", "15-04-2024", "0", 35000, 200000, "Chưa thanh toán", null);
+        insertDataOrder(null,null,"15-04-2003","COD", null, null, 165000, "Chờ lấy hàng", "Che tên sản phẩm", "16-04-2024", "10%", 35000, 130000, "Chưa thanh toán", null);
+        insertDataOrder(null,null,"16-04-2003","COD", null, null, 185000, "Đang giao", "Che tên sản phẩm", "17-04-2024", "0", 35000, 150000, "Chưa thanh toán", null);
+        insertDataOrder(null,null,"17-04-2003","COD", null, null, 175000, "Đang giao", "Che tên sản phẩm", "18-04-2024", "0", 35000, 140000, "Chưa thanh toán", null);
+        insertDataOrder(null,null,"18-04-2003","COD", null, null, 215000, "Đang giao", "Che tên sản phẩm", "19-04-2024", "0", 35000, 180000, "Chưa thanh toán", null);
+    }
 
 
 
