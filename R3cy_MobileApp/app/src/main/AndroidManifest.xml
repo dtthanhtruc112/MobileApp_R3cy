@@ -71,7 +71,7 @@
             android:name=".Signin.ForgotPass_Email"
             android:exported="false" />
         <activity
-            android:name=".Signup"
+            android:name=".TichDiem"
             android:exported="false" />
         <activity
             android:name=".Signin.Signin_Main"
@@ -89,7 +89,7 @@
             android:name=".Checkout"
             android:exported="false" />
         <activity
-            android:name=".TichDiem"
+            android:name=".Signup"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

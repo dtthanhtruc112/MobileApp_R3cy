@@ -47,11 +47,12 @@
                     android:src="@drawable/icon_person" />
 
                 <EditText
+                    android:id="@+id/editTextFullName"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:text="Họ và tên"
+                    android:hint="Họ và tên"
                     android:textSize="13dp"
                     android:background="@drawable/edttext_no_underline"
                     android:textColor="@color/grey" />
@@ -74,11 +75,12 @@
                     android:src="@drawable/icon_mail_gray" />
 
                 <EditText
+                    android:id="@+id/editTextEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:text="Email"
+                    android:hint="Email"
                     android:textSize="13dp"
                     android:background="@drawable/edttext_no_underline"
                     android:textColor="@color/grey" />
@@ -100,17 +102,20 @@
                     android:src="@drawable/icon_lock" />
 
                 <EditText
+                    android:id="@+id/editTextPassword"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:text="Mật khẩu"
+                    android:hint="Mật khẩu"
+                    android:inputType="textPassword"
                     android:textColor="@color/grey"
                     android:textSize="13dp"
                     android:background="@drawable/edttext_no_underline"/>
 
                 <ImageView
+                    android:id="@+id/imageViewIconEye1"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_gravity="start"
@@ -135,17 +140,20 @@
                     android:src="@drawable/icon_lock" />
 
                 <EditText
+                    android:id="@+id/editTextConfirmPassword"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:text="Nhập lại mật khẩu"
+                    android:hint="Nhập lại mật khẩu"
+                    android:inputType="textPassword"
                     android:textSize="13dp"
                     android:background="@drawable/edttext_no_underline"
                     android:textColor="@color/grey" />
 
                 <ImageView
+                    android:id="@+id/imageViewIconEye2"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_gravity="start"
@@ -156,6 +164,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/buttonSignUp"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -244,6 +253,7 @@
                     android:gravity="center"/>
 
                 <TextView
+                    android:id="@+id/textViewSignIn"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:paddingLeft="10dp"
