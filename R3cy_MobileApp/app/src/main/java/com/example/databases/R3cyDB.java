@@ -4,6 +4,7 @@ package com.example.databases;
 
 import static java.sql.DriverManager.getConnection;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -17,6 +18,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.models.Customer;
 import com.example.r3cy_mobileapp.R;
 
 import java.io.ByteArrayOutputStream;
@@ -601,6 +603,58 @@ public int numbOfRowsCustomer(){
         return numberOfRows;
 }
 
+public boolean insertCustomer(String fullName, String email, String password) {
+    SQLiteDatabase db = this.getWritableDatabase();
+    ContentValues values = new ContentValues();
+    values.put(FULLNAME, fullName);
+    values.put(EMAIL, email);
+    values.put(PASSWORD, password);
+    long result = db.insert(TBL_CUSTOMER, null, values);
+    db.close();
+    return result != -1;
+}
+public Customer getCustomerByEmail(String email) {
+    // Đọc cơ sở dữ liệu
+    SQLiteDatabase db = this.getReadableDatabase();
+
+    // Câu truy vấn SQL
+    String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
+
+    // Thực thi câu truy vấn
+    Cursor cursor = db.rawQuery(query, new String[]{email});
+
+    Customer customer = null;
+
+    // Nếu có kết quả từ câu truy vấn
+    if (cursor.moveToFirst()) {
+        // Lấy thông tin từ cursor
+        @SuppressLint("Range") int customerId = cursor.getInt(cursor.getColumnIndex(CUSTOMER_ID));
+        @SuppressLint("Range") String username = cursor.getString(cursor.getColumnIndex(USERNAME));
+        @SuppressLint("Range") String password = cursor.getString(cursor.getColumnIndex(PASSWORD));
+        // Tạo đối tượng Customer
+        customer = new Customer(customerId, username, email, password);
+    }
+
+    // Đóng cursor và đóng cơ sở dữ liệu
+    cursor.close();
+    db.close();
+
+    // Trả về đối tượng Customer
+    return customer;
+}
+
+public boolean checkEmailExists(String email) {
+    SQLiteDatabase db = this.getReadableDatabase();
+    Cursor cursor = db.query(TBL_CUSTOMER,
+            new String[]{CUSTOMER_ID},
+            EMAIL + "=?",
+            new String[]{email},
+            null, null, null);
+    int count = cursor.getCount();
+    cursor.close();
+    return count > 0;
+}
+
 public void createSampleDataCustomer(){
     if (numbOfRowsCustomer() == 0){
         execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'anhltt', 'Lê Thị Tuyết Anh', 'Nữ', 'anhltt21411@gmail.com', '0911235896', 'anhltt21411@', 500, '01/02/2003', null, 'Thường')");
@@ -763,8 +817,63 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
         return outputStream.toByteArray();
     }
 
-
+//    Kiểm tra bảng Discuss
+    public int numbOfRowsDiscuss(){
+        Cursor c = getData("SELECT * FROM " + TBl_DISCUSS);
+        int numberOfRows = c.getCount();
+        c.close();
+        return numberOfRows;
     }
+
+    public void createSampleDataDiscuss(){
+        if (numbOfRowsCustomer() == 0){
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '1', 'leha@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '2', 'anhlethi@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '3', 'danghoangmai23@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '4', 'leha@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '5', ''anhlethi@gmail.com, 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '6', 'leha@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '7', 'tranthimy96@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '8', 'leha@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '9', 'danghoangmai23@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '10', 'leha@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '11', 'lananhvu@st.uel.edu.vn', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '12', 'leha@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+
+        }
+    }
+
+
+    //    Kiểm tra bảng Feedback
+    public int numbOfRowsFeedback(){
+        Cursor c = getData("SELECT * FROM " + TBl_FEEDBACK);
+        int numberOfRows = c.getCount();
+        c.close();
+        return numberOfRows;
+    }
+
+    public void createSampleDataFeedback(){
+        if (numbOfRowsCustomer() == 0){
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '1', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '2', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.0, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '3', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 5.0, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '4', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '5', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '6', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '7', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '8', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '9', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '10', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '11', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '12', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+
+
+
+        }
+    }
+
+
+}
 
 
 

@@ -185,14 +185,13 @@
                     android:id="@+id/btnTichluy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_borders"
                     android:backgroundTint="@color/blue"
                     android:padding="10dp"
                     android:text="Tích lũy"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="17sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/btnDoidiem"
@@ -204,7 +203,6 @@
                     android:textSize="17sp"
                     android:padding="10dp"
                     android:textColor="@color/white"
-                    android:background="@drawable/rounded_borders"
                     android:textAllCaps="false"
                     android:textStyle="bold"/>
 
