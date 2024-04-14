@@ -15,9 +15,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
-        import androidx.annotation.Nullable;
+import androidx.annotation.Nullable;
 
-        import com.example.r3cy_mobileapp.R;
+import com.example.r3cy_mobileapp.R;
 
 import java.io.ByteArrayOutputStream;
 
@@ -519,6 +519,64 @@ public void createSampleDataCoupon() {
         insertDataOrder(null,null,"17-04-2003","COD", null, null, 175000, "Đang giao", "Che tên sản phẩm", "18-04-2024", "0", 35000, 140000, "Chưa thanh toán", null);
         insertDataOrder(null,null,"18-04-2003","COD", null, null, 215000, "Đang giao", "Che tên sản phẩm", "19-04-2024", "0", 35000, 180000, "Chưa thanh toán", null);
     }
+
+    public int numbOfRowsOrderLine(){
+        Cursor c = getData("SELECT * FROM " + TBl_ORDER_LINE);
+        int numberOfRows = c.getCount();
+        c.close();
+        return numberOfRows;
+    }
+
+    public boolean insertDataOrderLine(String ORDER_LINE_ID, String ORDER_LINE_ORDER_ID, String ORDER_LINE_PRODUCT_ID, double ORDER_SALE_PRICE, String QUANTITY) {
+        SQLiteDatabase database = getWritableDatabase();
+        String sql = "INSERT INTO " + TBl_ORDER_LINE + "(" +
+                ORDER_LINE_ID + ", " +
+                ORDER_LINE_ORDER_ID + ", " +
+                ORDER_LINE_PRODUCT_ID + ", " +
+                ORDER_SALE_PRICE + ", " +
+                QUANTITY +
+                ") VALUES(?,?,?,?,?)";
+
+        SQLiteStatement statement = database.compileStatement(sql);
+
+//
+        statement.bindString(1, ORDER_LINE_ID);
+        statement.bindString(2, ORDER_LINE_ORDER_ID);
+        statement.bindString(3, ORDER_LINE_PRODUCT_ID);
+        statement.bindDouble(4, ORDER_SALE_PRICE);
+        statement.bindString(5, QUANTITY);
+        statement.bindString(6, COUPON_ID);
+
+
+        long result = statement.executeInsert();
+        boolean  success = result != -1;
+        Log.d("DatabaseHelper", "Insert data result: " + success);
+        return success;
+    }
+    public void createSampleDataOrderLine(){
+        insertDataOrderLine(null,null,null,160000, "4");
+        insertDataOrderLine(null,null,null,150000, "2");
+        insertDataOrderLine(null,null,null,140000, "3");
+        insertDataOrderLine(null,null,null,150000, "1");
+        insertDataOrderLine(null,null,null,170000, "2");
+    }
+    public int numbOfRowsAddress(){
+        Cursor c = getData("SELECT * FROM " + TBl_ADDRESS);
+        int numberOfRows = c.getCount();
+        c.close();
+        return numberOfRows;
+    }
+
+    public void createSampleDataAddress(){
+        if (numbOfRowsCustomer() == 0){
+            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, null, 'Lê Thị Tuyết Anh', '0911235896', 'TP HCM', 'Thủ Đức', 'Phường 2', '14 Nguyễn Tri Phương', 'mặc định', 'nhà riêng')");
+            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, null, 'Đặng Thị Thanh Trúc', '0910587896', 'Huế', 'Phong Điền', 'Phường 4', '35/8 Trần Hưng Đạo', 'mặc định', 'nhà riêng')");
+            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, null, 'Đặng Lê Như Quỳnh', '0923535896', 'Bình Định', 'Tuy Phước', 'Phường 5', '40 Lê Duẩn', 'mặc định', 'nhà riêng')");
+            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, null, 'Hồ Lê Thanh Trúc', '0971237410', 'Quảng Ngãi', 'Bình Sơn', 'Phường 6', '12/246 Trần Bình Trọng', 'mặc định', 'nhà riêng')");
+            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, null, 'Nguyễn Thảo Nguyên', '0956335872', 'Phú Yên', 'Tuy Hoà', 'Phường 7', '79 Võ Thị Sáu', 'mặc định' 'nhà riêng')");
+        }
+    }
+
 
 //Cập nhật coupon khi có người đổi điểm lấy quà
 // Method to add a new customer_id to the existing array in customer_ids field based on coupon_id
