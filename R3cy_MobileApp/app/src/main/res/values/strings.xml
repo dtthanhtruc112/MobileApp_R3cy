@@ -2,4 +2,6 @@
     <string name="app_name">R3cy_MobileApp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name_color"><font color='#31B9F4'>R3cy</font></string>
+
 </resources>
