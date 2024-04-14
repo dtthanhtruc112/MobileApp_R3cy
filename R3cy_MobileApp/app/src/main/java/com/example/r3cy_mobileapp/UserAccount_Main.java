@@ -85,6 +85,13 @@ public class UserAccount_Main extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        binding.usVoucher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserAccount_Main.this, User_account_voucher.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void showBottomSheet() {
