@@ -1,7 +1,10 @@
 package com.example.r3cy_mobileapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -37,9 +40,16 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
         
         db = new R3cyDB(this);
         db.createSampleDataCustomer();
-        getData();
+
         addEvents();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         getDataCustomer();
+        getData();
     }
 
     private void getData() {
@@ -101,15 +111,47 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
         // Kiểm tra xem Membership Score của khách hàng có lớn hơn hoặc bằng Score Min của coupon không
         if (customerMembershipScore < couponScoreMin) {
             // Hiển thị cảnh báo "Bạn không đủ điểm để đổi"
-            Toast.makeText(DoiDiem_ChiTiet.this, "Bạn không đủ điểm để đổi", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(DoiDiem_ChiTiet.this, "Bạn không đủ điểm để đổi", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(DoiDiem_ChiTiet.this);
+            builder.setTitle("Lỗi đổi điểm nhận Coupon!");
+            builder.setIcon(android.R.drawable.ic_dialog_info);
+            builder.setMessage("Bạn vẫn chưa đủ điểm để đổi " + coupon.getCOUPON_CODE() + "!");
+
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+
+            });
+
+
+            Dialog dialog = builder.create();
+            dialog.show();
             return;
         }
 
         // Kiểm tra xem customer_id của customer có trong customer_ids của coupon không
         boolean isCustomerEligible = isCustomerEligibleForCoupon(customerId, couponId);
-        if (!isCustomerEligible) {
+        if (isCustomerEligible) {
             // Hiển thị cảnh báo "Bạn đã sử dụng rồi"
-            Toast.makeText(DoiDiem_ChiTiet.this, "Bạn đã sử dụng rồi", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(DoiDiem_ChiTiet.this, "Bạn đã sử dụng rồi", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(DoiDiem_ChiTiet.this);
+            builder.setTitle("Lỗi đổi điểm nhận Coupon!");
+            builder.setIcon(android.R.drawable.ic_dialog_info);
+            builder.setMessage("Bạn đã đổi điểm Coupon '" + coupon.getCOUPON_CODE() + "' này rồi nhé!");
+
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+
+            });
+
+
+            Dialog dialog = builder.create();
+            dialog.show();
             return;
         }
 
@@ -117,13 +159,43 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
         int newCustomerScore = customerMembershipScore - couponScoreMin;
 
         // Cập nhật điểm và hạng thành viên của khách hàng
-        updateCustomerMembership(customerId, newCustomerScore);
+        db.updateCustomerMembership(customerId, newCustomerScore);
 
         // Cập nhật customer_id đã sử dụng vào customer_ids của coupon
-        addCustomerIdToCoupon(couponId, customerId);
+        ArrayList<Integer> customerIds = coupon.getCustomerIds();
+        customerIds.add(customerId);
+//        String sql = "UPDATE " + R3cyDB.TBl_COUPON +
+//                " SET " + "CUSTOMER_IDS" + " = '" + customerIds + "' " +
+//                "WHERE " + "COUPON_ID" + " = " + couponId;
+//        db.execSql(sql);
+
+        boolean updated = db.execSql("UPDATE " + R3cyDB.TBl_COUPON + " SET " + "CUSTOMER_IDS" + " = '" + customerIds + "' " + " WHERE " + R3cyDB.COUPON_ID +  " = " + couponId);
+        Log.d("CustomerIds", "CustomerIds: " + customerIds);
+
+        if (updated){
+            AlertDialog.Builder builder = new AlertDialog.Builder(DoiDiem_ChiTiet.this);
+            builder.setTitle("Đổi iểm thành công!");
+            builder.setIcon(android.R.drawable.ic_dialog_info);
+            builder.setMessage("Bạn đã đổi điểm Coupon " + coupon.getCOUPON_CODE() + " thành công. Hãy kiểm tra trong trang tài khoản nhé!");
+
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+
+            });
+
+
+            Dialog dialog = builder.create();
+            dialog.show();
+
+        }else {
+            Toast.makeText(this, "Fail!", Toast.LENGTH_SHORT).show();
+        }
 
         // Hiển thị thông báo thành công
-        Toast.makeText(DoiDiem_ChiTiet.this, "Đổi điểm thành công", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(DoiDiem_ChiTiet.this, "Đổi điểm thành công", Toast.LENGTH_SHORT).show();
 
         reloadData();
 
@@ -140,25 +212,20 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
     private boolean isCustomerEligibleForCoupon(int customerId, int couponId) {
         Cursor cursor = db.getData("SELECT " + R3cyDB.CUSTOMER_IDS + " FROM " + R3cyDB.TBl_COUPON + " WHERE " + R3cyDB.COUPON_ID + " = " + couponId);
         if (cursor != null && cursor.moveToFirst()) {
-            String customerIds = cursor.getString(0);
+            String customerIdsString = cursor.getString(0);
             cursor.close();
-            // Kiểm tra xem customer_id có trong customer_ids không
-            return customerIds.contains(String.valueOf(customerId));
+            if (customerIdsString != null && !customerIdsString.isEmpty()) {
+                ArrayList<Integer> customerIds = db.parseCustomerIdsFromString(customerIdsString);
+                return customerIds.contains(customerId);
+            }
         }
         return false;
     }
 
-    private void updateCustomerMembership(int customerId, int newMembershipScore) {
-        db.execSql("UPDATE " + R3cyDB.TBL_CUSTOMER + " SET " + R3cyDB.MEMBERSHIP_SCORE + " = " + newMembershipScore +
-                ", " + R3cyDB.CUSTOMER_TYPE + " = '" + db.calculateCustomerType(newMembershipScore) + "'" +
-                " WHERE " + R3cyDB.CUSTOMER_ID + " = " + customerId);
-    }
 
-    private void addCustomerIdToCoupon(int couponId, int newCustomerId) {
-        db.execSql("UPDATE " + R3cyDB.TBl_COUPON +
-                " SET " + R3cyDB.CUSTOMER_IDS + " = JSON_ARRAY_APPEND(" + R3cyDB.CUSTOMER_IDS + ", '$', '" + newCustomerId + "') " +
-                "WHERE " + R3cyDB.COUPON_ID + " = " + couponId);
-    }
+
+
+
 
     private void getDataCustomer() {
         Cursor c1 = db.getData("SELECT * FROM " + R3cyDB.TBL_CUSTOMER);

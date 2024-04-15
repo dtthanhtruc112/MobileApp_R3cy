@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.adapter.CouponAdapter;
@@ -40,9 +41,16 @@ public class TichDiem extends AppCompatActivity {
         db.createSampleDataCoupon();
         db.createSampleDataCustomer();
         
+
+
+        addEvents();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         loadData();
         getDataCustomer();
-        addEvents();
     }
 
     private void loadData() {
@@ -59,14 +67,22 @@ public class TichDiem extends AppCompatActivity {
                 Date validDate = dateFormat.parse(c.getString(6));
                 Date expireDate = dateFormat.parse(c.getString(7));
 
-                ArrayList<Integer> customerIds = new ArrayList<>();
-                String customerIdsString = c.getString(12);
-                if (customerIdsString != null && !customerIdsString.isEmpty()) {
-                    String[] ids = customerIdsString.replaceAll("\\[|\\]", "").split(",\\s*");
-                    for (String id : ids) {
-                        customerIds.add(Integer.parseInt(id.trim()));
-                    }
-                }
+//                ArrayList<Integer> customerIds = new ArrayList<>();
+//                String customerIdsString = c.getString(12);
+//                if (customerIdsString != null && !customerIdsString.isEmpty()) {
+//                    String[] ids = customerIdsString.replaceAll("\\[|\\]", "").split(",\\s*");
+//                    for (String id : ids) {
+//                        customerIds.add(Integer.parseInt(id.trim()));
+//                    }
+//                }
+
+                ArrayList<Integer> customerIds = db.parseCustomerIdsFromString(c.getString(12));
+
+//                ArrayList<Integer> customerIds = db.getCustomerIdsForCoupon(c.getInt(0));
+
+
+                // Ghi log ra mảng customerIds
+                Log.d("CustomerIds", "CustomerIds: " + customerIds);
 
                 coupons.add(new Coupon(
                         c.getInt(0),

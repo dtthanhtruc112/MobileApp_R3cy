@@ -25,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import java.sql.Connection;
@@ -455,6 +456,63 @@ public void createSampleDataCoupon() {
         execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'FREESHIP', 'MIỄN PHÍ VẬN CHUYỂN', 20000, 'value', 'ship', '2024-04-15', '2024-05-20', 500000, 60000, 1, 30, '[28, 29, 30]')");
     }
 }
+
+    //Cập nhật coupon khi có người đổi điểm lấy quà
+// Method to add a new customer_id to the existing array in customer_ids field based on coupon_id
+    public void addCustomerIdToCoupon(int couponId, int newCustomerId) {
+        // Thực hiện truy vấn để lấy danh sách customerIds cho couponId cụ thể từ cơ sở dữ liệu
+        ArrayList<Integer> customerIds = new ArrayList<>();
+        // Code truy vấn và gán vào customerIds ở đây
+
+        // Thêm newCustomerId vào danh sách hiện có
+        customerIds.add(newCustomerId);
+
+        // Chuyển danh sách customerIds thành một chuỗi có thể lưu trữ trong cơ sở dữ liệu
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("[");
+        for (int i = 0; i < customerIds.size(); i++) {
+            if (i > 0) {
+                stringBuilder.append(",");
+            }
+            stringBuilder.append(customerIds.get(i));
+        }
+        stringBuilder.append("]");
+        String customerIdsString = stringBuilder.toString();
+
+        // Chuẩn bị câu lệnh SQL để cập nhật dữ liệu
+        String sql = "UPDATE " + TBl_COUPON +
+                " SET " + CUSTOMER_IDS + " = '" + customerIdsString + "'" +
+                " WHERE " + COUPON_ID + " = " + couponId;
+
+        // Thực thi câu lệnh SQL
+        execSql(sql);
+    }
+
+//   Hàm lấy mảng customerid
+public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
+    ArrayList<Integer> customerIds = new ArrayList<>();
+    if (customerIdsString != null && !customerIdsString.isEmpty()) {
+        String[] ids = customerIdsString.replaceAll("\\[|\\]", "").split(",\\s*");
+        for (String id : ids) {
+            customerIds.add(Integer.parseInt(id.trim()));
+        }
+    }
+    return customerIds;
+}
+
+    // Phương thức để lấy danh sách customerIds từ cơ sở dữ liệu cho couponId cụ thể
+    // Phương thức để lấy danh sách customerIds từ cơ sở dữ liệu cho couponId cụ thể
+
+
+
+
+
+
+
+
+
+
+
     public int numbOfRowsOrder(){
         Cursor c = getData("SELECT * FROM " + TBl_ORDER);
         int numberOfRows = c.getCount();
@@ -580,15 +638,7 @@ public void createSampleDataCoupon() {
     }
 
 
-//Cập nhật coupon khi có người đổi điểm lấy quà
-// Method to add a new customer_id to the existing array in customer_ids field based on coupon_id
-public void addCustomerIdToCoupon(int couponId, int newCustomerId) {
-    String sql = "UPDATE " + TBl_COUPON +
-            " SET " + CUSTOMER_IDS + " = JSON_ARRAY_APPEND(" + CUSTOMER_IDS + ", '$', '" + newCustomerId + "') " +
-            "WHERE " + COUPON_ID + " = " + couponId;
 
-    execSql(sql);
-}
 
 
 
@@ -657,7 +707,7 @@ public boolean checkEmailExists(String email) {
 
 public void createSampleDataCustomer(){
     if (numbOfRowsCustomer() == 0){
-        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'anhltt', 'Lê Thị Tuyết Anh', 'Nữ', 'anhltt21411@gmail.com', '0911235896', 'anhltt21411@', 500, '01/02/2003', null, 'Thường')");
+        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'anhltt', 'Lê Thị Tuyết Anh', 'Nữ', 'anhltt21411@gmail.com', '0911235896', 'anhltt21411@', 25500, '01/02/2003', null, 'Kim cương')");
         execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'trucdtt', 'Đặng Thị Thanh Trúc', 'Nữ', 'trucdtt21411@gmail.com', '0910587896', 'trucdtt21411@', 2000, '01/10/2003', null, 'Đồng')");
         execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'quynhdln', 'Đặng Lê Như Quỳnh', 'Nữ', 'quynhdln21411@gmail.com', '0923535896', 'quynhdln21411@', 7000, '15/02/2003', null, 'Bạc')");
         execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'truchlt', 'Hồ Lê Thanh Trúc', 'Nữ', 'truchlt21411@gmail.com', '0971237410', 'truchlt21411@', 1500, '21/08/2003', null, 'Vàng')");
