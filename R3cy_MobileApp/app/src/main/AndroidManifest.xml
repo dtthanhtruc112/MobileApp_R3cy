@@ -25,7 +25,7 @@
             android:name=".CartManage"
             android:exported="false" />
         <activity
-            android:name=".TichDiem"
+            android:name=".DoiDiem"
             android:exported="false" />
         <activity
             android:name=".Product.Product_List"
@@ -40,7 +40,7 @@
             android:name=".DoiDiem_ChiTiet"
             android:exported="false" />
         <activity
-            android:name=".DoiDiem"
+            android:name=".UserAccount_Main"
             android:exported="false" />
         <activity
             android:name=".Thugom"
@@ -99,10 +99,10 @@
             android:name=".Checkout"
             android:exported="false" />
         <activity
-            android:name=".UserAccount_Main"
+            android:name=".UserAccount_macdinh"
             android:exported="false" />
         <activity
-            android:name=".UserAccount_macdinh"
+            android:name=".TichDiem"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

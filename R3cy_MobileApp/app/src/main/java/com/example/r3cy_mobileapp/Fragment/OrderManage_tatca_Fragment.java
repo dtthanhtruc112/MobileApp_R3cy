@@ -1,16 +1,31 @@
 package com.example.r3cy_mobileapp.Fragment;
 
+import android.database.Cursor;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import com.example.adapter.OrderAdapter;
+import com.example.adapter.ProductAdapter;
+import com.example.databases.R3cyDB;
+import com.example.models.Order;
+import com.example.models.Product;
 import com.example.r3cy_mobileapp.R;
+import com.example.r3cy_mobileapp.databinding.FragmentDogiadungBinding;
 import com.example.r3cy_mobileapp.databinding.FragmentOrderManageDanggiaoBinding;
 import com.example.r3cy_mobileapp.databinding.FragmentOrderManageTatcaBinding;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +41,13 @@ public class OrderManage_tatca_Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
     FragmentOrderManageTatcaBinding binding;
+
+    private List<Order> orders;
+    Order order;
+
+    R3cyDB db;
+    private OrderAdapter adapter;
+    ListView lvProduct;
 
     public OrderManage_tatca_Fragment() {
         // Required empty public constructor
@@ -63,5 +85,39 @@ public class OrderManage_tatca_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentOrderManageTatcaBinding.inflate(inflater, container, false);
         return binding.getRoot();
+//        loadData();
+//        onResume();
     }
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        createDb();
+        loadData();
+
+    }
+
+
+    private void createDb() {
+        db = new R3cyDB(getContext());
+        db.createSampleDataOrder();
+    }
+
+    private void loadData() {
+//        orders = new ArrayList<>();
+//        Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_ORDER);
+//
+//        while (cursor.moveToNext()){
+//            orders.add(new Product(cursor.getInt(0),
+//                    cursor.getString(1),
+//                    cursor.getDouble(2),
+//                    cursor.getString(3),
+//                    cursor.getString(4),
+//                    ));
+//        }
+//        cursor.close();
+//
+//        adapter = new OrderAdapter(getContext(), R.layout.item_quanlydonhang, orders);
+//        binding.lvOrderTatca.setAdapter(adapter);
+    }
+
 }

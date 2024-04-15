@@ -5,7 +5,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -31,6 +33,7 @@ public class UserAccount_Main extends AppCompatActivity {
     ActivityResultLauncher<Intent> activityResultLauncher;
 
     boolean openCam;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +95,16 @@ public class UserAccount_Main extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        binding.usSignout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
+
+
+
 
     private void showBottomSheet() {
         Dialog dialog = new Dialog(UserAccount_Main.this);

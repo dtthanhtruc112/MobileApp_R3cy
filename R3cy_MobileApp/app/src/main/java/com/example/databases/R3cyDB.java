@@ -461,7 +461,7 @@ public void createSampleDataCoupon() {
         c.close();
         return numberOfRows;
     }
-    public boolean insertDataOrder(String ORDER_ID, String CUSTOMER_ID, String ORDER_DATE, String PAYMENT_METHOD, String PAYMENT_ID, String COUPON_ID, double TOTAL_ORDER_VALUE, String ORDER_STATUS, String ORDER_NOTE, String DELIVERY_DATE, String DISCOUNT, double SHIPPING_FEE, double TOTAL_AMOUNT, String PAYMENT_STATUS, String ADDRESS_ID) {
+    public boolean insertDataOrder(String ORDER_ID, String ORDER_CUSTOMER_ID, String ORDER_DATE, String PAYMENT_METHOD, String PAYMENT_ID, String COUPON_ID, double TOTAL_ORDER_VALUE, String ORDER_STATUS, String ORDER_NOTE, String DELIVERY_DATE, String DISCOUNT, double SHIPPING_FEE, double TOTAL_AMOUNT, String PAYMENT_STATUS, String ADDRESS_ID) {
         SQLiteDatabase database = getWritableDatabase();
         String sql = "INSERT INTO " + TBl_ORDER + "(" +
                 ORDER_ID + ", " +
