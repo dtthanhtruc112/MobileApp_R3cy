@@ -2,6 +2,10 @@ package com.example.databases;
 
 //import static androidx.appcompat.graphics.drawable.DrawableContainerCompat.Api21Impl.getResources;
 
+import static java.sql.DriverManager.getConnection;
+
+import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,11 +16,23 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
-        import androidx.annotation.Nullable;
+import androidx.annotation.Nullable;
 
-        import com.example.r3cy_mobileapp.R;
+import com.example.models.Customer;
+import com.example.models.UserInfo;
+import com.example.r3cy_mobileapp.R;
 
 import java.io.ByteArrayOutputStream;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 
 public class R3cyDB extends SQLiteOpenHelper {
     Context context;
@@ -145,6 +161,7 @@ public class R3cyDB extends SQLiteOpenHelper {
     public static final String MAXIMUM_DISCOUNT = "MaximumDiscount";
     public static final String COUPON_VALUE = "CouponValue";
     public static final String MAXIMUM_USERS = "MaximumUsers";
+    public static final String CUSTOMER_IDS  = "Customer_IDs";
 
     // Các cột của bảng VoucherShip
     public static final String VOUCHER_SHIP_ID = "VoucherShipID";
@@ -340,8 +357,10 @@ public class R3cyDB extends SQLiteOpenHelper {
             MIN_ORDER_VALUE + " REAL NOT NULL," +
             MAXIMUM_DISCOUNT + " REAL NOT NULL," +
             COUPON_VALUE + " REAL NOT NULL," +
-            MAXIMUM_USERS + " INTEGER DEFAULT 10" +
+            MAXIMUM_USERS + " INTEGER DEFAULT 10," +
+            CUSTOMER_IDS + " TEXT DEFAULT '[]'" + // Thêm cột CUSTOMER_IDS kiểu TEXT mặc định là một mảng JSON rỗng
             ")";
+
     // Câu lệnh tạo bảng Customer
     private static final String CREATE_TBL_CUSTOMER = "CREATE TABLE IF NOT EXISTS " + TBL_CUSTOMER + "(" +
             CUSTOMER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -424,20 +443,206 @@ public int numbOfRowsCoupon(){
 //    Thêm dữ liệu mẫu
 
 // Dữ liệu mẫu Coupon
-public void createSampleDataCoupon(){
-    if (numbOfRowsCoupon() == 0){
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM10%', 'GIẢM 10% ĐƠN HÀNG CHO THÀNH VIÊN MỚI, GIẢM TỐI ĐA 30K', 100, 'percent', 'order', 2024/04/15, 2024/05/20, 100000, 30000, 0.10, 10)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% ĐƠN HÀNG CHÀO MỪNG THÁNG 4, GIẢM TỐI ĐA 60K', 1000, 'percent', 'order', 2024/04/15, 2024/05/20, 200000, 60000, 0.20, 10)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM30%', 'GIẢM 30% ĐƠN HÀNG TRI ÂN THÀNH VIÊN BẠC, GIẢM TỐI ĐA 90K', 5000, 'percent', 'order', 2024/04/15, 2024/05/20, 300000, 90000, 0.30, 10)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM120K', 'GIẢM 120K ĐƠN HÀNG CHÀO MỪNG THÁNG 5', 10000, 'value', 'order', 2024/04/15, 2024/05/20, 400000, 120000, 120000, 10)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM150K', 'GIẢM 150K ĐƠN HÀNG TRI ÂN THÀNH VIÊN KIM CƯƠNG', 20000, 'value', 'order', 2024/04/15, 2024/05/20, 500000, 150000, 150000, 10)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 100000', 100, 'percent', 'ship', 2024/04/15, 2024/05/20, 100000, 30000, 0.20, 30)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40%', 'GIẢM 40% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 200000', 1000, 'percent', 'ship', 2024/04/15, 2024/05/20, 200000, 30000, 0.40, 30)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM60%', 'GIẢM 60% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 300000', 5000, 'percent', 'ship', 2024/04/15, 2024/05/20, 300000, 30000, 0.6, 30)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40K', 'GIẢM 40K PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 400000 ', 10000, 'value', 'ship', 2024/04/15, 2024/05/20, 400000, 40000, 400000, 30)");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'FREESHIP', 'MIỄN PHÍ VẬN CHUYỂN', 20000, 'value', 'ship', 2024/04/15, 2024/05/20, 500000, 60000, 1, 30)");
+public void createSampleDataCoupon() {
+    if (numbOfRowsCoupon() == 0) {
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM10%', 'GIẢM 10% ĐƠN HÀNG CHO THÀNH VIÊN MỚI, GIẢM TỐI ĐA 30K', 100, 'percent', 'order', '2024-04-15', '2024-05-20', 100000, 30000, 0.10, 10, '[1, 2, 3]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% ĐƠN HÀNG CHÀO MỪNG THÁNG 4, GIẢM TỐI ĐA 60K', 1000, 'percent', 'order', '2024-04-15', '2024-05-20', 200000, 60000, 0.20, 10, '[4, 5, 6]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM30%', 'GIẢM 30% ĐƠN HÀNG TRI ÂN THÀNH VIÊN BẠC, GIẢM TỐI ĐA 90K', 5000, 'percent', 'order', '2024-04-15', '2024-05-20', 300000, 90000, 0.30, 10, '[7, 8, 9]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM120K', 'GIẢM 120K ĐƠN HÀNG CHÀO MỪNG THÁNG 5', 10000, 'value', 'order', '2024-04-15', '2024-05-20', 400000, 120000, 120000, 10, '[10, 11, 12]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM150K', 'GIẢM 150K ĐƠN HÀNG TRI ÂN THÀNH VIÊN KIM CƯƠNG', 20000, 'value', 'order', '2024-04-15', '2024-05-20', 500000, 150000, 150000, 10, '[13, 14, 15]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 100000', 100, 'percent', 'ship', '2024-04-15', '2024-05-20', 100000, 30000, 0.20, 30, '[16, 17, 18]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40%', 'GIẢM 40% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 200000', 1000, 'percent', 'ship', '2024-04-15', '2024-05-20', 200000, 30000, 0.40, 30, '[19, 20, 21]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM60%', 'GIẢM 60% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 300000', 5000, 'percent', 'ship', '2024-04-15', '2024-05-20', 300000, 30000, 0.6, 30, '[22, 23, 24]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40K', 'GIẢM 40K PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 400000 ', 10000, 'value', 'ship', '2024-04-15', '2024-05-20', 400000, 40000, 400000, 30, '[25, 26, 27]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'FREESHIP', 'MIỄN PHÍ VẬN CHUYỂN', 20000, 'value', 'ship', '2024-04-15', '2024-05-20', 500000, 60000, 1, 30, '[28, 29, 30]')");
     }
 }
+
+    //Cập nhật coupon khi có người đổi điểm lấy quà
+// Method to add a new customer_id to the existing array in customer_ids field based on coupon_id
+    public void addCustomerIdToCoupon(int couponId, int newCustomerId) {
+        // Thực hiện truy vấn để lấy danh sách customerIds cho couponId cụ thể từ cơ sở dữ liệu
+        ArrayList<Integer> customerIds = new ArrayList<>();
+        // Code truy vấn và gán vào customerIds ở đây
+
+        // Thêm newCustomerId vào danh sách hiện có
+        customerIds.add(newCustomerId);
+
+        // Chuyển danh sách customerIds thành một chuỗi có thể lưu trữ trong cơ sở dữ liệu
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("[");
+        for (int i = 0; i < customerIds.size(); i++) {
+            if (i > 0) {
+                stringBuilder.append(",");
+            }
+            stringBuilder.append(customerIds.get(i));
+        }
+        stringBuilder.append("]");
+        String customerIdsString = stringBuilder.toString();
+
+        // Chuẩn bị câu lệnh SQL để cập nhật dữ liệu
+        String sql = "UPDATE " + TBl_COUPON +
+                " SET " + CUSTOMER_IDS + " = '" + customerIdsString + "'" +
+                " WHERE " + COUPON_ID + " = " + couponId;
+
+        // Thực thi câu lệnh SQL
+        execSql(sql);
+    }
+
+//   Hàm lấy mảng customerid
+public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
+    ArrayList<Integer> customerIds = new ArrayList<>();
+    if (customerIdsString != null && !customerIdsString.isEmpty()) {
+        String[] ids = customerIdsString.replaceAll("\\[|\\]", "").split(",\\s*");
+        for (String id : ids) {
+            customerIds.add(Integer.parseInt(id.trim()));
+        }
+    }
+    return customerIds;
+}
+
+    // Phương thức để lấy danh sách customerIds từ cơ sở dữ liệu cho couponId cụ thể
+    // Phương thức để lấy danh sách customerIds từ cơ sở dữ liệu cho couponId cụ thể
+
+
+
+
+
+
+
+
+
+
+
+    public int numbOfRowsOrder(){
+        Cursor c = getData("SELECT * FROM " + TBl_ORDER);
+        int numberOfRows = c.getCount();
+        c.close();
+        return numberOfRows;
+    }
+    public boolean insertDataOrder(String ORDER_ID, String ORDER_CUSTOMER_ID, String ORDER_DATE, String PAYMENT_METHOD, String PAYMENT_ID, String COUPON_ID, double TOTAL_ORDER_VALUE, String ORDER_STATUS, String ORDER_NOTE, String DELIVERY_DATE, String DISCOUNT, double SHIPPING_FEE, double TOTAL_AMOUNT, String PAYMENT_STATUS, String ADDRESS_ID) {
+        SQLiteDatabase database = getWritableDatabase();
+        String sql = "INSERT INTO " + TBl_ORDER + "(" +
+                ORDER_ID + ", " +
+                ORDER_CUSTOMER_ID + ", " +
+                ORDER_DATE + ", " +
+                PAYMENT_METHOD + ", " +
+                PAYMENT_ID + ", " +
+                COUPON_ID + ", " +
+                TOTAL_ORDER_VALUE + ", " +
+                ORDER_STATUS + ", " +
+                ORDER_NOTE + ", " +
+                DELIVERY_DATE + ", " +
+                DISCOUNT + ", " +
+                SHIPPING_FEE + ", " +
+                TOTAL_AMOUNT + ", " +
+                PAYMENT_STATUS + ", " +
+                ADDRESS_ID +
+                ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+        SQLiteStatement statement = database.compileStatement(sql);
+
+// Chuyển đổi chuỗi ngày tháng thành đối tượng Date
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Date date;
+        try {
+            date = sdf.parse(ORDER_DATE);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+        statement.bindString(1, ORDER_ID);
+        statement.bindString(2, ORDER_CUSTOMER_ID);
+        statement.bindString(3, ORDER_DATE);
+        statement.bindString(4, PAYMENT_METHOD);
+        statement.bindString(5, PAYMENT_ID);
+        statement.bindString(6, COUPON_ID);
+        statement.bindDouble(7, TOTAL_ORDER_VALUE);
+        statement.bindString(8, ORDER_STATUS);
+        statement.bindString(9, ORDER_NOTE);
+        statement.bindString(10, DELIVERY_DATE);
+        statement.bindString(11, DISCOUNT);
+        statement.bindDouble(12, SHIPPING_FEE);
+        statement.bindDouble(13, TOTAL_AMOUNT);
+        statement.bindString(14, PAYMENT_STATUS);
+        statement.bindString(15, ADDRESS_ID);
+
+
+        long result = statement.executeInsert();
+        boolean  success = result != -1;
+        Log.d("DatabaseHelper", "Insert data result: " + success);
+        return success;
+    }
+    public void createSampleDataOrder(){
+        insertDataOrder(null,null,"14-04-2024","COD", null, null, 235000, "Đang giao", "Che tên sản phẩm", "15-04-2024", "0", 35000, 200000, "Chưa thanh toán", null);
+        insertDataOrder(null,null,"15-04-2003","COD", null, null, 165000, "Chờ lấy hàng", "Che tên sản phẩm", "16-04-2024", "10%", 35000, 130000, "Chưa thanh toán", null);
+        insertDataOrder(null,null,"16-04-2003","COD", null, null, 185000, "Đang giao", "Che tên sản phẩm", "17-04-2024", "0", 35000, 150000, "Chưa thanh toán", null);
+        insertDataOrder(null,null,"17-04-2003","COD", null, null, 175000, "Đang giao", "Che tên sản phẩm", "18-04-2024", "0", 35000, 140000, "Chưa thanh toán", null);
+        insertDataOrder(null,null,"18-04-2003","COD", null, null, 215000, "Đang giao", "Che tên sản phẩm", "19-04-2024", "0", 35000, 180000, "Chưa thanh toán", null);
+    }
+
+    public int numbOfRowsOrderLine(){
+        Cursor c = getData("SELECT * FROM " + TBl_ORDER_LINE);
+        int numberOfRows = c.getCount();
+        c.close();
+        return numberOfRows;
+    }
+
+    public boolean insertDataOrderLine(String ORDER_LINE_ID, String ORDER_LINE_ORDER_ID, String ORDER_LINE_PRODUCT_ID, double ORDER_SALE_PRICE, String QUANTITY) {
+        SQLiteDatabase database = getWritableDatabase();
+        String sql = "INSERT INTO " + TBl_ORDER_LINE + "(" +
+                ORDER_LINE_ID + ", " +
+                ORDER_LINE_ORDER_ID + ", " +
+                ORDER_LINE_PRODUCT_ID + ", " +
+                ORDER_SALE_PRICE + ", " +
+                QUANTITY +
+                ") VALUES(?,?,?,?,?)";
+
+        SQLiteStatement statement = database.compileStatement(sql);
+
+//
+        statement.bindString(1, ORDER_LINE_ID);
+        statement.bindString(2, ORDER_LINE_ORDER_ID);
+        statement.bindString(3, ORDER_LINE_PRODUCT_ID);
+        statement.bindDouble(4, ORDER_SALE_PRICE);
+        statement.bindString(5, QUANTITY);
+        statement.bindString(6, COUPON_ID);
+
+
+        long result = statement.executeInsert();
+        boolean  success = result != -1;
+        Log.d("DatabaseHelper", "Insert data result: " + success);
+        return success;
+    }
+    public void createSampleDataOrderLine(){
+        insertDataOrderLine(null,null,null,160000, "4");
+        insertDataOrderLine(null,null,null,150000, "2");
+        insertDataOrderLine(null,null,null,140000, "3");
+        insertDataOrderLine(null,null,null,150000, "1");
+        insertDataOrderLine(null,null,null,170000, "2");
+    }
+    public int numbOfRowsAddress(){
+        Cursor c = getData("SELECT * FROM " + TBl_ADDRESS);
+        int numberOfRows = c.getCount();
+        c.close();
+        return numberOfRows;
+    }
+
+    public void createSampleDataAddress(){
+        if (numbOfRowsCustomer() == 0){
+            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, null, 'Lê Thị Tuyết Anh', '0911235896', 'TP HCM', 'Thủ Đức', 'Phường 2', '14 Nguyễn Tri Phương', 'mặc định', 'nhà riêng')");
+            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, null, 'Đặng Thị Thanh Trúc', '0910587896', 'Huế', 'Phong Điền', 'Phường 4', '35/8 Trần Hưng Đạo', 'mặc định', 'nhà riêng')");
+            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, null, 'Đặng Lê Như Quỳnh', '0923535896', 'Bình Định', 'Tuy Phước', 'Phường 5', '40 Lê Duẩn', 'mặc định', 'nhà riêng')");
+            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, null, 'Hồ Lê Thanh Trúc', '0971237410', 'Quảng Ngãi', 'Bình Sơn', 'Phường 6', '12/246 Trần Bình Trọng', 'mặc định', 'nhà riêng')");
+            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, null, 'Nguyễn Thảo Nguyên', '0956335872', 'Phú Yên', 'Tuy Hoà', 'Phường 7', '79 Võ Thị Sáu', 'mặc định' 'nhà riêng')");
+        }
+    }
+
+
+
+
+
+
 
 
 
@@ -449,9 +654,61 @@ public int numbOfRowsCustomer(){
         return numberOfRows;
 }
 
+public boolean insertCustomer(String fullName, String email, String password) {
+    SQLiteDatabase db = this.getWritableDatabase();
+    ContentValues values = new ContentValues();
+    values.put(FULLNAME, fullName);
+    values.put(EMAIL, email);
+    values.put(PASSWORD, password);
+    long result = db.insert(TBL_CUSTOMER, null, values);
+    db.close();
+    return result != -1;
+}
+public Customer getCustomerByEmail(String email) {
+    // Đọc cơ sở dữ liệu
+    SQLiteDatabase db = this.getReadableDatabase();
+
+    // Câu truy vấn SQL
+    String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
+
+    // Thực thi câu truy vấn
+    Cursor cursor = db.rawQuery(query, new String[]{email});
+
+    Customer customer = null;
+
+    // Nếu có kết quả từ câu truy vấn
+    if (cursor.moveToFirst()) {
+        // Lấy thông tin từ cursor
+        @SuppressLint("Range") int customerId = cursor.getInt(cursor.getColumnIndex(CUSTOMER_ID));
+        @SuppressLint("Range") String username = cursor.getString(cursor.getColumnIndex(USERNAME));
+        @SuppressLint("Range") String password = cursor.getString(cursor.getColumnIndex(PASSWORD));
+        // Tạo đối tượng Customer
+        customer = new Customer(customerId, username, email, password);
+    }
+
+    // Đóng cursor và đóng cơ sở dữ liệu
+    cursor.close();
+    db.close();
+
+    // Trả về đối tượng Customer
+    return customer;
+}
+
+public boolean checkEmailExists(String email) {
+    SQLiteDatabase db = this.getReadableDatabase();
+    Cursor cursor = db.query(TBL_CUSTOMER,
+            new String[]{CUSTOMER_ID},
+            EMAIL + "=?",
+            new String[]{email},
+            null, null, null);
+    int count = cursor.getCount();
+    cursor.close();
+    return count > 0;
+}
+
 public void createSampleDataCustomer(){
     if (numbOfRowsCustomer() == 0){
-        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'anhltt', 'Lê Thị Tuyết Anh', 'Nữ', 'anhltt21411@gmail.com', '0911235896', 'anhltt21411@', 500, '01/02/2003', null, 'Thường')");
+        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'anhltt', 'Lê Thị Tuyết Anh', 'Nữ', 'anhltt21411@gmail.com', '0911235896', 'anhltt21411@', 25500, '01/02/2003', null, 'Kim cương')");
         execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'trucdtt', 'Đặng Thị Thanh Trúc', 'Nữ', 'trucdtt21411@gmail.com', '0910587896', 'trucdtt21411@', 2000, '01/10/2003', null, 'Đồng')");
         execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'quynhdln', 'Đặng Lê Như Quỳnh', 'Nữ', 'quynhdln21411@gmail.com', '0923535896', 'quynhdln21411@', 7000, '15/02/2003', null, 'Bạc')");
         execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'truchlt', 'Hồ Lê Thanh Trúc', 'Nữ', 'truchlt21411@gmail.com', '0971237410', 'truchlt21411@', 1500, '21/08/2003', null, 'Vàng')");
@@ -460,13 +717,33 @@ public void createSampleDataCustomer(){
 }
 
 // Ràng buộc Hạng tvien với Score
-public void applyMembershipTypeConstraint() {
-    execSql("UPDATE " + TBL_CUSTOMER + " SET " + CUSTOMER_TYPE + " = 'Thường' WHERE " + MEMBERSHIP_SCORE + " >= 0 AND " + MEMBERSHIP_SCORE + " < 1000");
-    execSql("UPDATE " + TBL_CUSTOMER + " SET " + CUSTOMER_TYPE + " = 'Đồng' WHERE " + MEMBERSHIP_SCORE + " >= 1000 AND " + MEMBERSHIP_SCORE + " < 5000");
-    execSql("UPDATE " + TBL_CUSTOMER + " SET " + CUSTOMER_TYPE + " = 'Bạc' WHERE " + MEMBERSHIP_SCORE + " >= 5000 AND " + MEMBERSHIP_SCORE + " < 10000");
-    execSql("UPDATE " + TBL_CUSTOMER + " SET " + CUSTOMER_TYPE + " = 'Vàng' WHERE " + MEMBERSHIP_SCORE + " >= 10000 AND " + MEMBERSHIP_SCORE + " < 20000");
-    execSql("UPDATE " + TBL_CUSTOMER + " SET " + CUSTOMER_TYPE + " = 'Kim Cương' WHERE " + MEMBERSHIP_SCORE + " >= 20000");
+// Update điểm và hạng thành viên
+public void updateCustomerMembership(int customerId, int newMembershipScore) {
+    SQLiteDatabase db = this.getWritableDatabase();
+    ContentValues values = new ContentValues();
+    values.put(MEMBERSHIP_SCORE, newMembershipScore);
+
+    String newCustomerType = calculateCustomerType(newMembershipScore); // Tính toán loại khách hàng mới dựa trên điểm thành viên mới
+    values.put(CUSTOMER_TYPE, newCustomerType);
+
+    db.update(TBL_CUSTOMER, values, CUSTOMER_ID + " = ?", new String[]{String.valueOf(customerId)});
+    db.close();
 }
+
+    public String calculateCustomerType(int membershipScore) {
+        if (membershipScore >= 0 && membershipScore < 1000) {
+            return "Thường";
+        } else if (membershipScore >= 1000 && membershipScore < 5000) {
+            return "Đồng";
+        } else if (membershipScore >= 5000 && membershipScore < 10000) {
+            return "Bạc";
+        } else if (membershipScore >= 10000 && membershipScore < 20000) {
+            return "Vàng";
+        } else {
+            return "Kim Cương";
+        }
+    }
+
 
     public String getNextMembershipType(String currentType) {
         String nextType = null;
@@ -616,8 +893,116 @@ public void createSampleDataCart() {
         return outputStream.toByteArray();
     }
 
-
+//    Kiểm tra bảng Discuss
+    public int numbOfRowsDiscuss(){
+        Cursor c = getData("SELECT * FROM " + TBl_DISCUSS);
+        int numberOfRows = c.getCount();
+        c.close();
+        return numberOfRows;
     }
+
+    public void createSampleDataDiscuss(){
+        if (numbOfRowsCustomer() == 0){
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '1', 'leha@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '2', 'anhlethi@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '3', 'danghoangmai23@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '4', 'leha@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '5', ''anhlethi@gmail.com, 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '6', 'leha@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '7', 'tranthimy96@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '8', 'leha@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '9', 'danghoangmai23@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '10', 'leha@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '11', 'lananhvu@st.uel.edu.vn', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+            execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '12', 'leha@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
+
+        }
+    }
+
+
+    //    Kiểm tra bảng Feedback
+    public int numbOfRowsFeedback(){
+        Cursor c = getData("SELECT * FROM " + TBl_FEEDBACK);
+        int numberOfRows = c.getCount();
+        c.close();
+        return numberOfRows;
+    }
+
+    public void createSampleDataFeedback(){
+        if (numbOfRowsCustomer() == 0){
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '1', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '2', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.0, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '3', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 5.0, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '4', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '5', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '6', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '7', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '8', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '9', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '10', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '11', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+            execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '12', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
+
+
+
+        }
+    }
+    public ArrayList<UserInfo> getLoggedinUserDetails(String email){
+        ArrayList<UserInfo> customers = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
+
+        Cursor cursor = sqLiteDatabase.rawQuery(query, new String[]{email});
+        Customer customer = null;
+
+        // Nếu có kết quả từ câu truy vấn
+        if (cursor.moveToFirst()) {
+            // Lấy thông tin từ cursor
+            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
+            @SuppressLint("Range") String emails = cursor.getString(cursor.getColumnIndex(EMAIL));
+
+
+            UserInfo userInfo = new UserInfo();
+            userInfo.setFullName(name);
+            userInfo.setEmail(emails);
+
+            customers.add(userInfo);
+        }
+
+        // Đóng con trỏ và database
+        cursor.close();
+        sqLiteDatabase.close();
+
+        return customers;
+    }
+    public ArrayList<UserInfo> getLoggedinUserDetailsMain(String email) {
+        ArrayList<UserInfo> customers = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
+
+        Cursor cursor = sqLiteDatabase.rawQuery(query, new String[]{email});
+        Customer customer = null;
+
+        // Nếu có kết quả từ câu truy vấn
+        if (cursor.moveToFirst()) {
+            // Lấy thông tin từ cursor
+            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
+
+            UserInfo userInfo = new UserInfo();
+            userInfo.setFullName(name);
+
+            customers.add(userInfo);
+        }
+
+        // Đóng con trỏ và database
+        cursor.close();
+        sqLiteDatabase.close();
+
+        return customers;
+    }
+
+
+}
 
 
 

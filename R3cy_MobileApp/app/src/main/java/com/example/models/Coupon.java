@@ -1,6 +1,7 @@
 package com.example.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Coupon implements Serializable {
@@ -17,9 +18,9 @@ public class Coupon implements Serializable {
     double MAXIMUM_DISCOUNT;
     double COUPON_VALUE;
     int MAXIMUM_USERS;
+    ArrayList<Integer> customerIds; // Thêm biến customerIds dạng mảng ArrayList
 
-
-    public Coupon(int COUPON_ID, String COUPON_CODE, String COUPON_TITLE, int SCORE_MIN, String COUPON_TYPE, String COUPON_CATEGORY, Date VALID_DATE, Date EXPIRE_DATE, double MIN_ORDER_VALUE, double MAXIMUM_DISCOUNT, double COUPON_VALUE, int MAXIMUM_USERS) {
+    public Coupon(int COUPON_ID, String COUPON_CODE, String COUPON_TITLE, int SCORE_MIN, String COUPON_TYPE, String COUPON_CATEGORY, Date VALID_DATE, Date EXPIRE_DATE, double MIN_ORDER_VALUE, double MAXIMUM_DISCOUNT, double COUPON_VALUE, int MAXIMUM_USERS, ArrayList<Integer> customerIds) {
         this.COUPON_ID = COUPON_ID;
         this.COUPON_CODE = COUPON_CODE;
         this.COUPON_TITLE = COUPON_TITLE;
@@ -32,6 +33,7 @@ public class Coupon implements Serializable {
         this.MAXIMUM_DISCOUNT = MAXIMUM_DISCOUNT;
         this.COUPON_VALUE = COUPON_VALUE;
         this.MAXIMUM_USERS = MAXIMUM_USERS;
+        this.customerIds = customerIds;
     }
 
     public String getCOUPON_CATEGORY() {
@@ -128,6 +130,14 @@ public class Coupon implements Serializable {
 
     public void setMAXIMUM_USERS(int MAXIMUM_USERS) {
         this.MAXIMUM_USERS = MAXIMUM_USERS;
+    }
+
+    public ArrayList<Integer> getCustomerIds() {
+        return customerIds;
+    }
+
+    public void setCustomerIds(ArrayList<Integer> customerIds) {
+        this.customerIds = customerIds;
     }
 }
 

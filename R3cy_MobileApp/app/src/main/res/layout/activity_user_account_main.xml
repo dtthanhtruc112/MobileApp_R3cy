@@ -8,28 +8,29 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <ImageView
-        android:id="@+id/txttrolai"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginLeft="10dp"
-        android:src="@drawable/baseline_arrow_back_ios_new_24"
-        android:layout_gravity="left"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBaseline_toBaselineOf="@id/txttaikhoancuatoi"
-
-        />
-
-    <TextView
-        android:id="@+id/txttaikhoancuatoi"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/txttieude"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tài khoản của tôi"
-        android:textColor="#31B9F4"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/txttrolai"
-        />
+        android:orientation="horizontal"
+        android:layout_margin="5dp"
+        android:layout_marginLeft="10dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/icon_arrow_back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tài khoản của tôi"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/blue"/>
+
+    </LinearLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imv_uservatar"
@@ -40,7 +41,7 @@
         app:civ_border_width="5dp"
         app:civ_border_color="#31B9F4"
         android:background="@drawable/useraccount_avatar_background"
-        app:layout_constraintTop_toBottomOf="@id/txttaikhoancuatoi"
+        app:layout_constraintTop_toBottomOf="@id/txttieude"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/iconpen"

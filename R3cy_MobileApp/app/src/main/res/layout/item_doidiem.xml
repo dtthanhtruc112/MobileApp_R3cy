@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:text="Giảm  8%"
                 android:textColor="@color/black"
-                android:textSize="15sp"
+                android:textSize="11sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:text="Đơn tối thiểu 500k Giảm tối đa 30k"
                 android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:textSize="11sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:text="Điểm: "
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="11sp"
                     android:textStyle="bold"
                     android:layout_weight="2"/>
 
@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:text="300"
                     android:textColor="@color/blue"
-                    android:textSize="15sp"
+                    android:textSize="11sp"
                     android:textStyle="bold"
                     android:layout_weight="3"/>
 
@@ -82,7 +82,8 @@
                     android:backgroundTint="@color/blue"
                     android:gravity="center"
                     android:text="Đổi điểm"
-                    android:textSize="15sp"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:background="@drawable/rounded_borders"

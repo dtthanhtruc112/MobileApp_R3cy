@@ -1,10 +1,10 @@
-package com.example.r3cy_mobileapp;
+package com.example.models;
 
-public class faqs_model {
+public class Faqs {
     int btnhide;
     String txta1, txtq1;
 
-    public faqs_model(int btnhide, String txta1, String txtq1) {
+    public Faqs(int btnhide, String txta1, String txtq1) {
         this.btnhide = btnhide;
         this.txta1 = txta1;
         this.txtq1 = txtq1;

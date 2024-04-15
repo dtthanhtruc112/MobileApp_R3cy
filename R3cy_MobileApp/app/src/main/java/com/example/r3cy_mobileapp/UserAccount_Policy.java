@@ -49,14 +49,6 @@ public class UserAccount_Policy extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
-//        TextView textView1 = findViewById(R.id.txtpolicybanhang_phivanchuyen);
-//        String list1 = "• Item 1\n• Item 2\n• Item 3";
-//        setBulletList(textView1, list1);
-//
-//        TextView textView2 = findViewById(R.id.txtpolicybanhang_tggiaohang);
-//        String list2 = "• Item A\n• Item B\n• Item C";
-//        setBulletList(textView2, list2);
-
         tabLayout = findViewById(R.id.tabLayout);
         viewPager2 = findViewById(R.id.pager);
         adapter = new TabAdapter(this);

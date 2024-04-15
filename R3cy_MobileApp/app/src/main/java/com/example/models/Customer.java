@@ -27,6 +27,13 @@ public class Customer {
         this.customerType = customerType;
     }
 
+    public Customer(int customerId, String username, String email, String password) {
+        this.customerId = customerId;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
     public int getCustomerId() {
         return customerId;
     }

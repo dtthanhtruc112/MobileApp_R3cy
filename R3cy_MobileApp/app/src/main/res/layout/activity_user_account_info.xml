@@ -7,28 +7,29 @@
     tools:context=".UserAccount_Info"
     android:padding="10dp">
 
-    <ImageView
-        android:id="@+id/txttrolai"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginLeft="10dp"
-        android:src="@drawable/baseline_arrow_back_ios_new_24"
-        android:layout_gravity="left"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBaseline_toBaselineOf="@id/txttaikhoancuatoi"
-
-        />
-
-    <TextView
-        android:id="@+id/txttaikhoancuatoi"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/txttieude"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Thông tin tài khoản"
-        android:textColor="#31B9F4"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/txttrolai"
-        />
+        android:orientation="horizontal"
+        android:layout_margin="5dp"
+        android:layout_marginLeft="10dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/icon_arrow_back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thông tin tài khoản"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/blue"/>
+
+    </LinearLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imv_uservatar"
@@ -39,7 +40,7 @@
         app:civ_border_width="5dp"
         app:civ_border_color="#31B9F4"
         android:background="@drawable/useraccount_avatar_background"
-        app:layout_constraintTop_toBottomOf="@id/txttaikhoancuatoi"
+        app:layout_constraintTop_toBottomOf="@id/txttieude"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/iconpen"
@@ -120,15 +121,15 @@
         app:layout_constraintStart_toStartOf="parent"
         />
 
-    <EditText
+    <TextView
         android:id="@+id/editname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="17"
         android:inputType="text"
-        android:hint="Nhập họ và tên"
+        android:text=" "
         android:layout_marginTop="30dp"
-        android:textSize="11sp"
+        android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@id/barrier3"
         app:layout_constraintTop_toBottomOf="@id/txtTen"
         app:layout_constraintEnd_toEndOf="parent"
@@ -146,14 +147,15 @@
         app:layout_constraintStart_toStartOf="parent"
         />
 
-    <EditText
+    <TextView
         android:id="@+id/editusername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="17"
+        android:layout_marginTop="15dp"
         android:inputType="text"
-        android:hint="Nhập tên đăng nhập"
-        android:textSize="11sp"
+        android:hint=" "
+        android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@id/barrier3"
         app:layout_constraintTop_toBottomOf="@id/editname"
         app:layout_constraintEnd_toEndOf="parent"
@@ -171,14 +173,15 @@
         app:layout_constraintStart_toStartOf="parent"
         />
 
-    <EditText
+    <TextView
         android:id="@+id/editphonenumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="17"
+        android:layout_marginTop="15dp"
         android:inputType="text"
-        android:hint="Nhập số điện thoại"
-        android:textSize="11sp"
+        android:hint=" "
+        android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@id/barrier3"
         app:layout_constraintTop_toBottomOf="@id/editusername"
         app:layout_constraintEnd_toEndOf="parent"
@@ -196,14 +199,15 @@
         app:layout_constraintStart_toStartOf="parent"
         />
 
-    <EditText
+    <TextView
         android:id="@+id/editemail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="17"
+        android:layout_marginTop="15dp"
         android:inputType="text"
-        android:hint="Nhập email"
-        android:textSize="11sp"
+        android:hint=" "
+        android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@id/barrier3"
         app:layout_constraintTop_toBottomOf="@id/editphonenumber"
         app:layout_constraintEnd_toEndOf="parent"
@@ -239,7 +243,7 @@
         android:id="@+id/editgioitinh_nu"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
-
+        android:checked="true"
         android:inputType="text"
         android:text="Nữ"
         android:textSize="11sp"
@@ -277,25 +281,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/gioitinh"
         />
-    <EditText
+    <TextView
         android:id="@+id/ngaysinh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Nhập ngày sinh"
+        android:hint=" "
         android:ems="17"
+        android:layout_marginTop="5dp"
         android:inputType="text"
-        android:textSize="11sp"
+        android:textSize="13sp"
         app:layout_constraintTop_toBottomOf="@id/editgioitinh_nu"
         app:layout_constraintStart_toStartOf="@id/barrier3"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <Button
         android:id="@+id/btnchinhsua"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:backgroundTint="@color/blue"
+        android:gravity="center"
         android:text="Chỉnh sửa"
-        android:textSize="17sp"
-        android:backgroundTint="#31B9F4"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+
+        android:layout_weight="5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/background_image"/>

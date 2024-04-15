@@ -180,6 +180,7 @@
                         android:textSize="16sp" />
                 </LinearLayout>
             </LinearLayout>
+
             <Button
                 android:id="@+id/btnMuaHang"
                 android:layout_width="match_parent"
@@ -190,7 +191,6 @@
                 android:textSize="16sp"
                 android:layout_margin="5dp"
                 android:textColor="@color/white"
-                android:background="@drawable/btn_blue"
                 android:textStyle="bold"/>
         </LinearLayout>
 

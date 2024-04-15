@@ -48,11 +48,12 @@
                     android:src="@drawable/icon_mail_gray" />
 
                 <EditText
+                    android:id="@+id/editTextEmail"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:text="Email"
+                    android:hint="Email"
                     android:textSize="13dp"
                     android:textColor="@color/grey"
                     android:background="@drawable/edttext_no_underline"/>
@@ -74,17 +75,20 @@
                     android:src="@drawable/icon_lock" />
 
                 <EditText
+                    android:id="@+id/editTextPassword"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:text="Mật khẩu"
+                    android:hint="Mật khẩu"
                     android:textSize="13dp"
+                    android:inputType="textPassword"
                     android:textColor="@color/grey"
                     android:background="@drawable/edttext_no_underline"/>
 
                 <ImageView
+                    android:id="@+id/imageViewIconEye"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_gravity="start"
@@ -96,6 +100,7 @@
 
 
             <TextView
+                android:id="@+id/textViewForgotPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -105,6 +110,7 @@
                 android:textColor="#31B9F4" />
 
             <Button
+                android:id="@+id/buttonSignIn"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -193,6 +199,7 @@
                     android:gravity="center"/>
 
                 <TextView
+                    android:id="@+id/textViewSignUp"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:paddingLeft="10dp"
