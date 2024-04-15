@@ -583,6 +583,31 @@ public void applyMembershipTypeConstraint() {
         insertData("Móc khóa rùa biển", 110000, "Móc khóa hình rùa biển là một sáng tạo độc đáo kết hợp giữa thiết kế đáng yêu và tôn trọng môi trường. Sản phẩm này làm từ nhựa tái chế, chú trọng đến việc giảm lượng chất thải nhựa và ảnh hưởng tích cực đến bảo vệ hệ sinh thái biển cả. Hình rùa biển được chọn làm điểm nhấn cho móc khóa không chỉ vì sự đáng yêu mà còn vì ý nghĩa mà chúng mang lại trong việc góp phần bảo vệ động vật biển. Sự kết hợp giữa ý thức môi trường và thiết kế sáng tạo khiến cho sản phẩm này trở thành một cách tuyệt vời để thể hiện phong cách cá nhân của bạn trong khi đồng thời chung tay bảo vệ môi trường xanh - nơi rùa biển và nhiều loài động vật khác gọi là nhà.", convertPhoto(context, R.drawable.pk_mockhoarua1), 0, "Phụ kiện", 60, 4.5, 90000, 50, "2024/04/10", 1, convertPhoto(context, R.drawable.pk_mockhoarua1), convertPhoto(context, R.drawable.pk_mockhoarua2), convertPhoto(context, R.drawable.pk_mockhoarua3));
 
     }
+public void createSampleDataCart() {
+    SQLiteDatabase db = this.getWritableDatabase();
+    db.beginTransaction();
+    try {
+        db.execSQL("DELETE FROM " + TBl_CART); // Xóa dữ liệu trong bảng CART trước khi thêm dữ liệu mới
+
+        // Thêm dữ liệu mới vào bảng CART
+        db.execSQL("INSERT INTO " + TBl_CART + " VALUES(null, 1, 1, 2)");
+        db.execSQL("INSERT INTO " + TBl_CART + " VALUES(null, 2, 2, 1)");
+        db.execSQL("INSERT INTO " + TBl_CART + " VALUES(null, 3, 1, 2)");
+        db.execSQL("INSERT INTO " + TBl_CART + " VALUES(null, 4, 2, 1)");
+        db.execSQL("INSERT INTO " + TBl_CART + " VALUES(null, 1, 3, 1)");
+        db.execSQL("INSERT INTO " + TBl_CART + " VALUES(null, 1, 4, 1)");
+        db.execSQL("INSERT INTO " + TBl_CART + " VALUES(null, 1, 5, 1)");
+
+        db.setTransactionSuccessful();
+    } finally {
+        db.endTransaction();
+        db.close();
+    }
+}
+
+
+
+
     private byte[] convertPhoto(Context context, int resourceId) {
         BitmapDrawable drawable = (BitmapDrawable) context.getDrawable(resourceId);
         Bitmap bitmap = drawable.getBitmap();
