@@ -950,6 +950,31 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
 
         return customers;
     }
+    public ArrayList<UserInfo> getLoggedinUserDetailsMain(String email) {
+        ArrayList<UserInfo> customers = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
+
+        Cursor cursor = sqLiteDatabase.rawQuery(query, new String[]{email});
+        Customer customer = null;
+
+        // Nếu có kết quả từ câu truy vấn
+        if (cursor.moveToFirst()) {
+            // Lấy thông tin từ cursor
+            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
+
+            UserInfo userInfo = new UserInfo();
+            userInfo.setFullName(name);
+
+            customers.add(userInfo);
+        }
+
+        // Đóng con trỏ và database
+        cursor.close();
+        sqLiteDatabase.close();
+
+        return customers;
+    }
 
 
 }

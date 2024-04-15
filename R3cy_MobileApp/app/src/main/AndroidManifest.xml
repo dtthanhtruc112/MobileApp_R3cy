@@ -99,9 +99,6 @@
             android:name=".Checkout"
             android:exported="false" />
         <activity
-            android:name=".UserAccount_macdinh"
-            android:exported="false" />
-        <activity
             android:name=".Signin.Signin_Main"
             android:exported="true">
             <intent-filter>

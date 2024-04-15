@@ -23,16 +23,25 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.databases.R3cyDB;
+import com.example.models.UserInfo;
+import com.example.r3cy_mobileapp.Signin.Signin_Main;
 import com.example.r3cy_mobileapp.databinding.ActivityUserAccountMainBinding;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class UserAccount_Main extends AppCompatActivity {
     ActivityUserAccountMainBinding binding;
     ActivityResultLauncher<Intent> activityResultLauncher;
 
     boolean openCam;
+    TextView name;
+    String email;
+    R3cyDB db;
 
 
     @Override
@@ -55,7 +64,36 @@ public class UserAccount_Main extends AppCompatActivity {
                 }
 
         });
+        name = binding.txtTen;
+
+        // Nhận giá trị email từ Intent
+        email = getIntent().getStringExtra("key_email");
+
+        // Gọi phương thức để tải thông tin người dùng
+        getUserDetails();
         addEvents();
+    }
+
+    private void getUserDetails() {
+        db = new R3cyDB(this);
+        // Kiểm tra xem email có null không
+        if (email != null) {
+            // Lấy thông tin người dùng từ cơ sở dữ liệu
+            ArrayList<UserInfo> customer = db.getLoggedinUserDetailsMain(email);
+
+            // Kiểm tra xem danh sách khách hàng có trống không
+            if (customer != null && customer.size() > 0) {
+                UserInfo userInfo = customer.get(0);
+                name.setText(userInfo.getFullName());
+            } else {
+                // Xử lý trường hợp không tìm thấy thông tin người dùng
+                Toast.makeText(this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            // Xử lý trường hợp không nhận được email từ Intent
+            Toast.makeText(this, "Không nhận được thông tin email", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 
@@ -98,7 +136,9 @@ public class UserAccount_Main extends AppCompatActivity {
         binding.usSignout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                    Intent intent = new Intent(getApplicationContext(), Signin_Main.class);
+                    startActivity(intent);
+                    Toast.makeText(UserAccount_Main.this, "Đăng xuất thành công !", Toast.LENGTH_SHORT).show();
             }
         });
     }

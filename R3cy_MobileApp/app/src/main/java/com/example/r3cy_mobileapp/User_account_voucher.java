@@ -47,9 +47,8 @@ public class User_account_voucher extends AppCompatActivity {
         super.onResume();
         Log.i("test", "onResume");
 
-        int couponId = coupon.getCOUPON_ID();
         int customerId = customer.getCustomerId();
-        boolean isCustomerEligible = isCustomerEligibleForCoupon(customerId, couponId);
+        boolean isCustomerEligible = isCustomerEligibleForCoupon(customerId);
         if (isCustomerEligible) {
             loadData();
         }
@@ -61,8 +60,8 @@ public class User_account_voucher extends AppCompatActivity {
         db = new R3cyDB(this);
         db.createSampleDataCoupon();
     }
-    private boolean isCustomerEligibleForCoupon(int customerId, int couponId) {
-        Cursor cursor = db.getData("SELECT " + R3cyDB.CUSTOMER_IDS + " FROM " + R3cyDB.TBl_COUPON + " WHERE " + R3cyDB.COUPON_ID + " = " + couponId);
+    private boolean isCustomerEligibleForCoupon(int customerId) {
+        Cursor cursor = db.getData("SELECT " + R3cyDB.CUSTOMER_IDS + " FROM " + R3cyDB.TBl_COUPON );
         if (cursor != null && cursor.moveToFirst()) {
             String customerIdsString = cursor.getString(0);
             cursor.close();
