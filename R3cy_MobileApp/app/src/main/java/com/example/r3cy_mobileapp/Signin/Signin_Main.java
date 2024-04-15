@@ -16,6 +16,8 @@ import com.example.databases.R3cyDB;
 import com.example.models.Customer;
 import com.example.r3cy_mobileapp.R;
 import com.example.r3cy_mobileapp.Signup;
+import com.example.r3cy_mobileapp.UserAccount_Info;
+import com.example.r3cy_mobileapp.UserAccount_Main;
 
 public class Signin_Main extends AppCompatActivity {
     private R3cyDB db;
@@ -80,8 +82,9 @@ public class Signin_Main extends AppCompatActivity {
                 Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
 
                 // Thực hiện các hoạt động sau khi đăng nhập thành công, ví dụ: chuyển hướng đến màn hình chính
-                // Intent intent = new Intent(Signin_Main.this, HomeActivity.class);
-                // startActivity(intent);
+//                 Intent intent = new Intent(Signin_Main.this, UserAccount_Info.class);
+//                 intent.putExtra("key_email", email);
+//                 startActivity(intent);
                 // finish();
             } else {
                 // Sai mật khẩu

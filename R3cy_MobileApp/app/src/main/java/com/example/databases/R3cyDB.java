@@ -19,6 +19,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.example.models.Customer;
+import com.example.models.UserInfo;
 import com.example.r3cy_mobileapp.R;
 
 import java.io.ByteArrayOutputStream;
@@ -920,6 +921,34 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
 
 
         }
+    }
+    public ArrayList<UserInfo> getLoggedinUserDetails(String email){
+        ArrayList<UserInfo> customers = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
+
+        Cursor cursor = sqLiteDatabase.rawQuery(query, new String[]{email});
+        Customer customer = null;
+
+        // Nếu có kết quả từ câu truy vấn
+        if (cursor.moveToFirst()) {
+            // Lấy thông tin từ cursor
+            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
+            @SuppressLint("Range") String emails = cursor.getString(cursor.getColumnIndex(EMAIL));
+
+
+            UserInfo userInfo = new UserInfo();
+            userInfo.setFullName(name);
+            userInfo.setEmail(emails);
+
+            customers.add(userInfo);
+        }
+
+        // Đóng con trỏ và database
+        cursor.close();
+        sqLiteDatabase.close();
+
+        return customers;
     }
 
 
