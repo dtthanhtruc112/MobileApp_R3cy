@@ -109,6 +109,7 @@ public class UserAccount_Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UserAccount_Main.this, UserAccount_Info.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
@@ -130,6 +131,7 @@ public class UserAccount_Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UserAccount_Main.this, User_account_voucher.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
@@ -139,6 +141,13 @@ public class UserAccount_Main extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), Signin_Main.class);
                     startActivity(intent);
                     Toast.makeText(UserAccount_Main.this, "Đăng xuất thành công !", Toast.LENGTH_SHORT).show();
+            }
+        });
+        binding.usScore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TichDiem.class);
+                startActivity(intent);
             }
         });
     }

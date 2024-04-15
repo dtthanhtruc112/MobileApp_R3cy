@@ -69,7 +69,7 @@ public class CartManage extends AppCompatActivity {
 
     private void createDb() {
         db = new R3cyDB(this);
-        db.createSampleDataCart();
+//        db.createSampleDataCart();
         db.createSampleProduct();
         db.createSampleDataCustomer();
     }

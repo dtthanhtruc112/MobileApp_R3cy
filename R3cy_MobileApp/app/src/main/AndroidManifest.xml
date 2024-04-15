@@ -99,7 +99,10 @@
             android:name=".Checkout"
             android:exported="false" />
         <activity
-            android:name=".CartManage"
+        android:name=".CartManage"
+        android:exported="false" />
+        <activity
+            android:name=".Signin.Signin_Main"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
