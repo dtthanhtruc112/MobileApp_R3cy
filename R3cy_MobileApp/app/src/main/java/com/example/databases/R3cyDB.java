@@ -4,6 +4,7 @@ package com.example.databases;
 
 import static java.sql.DriverManager.getConnection;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -17,6 +18,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.models.Customer;
 import com.example.r3cy_mobileapp.R;
 
 import java.io.ByteArrayOutputStream;
@@ -649,6 +651,58 @@ public int numbOfRowsCustomer(){
         int numberOfRows = c.getCount();
         c.close();
         return numberOfRows;
+}
+
+public boolean insertCustomer(String fullName, String email, String password) {
+    SQLiteDatabase db = this.getWritableDatabase();
+    ContentValues values = new ContentValues();
+    values.put(FULLNAME, fullName);
+    values.put(EMAIL, email);
+    values.put(PASSWORD, password);
+    long result = db.insert(TBL_CUSTOMER, null, values);
+    db.close();
+    return result != -1;
+}
+public Customer getCustomerByEmail(String email) {
+    // Đọc cơ sở dữ liệu
+    SQLiteDatabase db = this.getReadableDatabase();
+
+    // Câu truy vấn SQL
+    String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
+
+    // Thực thi câu truy vấn
+    Cursor cursor = db.rawQuery(query, new String[]{email});
+
+    Customer customer = null;
+
+    // Nếu có kết quả từ câu truy vấn
+    if (cursor.moveToFirst()) {
+        // Lấy thông tin từ cursor
+        @SuppressLint("Range") int customerId = cursor.getInt(cursor.getColumnIndex(CUSTOMER_ID));
+        @SuppressLint("Range") String username = cursor.getString(cursor.getColumnIndex(USERNAME));
+        @SuppressLint("Range") String password = cursor.getString(cursor.getColumnIndex(PASSWORD));
+        // Tạo đối tượng Customer
+        customer = new Customer(customerId, username, email, password);
+    }
+
+    // Đóng cursor và đóng cơ sở dữ liệu
+    cursor.close();
+    db.close();
+
+    // Trả về đối tượng Customer
+    return customer;
+}
+
+public boolean checkEmailExists(String email) {
+    SQLiteDatabase db = this.getReadableDatabase();
+    Cursor cursor = db.query(TBL_CUSTOMER,
+            new String[]{CUSTOMER_ID},
+            EMAIL + "=?",
+            new String[]{email},
+            null, null, null);
+    int count = cursor.getCount();
+    cursor.close();
+    return count > 0;
 }
 
 public void createSampleDataCustomer(){

@@ -1,4 +1,4 @@
-package com.example.r3cy_mobileapp;
+package com.example.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,20 +9,25 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.models.Faqs;
+import com.example.r3cy_mobileapp.R;
+
 import java.util.List;
 
-public class faqs_adapter extends BaseAdapter {
+public class FaqsAdapter extends BaseAdapter {
     Activity context;
     int item_faqs;
-    List<faqs_model> faqsModels;
+    List<Faqs> faqsModels;
     ImageView imageView1;
     TextView txta1;
     boolean isHidden = false;
 
-    public faqs_adapter(Activity context, int item_faqs, List<faqs_model> faqsModels) {
+
+    public FaqsAdapter(Activity context, int item_faqs, List<Faqs> faqsModels) {
         this.context = context;
         this.item_faqs = item_faqs;
         this.faqsModels = faqsModels;
+
     }
 
     @Override
@@ -42,7 +47,7 @@ public class faqs_adapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        ViewHolder holder;
+        FaqsAdapter.ViewHolder holder;
         if(view == null){
             holder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -52,9 +57,9 @@ public class faqs_adapter extends BaseAdapter {
             holder.txtq1 = view.findViewById(R.id.txtq1);
             view.setTag(holder);
         }else{
-            holder = (ViewHolder) view.getTag();
+            holder = (FaqsAdapter.ViewHolder) view.getTag();
         }
-        faqs_model m = faqsModels.get(position);
+        Faqs m = faqsModels.get(position);
         holder.btnhide.setImageResource(m.getBtnhide());
         holder.txta1.setText(m.getTxta1());
         holder.txtq1.setText(m.getTxtq1());

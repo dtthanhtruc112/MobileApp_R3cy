@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserAccount_Main"
+    tools:context=".UserAccount_macdinh"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -48,32 +48,54 @@
         android:scaleType="centerCrop"/>
 
 
-        <ImageView
-            android:id="@+id/iconpen"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/pencilline"
-            android:background="@drawable/useraccount_background_icon_ava"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.20"
-            app:layout_constraintHorizontal_bias="0.59"
-             />
-
-    <TextView
-        android:id="@+id/txtTen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Thảo Nguyên"
-        android:textColor="#31B9F4"
-        android:textSize="13sp"
-        android:textStyle="bold"
+    <ImageView
+        android:id="@+id/iconpen"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/pencilline"
+        android:background="@drawable/useraccount_background_icon_ava"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iconpen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.20"
+        app:layout_constraintHorizontal_bias="0.59"
         />
+    <LinearLayout
+        android:id="@+id/btndangkydangnhap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/iconpen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:weightSum="10">
+        <Button
+            android:id="@+id/btndangnhap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đăng nhập"
+            android:textColor="#31B9F4"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            />
+        <Button
+            android:id="@+id/btndangky"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đăng ký"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/blue"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+
 
 
     <LinearLayout
@@ -83,7 +105,7 @@
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtTen"
+        app:layout_constraintTop_toBottomOf="@id/btndangkydangnhap"
         android:orientation="horizontal"
         android:background="@drawable/useraccount_button_background"
         android:gravity="center">
@@ -391,47 +413,47 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/us_signout"
-        android:layout_width="350dp"
-        android:layout_height="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/us_policy"
-        android:orientation="horizontal"
-        android:background="@drawable/useraccount_button_background"
-        android:gravity="center">
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/icon_signout"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/useraccount_background_icon_ava"
-            android:layout_marginStart="20dp"/>
-        <TextView
-            android:layout_width="230dp"
-            android:layout_height="wrap_content"
-            android:text="Đăng xuất"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:layout_marginStart="20dp"/>
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/baseline_chevron_right_24"
-            android:layout_marginStart="5dp"/>
+<!--    <LinearLayout-->
+<!--        android:id="@+id/us_signout"-->
+<!--        android:layout_width="350dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/us_policy"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:background="@drawable/useraccount_button_background"-->
+<!--        android:gravity="center">-->
+<!--        <ImageView-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:src="@drawable/icon_signout"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:background="@drawable/useraccount_background_icon_ava"-->
+<!--            android:layout_marginStart="20dp"/>-->
+<!--        <TextView-->
+<!--            android:layout_width="230dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Đăng xuất"-->
+<!--            android:textSize="13sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_marginStart="20dp"/>-->
+<!--        <ImageView-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:src="@drawable/baseline_chevron_right_24"-->
+<!--            android:layout_marginStart="5dp"/>-->
 
-    </LinearLayout>
-
-
+<!--    </LinearLayout>-->
 
 
-        <!--    <Button-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:backgroundTint="#E83939"-->
-<!--        />-->
+
+
+    <!--    <Button-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:backgroundTint="#E83939"-->
+    <!--        />-->
 
 
 
