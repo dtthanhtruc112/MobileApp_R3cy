@@ -106,6 +106,9 @@
         android:name=".CartManage"
         android:exported="false" />
         <activity
+            android:name=".TrangChu"
+            android:exported="false" />
+        <activity
             android:name=".CustomProduct"
             android:exported="true">
             <intent-filter>

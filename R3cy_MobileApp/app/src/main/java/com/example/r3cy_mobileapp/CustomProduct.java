@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.databases.R3cyDB;
+import com.example.r3cy_mobileapp.Signin.Signin_Main;
 
 import java.io.IOException;
 
@@ -27,6 +28,7 @@ public class CustomProduct extends AppCompatActivity {
     private Button btnSummitCustom;
     private TextView btnProductFile;
     private Uri imageUri;
+    private ImageView imvTrangChu;
 
     private static final int PICK_IMAGE_REQUEST = 1;
 
@@ -45,6 +47,17 @@ public class CustomProduct extends AppCompatActivity {
         edtProductCusName = findViewById(R.id.edtProductCusName);
         btnSummitCustom = findViewById(R.id.btnSummitCustom);
         btnProductFile = findViewById(R.id.btnProductFile);
+
+        imvTrangChu = findViewById(R.id.imvTrangChu);
+
+        imvTrangChu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CustomProduct.this, TrangChu.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         // Thiết lập sự kiện cho TextView để chọn ảnh từ điện thoại
         btnProductFile.setOnClickListener(new View.OnClickListener() {
