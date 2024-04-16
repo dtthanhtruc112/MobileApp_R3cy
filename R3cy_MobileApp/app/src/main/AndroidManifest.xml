@@ -16,7 +16,7 @@
             android:name=".BlogDetail"
             android:exported="false" />
         <activity
-            android:name=".TichDiem"
+            android:name=".TrangChu"
             android:exported="false" />
         <activity
             android:name=".Signup"
@@ -103,6 +103,9 @@
         android:exported="false" />
         <activity
             android:name=".Signin.Signin_Main"
+            android:exported="false" />
+        <activity
+            android:name=".TichDiem"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

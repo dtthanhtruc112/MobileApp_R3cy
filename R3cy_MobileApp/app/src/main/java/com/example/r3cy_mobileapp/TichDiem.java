@@ -1,10 +1,12 @@
 package com.example.r3cy_mobileapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +18,11 @@ import com.example.models.Coupon;
 import com.example.models.Customer;
 import com.example.r3cy_mobileapp.Product.Product_List;
 import com.example.r3cy_mobileapp.databinding.ActivityTichDiemBinding;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,6 +37,8 @@ public class TichDiem extends AppCompatActivity {
     ArrayList<Coupon> coupons;
     Customer customer;
     R3cyDB db;
+    private PieChart pieChart;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +49,8 @@ public class TichDiem extends AppCompatActivity {
         db = new R3cyDB(this);
         db.createSampleDataCoupon();
         db.createSampleDataCustomer();
-        
 
+        pieChart = findViewById(R.id.pie_chart);
 
         addEvents();
     }
@@ -51,7 +60,36 @@ public class TichDiem extends AppCompatActivity {
         super.onResume();
         loadData();
         getDataCustomer();
+        createPieChart();
     }
+
+    private void createPieChart() {
+        float currentScore = Float.parseFloat(binding.txtCurrentScore.getText().toString());
+        float nextScore = Float.parseFloat(binding.txtNextScore.getText().toString());
+
+        ArrayList<PieEntry> entries = new ArrayList<>();
+        entries.add(new PieEntry(currentScore, "Điểm hiện tại"));
+        entries.add(new PieEntry(nextScore - currentScore, "Điểm còn lại"));
+
+        // Định nghĩa màu
+        int[] colors = {ContextCompat.getColor(this, R.color.dark_blue), ContextCompat.getColor(this, R.color.blue)};
+
+        PieDataSet dataSet = new PieDataSet(entries, "");
+        dataSet.setColors(colors); // Đặt màu từ mảng màu
+        dataSet.setValueTextColor(Color.WHITE);
+        dataSet.setDrawValues(false); // Ẩn số liệu trên biểu đồ
+
+        PieData data = new PieData(dataSet);
+
+        pieChart.setData(data);
+        pieChart.setUsePercentValues(true);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setCenterText("Điểm thành viên");
+        pieChart.animateY(1000);
+        pieChart.invalidate(); // Refresh chart
+    }
+
+
 
     private void loadData() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
