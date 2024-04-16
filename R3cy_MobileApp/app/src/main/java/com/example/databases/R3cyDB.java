@@ -1038,6 +1038,19 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
         return customerId;
     }
 
+    //Custom product
+    public long insertData(String customerName, String email, String phone, String productCusName, String imageUri) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(CUSTOMPRODUCT_NAME, customerName);
+        values.put(CUSTOMPRODUCT_EMAIL, email);
+        values.put(CUSTOMPRODUCT_PHONE, phone);
+        values.put(CUSTOMPRODUCT_TITLE, productCusName);
+        values.put(CUSTOMPRODUCT_DESFILE, imageUri);
+        long newRowId = db.insert(TBL_CUSTOMPRODUCT, null, values);
+        db.close();
+        return newRowId;
+    }
 
 }
 
