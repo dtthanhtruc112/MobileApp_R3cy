@@ -1060,6 +1060,22 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
         db.close();
         return newRowId;
     }
+    public boolean upDateUserProfile(String email, String fullname1, String username1, String phone1, String gender1, String birthday1){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(FULLNAME, fullname1);
+        values.put(USERNAME, username1);
+        values.put(PHONE, phone1);
+        values.put(EMAIL, email);
+        values.put(GENDER, gender1);
+        values.put(BIRTHDAY, birthday1);
+        int i =sqLiteDatabase.update(TBL_CUSTOMER, values, "EMAIL=?", new String[] {email});
+        if (i>0){
+            return true;
+        }else {
+            return false;
+        }
+    }
 
 
 }

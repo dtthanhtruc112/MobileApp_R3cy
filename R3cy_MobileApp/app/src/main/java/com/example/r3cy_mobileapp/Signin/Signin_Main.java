@@ -92,9 +92,9 @@ public class Signin_Main extends AppCompatActivity {
                 Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
 
                 // Thực hiện các hoạt động sau khi đăng nhập thành công, ví dụ: chuyển hướng đến màn hình chính
-                 Intent intent = new Intent(Signin_Main.this, UserAccount_Main.class);
-                 intent.putExtra("key_email", email);
-                 startActivity(intent);
+//                 Intent intent = new Intent(Signin_Main.this, UserAccount_Main.class);
+//                 intent.putExtra("key_email", email);
+//                 startActivity(intent);
                 // finish();
             } else {
                 // Sai mật khẩu

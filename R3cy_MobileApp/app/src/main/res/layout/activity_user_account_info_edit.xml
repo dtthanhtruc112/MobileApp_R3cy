@@ -317,16 +317,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:weightSum="10">
-        <Button
-            android:id="@+id/btnCancle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="HUỶ"
-            android:textColor="#31B9F4"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:layout_weight="1"
-            />
+<!--        <Button-->
+<!--            android:id="@+id/btnCancle"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="HUỶ"-->
+<!--            android:textColor="#31B9F4"-->
+<!--            android:textSize="13sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_weight="1"-->
+<!--            />-->
         <Button
             android:id="@+id/btnSave"
             android:layout_width="wrap_content"
@@ -336,6 +336,7 @@
             android:textColor="@color/white"
             android:backgroundTint="@color/blue"
             android:textSize="13sp"
+            android:onClick="upateUserProfile"
             android:textStyle="bold"
             android:layout_weight="1"
             />
