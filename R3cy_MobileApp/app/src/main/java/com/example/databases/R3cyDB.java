@@ -19,6 +19,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.example.models.Customer;
+import com.example.models.Product;
 import com.example.r3cy_mobileapp.R;
 
 import java.io.ByteArrayOutputStream;
@@ -31,6 +32,7 @@ import java.util.Date;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 
 public class R3cyDB extends SQLiteOpenHelper {
@@ -920,6 +922,46 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
 
 
         }
+    }
+
+    public List<Product> getProductsByCategory(String category) {
+        List<Product> products = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Câu truy vấn SQL để lấy danh sách sản phẩm theo category
+        String selectQuery = "SELECT * FROM " + TBl_PRODUCT + " WHERE " + CATEGORY + " = ?";
+
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{category});
+
+        // Lặp qua tất cả các hàng và thêm các sản phẩm vào danh sách productList
+        if (cursor.moveToFirst()) {
+            do {
+                products.add(new Product(
+                        cursor.getInt(0), //ProductID
+                        cursor.getString(1), //ProductName
+                        cursor.getDouble(2), // ProductPrice
+                        cursor.getString(3), //ProductDescription
+                        cursor.getBlob(4), //ProductThumb
+                        cursor.getInt(5), //Hot
+                        cursor.getString(6), //Category
+                        cursor.getInt(7), //Inventory
+                        cursor.getDouble(8), //ProductRate
+                        cursor.getDouble(9), //SalePrice
+                        cursor.getInt(10), //SoldQuantity
+                        cursor.getString(11), //CreatedDate
+                        cursor.getInt(12), //Status
+                        cursor.getBlob(13), //img1
+                        cursor.getBlob(14), //img2
+                        cursor.getBlob(15) //img3
+                ));
+            } while (cursor.moveToNext());
+        }
+
+        // Đóng con trỏ và đóng kết nối cơ sở dữ liệu
+        cursor.close();
+        db.close();
+
+        return products;
     }
 
 
