@@ -55,21 +55,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class Dogiadung_Fragment extends Fragment {
      private FragmentDogiadungBinding binding;
-//        private SQLiteDatabase database;
         private List<Product> products;
         Product product;
-
         R3cyDB db;
-        private ProductAdapter adapter;
+        ProductAdapter adapter;
         RecyclerView rvProducts;
-
-        String Category = "Đồ gia dụng";
+        Intent intent;
 
         @Nullable
         @Override
@@ -84,24 +85,33 @@ public class Dogiadung_Fragment extends Fragment {
         public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
-            addControls();
-            getCategory();
+//            getCategory();
             createDb();
-            loadData();
+            addEvents();
 
         }
 
-        private void getCategory() {
-//            Category = getString(1, "Đồ gia dụng");
-        }
+    @Override
+    public void onResume(){
+        super.onResume();
+        Log.i("test", "onResume");
+        loadData();
+    }
 
-        private void addControls() {
-            rvProducts = binding.rvProducts;
-            products = new ArrayList<>();
-            adapter = new ProductAdapter(getContext(), R.layout.viewholder_category_list, products);
-            rvProducts.setAdapter(adapter);
+//    private void getCategory() {
+////            Category = getString(1, "Đồ gia dụng");
+//        }
 
-        }
+//        private void addControls() {
+//            RecyclerView rvProducts = binding.rvProducts;
+//            rvProducts.setLayoutManager(new GridLayoutManager(getContext(),2));
+//            products = new ArrayList<>();
+//            adapter = new ProductAdapter(getContext(), R.layout.viewholder_category_list, products);
+//            rvProducts.setAdapter(adapter);
+//
+//        }
+
+
 
         private void createDb() {
             db = new R3cyDB(getContext());
@@ -112,11 +122,14 @@ public class Dogiadung_Fragment extends Fragment {
 
         private void loadData() {
 
-            binding.rvProducts.setLayoutManager(new GridLayoutManager(getContext(),2));
 
-            products = new ArrayList<>();
-            Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT);
+            products = db.getProductsByCategory("Đồ gia dụng");
+            Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT + " WHERE Category = 'Đồ gia dụng' ");
             while (cursor.moveToNext()) {
+                try {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    Date createdDate = dateFormat.parse(cursor.getString(11));
+
                 products.add(new Product(
                         cursor.getInt(0), //ProductID
                         cursor.getString(1), //ProductName
@@ -135,6 +148,9 @@ public class Dogiadung_Fragment extends Fragment {
                         cursor.getBlob(14), //img2
                         cursor.getBlob(15) //img3
                 ));
+            } catch (ParseException | NumberFormatException e) {
+                e.printStackTrace();
+            }
                 Log.d("ProductInfo", "Product ID: " + product.getProductID());
                 Log.d("ProductInfo", "Product Name: " + product.getProductName());
             }
@@ -149,9 +165,42 @@ public class Dogiadung_Fragment extends Fragment {
 //                Double ProductRate = cursor.getDouble(8);
 
 
-
+            binding.rvProducts.setLayoutManager(new GridLayoutManager(getContext(),2));
             adapter = new ProductAdapter(getContext(), R.layout.viewholder_category_list, products);
             binding.rvProducts.setAdapter(adapter);
             adapter.notifyDataSetChanged();
 
+    }
+
+    private void addEvents() {
+
+        binding.rvProducts.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                // Xử lý sự kiện chạm vào item trong RecyclerView
+                View childView = rv.findChildViewUnder(e.getX(), e.getY());
+                if (childView != null && e.getAction() == MotionEvent.ACTION_UP) {
+                    int position = rv.getChildAdapterPosition(childView);
+                    ProductInterface productInterface = (ProductInterface) requireActivity();
+                    Product selectedProduct = (Product) adapter.getItem(position);
+
+                    // Tạo Intent và gửi thông tin sản phẩm sang Product_Detail Activity
+                    Intent intent = new Intent(requireContext(), Product_Detail.class);
+                    intent.putExtra("ProductID", selectedProduct.getProductID());
+                    startActivity(intent);
+                }
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+
+        });
     }}

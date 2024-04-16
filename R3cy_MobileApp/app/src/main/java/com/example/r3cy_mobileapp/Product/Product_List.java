@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 
 import com.example.adapter.ProductAdapter;
 import com.example.adapter.ViewPagerAdapter;
+import com.example.databases.R3cyDB;
 import com.example.interfaces.ProductInterface;
 import com.example.models.Product;
 import com.example.r3cy_mobileapp.R;
@@ -25,9 +26,10 @@ import java.util.List;
 public class Product_List extends AppCompatActivity implements ProductInterface {
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
-    private FrameLayout fragment;
-    private List<Product> products;
+    private ArrayList<Product> products;
+//    private List<Product> products;
     ActivityProductListBinding binding;
+    R3cyDB db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +37,13 @@ public class Product_List extends AppCompatActivity implements ProductInterface 
         binding = ActivityProductListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Khởi tạo danh sách products ở đây
-        products = new ArrayList<>();
 
 // khởi tạo ViewPager và TabLayout
         mTabLayout = findViewById(R.id.tab_layout);
         mViewPager = findViewById(R.id.view_pager);
+
+//        Khởi tạo cơ sở dữ liệu và tải dữ liệu sản phẩm từ cơ sở dữ liệu
+        createDb();
 
 //        Khởi tạo Adapter với danh sách fragments và products
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), getFragments(), getProducts());
@@ -56,9 +59,13 @@ public class Product_List extends AppCompatActivity implements ProductInterface 
 
     }
 
-    // Thêm phương thức getProducts() để trả về danh sách sản phẩm
     private List<Product> getProducts() {
         return products;
+    }
+
+    private void createDb() {
+        db = new R3cyDB(this);
+        db.createSampleProduct();
     }
 
     private List<Fragment> getFragments() {
@@ -69,13 +76,14 @@ public class Product_List extends AppCompatActivity implements ProductInterface 
         return fragments;
     }
 
-    //    @Override
     public void replaceFragment(Product p) {
 //        chuyển sang product_detail và truyền dữ liệu sản phẩm
         Intent intent = new Intent(Product_List.this, Product_Detail.class);
-//        intent.putExtra("product", p);
+        intent.putExtra("productID", p.getProductID());
         startActivity(intent);
     }
+
+
 
 
 }

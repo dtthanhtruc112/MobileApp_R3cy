@@ -18,10 +18,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.example.models.Coupon;
 import com.example.models.Customer;
-import com.example.models.UserInfo;
-import com.example.models.Voucher;
+import com.example.models.Product;
 import com.example.r3cy_mobileapp.R;
 
 import java.io.ByteArrayOutputStream;
@@ -34,6 +32,7 @@ import java.util.Date;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 
 public class R3cyDB extends SQLiteOpenHelper {
@@ -608,6 +607,7 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
         statement.bindString(3, ORDER_LINE_PRODUCT_ID);
         statement.bindDouble(4, ORDER_SALE_PRICE);
         statement.bindString(5, QUANTITY);
+        statement.bindString(6, COUPON_ID);
 
 
         long result = statement.executeInsert();
@@ -630,7 +630,7 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
     }
 
     public void createSampleDataAddress(){
-        if (numbOfRowsAddress() == 0){
+        if (numbOfRowsCustomer() == 0){
             execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, null, 'Lê Thị Tuyết Anh', '0911235896', 'TP HCM', 'Thủ Đức', 'Phường 2', '14 Nguyễn Tri Phương', 'mặc định', 'nhà riêng')");
             execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, null, 'Đặng Thị Thanh Trúc', '0910587896', 'Huế', 'Phong Điền', 'Phường 4', '35/8 Trần Hưng Đạo', 'mặc định', 'nhà riêng')");
             execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, null, 'Đặng Lê Như Quỳnh', '0923535896', 'Bình Định', 'Tuy Phước', 'Phường 5', '40 Lê Duẩn', 'mặc định', 'nhà riêng')");
@@ -706,61 +706,6 @@ public boolean checkEmailExists(String email) {
     cursor.close();
     return count > 0;
 }
-    public ArrayList<UserInfo> getLoggedinUserDetails(String email){
-        ArrayList<UserInfo> customers = new ArrayList<>();
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
-
-        Cursor cursor = sqLiteDatabase.rawQuery(query, new String[]{email});
-        Customer customer = null;
-
-        // Nếu có kết quả từ câu truy vấn
-        if (cursor.moveToFirst()) {
-            // Lấy thông tin từ cursor
-            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
-            @SuppressLint("Range") String emails = cursor.getString(cursor.getColumnIndex(EMAIL));
-
-
-            UserInfo userInfo = new UserInfo();
-            userInfo.setFullName(name);
-            userInfo.setEmail(emails);
-
-            customers.add(userInfo);
-        }
-
-        // Đóng con trỏ và database
-        cursor.close();
-        sqLiteDatabase.close();
-
-        return customers;
-    }
-    public ArrayList<UserInfo> getLoggedinUserDetailsMain(String email) {
-        ArrayList<UserInfo> customers = new ArrayList<>();
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
-
-        Cursor cursor = sqLiteDatabase.rawQuery(query, new String[]{email});
-        Customer customer = null;
-
-        // Nếu có kết quả từ câu truy vấn
-        if (cursor.moveToFirst()) {
-            // Lấy thông tin từ cursor
-            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
-
-
-            UserInfo userInfo = new UserInfo();
-            userInfo.setFullName(name);
-
-            customers.add(userInfo);
-        }
-
-        // Đóng con trỏ và database
-        cursor.close();
-        sqLiteDatabase.close();
-
-        return customers;
-
-    }
 
 public void createSampleDataCustomer(){
     if (numbOfRowsCustomer() == 0){
@@ -933,7 +878,7 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
     }
 
     public void createSampleDataDiscuss(){
-        if (numbOfRowsDiscuss() == 0){
+        if (numbOfRowsCustomer() == 0){
             execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '1', 'leha@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
             execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '2', 'anhlethi@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
             execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '3', 'danghoangmai23@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn., 1)");
@@ -960,7 +905,7 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
     }
 
     public void createSampleDataFeedback(){
-        if (numbOfRowsFeedback() == 0){
+        if (numbOfRowsCustomer() == 0){
             execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '1', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
             execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '2', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.0, '2024-04-14')");
             execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '3', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 5.0, '2024-04-14')");
@@ -978,19 +923,45 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
 
         }
     }
-    @SuppressLint("Range")
-    public int getCustomerIdFromCustomer(String email) {
+
+    public List<Product> getProductsByCategory(String category) {
+        List<Product> products = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        int customerId = -1; // Giá trị mặc định nếu không tìm thấy customerId
-        String query = "SELECT " + CUSTOMER_ID + " FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{email});
-        if (cursor != null && cursor.moveToFirst()) {
-            customerId = cursor.getInt(cursor.getColumnIndex(CUSTOMER_ID));
-//            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
-            cursor.close();
+
+        // Câu truy vấn SQL để lấy danh sách sản phẩm theo category
+        String selectQuery = "SELECT * FROM " + TBl_PRODUCT + " WHERE " + CATEGORY + " = ?";
+
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{category});
+
+        // Lặp qua tất cả các hàng và thêm các sản phẩm vào danh sách productList
+        if (cursor.moveToFirst()) {
+            do {
+                products.add(new Product(
+                        cursor.getInt(0), //ProductID
+                        cursor.getString(1), //ProductName
+                        cursor.getDouble(2), // ProductPrice
+                        cursor.getString(3), //ProductDescription
+                        cursor.getBlob(4), //ProductThumb
+                        cursor.getInt(5), //Hot
+                        cursor.getString(6), //Category
+                        cursor.getInt(7), //Inventory
+                        cursor.getDouble(8), //ProductRate
+                        cursor.getDouble(9), //SalePrice
+                        cursor.getInt(10), //SoldQuantity
+                        cursor.getString(11), //CreatedDate
+                        cursor.getInt(12), //Status
+                        cursor.getBlob(13), //img1
+                        cursor.getBlob(14), //img2
+                        cursor.getBlob(15) //img3
+                ));
+            } while (cursor.moveToNext());
         }
+
+        // Đóng con trỏ và đóng kết nối cơ sở dữ liệu
+        cursor.close();
         db.close();
-        return customerId;
+
+        return products;
     }
 
 
