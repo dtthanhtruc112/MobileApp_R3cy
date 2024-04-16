@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1099003817418",
+    "project_id": "r3cymobileapp",
+    "storage_bucket": "r3cymobileapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1099003817418:android:ce5346ab8d7b87f91eb333",
+        "android_client_info": {
+          "package_name": "com.example.r3cy_mobileapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaBx5mESZBwMwAYYxBJRn6O6NCioVl0jk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
