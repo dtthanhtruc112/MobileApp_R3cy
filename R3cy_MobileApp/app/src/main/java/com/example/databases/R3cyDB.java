@@ -19,7 +19,6 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.example.models.Customer;
-import com.example.models.Product;
 import com.example.r3cy_mobileapp.R;
 
 import java.io.ByteArrayOutputStream;
@@ -32,13 +31,11 @@ import java.util.Date;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
 
 
 public class R3cyDB extends SQLiteOpenHelper {
     Context context;
     // Tên cơ sở dữ liệu
-    Product product;
 
     public static final String DATABASE_NAME = "r3cy_database.db";
     // Phiên bản cơ sở dữ liệu
@@ -825,15 +822,10 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
 
         SQLiteStatement statement = database.compileStatement(sql);
 
-        statement.clearBindings();
         statement.bindString(1, ProductName);
         statement.bindDouble(2, ProductPrice);
         statement.bindString(3, ProductDescription);
-
-//        byte[] ProductThumbByte = new byte[ProductThumb.length];
-//        System.arraycopy(ProductThumb, 0, ProductThumbByte, 0, ProductThumb.length);
         statement.bindBlob(4, ProductThumb);
-
         statement.bindLong(5, Hot);
         statement.bindString(6, Category);
         statement.bindLong(7, Inventory);
@@ -842,31 +834,17 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
         statement.bindLong(10, SoldQuantiy);
         statement.bindString(11, CreatedDate);
         statement.bindLong(12, Status);
-
-//        byte[] Img1Byte = new byte[Img1.length];
-//        System.arraycopy(Img1, 0, Img1Byte, 0, Img1.length);
         statement.bindBlob(13, Img1);
-
-//        byte[] Img2Byte = new byte[Img2.length];
-//        System.arraycopy(Img2, 0, Img2Byte, 0, Img2.length);
         statement.bindBlob(14, Img2);
-
-//        byte[] Img3Byte = new byte[Img3.length];
-//        System.arraycopy(Img3, 0, Img3Byte, 0, Img3.length);
         statement.bindBlob(15, Img3);
 
-        statement.executeInsert();
-        database.close();
-        return true;
-
-//        long result = statement.executeInsert();
-//        boolean  success = result != -1; // Trả về true nếu chèn thành công, false nếu không
-//        Log.d("DatabaseHelper", "Insert data result: " + success);
-//        return success;
+        long result = statement.executeInsert();
+        boolean  success = result != -1; // Trả về true nếu chèn thành công, false nếu không
+        Log.d("DatabaseHelper", "Insert data result: " + success);
+        return success;
     }
 
     public void createSampleProduct() {
-        SQLiteDatabase database = getWritableDatabase();
         insertData("Đĩa nhỏ", 120000, "Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường. Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu. Thiết kế nhỏ gọn và tiện lợi làm cho sản phẩm trở thành người bạn đồng hành lý tưởng, không chỉ phục vụ nhu cầu hàng ngày mà còn thúc đẩy ý thức về một lối sống bền vững. Đĩa nhỏ từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian sống mà còn là một biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc  giữ gìn cho hành tinh xanh của chúng ta. Hãy chọn lựa thông minh và hòa mình vào những giải pháp bảo vệ môi trường với sản phẩm độc đáo này.", convertPhoto(context, R.drawable.dgd_dia1), 1, "Đồ gia dụng", 60, 4.5, 100000, 87, "2024/04/10", 1, convertPhoto(context, R.drawable.dgd_dia1), convertPhoto(context, R.drawable.dgd_dia2), convertPhoto(context, R.drawable.dgd_dia3));
         insertData("Khay đựng xà phòng", 170000, "Khay đựng bánh xà phòng từ nhựa tái chế là sự kết hợp hoàn hảo giữa tính thực tế và cam kết với môi trường. Với nguyên liệu là nhựa tái chế, sản phẩm này không chỉ giúp giảm lượng chất thải nhựa mà còn thể hiện tinh thần chăm sóc đối với hành tinh xanh của chúng ta. Thiết kế của khay đựng bánh xà phòng không chỉ đơn giản mà còn linh hoạt, phù hợp với mọi không gian nhà tắm. Sự sáng tạo trong cách sử dụng nguyên liệu tái chế không chỉ làm cho sản phẩm trở nên độc đáo mà còn đặt ra một tiêu chí mới cho việc chọn lựa sản phẩm gia dụng có trách nhiệm với môi trường. Khay đựng bánh xà phòng từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian nhà tắm mà còn là một bước nhỏ nhưng ý nghĩa trong hành trình chung của chúng ta để bảo vệ và giữ gìn cho hành tinh xanh, trong từng lựa chọn hàng ngày của chúng ta.", convertPhoto(context, R.drawable.dgd_xaphong1), 0, "Đồ gia dụng", 60, 4.7, 150000, 45, "2024/04/10", 1, convertPhoto(context, R.drawable.dgd_xaphong1), convertPhoto(context, R.drawable.dgd_xaphong2), convertPhoto(context, R.drawable.dgd_xaphong3));
         insertData("Lót ly", 110000, "Đồ lót ly từ nhựa tái chế là sự kết hợp độc đáo giữa sự thoải mái và cam kết với môi trường. Với việc sử dụng nguyên liệu là nhựa tái chế, sản phẩm không chỉ mang lại cảm giác mềm mại và thoải mái cho người sử dụng mà còn đóng góp vào việc giảm lượng chất thải nhựa. Thiết kế của đồ lót ly không chỉ chú trọng đến sự thoải mái và tôn lên vẻ đẹp tự nhiên, mà còn thể hiện sự chấp nhận trách nhiệm với môi trường. Việc sử dụng nhựa tái chế không chỉ là một xu hướng tiêu dùng thông minh mà còn là sự đóng góp tích cực vào việc bảo vệ nguồn tài nguyên tự nhiên và giảm thiểu ảnh hưởng tiêu cực đối với hệ sinh thái. Đồ lót ly từ nhựa tái chế không chỉ là lựa chọn thông minh cho sự thoải mái hàng ngày mà còn là một cách để chúng ta cùng nhau xây dựng một lối sống thân thiện với môi trường, đồng thời thể hiện sự quan tâm đến sức khỏe và hành tinh xanh của chúng ta.", convertPhoto(context, R.drawable.dgd_lotly1), 1, "Đồ gia dụng", 60, 4.0, 100000, 100, "2024/04/10", 1, convertPhoto(context, R.drawable.dgd_lotly1), convertPhoto(context, R.drawable.dgd_lotly2), convertPhoto(context, R.drawable.dgd_lotly3));
@@ -880,8 +858,6 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
         insertData("Móc khóa hình mặt cười", 110000, "Móc khóa hình mặt cười là một phụ kiện vui nhộn và thân thiện với môi trường, được sáng tạo từ nhựa tái chế. Thiết kế này không chỉ mang lại sự hứng khởi với hình ảnh mặt cười thân quen mà còn góp phần giảm lượng chất thải nhựa đối với môi trường. Sử dụng nhựa tái chế là một cam kết đối với bảo vệ hành tinh của chúng ta, tạo ra một sản phẩm không chỉ phản ánh tính cách lạc quan mà còn thể hiện tinh thần chăm sóc môi trường. Mỗi chiếc móc khóa không chỉ là một biểu tượng vui nhộn mà còn là một bước tiến tích cực trong việc hướng tới một lối sống bền vững và ý thức môi trường. Sở hữu một chiếc móc khóa hình mặt cười không chỉ là thêm vào bộ sưu tập phụ kiện cá nhân của bạn mà còn là cách để bạn thể hiện sự quan tâm đến môi trường.", convertPhoto(context, R.drawable.pk_mockhoacuoi), 1, "Phụ kiện", 60, 4.0, 90000, 89, "2024/04/03", 1, convertPhoto(context, R.drawable.pk_mockhoacuoi), convertPhoto(context, R.drawable.pk_mockhoacuoi), convertPhoto(context, R.drawable.pk_mockhoacuoi));
         insertData("Móc khóa rùa biển", 110000, "Móc khóa hình rùa biển là một sáng tạo độc đáo kết hợp giữa thiết kế đáng yêu và tôn trọng môi trường. Sản phẩm này làm từ nhựa tái chế, chú trọng đến việc giảm lượng chất thải nhựa và ảnh hưởng tích cực đến bảo vệ hệ sinh thái biển cả. Hình rùa biển được chọn làm điểm nhấn cho móc khóa không chỉ vì sự đáng yêu mà còn vì ý nghĩa mà chúng mang lại trong việc góp phần bảo vệ động vật biển. Sự kết hợp giữa ý thức môi trường và thiết kế sáng tạo khiến cho sản phẩm này trở thành một cách tuyệt vời để thể hiện phong cách cá nhân của bạn trong khi đồng thời chung tay bảo vệ môi trường xanh - nơi rùa biển và nhiều loài động vật khác gọi là nhà.", convertPhoto(context, R.drawable.pk_mockhoarua1), 0, "Phụ kiện", 60, 4.5, 90000, 50, "2024/04/10", 1, convertPhoto(context, R.drawable.pk_mockhoarua1), convertPhoto(context, R.drawable.pk_mockhoarua2), convertPhoto(context, R.drawable.pk_mockhoarua3));
 
-        database.close();
-
     }
     private byte[] convertPhoto(Context context, int resourceId) {
         BitmapDrawable drawable = (BitmapDrawable) context.getDrawable(resourceId);
@@ -889,46 +865,6 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
         return outputStream.toByteArray();
-    }
-
-    public List<Product> getProductsByCategory(String category) {
-        List<Product> products = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        // Câu truy vấn SQL để lấy danh sách sản phẩm theo category
-        String selectQuery = "SELECT * FROM " + TBl_PRODUCT + " WHERE " + CATEGORY + " = ?";
-
-        Cursor cursor = db.rawQuery(selectQuery, new String[]{category});
-
-        // Lặp qua tất cả các hàng và thêm các sản phẩm vào danh sách productList
-        if (cursor.moveToFirst()) {
-            do {
-                products.add(new Product(
-                        cursor.getInt(0), //ProductID
-                        cursor.getString(1), //ProductName
-                        cursor.getDouble(2), // ProductPrice
-                        cursor.getString(3), //ProductDescription
-                        cursor.getBlob(4), //ProductThumb
-                        cursor.getInt(5), //Hot
-                        cursor.getString(6), //Category
-                        cursor.getInt(7), //Inventory
-                        cursor.getDouble(8), //ProductRate
-                        cursor.getDouble(9), //SalePrice
-                        cursor.getInt(10), //SoldQuantity
-                        cursor.getString(11), //CreatedDate
-                        cursor.getInt(12), //Status
-                        cursor.getBlob(13), //img1
-                        cursor.getBlob(14), //img2
-                        cursor.getBlob(15))); //img3
-                products.add(product);
-            } while (cursor.moveToNext());
-        }
-
-        // Đóng con trỏ và đóng kết nối cơ sở dữ liệu
-        cursor.close();
-        db.close();
-
-        return products;
     }
 
 //    Kiểm tra bảng Discuss
@@ -985,7 +921,6 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
 
         }
     }
-
 
 
 }
