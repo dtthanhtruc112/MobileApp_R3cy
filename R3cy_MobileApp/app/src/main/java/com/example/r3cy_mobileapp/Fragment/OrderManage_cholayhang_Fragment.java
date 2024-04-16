@@ -1,15 +1,39 @@
 package com.example.r3cy_mobileapp.Fragment;
 
+import static android.content.Intent.getIntent;
+
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.adapter.CouponAdapter;
+import com.example.adapter.OrderAdapter;
+import com.example.adapter.ProductAdapter;
+import com.example.databases.R3cyDB;
+import com.example.models.Coupon;
+import com.example.models.Order;
+import com.example.models.Product;
 import com.example.r3cy_mobileapp.R;
+import com.example.r3cy_mobileapp.User_account_manageOrder;
+import com.example.r3cy_mobileapp.User_account_voucher;
 import com.example.r3cy_mobileapp.databinding.FragmentOrderManageCholayhangBinding;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +51,14 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
     FragmentOrderManageCholayhangBinding binding;
+    R3cyDB db;
+    String email;
+    OrderAdapter adapter;
+    private List<Order> products;
+    Order product;
+
+    RecyclerView rvProducts;
+    Intent intent;
 
     public OrderManage_cholayhang_Fragment() {
         // Required empty public constructor
@@ -53,10 +85,21 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        createDb();
+//        addEvents();
+
+    }
+    private void createDb() {
+        db = new R3cyDB(getContext());
+        db.createSampleProduct();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        Log.i("test", "onResume");
+
+
     }
 
     @Override
@@ -65,4 +108,5 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
         binding = FragmentOrderManageCholayhangBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
+
 }

@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--    Code để mở quyền truy cập lưu ảnh từ custom product-->
 
     <application
         android:allowBackup="true"
@@ -16,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.R3cy_MobileApp"
         tools:targetApi="31">
+        <activity
+            android:name=".UserAccount_Info_Edit"
+            android:exported="false" />
         <activity
             android:name=".BlogDetail"
             android:exported="false" />
@@ -94,7 +96,7 @@
             android:name=".AboutUs"
             android:exported="false" />
         <activity
-            android:name=".Signin.Signin_Main"
+            android:name=".CustomProduct"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
@@ -103,13 +105,13 @@
             android:name=".Checkout"
             android:exported="false" />
         <activity
-        android:name=".CartManage"
-        android:exported="false" />
+            android:name=".CartManage"
+            android:exported="false" />
         <activity
             android:name=".TrangChu"
             android:exported="false" />
         <activity
-            android:name=".CustomProduct"
+            android:name=".Signin.Signin_Main"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

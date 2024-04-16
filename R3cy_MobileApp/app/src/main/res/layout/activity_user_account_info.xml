@@ -105,7 +105,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="end"
-        app:constraint_referenced_ids="editusername, editgioitinh_nam, editname, editphonenumber, editemail, ngaysinh" />
+        app:constraint_referenced_ids="editusername, editgioitinh, editname, editphonenumber, editemail, ngaysinh" />
 
     <TextView
         android:id="@+id/name"
@@ -318,7 +318,7 @@
         android:textStyle="bold"
         android:textAllCaps="false"
         android:textColor="@color/white"
-
+        android:onClick="updateProfile"
         android:layout_weight="5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

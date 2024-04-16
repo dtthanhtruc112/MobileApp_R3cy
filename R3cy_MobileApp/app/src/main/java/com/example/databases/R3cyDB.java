@@ -368,7 +368,7 @@ public class R3cyDB extends SQLiteOpenHelper {
             CUSTOMER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             USERNAME + " TEXT," +
             FULLNAME + " TEXT," +
-            GENDER + " INTEGER NOT NULL DEFAULT 1," +
+            GENDER + " TEXT, " +
             EMAIL + " TEXT NOT NULL," +
             PHONE + " TEXT," +
             PASSWORD + " TEXT NOT NULL," +
@@ -978,6 +978,7 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
             @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
 
             UserInfo userInfo = new UserInfo();
+//            customer.getFullName(), customer.getUsername(), customer.getPhone(), String.valueOf(customer.getGender()), customer.getBirthday(), customer.getEmail(), customer.getCustomerId();
             userInfo.setFullName(name);
 
             customers.add(userInfo);
@@ -1002,11 +1003,19 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
             // Lấy thông tin từ cursor
             @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
             @SuppressLint("Range") String emails = cursor.getString(cursor.getColumnIndex(EMAIL));
+            @SuppressLint("Range") String username = cursor.getString(cursor.getColumnIndex(USERNAME));
+            @SuppressLint("Range") String phone = cursor.getString(cursor.getColumnIndex(PHONE));
+            @SuppressLint("Range") String gender = cursor.getString(cursor.getColumnIndex(GENDER));
+            @SuppressLint("Range") String birthday = cursor.getString(cursor.getColumnIndex(BIRTHDAY));
 
 
             UserInfo userInfo = new UserInfo();
             userInfo.setFullName(name);
+            userInfo.setUserName(username);
+            userInfo.setPhone(phone);
             userInfo.setEmail(emails);
+            userInfo.setGender(gender);
+            userInfo.setBirthday(birthday);
 
             customers.add(userInfo);
         }
@@ -1051,6 +1060,7 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
         db.close();
         return newRowId;
     }
+
 
 }
 

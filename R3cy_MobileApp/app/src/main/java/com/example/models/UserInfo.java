@@ -1,10 +1,48 @@
 package com.example.models;
 
-import android.widget.TextView;
+import java.io.Serializable;
 
-public class UserInfo {
+public class UserInfo implements Serializable {
 
     String fullName;
+    String userName;
+    String phone;
+    String gender;
+    String  birthday;
+
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
     String email;
 
     int customerid;
@@ -33,8 +71,15 @@ public class UserInfo {
         this.email = email;
     }
 
-
-
+//    public UserInfo(String fullName, String userName, String phone, String gender, String birthday, String email, int customerid) {
+//        this.fullName = fullName;
+//        this.userName = userName;
+//        this.phone = phone;
+//        this.gender = gender;
+//        this.birthday = birthday;
+//        this.email = email;
+//        this.customerid = customerid;
+//    }
 
 
 //    public UserInfo(String username, String fullName, String email, String phone, String birthday) {
