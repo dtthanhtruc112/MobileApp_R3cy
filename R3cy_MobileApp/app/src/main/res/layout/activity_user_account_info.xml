@@ -65,7 +65,7 @@
         android:id="@+id/txtTen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Thảo Nguyên"
+        android:text=" "
         android:textColor="#31B9F4"
         android:textSize="13sp"
         android:textStyle="bold"
@@ -221,52 +221,64 @@
         android:textSize="13sp"
         android:textStyle="bold"
         android:textColor="@color/black"
-        app:layout_constraintBaseline_toBaselineOf="@id/editgioitinh_nam"
+        app:layout_constraintBaseline_toBaselineOf="@id/editgioitinh"
         app:layout_constraintStart_toStartOf="parent"
         />
 
-    <CheckBox
-        android:id="@+id/editgioitinh_nam"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:text="Nam"
+<!--    <CheckBox-->
+<!--        android:id="@+id/editgioitinh_nam"-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:inputType="text"-->
+<!--        android:text="Nam"-->
 
-        android:textSize="11sp"
+<!--        android:textSize="11sp"-->
+<!--        app:layout_constraintStart_toStartOf="@id/barrier3"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/editemail"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.13"-->
+
+<!--        />-->
+<!--    <CheckBox-->
+<!--        android:id="@+id/editgioitinh_nu"-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:checked="true"-->
+<!--        android:inputType="text"-->
+<!--        android:text="Nữ"-->
+<!--        android:textSize="11sp"-->
+<!--        app:layout_constraintStart_toEndOf="@id/editgioitinh_nam"-->
+<!--        app:layout_constraintBaseline_toBaselineOf="@id/editgioitinh_nam"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/editemail"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.20"-->
+
+<!--        />-->
+<!--    <CheckBox-->
+<!--        android:id="@+id/editgioitinh_khac"-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="wrap_content"-->
+
+<!--        android:inputType="text"-->
+<!--        android:text="Khác"-->
+<!--        android:textSize="11sp"-->
+<!--        app:layout_constraintStart_toEndOf="@id/editgioitinh_nu"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/editemail"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.27"/>-->
+
+    <TextView
+        android:id="@+id/editgioitinh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint=" "
+        android:ems="17"
+        android:layout_marginTop="15dp"
+        android:inputType="text"
+        android:textSize="13sp"
+        app:layout_constraintTop_toBottomOf="@id/editemail"
         app:layout_constraintStart_toStartOf="@id/barrier3"
-        app:layout_constraintTop_toBottomOf="@id/editemail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.13"
-
-        />
-    <CheckBox
-        android:id="@+id/editgioitinh_nu"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:inputType="text"
-        android:text="Nữ"
-        android:textSize="11sp"
-        app:layout_constraintStart_toEndOf="@id/editgioitinh_nam"
-        app:layout_constraintBaseline_toBaselineOf="@id/editgioitinh_nam"
-        app:layout_constraintTop_toBottomOf="@id/editemail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.20"
-
-        />
-    <CheckBox
-        android:id="@+id/editgioitinh_khac"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-
-        android:inputType="text"
-        android:text="Khác"
-        android:textSize="11sp"
-        app:layout_constraintStart_toEndOf="@id/editgioitinh_nu"
-        app:layout_constraintTop_toBottomOf="@id/editemail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.27"
-
+        app:layout_constraintEnd_toEndOf="parent"/>
         />
     <TextView
         android:id="@+id/birthday"
@@ -287,10 +299,10 @@
         android:layout_height="wrap_content"
         android:hint=" "
         android:ems="17"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:inputType="text"
         android:textSize="13sp"
-        app:layout_constraintTop_toBottomOf="@id/editgioitinh_nu"
+        app:layout_constraintTop_toBottomOf="@id/editgioitinh"
         app:layout_constraintStart_toStartOf="@id/barrier3"
         app:layout_constraintEnd_toEndOf="parent"/>
 

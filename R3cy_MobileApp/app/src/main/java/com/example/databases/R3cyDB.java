@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 
 import com.example.models.Customer;
 import com.example.models.Product;
+import com.example.models.UserInfo;
 import com.example.r3cy_mobileapp.R;
 
 import java.io.ByteArrayOutputStream;
@@ -962,6 +963,79 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
         db.close();
 
         return products;
+    }
+    public ArrayList<UserInfo> getLoggedinUserDetailsMain(String email) {
+        ArrayList<UserInfo> customers = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
+
+        Cursor cursor = sqLiteDatabase.rawQuery(query, new String[]{email});
+        Customer customer = null;
+
+        // Nếu có kết quả từ câu truy vấn
+        if (cursor.moveToFirst()) {
+            // Lấy thông tin từ cursor
+            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
+
+            UserInfo userInfo = new UserInfo();
+            userInfo.setFullName(name);
+
+            customers.add(userInfo);
+        }
+
+        // Đóng con trỏ và database
+        cursor.close();
+        sqLiteDatabase.close();
+
+        return customers;
+    }
+    public ArrayList<UserInfo> getLoggedinUserDetails(String email){
+        ArrayList<UserInfo> customers = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
+
+        Cursor cursor = sqLiteDatabase.rawQuery(query, new String[]{email});
+        Customer customer = null;
+
+        // Nếu có kết quả từ câu truy vấn
+        if (cursor.moveToFirst()) {
+            // Lấy thông tin từ cursor
+            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
+            @SuppressLint("Range") String emails = cursor.getString(cursor.getColumnIndex(EMAIL));
+
+
+            UserInfo userInfo = new UserInfo();
+            userInfo.setFullName(name);
+            userInfo.setEmail(emails);
+
+            customers.add(userInfo);
+        }
+
+        // Đóng con trỏ và database
+        cursor.close();
+        sqLiteDatabase.close();
+
+        return customers;
+    }
+    @SuppressLint("Range")
+    public int getCustomerIdFromCustomer(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int customerId = -1; // Giá trị mặc định nếu không tìm thấy customerId
+        String query = "SELECT " + CUSTOMER_ID + " FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{email});
+        if (cursor != null && cursor.moveToFirst()) {
+            customerId = cursor.getInt(cursor.getColumnIndex(CUSTOMER_ID));
+//            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
+            cursor.close();
+        }
+
+        // Đóng con trỏ và database
+//        cursor.close();
+//        sqLiteDatabase.close();
+//
+//        return customers;
+        db.close();
+        return customerId;
     }
 
 

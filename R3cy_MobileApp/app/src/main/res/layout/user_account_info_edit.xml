@@ -64,7 +64,7 @@
         android:id="@+id/txtTen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Thảo Nguyên"
+        android:text=""
         android:textColor="#31B9F4"
         android:textSize="13sp"
         android:textStyle="bold"
@@ -80,7 +80,7 @@
         android:layout_marginTop="20dp"
         android:src="@drawable/useraccount_info_background"
         app:layout_constraintTop_toBottomOf="@id/txtTen"
-        app:layout_constraintBottom_toTopOf="@id/btnchinhsua"
+        app:layout_constraintBottom_toTopOf="@id/btn"
         />
 
     <androidx.constraintlayout.widget.Barrier

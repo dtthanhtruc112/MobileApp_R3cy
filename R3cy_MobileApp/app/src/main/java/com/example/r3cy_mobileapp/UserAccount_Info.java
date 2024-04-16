@@ -2,10 +2,15 @@ package com.example.r3cy_mobileapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +42,7 @@ public class UserAccount_Info extends AppCompatActivity {
 
         // Gọi phương thức để tải thông tin người dùng
         getUserDetails();
+//        addEvent();
     }
 
     private void getUserDetails() {
@@ -61,9 +67,54 @@ public class UserAccount_Info extends AppCompatActivity {
         }
     }
 
-    public void logout(View view) {
-        // Xử lý việc đăng xuất
+//    private void addEvent() {
+//        binding.btnchinhsua.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(UserAccount_Info.this, user_acount.class);
+//                startActivity(intent);
+//            }
+//        });
+//    }
+    public void  openDialogEdit(UserInfo p) {
+        Dialog dialog = new Dialog(UserAccount_Info.this);
+        dialog.setContentView(R.layout.user_account_info_edit);
+
+        EditText edtName = dialog.findViewById(R.id.editname);
+        edtName.setText(p.getFullName());
+
+        EditText editEmail = dialog.findViewById(R.id.editemail);
+        editEmail.setText(String.valueOf(p.getEmail()));
+
+        Button btnSave = dialog.findViewById(R.id.btnSave);
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Update Data
+                boolean updated = db.execSql("UPDATE " + R3cyDB.TBL_CUSTOMER + " SET " + R3cyDB.FULLNAME + "='" + edtName.getText().toString() + "', " + R3cyDB.EMAIL + "=" + editEmail.getText().toString() + " WHERE " + R3cyDB.CUSTOMER_ID + "=" + p.getCustomerid());
+                //UPDATE product SET ProductName='Test', ProductPrice=12000 WHERE ProductCode=2
+                if (updated) {
+                    Toast.makeText(UserAccount_Info.this, "Success !", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(UserAccount_Info.this, "Fail !", Toast.LENGTH_SHORT).show();
+                }
+                getUserDetails();
+                dialog.dismiss();
+            }
+        });
+        Button btnCancel = dialog.findViewById(R.id.btnCancle);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.show();
     }
+
+
 
 //    protected void onResume() {
 //        super.onResume();

@@ -7,7 +7,15 @@ public class UserInfo {
     String fullName;
     String email;
 
+    int customerid;
 
+    public int getCustomerid() {
+        return customerid;
+    }
+
+    public void setCustomerid(int customerid) {
+        this.customerid = customerid;
+    }
 
     public String getFullName() {
         return fullName;
