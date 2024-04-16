@@ -46,8 +46,8 @@ public class Product_Detail extends AppCompatActivity {
 //        binding = ActivityProductDetailBinding.inflate(getLayoutInflater());
         setContentView(R.layout.activity_product_detail);
 
-        mViewPager2 = findViewById(R.id.view_pager_2);
-        mCircleIndicator3 = findViewById(R.id.circle_indicator3);
+//        mViewPager2 = findViewById(R.id.view_pager_2);
+//        mCircleIndicator3 = findViewById(R.id.circle_indicator3);
 
 
         txtQuantity = findViewById(R.id.txtQuantity);

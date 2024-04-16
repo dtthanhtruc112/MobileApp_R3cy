@@ -13,22 +13,13 @@
         android:theme="@style/Theme.R3cy_MobileApp"
         tools:targetApi="31">
         <activity
-            android:name=".Signup"
-            android:exported="false" />
-        <activity
-            android:name=".User_account_voucher"
-            android:exported="false" />
-        <activity
-            android:name=".User_account_manageOrder"
-            android:exported="false" />
-        <activity
             android:name=".CartManage"
             android:exported="false" />
         <activity
-            android:name=".DoiDiem"
+            android:name=".TichDiem"
             android:exported="false" />
         <activity
-            android:name=".Product.Product_List"
+            android:name=".TrangChu"
             android:exported="false" />
         <activity
             android:name=".Product.Product_Search"
@@ -37,55 +28,63 @@
             android:name=".Product.Product_Detail"
             android:exported="false" />
         <activity
+            android:name=".UserAccount_Main"
+            android:exported="false" />
+        <activity
             android:name=".DoiDiem_ChiTiet"
             android:exported="false" />
         <activity
-            android:name=".UserAccount_Main"
+            android:name=".DoiDiem"
             android:exported="false" />
+        
         <activity
             android:name=".Thugom"
             android:exported="false" />
         <activity
             android:name=".Modau.Modau4"
             android:exported="false"
-            android:theme="@style/Theme.Design.NoActionBar" />
+            android:theme="@style/Theme.Design.NoActionBar"/>
         <activity
             android:name=".Modau.Modau3"
             android:exported="false"
-            android:theme="@style/Theme.Design.NoActionBar" />
+            android:theme="@style/Theme.Design.NoActionBar"/>
         <activity
             android:name=".Modau.Modau2"
             android:exported="false"
-            android:theme="@style/Theme.Design.NoActionBar" />
+            android:theme="@style/Theme.Design.NoActionBar"/>
         <activity
             android:name=".Modau.Modau1"
             android:exported="false"
-            android:theme="@style/Theme.Design.NoActionBar" />
+            android:theme="@style/Theme.Design.NoActionBar"/>
         <activity
             android:name=".UserAccount_Info"
-            android:exported="false" />
-        <activity
-            android:name=".FAQsPage"
             android:exported="false" />
         <activity
             android:name=".UserAccount_Policy"
             android:exported="false" />
         <activity
+            android:name=".FAQsPage"
+            android:exported="false" />
+        <activity
             android:name=".Signin.ForgotPass_Newpass"
             android:exported="false"
-            android:theme="@style/Theme.Design.NoActionBar" />
+            android:theme="@style/Theme.Design.NoActionBar"/>
         <activity
             android:name=".Signin.ForgotPass_OTPCode"
             android:exported="false"
-            android:theme="@style/Theme.Design.NoActionBar" />
+            android:theme="@style/Theme.Design.NoActionBar"/>
         <activity
             android:name=".Signin.ForgotPass_Email"
             android:exported="false"
-            android:theme="@style/Theme.Design.NoActionBar" />
+            android:theme="@style/Theme.Design.NoActionBar"/>
+        <activity
+            android:name=".Signup"
+            android:exported="false"
+            android:theme="@style/Theme.Design.NoActionBar"/>
         <activity
             android:name=".Signin.Signin_Main"
             android:exported="false"
-            android:theme="@style/Theme.Design.NoActionBar" />
+            android:theme="@style/Theme.Design.NoActionBar"/>
         <activity
             android:name=".AboutUs"
             android:exported="false" />
@@ -99,10 +98,7 @@
             android:name=".Checkout"
             android:exported="false" />
         <activity
-            android:name=".UserAccount_macdinh"
-            android:exported="false" />
-        <activity
-            android:name=".TichDiem"
+            android:name=".Product.Product_List"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
