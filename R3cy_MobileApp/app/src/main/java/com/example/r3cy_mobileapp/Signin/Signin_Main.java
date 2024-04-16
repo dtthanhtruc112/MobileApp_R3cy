@@ -24,6 +24,7 @@ public class Signin_Main extends AppCompatActivity {
     private EditText editTextEmail, editTextPassword;
     private Button buttonSignIn;
     private TextView textViewSignUp;
+    private TextView textViewForgotPassword;
     private ImageView imageViewIconEye;
     private boolean isPasswordVisible = false;
 
@@ -40,6 +41,7 @@ public class Signin_Main extends AppCompatActivity {
         buttonSignIn = findViewById(R.id.buttonSignIn);
         textViewSignUp = findViewById(R.id.textViewSignUp);
         imageViewIconEye = findViewById(R.id.imageViewIconEye);
+        textViewForgotPassword = findViewById(R.id.textViewForgotPassword);
 
         buttonSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +53,14 @@ public class Signin_Main extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Signin_Main.this, Signup.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        textViewForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Signin_Main.this, ForgotPass_Email.class);
                 startActivity(intent);
                 finish();
             }

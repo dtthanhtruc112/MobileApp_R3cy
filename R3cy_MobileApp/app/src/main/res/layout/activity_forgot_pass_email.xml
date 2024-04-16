@@ -55,8 +55,9 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:textSize="13dp"
-                    android:text="Email"
-                    android:textColor="@color/grey" />
+                    android:hint="Email"
+                    android:textColorHint="@color/grey"
+                    android:textColor="@color/black"/>
 
             </LinearLayout>
 
