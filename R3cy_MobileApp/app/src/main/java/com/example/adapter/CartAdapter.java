@@ -14,8 +14,10 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.dao.ProductDao;
 import com.example.models.CartItem;
 import com.example.models.Coupon;
+import com.example.r3cy_mobileapp.CartManage;
 import com.example.r3cy_mobileapp.R;
 
 import java.util.List;
@@ -24,13 +26,21 @@ public class CartAdapter extends BaseAdapter {
     Activity activity;
     int item_layout;
     List<CartItem> cartItemList;
+    private ProductDao productDao;
+
     TextView txtTotalAmount;
+    private OnQuantityDecreaseListener quantityDecreaseListener;
+    private OnQuantityIncreaseListener quantityIncreaseListener;
 
     public CartAdapter(Activity activity, int item_layout, List<CartItem> cartItemList) {
         this.activity = activity;
         this.item_layout = item_layout;
         this.cartItemList = cartItemList;
 
+    }
+    // Phương thức setter cho ProductDao
+    public void setProductDao(ProductDao productDao) {
+        this.productDao = productDao;
     }
 
     // Thêm phương thức để thiết lập txtTotalAmount
@@ -52,6 +62,19 @@ public class CartAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
+    public void setOnQuantityDecreaseListener(OnQuantityDecreaseListener listener) {
+        this.quantityDecreaseListener = listener;
+    }
+    public interface OnQuantityDecreaseListener {
+        void onDecrease(int position);
+    }
+    // Phương thức setter cho sự kiện tăng số lượng
+    public void setOnQuantityIncreaseListener(OnQuantityIncreaseListener listener) {
+        this.quantityIncreaseListener = listener;
+    }
+    public interface OnQuantityIncreaseListener {
+        void onIncrease(int position);
+    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -63,6 +86,7 @@ public class CartAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(item_layout, null);
 
+//            Giao diện
             holder.txt_ProductName = convertView.findViewById(R.id.txt_ProductName);
             holder.txt_ProductCategory = convertView.findViewById(R.id.txt_ProductCategory);
             holder.txt_ProductPrice = convertView.findViewById(R.id.txt_ProductPrice);
@@ -86,6 +110,14 @@ public class CartAdapter extends BaseAdapter {
         holder.txtQuantity.setText(String.valueOf(cartItem.getProductQuantity()));
         holder.txt_ProductPrice.setText(String.valueOf(cartItem.getProductPrice()));
 
+        holder.txtDeleteCartItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int lineId = cartItem.getLineId(); // Lấy lineId của mục cần xóa
+                ((CartManage) v.getContext()).deleteCartItem(lineId);
+            }
+        });
+
         // Hiển thị hình ảnh từ byte[]
         byte[] imageBytes = cartItem.getProductThumb();
         if (imageBytes != null && imageBytes.length > 0) {
@@ -96,6 +128,29 @@ public class CartAdapter extends BaseAdapter {
             holder.imv_ProductImage.setImageResource(R.drawable.dtt_giangsinh1);
         }
 
+
+        holder.imvDecreaseQuantity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (quantityDecreaseListener != null) {
+                    quantityDecreaseListener.onDecrease(position);
+                    // Call the method to calculate total amount every time checkbox state changes
+                    calculateSelectedTotalAmount();
+                }
+            }
+        });
+
+        holder.imvIncreaseQuantity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (quantityIncreaseListener != null) {
+                    quantityIncreaseListener.onIncrease(position);
+                    // Call the method to calculate total amount every time checkbox state changes
+                    calculateSelectedTotalAmount();
+                }
+            }
+        });
+
         // Listen to the checkbox state changes
         holder.chk_ProductBuy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -103,33 +158,30 @@ public class CartAdapter extends BaseAdapter {
                 // Update the checkbox state in CartItem
                 cartItem.setSelected(isChecked);
                 // Call the method to calculate total amount every time checkbox state changes
-                calculateAndDisplayTotalAmount();
+                calculateSelectedTotalAmount();
             }
         });
+
+
 
 
         // Trả về convertView đã được cập nhật
         return convertView;
     }
-    // Hàm tính và hiển thị tổng tiền
-    // Thêm phương thức để tính toán và hiển thị tổng số tiền
-    private void calculateAndDisplayTotalAmount() {
-        if (txtTotalAmount == null) {
-            return; // Kiểm tra nếu txtTotalAmount null thì không thực hiện gì
-        }
-
+    public double calculateSelectedTotalAmount() {
         double totalAmount = 0;
         for (CartItem item : cartItemList) {
-            // Kiểm tra nếu item được chọn (isSelected() trả về true)
             if (item.isSelected()) {
                 totalAmount += item.getProductPrice() * item.getProductQuantity();
             }
         }
 
-        // Hiển thị tổng số tiền trên TextView txtTotalAmount
-        txtTotalAmount.setText(String.valueOf(totalAmount));
+        // Cập nhật txtTotalAmount nếu đã được đặt
+        if (txtTotalAmount != null) {
+            txtTotalAmount.setText(String.valueOf(totalAmount));
+        }
+        return totalAmount;
     }
-
 
 
 

@@ -13,8 +13,8 @@
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_gravity="center_vertical|right"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="0.3"
             android:buttonTint="@color/blue"/>
 
         <ImageView
@@ -30,7 +30,7 @@
             android:layout_width="147dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="4.5"
+            android:layout_weight="4"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -123,7 +123,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Xóa"
-            android:layout_weight="1.5"
+            android:layout_weight="1"
+            android:padding="10dp"
             android:gravity="bottom" />
 
     </LinearLayout>

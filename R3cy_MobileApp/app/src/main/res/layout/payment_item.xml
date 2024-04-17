@@ -92,7 +92,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end">
                         <TextView
-                            android:id="@+id/productQuantity"
+                            android:id="@+id/txtproductQuantity"
                             android:text="1 "
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -100,6 +100,7 @@
                             android:textColor="@color/black" />
                         <TextView
                             android:text="sản phẩm "
+                            android:layout_marginStart="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:textSize="14sp"

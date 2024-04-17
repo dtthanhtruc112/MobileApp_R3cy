@@ -1,6 +1,13 @@
 package com.example.models;
 
-public class CartItem {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+import java.io.Serializable;
+
+public class CartItem implements Serializable {
     int ProductId;
     ;
     String productName;
@@ -11,15 +18,17 @@ public class CartItem {
     byte[] productThumb;
 
     private boolean isSelected;
+    int lineId;
 
-    public CartItem(int productId, String productName, String productCategory, double productPrice, int productQuantity, byte[] productThumb) {
-        this.ProductId = productId;
+    public CartItem(int productId, String productName, String productCategory, double productPrice, int productQuantity, byte[] productThumb, boolean isSelected, int lineId) {
+        ProductId = productId;
         this.productName = productName;
         this.productCategory = productCategory;
         this.productPrice = productPrice;
         this.productQuantity = productQuantity;
         this.productThumb = productThumb;
-        this.isSelected = false;
+        this.isSelected = isSelected;
+        this.lineId = lineId;
     }
 
     public int getProductId() {
@@ -77,4 +86,14 @@ public class CartItem {
     public void setSelected(boolean selected) {
         isSelected = selected;
     }
+
+    public int getLineId() {
+        return lineId;
+    }
+
+    public void setLineId(int lineId) {
+        this.lineId = lineId;
+    }
+
+
 }

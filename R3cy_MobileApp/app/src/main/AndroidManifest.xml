@@ -104,14 +104,15 @@
         <activity
             android:name=".Checkout"
             android:exported="false" />
-        <activity
-            android:name=".CartManage"
-            android:exported="false" />
+
         <activity
             android:name=".TrangChu"
             android:exported="false" />
         <activity
             android:name=".User_account_manageOrder"
+            android:exported="false" />
+        <activity
+            android:name=".CartManage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
