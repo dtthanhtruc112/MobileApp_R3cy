@@ -95,7 +95,7 @@ public class Signin_Main extends AppCompatActivity {
 //                 Intent intent = new Intent(Signin_Main.this, UserAccount_Main.class);
 //                 intent.putExtra("key_email", email);
 //                 startActivity(intent);
-                // finish();
+//                 finish();
             } else {
                 // Sai mật khẩu
                 Toast.makeText(this, "Sai mật khẩu", Toast.LENGTH_SHORT).show();

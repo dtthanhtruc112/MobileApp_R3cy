@@ -31,7 +31,7 @@
             android:name=".User_account_voucher"
             android:exported="false" />
         <activity
-            android:name=".User_account_manageOrder"
+            android:name=".Signin.Signin_Main"
             android:exported="false" />
         <activity
             android:name=".DoiDiem"
@@ -111,7 +111,7 @@
             android:name=".TrangChu"
             android:exported="false" />
         <activity
-            android:name=".Signin.Signin_Main"
+            android:name=".User_account_manageOrder"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

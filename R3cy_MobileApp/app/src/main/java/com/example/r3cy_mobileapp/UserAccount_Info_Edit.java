@@ -35,7 +35,7 @@ public class UserAccount_Info_Edit extends AppCompatActivity {
         gender = binding.editgioitinh;
         birthday = binding.ngaysinh;
         btnedit =binding.btnSave;
-        btnCancel =binding.btnCancle;
+//        btnCancel =binding.btnCancle;
 
         userInfos = (UserInfo) getIntent().getSerializableExtra("key_userinfo");
         name.setText(userInfos.getFullName());

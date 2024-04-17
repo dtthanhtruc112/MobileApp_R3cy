@@ -22,6 +22,13 @@ public class OrderAdapter extends BaseAdapter{
     User_account_manageOrder activity;
     int item_quanlydonhang;
     List<Order> orders;
+
+    public OrderAdapter(User_account_manageOrder activity, int item_quanlydonhang, List<Order> orders) {
+        this.activity = activity;
+        this.item_quanlydonhang = item_quanlydonhang;
+        this.orders = orders;
+    }
+
     @Override
     public int getCount() {
         return orders.size();

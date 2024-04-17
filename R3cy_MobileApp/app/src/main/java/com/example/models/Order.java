@@ -7,19 +7,13 @@ public class Order {
     double OrderSalePrice;
     String Quantity;
     int OrderCusID;
-    String Orderdate;
-    String Paymentmethod;
-    int PaymentID;
-    int CouponID;
+
+
     double TotalOrderValue;
     String OrderStatus;
-    String OrderNote;
-    String DeliDate;
-    String Discount;
-    double Shipping_fee;
+
+
     double TotalAmount;
-    String PaymentStatus;
-    int AddressID;
 
 
     public byte[] getProductImg() {
@@ -30,7 +24,7 @@ public class Order {
         this.productImg = productImg;
     }
 
-    byte [] productImg;
+    byte[] productImg;
 
 
     public String getProductName() {
@@ -44,30 +38,18 @@ public class Order {
     String productName;
 
 
-
-    public Order(int orderID, int orderLineID, int orderLineProductID, double orderSalePrice, String quantity, int orderCusID, String orderdate, String paymentmethod, int paymentID, int couponID, double totalOrderValue, String orderStatus, String orderNote, String deliDate, String discount, double shipping_fee, double totalAmount, String paymentStatus, int addressID, byte[] productImg, String productName) {
+    public Order(int orderID, int orderLineID, int orderLineProductID, double orderSalePrice, String quantity, int orderCusID, double totalOrderValue, String orderStatus, double totalAmount, byte[] productImg, String productName) {
         OrderID = orderID;
         OrderLineID = orderLineID;
         OrderLineProductID = orderLineProductID;
         OrderSalePrice = orderSalePrice;
         Quantity = quantity;
         OrderCusID = orderCusID;
-        Orderdate = orderdate;
-        Paymentmethod = paymentmethod;
-        PaymentID = paymentID;
-        CouponID = couponID;
         TotalOrderValue = totalOrderValue;
         OrderStatus = orderStatus;
-        OrderNote = orderNote;
-        DeliDate = deliDate;
-        Discount = discount;
-        Shipping_fee = shipping_fee;
         TotalAmount = totalAmount;
-        PaymentStatus = paymentStatus;
-        AddressID = addressID;
         this.productImg = productImg;
         this.productName = productName;
-
     }
 
     public int getOrderID() {
@@ -118,37 +100,37 @@ public class Order {
         OrderCusID = orderCusID;
     }
 
-    public String getOrderdate() {
-        return Orderdate;
-    }
-
-    public void setOrderdate(String orderdate) {
-        Orderdate = orderdate;
-    }
-
-    public String getPaymentmethod() {
-        return Paymentmethod;
-    }
-
-    public void setPaymentmethod(String paymentmethod) {
-        Paymentmethod = paymentmethod;
-    }
-
-    public int getPaymentID() {
-        return PaymentID;
-    }
-
-    public void setPaymentID(int paymentID) {
-        PaymentID = paymentID;
-    }
-
-    public int getCouponID() {
-        return CouponID;
-    }
-
-    public void setCouponID(int couponID) {
-        CouponID = couponID;
-    }
+//    public String getOrderdate() {
+//        return Orderdate;
+//    }
+//
+//    public void setOrderdate(String orderdate) {
+//        Orderdate = orderdate;
+//    }
+//
+//    public String getPaymentmethod() {
+//        return Paymentmethod;
+//    }
+//
+//    public void setPaymentmethod(String paymentmethod) {
+//        Paymentmethod = paymentmethod;
+//    }
+//
+//    public int getPaymentID() {
+//        return PaymentID;
+//    }
+//
+//    public void setPaymentID(int paymentID) {
+//        PaymentID = paymentID;
+//    }
+//
+//    public int getCouponID() {
+//        return CouponID;
+//    }
+//
+//    public void setCouponID(int couponID) {
+//        CouponID = couponID;
+//    }
 
     public double getTotalOrderValue() {
         return TotalOrderValue;
@@ -166,37 +148,37 @@ public class Order {
         OrderStatus = orderStatus;
     }
 
-    public String getOrderNote() {
-        return OrderNote;
-    }
-
-    public void setOrderNote(String orderNote) {
-        OrderNote = orderNote;
-    }
-
-    public String getDeliDate() {
-        return DeliDate;
-    }
-
-    public void setDeliDate(String deliDate) {
-        DeliDate = deliDate;
-    }
-
-    public String getDiscount() {
-        return Discount;
-    }
-
-    public void setDiscount(String discount) {
-        Discount = discount;
-    }
-
-    public double getShipping_fee() {
-        return Shipping_fee;
-    }
-
-    public void setShipping_fee(double shipping_fee) {
-        Shipping_fee = shipping_fee;
-    }
+//    public String getOrderNote() {
+//        return OrderNote;
+//    }
+//
+//    public void setOrderNote(String orderNote) {
+//        OrderNote = orderNote;
+//    }
+//
+//    public String getDeliDate() {
+//        return DeliDate;
+//    }
+//
+//    public void setDeliDate(String deliDate) {
+//        DeliDate = deliDate;
+//    }
+//
+//    public String getDiscount() {
+//        return Discount;
+//    }
+//
+//    public void setDiscount(String discount) {
+//        Discount = discount;
+//    }
+//
+//    public double getShipping_fee() {
+//        return Shipping_fee;
+//    }
+//
+//    public void setShipping_fee(double shipping_fee) {
+//        Shipping_fee = shipping_fee;
+//    }
 
     public double getTotalAmount() {
         return TotalAmount;
@@ -205,20 +187,21 @@ public class Order {
     public void setTotalAmount(double totalAmount) {
         TotalAmount = totalAmount;
     }
-
-    public String getPaymentStatus() {
-        return PaymentStatus;
-    }
-
-    public void setPaymentStatus(String paymentStatus) {
-        PaymentStatus = paymentStatus;
-    }
-
-    public int getAddressID() {
-        return AddressID;
-    }
-
-    public void setAddressID(int addressID) {
-        AddressID = addressID;
-    }
 }
+
+//    public String getPaymentStatus() {
+//        return PaymentStatus;
+//    }
+//
+//    public void setPaymentStatus(String paymentStatus) {
+//        PaymentStatus = paymentStatus;
+//    }
+//
+//    public int getAddressID() {
+//        return AddressID;
+//    }
+//
+//    public void setAddressID(int addressID) {
+//        AddressID = addressID;
+//    }
+//}

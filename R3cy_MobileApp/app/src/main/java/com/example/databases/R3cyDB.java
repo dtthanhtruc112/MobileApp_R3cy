@@ -608,7 +608,6 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
         statement.bindString(3, ORDER_LINE_PRODUCT_ID);
         statement.bindDouble(4, ORDER_SALE_PRICE);
         statement.bindString(5, QUANTITY);
-        statement.bindString(6, COUPON_ID);
 
 
         long result = statement.executeInsert();
@@ -632,11 +631,11 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
 
     public void createSampleDataAddress(){
         if (numbOfRowsCustomer() == 0){
-            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, null, 'Lê Thị Tuyết Anh', '0911235896', 'TP HCM', 'Thủ Đức', 'Phường 2', '14 Nguyễn Tri Phương', 'mặc định', 'nhà riêng')");
-            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, null, 'Đặng Thị Thanh Trúc', '0910587896', 'Huế', 'Phong Điền', 'Phường 4', '35/8 Trần Hưng Đạo', 'mặc định', 'nhà riêng')");
-            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, null, 'Đặng Lê Như Quỳnh', '0923535896', 'Bình Định', 'Tuy Phước', 'Phường 5', '40 Lê Duẩn', 'mặc định', 'nhà riêng')");
-            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, null, 'Hồ Lê Thanh Trúc', '0971237410', 'Quảng Ngãi', 'Bình Sơn', 'Phường 6', '12/246 Trần Bình Trọng', 'mặc định', 'nhà riêng')");
-            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, null, 'Nguyễn Thảo Nguyên', '0956335872', 'Phú Yên', 'Tuy Hoà', 'Phường 7', '79 Võ Thị Sáu', 'mặc định' 'nhà riêng')");
+            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, 'Lê Thị Tuyết Anh', '0911235896', 'TP HCM', 'Thủ Đức', 'Phường 2', '14 Nguyễn Tri Phương', 'mặc định', 'nhà riêng')");
+            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, 'Đặng Thị Thanh Trúc', '0910587896', 'Huế', 'Phong Điền', 'Phường 4', '35/8 Trần Hưng Đạo', 'mặc định', 'nhà riêng')");
+            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, 'Đặng Lê Như Quỳnh', '0923535896', 'Bình Định', 'Tuy Phước', 'Phường 5', '40 Lê Duẩn', 'mặc định', 'nhà riêng')");
+            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, 'Hồ Lê Thanh Trúc', '0971237410', 'Quảng Ngãi', 'Bình Sơn', 'Phường 6', '12/246 Trần Bình Trọng', 'mặc định', 'nhà riêng')");
+            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, 'Nguyễn Thảo Nguyên', '0956335872', 'Phú Yên', 'Tuy Hoà', 'Phường 7', '79 Võ Thị Sáu', 'mặc định' 'nhà riêng')");
         }
     }
 
