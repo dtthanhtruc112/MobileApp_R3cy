@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Checkout_AddressList"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/titleLayout"
+        android:padding="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/imvBack"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/icon_arrow_back">
+        </ImageView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn địa chỉ nhận hàng"
+            android:textColor="#31B9F4"
+            android:textSize="16sp"
+            android:textStyle="bold">
+        </TextView>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.example.customs.NonScrollListView
+                android:id="@+id/lvAddressList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <Button
+                android:id="@+id/btnAddAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Thêm địa chỉ mới"
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="@color/blue"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:padding="15dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+</LinearLayout>

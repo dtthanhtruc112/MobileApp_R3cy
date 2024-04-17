@@ -12,6 +12,7 @@
         android:background="@drawable/blog_border"
         android:weightSum="10">
         <RadioButton
+            android:id="@+id/rdbSelected"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_gravity="center_vertical|right"
@@ -72,7 +73,7 @@
                     android:id="@+id/btnDefaultAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Địa chỉ mặc định"
+                    android:text="Mặc định"
                     android:textAllCaps="false"
                     android:backgroundTint="@color/blue"
                     android:textColor="@color/black"
