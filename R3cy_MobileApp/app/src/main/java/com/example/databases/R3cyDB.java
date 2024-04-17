@@ -443,7 +443,23 @@ public int numbOfRowsCoupon(){
 
 
 //    Thêm dữ liệu mẫu
+public void createSampleDataCart() {
+    if (numbOfRowsCart() == 0) {
+        execSql("INSERT INTO " + TBl_CART + " VALUES(null, 2, 2, 1)");
+        execSql("INSERT INTO " + TBl_CART + " VALUES(null, 3, 3, 2)");
+        execSql("INSERT INTO " + TBl_CART + " VALUES(null, 4, 4, 1)");
+        execSql("INSERT INTO " + TBl_CART + " VALUES(null, 1, 4, 1)");
+        execSql("INSERT INTO " + TBl_CART + " VALUES(null, 1, 5, 1)");
+        execSql("INSERT INTO " + TBl_CART + " VALUES(null, 1, 6, 1)");
+    }
 
+}
+    public int numbOfRowsCart(){
+        Cursor c = getData("SELECT * FROM " + TBl_CART);
+        int numberOfRows = c.getCount();
+        c.close();
+        return numberOfRows;
+    }
 // Dữ liệu mẫu Coupon
 public void createSampleDataCoupon() {
     if (numbOfRowsCoupon() == 0) {
@@ -622,6 +638,7 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
         insertDataOrderLine(null,null,null,150000, "1");
         insertDataOrderLine(null,null,null,170000, "2");
     }
+
     public int numbOfRowsAddress(){
         Cursor c = getData("SELECT * FROM " + TBl_ADDRESS);
         int numberOfRows = c.getCount();

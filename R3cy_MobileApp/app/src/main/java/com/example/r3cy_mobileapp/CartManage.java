@@ -67,10 +67,9 @@ public class CartManage extends AppCompatActivity {
         } else {
             Log.e("CartManage", "Failed to create database");
         }
-        db.createSampleDataCart();
-        db.createSampleDataCart();
         db.createSampleProduct();
         db.createSampleDataCustomer();
+        db.createSampleDataCart();
         // Khởi tạo productDao sau khi database được khởi tạo xong
         productDao = new ProductDao(db);
     }
