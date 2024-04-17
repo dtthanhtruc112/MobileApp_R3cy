@@ -422,7 +422,8 @@
                         android:backgroundTint="@color/blue"
                         android:textColor="@color/white"
                         android:textStyle="bold"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        android:padding="15dp" />
 
                 </LinearLayout>
             </LinearLayout>
