@@ -76,11 +76,13 @@
 
                 </LinearLayout>
 
-                <ListView
-                    android:layout_marginStart="10dp"
+                <com.example.customs.NonScrollListView
                     android:id="@+id/lvPaymentItemList"
+                    android:layout_marginStart="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="true"
+                    android:layout_marginBottom="10dp"/>
 
 
                 <TextView
@@ -380,53 +382,53 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@android:color/darker_gray"/>
+                <LinearLayout
+                    android:layout_below="@id/srollview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_alignParentBottom="true">
+                    <LinearLayout
+                        android:id="@+id/layoutPolicy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginStart="10dp"
+                        android:padding="10dp"
+                        android:weightSum="10">
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/icon_dangiao" />
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:layout_gravity="center_vertical"
+                            android:textSize="13sp"
+                            android:layout_weight="8.3"
+                            android:text="Nhấn “Đặt hàng” đồng nghĩa với việc bạn đồng ý tuân theo Chính sách R3cy." />
+
+                    </LinearLayout>
+
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Đặt hàng"
+                        android:backgroundTint="@color/blue"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textAllCaps="false" />
+
+                </LinearLayout>
             </LinearLayout>
+
         </ScrollView>
 
-        <LinearLayout
-            android:layout_below="@id/srollview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentBottom="true">
-            <LinearLayout
-                android:id="@+id/layoutPolicy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="10dp"
-                android:padding="10dp"
-                android:weightSum="10">
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/icon_dangiao" />
-
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="13sp"
-                    android:layout_weight="8.3"
-                    android:text="Nhấn “Đặt hàng” đồng nghĩa với việc bạn đồng ý tuân theo Chính sách R3cy." />
-
-            </LinearLayout>
-
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="Đặt hàng"
-                android:backgroundTint="@color/blue"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textAllCaps="false"
-                android:background="@drawable/btn_blue"/>
-
-        </LinearLayout>
 
 
 
