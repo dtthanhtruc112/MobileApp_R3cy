@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -80,6 +82,30 @@ public class Signup extends AppCompatActivity {
             return;
         }
 
+        // Kiểm tra email có đúng định dạng không
+        if (!isValidEmail(email)) {
+            Toast.makeText(this, "Email không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Kiểm tra số điện thoại có lớn hơn 10 chữ số không
+        if (!isValidPhoneNumber(password)) {
+            Toast.makeText(this, "Số điện thoại phải lớn hơn 10 chữ số", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Kiểm tra độ dài mật khẩu
+        if (password.length() < 8) {
+            Toast.makeText(this, "Mật khẩu phải chứa ít nhất 8 ký tự", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Kiểm tra mật khẩu có chứa chữ cái, số và ký tự đặc biệt
+        if (!password.matches("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[@#$%^&+=])[A-Za-z\\d@#$%^&+=]{8,}$")) {
+            Toast.makeText(this, "Mật khẩu phải chứa 1 chữ cái, 1 số và 1 ký tự đặc biệt", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (!password.equals(confirmPassword)) {
             Toast.makeText(this, "Mật khẩu và xác nhận mật khẩu không khớp", Toast.LENGTH_SHORT).show();
             return;
@@ -101,6 +127,16 @@ public class Signup extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    // Phương thức kiểm tra định dạng email
+    private boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+    }
+
+    // Phương thức kiểm tra số điện thoại có lớn hơn 10 chữ số
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        return phoneNumber.length() >= 10;
     }
 
     // Phương thức để bật hoặc tắt xem mật khẩu

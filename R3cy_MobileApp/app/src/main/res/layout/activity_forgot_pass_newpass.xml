@@ -53,8 +53,9 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:text="Mật khẩu"
-                    android:textColor="@color/grey"
+                    android:hint="Mật khẩu"
+                    android:textColorHint="@color/grey"
+                    android:textColor="@color/black"
                     android:textSize="13dp"
                     android:background="@drawable/edttext_no_underline"/>
 
@@ -88,10 +89,11 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:text="Nhập lại mật khẩu"
+                    android:hint="Nhập lại mật khẩu"
+                    android:textColorHint="@color/grey"
+                    android:textColor="@color/black"
                     android:textSize="13dp"
-                    android:background="@drawable/edttext_no_underline"
-                    android:textColor="@color/grey" />
+                    android:background="@drawable/edttext_no_underline" />
 
                 <ImageView
                     android:layout_width="wrap_content"

@@ -19,6 +19,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.example.models.Customer;
+import com.example.models.Product;
 import com.example.models.UserInfo;
 import com.example.r3cy_mobileapp.R;
 
@@ -32,6 +33,7 @@ import java.util.Date;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 
 public class R3cyDB extends SQLiteOpenHelper {
@@ -366,7 +368,7 @@ public class R3cyDB extends SQLiteOpenHelper {
             CUSTOMER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             USERNAME + " TEXT," +
             FULLNAME + " TEXT," +
-            GENDER + " INTEGER NOT NULL DEFAULT 1," +
+            GENDER + " TEXT, " +
             EMAIL + " TEXT NOT NULL," +
             PHONE + " TEXT," +
             PASSWORD + " TEXT NOT NULL," +
@@ -860,31 +862,6 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
         insertData("Móc khóa rùa biển", 110000, "Móc khóa hình rùa biển là một sáng tạo độc đáo kết hợp giữa thiết kế đáng yêu và tôn trọng môi trường. Sản phẩm này làm từ nhựa tái chế, chú trọng đến việc giảm lượng chất thải nhựa và ảnh hưởng tích cực đến bảo vệ hệ sinh thái biển cả. Hình rùa biển được chọn làm điểm nhấn cho móc khóa không chỉ vì sự đáng yêu mà còn vì ý nghĩa mà chúng mang lại trong việc góp phần bảo vệ động vật biển. Sự kết hợp giữa ý thức môi trường và thiết kế sáng tạo khiến cho sản phẩm này trở thành một cách tuyệt vời để thể hiện phong cách cá nhân của bạn trong khi đồng thời chung tay bảo vệ môi trường xanh - nơi rùa biển và nhiều loài động vật khác gọi là nhà.", convertPhoto(context, R.drawable.pk_mockhoarua1), 0, "Phụ kiện", 60, 4.5, 90000, 50, "2024/04/10", 1, convertPhoto(context, R.drawable.pk_mockhoarua1), convertPhoto(context, R.drawable.pk_mockhoarua2), convertPhoto(context, R.drawable.pk_mockhoarua3));
 
     }
-public void createSampleDataCart() {
-    SQLiteDatabase db = this.getWritableDatabase();
-    db.beginTransaction();
-    try {
-        db.execSQL("DELETE FROM " + TBl_CART); // Xóa dữ liệu trong bảng CART trước khi thêm dữ liệu mới
-
-        // Thêm dữ liệu mới vào bảng CART
-        db.execSQL("INSERT INTO " + TBl_CART + " VALUES(null, 1, 1, 2)");
-        db.execSQL("INSERT INTO " + TBl_CART + " VALUES(null, 2, 2, 1)");
-        db.execSQL("INSERT INTO " + TBl_CART + " VALUES(null, 3, 1, 2)");
-        db.execSQL("INSERT INTO " + TBl_CART + " VALUES(null, 4, 2, 1)");
-        db.execSQL("INSERT INTO " + TBl_CART + " VALUES(null, 1, 3, 1)");
-        db.execSQL("INSERT INTO " + TBl_CART + " VALUES(null, 1, 4, 1)");
-        db.execSQL("INSERT INTO " + TBl_CART + " VALUES(null, 1, 5, 1)");
-
-        db.setTransactionSuccessful();
-    } finally {
-        db.endTransaction();
-        db.close();
-    }
-}
-
-
-
-
     private byte[] convertPhoto(Context context, int resourceId) {
         BitmapDrawable drawable = (BitmapDrawable) context.getDrawable(resourceId);
         Bitmap bitmap = drawable.getBitmap();
@@ -947,33 +924,45 @@ public void createSampleDataCart() {
 
         }
     }
-    public ArrayList<UserInfo> getLoggedinUserDetails(String email){
-        ArrayList<UserInfo> customers = new ArrayList<>();
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
 
-        Cursor cursor = sqLiteDatabase.rawQuery(query, new String[]{email});
-        Customer customer = null;
+    public List<Product> getProductsByCategory(String category) {
+        List<Product> products = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
 
-        // Nếu có kết quả từ câu truy vấn
+        // Câu truy vấn SQL để lấy danh sách sản phẩm theo category
+        String selectQuery = "SELECT * FROM " + TBl_PRODUCT + " WHERE " + CATEGORY + " = ?";
+
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{category});
+
+        // Lặp qua tất cả các hàng và thêm các sản phẩm vào danh sách productList
         if (cursor.moveToFirst()) {
-            // Lấy thông tin từ cursor
-            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
-            @SuppressLint("Range") String emails = cursor.getString(cursor.getColumnIndex(EMAIL));
-
-
-            UserInfo userInfo = new UserInfo();
-            userInfo.setFullName(name);
-            userInfo.setEmail(emails);
-
-            customers.add(userInfo);
+            do {
+                products.add(new Product(
+                        cursor.getInt(0), //ProductID
+                        cursor.getString(1), //ProductName
+                        cursor.getDouble(2), // ProductPrice
+                        cursor.getString(3), //ProductDescription
+                        cursor.getBlob(4), //ProductThumb
+                        cursor.getInt(5), //Hot
+                        cursor.getString(6), //Category
+                        cursor.getInt(7), //Inventory
+                        cursor.getDouble(8), //ProductRate
+                        cursor.getDouble(9), //SalePrice
+                        cursor.getInt(10), //SoldQuantity
+                        cursor.getString(11), //CreatedDate
+                        cursor.getInt(12), //Status
+                        cursor.getBlob(13), //img1
+                        cursor.getBlob(14), //img2
+                        cursor.getBlob(15) //img3
+                ));
+            } while (cursor.moveToNext());
         }
 
-        // Đóng con trỏ và database
+        // Đóng con trỏ và đóng kết nối cơ sở dữ liệu
         cursor.close();
-        sqLiteDatabase.close();
+        db.close();
 
-        return customers;
+        return products;
     }
     public ArrayList<UserInfo> getLoggedinUserDetailsMain(String email) {
         ArrayList<UserInfo> customers = new ArrayList<>();
@@ -989,6 +978,7 @@ public void createSampleDataCart() {
             @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
 
             UserInfo userInfo = new UserInfo();
+//            customer.getFullName(), customer.getUsername(), customer.getPhone(), String.valueOf(customer.getGender()), customer.getBirthday(), customer.getEmail(), customer.getCustomerId();
             userInfo.setFullName(name);
 
             customers.add(userInfo);
@@ -999,6 +989,92 @@ public void createSampleDataCart() {
         sqLiteDatabase.close();
 
         return customers;
+    }
+    public ArrayList<UserInfo> getLoggedinUserDetails(String email){
+        ArrayList<UserInfo> customers = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
+
+        Cursor cursor = sqLiteDatabase.rawQuery(query, new String[]{email});
+        Customer customer = null;
+
+        // Nếu có kết quả từ câu truy vấn
+        if (cursor.moveToFirst()) {
+            // Lấy thông tin từ cursor
+            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
+            @SuppressLint("Range") String emails = cursor.getString(cursor.getColumnIndex(EMAIL));
+            @SuppressLint("Range") String username = cursor.getString(cursor.getColumnIndex(USERNAME));
+            @SuppressLint("Range") String phone = cursor.getString(cursor.getColumnIndex(PHONE));
+            @SuppressLint("Range") String gender = cursor.getString(cursor.getColumnIndex(GENDER));
+            @SuppressLint("Range") String birthday = cursor.getString(cursor.getColumnIndex(BIRTHDAY));
+
+
+            UserInfo userInfo = new UserInfo();
+            userInfo.setFullName(name);
+            userInfo.setUserName(username);
+            userInfo.setPhone(phone);
+            userInfo.setEmail(emails);
+            userInfo.setGender(gender);
+            userInfo.setBirthday(birthday);
+
+            customers.add(userInfo);
+        }
+
+        // Đóng con trỏ và database
+        cursor.close();
+        sqLiteDatabase.close();
+
+        return customers;
+    }
+    @SuppressLint("Range")
+    public int getCustomerIdFromCustomer(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int customerId = -1; // Giá trị mặc định nếu không tìm thấy customerId
+        String query = "SELECT " + CUSTOMER_ID + " FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{email});
+        if (cursor != null && cursor.moveToFirst()) {
+            customerId = cursor.getInt(cursor.getColumnIndex(CUSTOMER_ID));
+//            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
+            cursor.close();
+        }
+
+        // Đóng con trỏ và database
+//        cursor.close();
+//        sqLiteDatabase.close();
+//
+//        return customers;
+        db.close();
+        return customerId;
+    }
+
+    //Custom product
+    public long insertData(String customerName, String email, String phone, String productCusName, String imageUri) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(CUSTOMPRODUCT_NAME, customerName);
+        values.put(CUSTOMPRODUCT_EMAIL, email);
+        values.put(CUSTOMPRODUCT_PHONE, phone);
+        values.put(CUSTOMPRODUCT_TITLE, productCusName);
+        values.put(CUSTOMPRODUCT_DESFILE, imageUri);
+        long newRowId = db.insert(TBL_CUSTOMPRODUCT, null, values);
+        db.close();
+        return newRowId;
+    }
+    public boolean upDateUserProfile(String email, String fullname1, String username1, String phone1, String gender1, String birthday1){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(FULLNAME, fullname1);
+        values.put(USERNAME, username1);
+        values.put(PHONE, phone1);
+        values.put(EMAIL, email);
+        values.put(GENDER, gender1);
+        values.put(BIRTHDAY, birthday1);
+        int i =sqLiteDatabase.update(TBL_CUSTOMER, values, "EMAIL=?", new String[] {email});
+        if (i>0){
+            return true;
+        }else {
+            return false;
+        }
     }
 
 

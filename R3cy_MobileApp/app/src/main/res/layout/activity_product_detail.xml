@@ -43,19 +43,25 @@
 
             </LinearLayout>
 
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/view_pager_2"
-                android:layout_width="match_parent"
-                android:layout_height="370dp"
-                android:layout_gravity="center"/>
-
-            <me.relex.circleindicator.CircleIndicator3
-                android:id="@+id/circle_indicator3"
+            <ImageView
+                android:id="@+id/imvThumb"
                 android:layout_width="wrap_content"
-                android:layout_height="15dp"
-                android:layout_gravity="center_horizontal"
-                app:ci_drawable="@drawable/bg_indicator3"/>
+                android:layout_height="370dp"
+                android:layout_gravity="center"
+                android:src="@drawable/dgd_dia1"/>
+
+<!--            <androidx.viewpager2.widget.ViewPager2-->
+<!--                android:id="@+id/view_pager_2"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="370dp"-->
+<!--                android:layout_gravity="center"/>-->
+
+<!--            <me.relex.circleindicator.CircleIndicator3-->
+<!--                android:id="@+id/circle_indicator3"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="15dp"-->
+<!--                android:layout_gravity="center_horizontal"-->
+<!--                app:ci_drawable="@drawable/bg_indicator3"/>-->
 
 
             <!--########################3-->

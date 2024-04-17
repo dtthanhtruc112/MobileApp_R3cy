@@ -3,22 +3,30 @@ package com.example.r3cy_mobileapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.adapter.BannerAdapter;
+import com.example.adapter.ProductAdapter;
+import com.example.databases.R3cyDB;
 import com.example.models.Banners;
+import com.example.models.Product;
 import com.example.r3cy_mobileapp.Product.Product_List;
 import com.example.r3cy_mobileapp.databinding.ActivityTrangChuBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -29,6 +37,10 @@ public class TrangChu extends AppCompatActivity {
     ArrayList<Banners> bannerList;
     Timer timer;
     BottomNavigationView navigationView;
+    R3cyDB db;
+    private List<Product> products;
+    Product product;
+    ProductAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +70,59 @@ public class TrangChu extends AppCompatActivity {
 
         autoSlide();
         addEvents();
+
+//        createDb();
+//        loadData();
+    }
+
+    private void createDb() {
+        db = new R3cyDB(this);
+        db.createSampleProduct();
+    }
+
+    private void loadData() {
+
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+//        binding.rcvProducts.setLayoutManager(layoutManager);
+//
+//        products = new ArrayList<>();
+//        Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT);
+//        while (cursor.moveToNext()) {
+//            products.add(new Product(
+//                    cursor.getInt(0), //ProductID
+//                    cursor.getString(1), //ProductName
+//                    cursor.getDouble(2), // ProductPrice
+//                    cursor.getString(3), //ProductDescription
+//                    cursor.getBlob(4), //ProductThumb
+//                    cursor.getInt(5), //Hot
+//                    cursor.getString(6), //Category
+//                    cursor.getInt(7), //Inventory
+//                    cursor.getDouble(8), //ProductRate
+//                    cursor.getDouble(9), //SalePrice
+//                    cursor.getInt(10), //SoldQuantity
+//                    cursor.getString(11), //CreatedDate
+//                    cursor.getInt(12), //Status
+//                    cursor.getBlob(13), //img1
+//                    cursor.getBlob(14), //img2
+//                    cursor.getBlob(15) //img3
+//            ));
+//            Log.d("ProductInfo", "Product ID: " + product.getProductID());
+//            Log.d("ProductInfo", "Product Name: " + product.getProductName());
+//        }
+//        cursor.close();
+//        Log.d("ProductInfo", "Number of products retrieved: " + products.size());
+//
+//
+////                String ProductName = cursor.getString(1);
+////                String ProductDescription = cursor.getString(3);
+////                String Category = cursor.getString(6);
+////                Double SalePrice = cursor.getDouble(9);
+////                Double ProductRate = cursor.getDouble(8);
+//
+//
+//
+//        adapter = new ProductAdapter(this, R.layout.viewholder_category_list, products);
+//        binding.rcvProducts.setAdapter(adapter);
     }
 
     private void autoSlide(){

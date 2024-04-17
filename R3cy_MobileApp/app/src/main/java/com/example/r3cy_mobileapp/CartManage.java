@@ -61,11 +61,13 @@ public class CartManage extends AppCompatActivity {
 
     private void createDb() {
         db = new R3cyDB(this);
+
         if (db != null) {
             Log.d("CartManage", "Database created successfully");
         } else {
             Log.e("CartManage", "Failed to create database");
         }
+        db.createSampleDataCart();
         db.createSampleDataCart();
         db.createSampleProduct();
         db.createSampleDataCustomer();

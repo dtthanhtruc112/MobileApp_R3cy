@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.R3cy_MobileApp"
         tools:targetApi="31">
+        <activity
+            android:name=".UserAccount_Info_Edit"
+            android:exported="false" />
         <activity
             android:name=".BlogDetail"
             android:exported="false" />
@@ -97,6 +103,12 @@
             android:exported="false" />
         <activity
             android:name=".Checkout"
+            android:exported="false" />
+        <activity
+            android:name=".Signin.Signin_Main"
+            android:exported="false" />
+        <activity
+            android:name=".TrangChu"
             android:exported="false" />
         <activity
             android:name=".CartManage"

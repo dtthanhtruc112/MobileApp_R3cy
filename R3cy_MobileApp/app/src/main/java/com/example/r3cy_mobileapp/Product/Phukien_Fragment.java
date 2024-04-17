@@ -1,54 +1,180 @@
 package com.example.r3cy_mobileapp.Product;
 
+import static com.example.databases.R3cyDB.CATEGORY;
+import static com.example.databases.R3cyDB.CREATED_DATE;
+import static com.example.databases.R3cyDB.HOT;
+import static com.example.databases.R3cyDB.INVENTORY;
+import static com.example.databases.R3cyDB.PRODUCT_DESCRIPTION;
+import static com.example.databases.R3cyDB.PRODUCT_ID;
+import static com.example.databases.R3cyDB.PRODUCT_IMG1;
+import static com.example.databases.R3cyDB.PRODUCT_IMG2;
+import static com.example.databases.R3cyDB.PRODUCT_IMG3;
+import static com.example.databases.R3cyDB.PRODUCT_NAME;
+import static com.example.databases.R3cyDB.PRODUCT_PRICE;
+import static com.example.databases.R3cyDB.PRODUCT_RATE;
+import static com.example.databases.R3cyDB.PRODUCT_THUMB;
+import static com.example.databases.R3cyDB.SALE_PRICE;
+import static com.example.databases.R3cyDB.SOLD_QUANTITY;
+import static com.example.databases.R3cyDB.STATUS;
+
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.DatabaseErrorHandler;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.adapter.ProductAdapter;
-import com.example.interfaces.ProductInterface;
+import com.example.databases.R3cyDB;
 import com.example.models.Product;
+import com.example.interfaces.ProductInterface;
 import com.example.r3cy_mobileapp.R;
+import com.example.r3cy_mobileapp.databinding.FragmentDogiadungBinding;
 import com.example.r3cy_mobileapp.databinding.FragmentPhukienBinding;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class Phukien_Fragment extends Fragment {
-
-    private ProductAdapter adapter;
-    private RecyclerView rvProducts;
     private FragmentPhukienBinding binding;
-    private ArrayList<Product> products;
+    private List<Product> products;
+    Product product;
+    R3cyDB db;
+    ProductAdapter adapter;
+    RecyclerView rvProducts;
+    Intent intent;
 
-
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentPhukienBinding.inflate(inflater, container, false);
-
-        loadData();
-        addEvents();
-
         return binding.getRoot();
+
+
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//            getCategory();
+        createDb();
+        addEvents();
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        Log.i("test", "onResume");
+        loadData();
+    }
+
+//    private void getCategory() {
+////            Category = getString(1, "Đồ gia dụng");
+//        }
+
+//        private void addControls() {
+//            RecyclerView rvProducts = binding.rvProducts;
+//            rvProducts.setLayoutManager(new GridLayoutManager(getContext(),2));
+//            products = new ArrayList<>();
+//            adapter = new ProductAdapter(getContext(), R.layout.viewholder_category_list, products);
+//            rvProducts.setAdapter(adapter);
+//
+//        }
+
+
+
+    private void createDb() {
+        db = new R3cyDB(getContext());
+        db.createSampleProduct();
+    }
+
+
+
     private void loadData() {
-        rvProducts = binding.rvProducts;
-        rvProducts.setLayoutManager(new GridLayoutManager(requireContext(), 2));
-        adapter = new ProductAdapter(getContext(), R.layout.viewholder_category_list, initData());
-        rvProducts.setAdapter(adapter);
+
+
+        products = db.getProductsByCategory("Đồ gia dụng");
+        Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT + " WHERE Category = 'Đồ gia dụng' ");
+        while (cursor.moveToNext()) {
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                Date createdDate = dateFormat.parse(cursor.getString(11));
+
+                products.add(new Product(
+                        cursor.getInt(0), //ProductID
+                        cursor.getString(1), //ProductName
+                        cursor.getDouble(2), // ProductPrice
+                        cursor.getString(3), //ProductDescription
+                        cursor.getBlob(4), //ProductThumb
+                        cursor.getInt(5), //Hot
+                        cursor.getString(6), //Category
+                        cursor.getInt(7), //Inventory
+                        cursor.getDouble(8), //ProductRate
+                        cursor.getDouble(9), //SalePrice
+                        cursor.getInt(10), //SoldQuantity
+                        cursor.getString(11), //CreatedDate
+                        cursor.getInt(12), //Status
+                        cursor.getBlob(13), //img1
+                        cursor.getBlob(14), //img2
+                        cursor.getBlob(15) //img3
+                ));
+            } catch (ParseException | NumberFormatException e) {
+                e.printStackTrace();
+            }
+            Log.d("ProductInfo", "Product ID: " + product.getProductID());
+            Log.d("ProductInfo", "Product Name: " + product.getProductName());
+        }
+        cursor.close();
+        Log.d("ProductInfo", "Number of products retrieved: " + products.size());
+
+
+//                String ProductName = cursor.getString(1);
+//                String ProductDescription = cursor.getString(3);
+//                String Category = cursor.getString(6);
+//                Double SalePrice = cursor.getDouble(9);
+//                Double ProductRate = cursor.getDouble(8);
+
+
+        binding.rvProducts.setLayoutManager(new GridLayoutManager(getContext(),2));
+        adapter = new ProductAdapter(getContext(), R.layout.viewholder_category_list, products);
+        binding.rvProducts.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
     }
 
     private void addEvents() {
+
         binding.rvProducts.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
             public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
@@ -57,49 +183,25 @@ public class Phukien_Fragment extends Fragment {
                 if (childView != null && e.getAction() == MotionEvent.ACTION_UP) {
                     int position = rv.getChildAdapterPosition(childView);
                     ProductInterface productInterface = (ProductInterface) requireActivity();
-//                    Product selectedProduct = (Product) adapter.getItem(position);
+                    Product selectedProduct = (Product) adapter.getItem(position);
 
                     // Tạo Intent và gửi thông tin sản phẩm sang Product_Detail Activity
-//                    Intent intent = new Intent(requireContext(), Product_detail.class);
-//                    intent.putExtra("product", selectedProduct);
-//                    startActivity(intent);
+                    Intent intent = new Intent(requireContext(), Product_Detail.class);
+                    intent.putExtra("ProductID", selectedProduct.getProductID());
+                    startActivity(intent);
                 }
                 return false;
             }
 
             @Override
             public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+
             }
 
             @Override
             public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
             }
+
         });
-    }
-
-    private List<Product> initData() {
-//        products = new ArrayList<>();
-        List<Product> products = new ArrayList<>();
-        List<Product> filteredProducts = new ArrayList<>();
-//        products.add(new Product(R.drawable.dgd_dia1, R.drawable.dgd_dia2, R.drawable.dgd_dia3, 1, "Đĩa nhỏ", 100000, "Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường. Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu. Thiết kế nhỏ gọn và tiện lợi làm cho sản phẩm trở thành người bạn đồng hành lý tưởng, không chỉ phục vụ nhu cầu hàng ngày mà còn thúc đẩy ý thức về một lối sống bền vững. Đĩa nhỏ từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian sống mà còn là một biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc giữ gìn cho hành tinh xanh của chúng ta. Hãy chọn lựa thông minh và hòa mình vào những giải pháp bảo vệ môi trường với sản phẩm độc đáo này" , "Đồ gia dụng", "4", "Sản phẩm này có thể được custom lại theo ý tôi không, tôi muốn đổi màu sản phẩm", "Truc Ho"));
-//        products.add(new Product(R.drawable.dgd_xaphong1, R.drawable.dgd_xaphong2, R.drawable.dgd_xaphong3, 2, "Khay đựng xà phòng", 150000, "Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường. Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu. Thiết kế nhỏ gọn và tiện lợi làm cho sản phẩm trở thành người bạn đồng hành lý tưởng, không chỉ phục vụ nhu cầu hàng ngày mà còn thúc đẩy ý thức về một lối sống bền vững. Đĩa nhỏ từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian sống mà còn là một biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc giữ gìn cho hành tinh xanh của chúng ta. Hãy chọn lựa thông minh và hòa mình vào những giải pháp bảo vệ môi trường với sản phẩm độc đáo này" , "Đồ gia dụng", "5", "Sản phẩm này có thể được custom lại theo ý tôi không, tôi muốn đổi màu sản phẩm", "Truc Ho"));
-//        products.add(new Product(R.drawable.dgd_lotly1, R.drawable.dgd_lotly2, R.drawable.dgd_lotly3, 3, "Lót ly", 90000, "Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường. Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu. Thiết kế nhỏ gọn và tiện lợi làm cho sản phẩm trở thành người bạn đồng hành lý tưởng, không chỉ phục vụ nhu cầu hàng ngày mà còn thúc đẩy ý thức về một lối sống bền vững. Đĩa nhỏ từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian sống mà còn là một biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc giữ gìn cho hành tinh xanh của chúng ta. Hãy chọn lựa thông minh và hòa mình vào những giải pháp bảo vệ môi trường với sản phẩm độc đáo này" , "Đồ gia dụng", "5", "Sản phẩm này có thể được custom lại theo ý tôi không, tôi muốn đổi màu sản phẩm", "Truc Ho"));
-//        products.add(new Product(R.drawable.dgd_laptop1, R.drawable.dgd_laptop2, R.drawable.dgd_latop3, 4, "Giá đỡ laptop", 200000, "Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường. Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu. Thiết kế nhỏ gọn và tiện lợi làm cho sản phẩm trở thành người bạn đồng hành lý tưởng, không chỉ phục vụ nhu cầu hàng ngày mà còn thúc đẩy ý thức về một lối sống bền vững. Đĩa nhỏ từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian sống mà còn là một biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc giữ gìn cho hành tinh xanh của chúng ta. Hãy chọn lựa thông minh và hòa mình vào những giải pháp bảo vệ môi trường với sản phẩm độc đáo này" , "Đồ gia dụng", "4", "Sản phẩm này có thể được custom lại theo ý tôi không, tôi muốn đổi màu sản phẩm", "Truc Ho"));
-//
-//        products.add(new Product(R.drawable.dtt_dayco1, R.drawable.dtt_dayco2, R.drawable.dtt_dayco3, 1, "Dây cờ trang trí tiệc", 100000, "Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường. Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu. Thiết kế nhỏ gọn và tiện lợi làm cho sản phẩm trở thành người bạn đồng hành lý tưởng, không chỉ phục vụ nhu cầu hàng ngày mà còn thúc đẩy ý thức về một lối sống bền vững. Đĩa nhỏ từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian sống mà còn là một biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc giữ gìn cho hành tinh xanh của chúng ta. Hãy chọn lựa thông minh và hòa mình vào những giải pháp bảo vệ môi trường với sản phẩm độc đáo này" , "Đồ trang trí", "4", "Sản phẩm này có thể được custom lại theo ý tôi không, tôi muốn đổi màu sản phẩm", "Truc Ho"));
-//        products.add(new Product(R.drawable.dtt_giangsinh1, R.drawable.dtt_giangsinh2, R.drawable.dtt_giangsinh3, 1, "Đồ trang trí giáng sinh", 70000, "Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường. Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu. Thiết kế nhỏ gọn và tiện lợi làm cho sản phẩm trở thành người bạn đồng hành lý tưởng, không chỉ phục vụ nhu cầu hàng ngày mà còn thúc đẩy ý thức về một lối sống bền vững. Đĩa nhỏ từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian sống mà còn là một biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc giữ gìn cho hành tinh xanh của chúng ta. Hãy chọn lựa thông minh và hòa mình vào những giải pháp bảo vệ môi trường với sản phẩm độc đáo này" , "Đồ trang trí", "5", "Sản phẩm này có thể được custom lại theo ý tôi không, tôi muốn đổi màu sản phẩm", "Truc Ho"));
-//        products.add(new Product(R.drawable.dtt_dongho1, R.drawable.dtt_dongho2, R.drawable.dtt_dongho3, 1, "Đồng hồ treo tường", 350000, "Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường. Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu. Thiết kế nhỏ gọn và tiện lợi làm cho sản phẩm trở thành người bạn đồng hành lý tưởng, không chỉ phục vụ nhu cầu hàng ngày mà còn thúc đẩy ý thức về một lối sống bền vững. Đĩa nhỏ từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian sống mà còn là một biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc giữ gìn cho hành tinh xanh của chúng ta. Hãy chọn lựa thông minh và hòa mình vào những giải pháp bảo vệ môi trường với sản phẩm độc đáo này" , "Đồ trang trí", "4", "Sản phẩm này có thể được custom lại theo ý tôi không, tôi muốn đổi màu sản phẩm", "Truc Ho"));
-//
-//        products.add(new Product(R.drawable.pk_bongtai_hcn1, R.drawable.pk_bongtai_hcn2, R.drawable.pk_bongtai_hcn3, 1, "Bông tai hình chữ nhật", 140000, "Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường. Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu. Thiết kế nhỏ gọn và tiện lợi làm cho sản phẩm trở thành người bạn đồng hành lý tưởng, không chỉ phục vụ nhu cầu hàng ngày mà còn thúc đẩy ý thức về một lối sống bền vững. Đĩa nhỏ từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian sống mà còn là một biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc giữ gìn cho hành tinh xanh của chúng ta. Hãy chọn lựa thông minh và hòa mình vào những giải pháp bảo vệ môi trường với sản phẩm độc đáo này" , "Phụ kiện", "4", "Sản phẩm này có thể được custom lại theo ý tôi không, tôi muốn đổi màu sản phẩm", "Truc Ho"));
-//        products.add(new Product(R.drawable.pk_bongtai_hoa1, R.drawable.pk_bongtai_hoa2, R.drawable.pk_bongtai_hoa3, 1, "Bông tai hình bông hoa", 140000, "Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường. Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu. Thiết kế nhỏ gọn và tiện lợi làm cho sản phẩm trở thành người bạn đồng hành lý tưởng, không chỉ phục vụ nhu cầu hàng ngày mà còn thúc đẩy ý thức về một lối sống bền vững. Đĩa nhỏ từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian sống mà còn là một biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc giữ gìn cho hành tinh xanh của chúng ta. Hãy chọn lựa thông minh và hòa mình vào những giải pháp bảo vệ môi trường với sản phẩm độc đáo này" , "Phụ kiện", "5", "Sản phẩm này có thể được custom lại theo ý tôi không, tôi muốn đổi màu sản phẩm", "Truc Ho"));
-//        products.add(new Product(R.drawable.pk_mockhoacuoi, R.drawable.pk_mockhoacuoi, R.drawable.pk_mockhoacuoi, 1, "Móc khóa hình mặt cười", 90000, "Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường. Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu. Thiết kế nhỏ gọn và tiện lợi làm cho sản phẩm trở thành người bạn đồng hành lý tưởng, không chỉ phục vụ nhu cầu hàng ngày mà còn thúc đẩy ý thức về một lối sống bền vững. Đĩa nhỏ từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian sống mà còn là một biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc giữ gìn cho hành tinh xanh của chúng ta. Hãy chọn lựa thông minh và hòa mình vào những giải pháp bảo vệ môi trường với sản phẩm độc đáo này" , "Phụ kiện", "4", "Sản phẩm này có thể được custom lại theo ý tôi không, tôi muốn đổi màu sản phẩm", "Truc Ho"));
-//        products.add(new Product(R.drawable.pk_mockhoarua1, R.drawable.pk_mockhoarua2, R.drawable.pk_mockhoarua3, 1, "Móc khóa rùa biển", 90000, "Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường. Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu. Thiết kế nhỏ gọn và tiện lợi làm cho sản phẩm trở thành người bạn đồng hành lý tưởng, không chỉ phục vụ nhu cầu hàng ngày mà còn thúc đẩy ý thức về một lối sống bền vững. Đĩa nhỏ từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian sống mà còn là một biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc giữ gìn cho hành tinh xanh của chúng ta. Hãy chọn lựa thông minh và hòa mình vào những giải pháp bảo vệ môi trường với sản phẩm độc đáo này" , "Phụ kiện", "5", "Sản phẩm này có thể được custom lại theo ý tôi không, tôi muốn đổi màu sản phẩm", "Truc Ho"));
-
-        for (Product product : products) {
-            if (product.getCategory().equals("Phụ kiện")) {
-                filteredProducts.add(product);
-            }
-        }
-        return filteredProducts;
-    }
-}
+    }}
