@@ -89,6 +89,13 @@ public class AddressAdapter extends BaseAdapter {
                 ((Checkout_AddressList) v.getContext()).openDialogDeleteAddress(address);
                 }
             });
+        holder.txtEditAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int AddressId = address.getAddressId();
+                ((Checkout_AddressList) v.getContext()).openEditAddressActivity(address);
+            }
+        });
 
 
         return convertView;

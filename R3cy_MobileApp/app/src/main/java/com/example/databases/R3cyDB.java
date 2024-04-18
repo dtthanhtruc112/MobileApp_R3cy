@@ -670,6 +670,48 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
         }
         return lastInsertedId;
     }
+    @SuppressLint("Range")
+    public Address getAddressById(int addressId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Address address = null;
+        Cursor cursor = null;
+        try {
+            // Query to get the address by its ID
+            String query = "SELECT * FROM " + TBl_ADDRESS + " WHERE " + ADDRESS_ID + " = ?";
+
+            // Execute the query with the provided addressId
+            cursor = db.rawQuery(query, new String[]{String.valueOf(addressId)});
+
+            // Check if the cursor has data
+            if (cursor != null && cursor.moveToFirst()) {
+                // Extract data from the cursor and create an Address object
+                address = new Address(
+                        cursor.getInt(cursor.getColumnIndex(ADDRESS_ID)),
+                        cursor.getInt(cursor.getColumnIndex(ADDRESS_CUSTOMER_ID)),
+                        cursor.getString(cursor.getColumnIndex(RECEIVER_NAME)),
+                        cursor.getString(cursor.getColumnIndex(RECEIVER_PHONE)),
+                        cursor.getString(cursor.getColumnIndex(PROVINCE)),
+                        cursor.getString(cursor.getColumnIndex(DISTRICT)),
+                        cursor.getString(cursor.getColumnIndex(WARD)),
+                        cursor.getString(cursor.getColumnIndex(ADDRESS_DETAILS)),
+                        cursor.getInt(cursor.getColumnIndex(IS_DEFAULT)),
+                        cursor.getString(cursor.getColumnIndex(ADDRESS_TYPE)),
+                        false
+                );
+            }
+        } catch (Exception e) {
+            Log.e("Error", "Error while getting address by ID: " + e.getMessage());
+        } finally {
+            // Close the cursor and database connection
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return address;
+    }
+
+
 
 
 

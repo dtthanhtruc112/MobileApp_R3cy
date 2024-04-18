@@ -124,4 +124,10 @@ public class Checkout_AddressList extends AppCompatActivity {
         dialog.show();
 
     }
+    public void openEditAddressActivity(Address a){
+        Intent intent = new Intent(this, EditAddress.class);
+        intent.putExtra("ADDRESS_ID", a.getAddressId());
+        startActivity(intent);
+
+    }
 }
