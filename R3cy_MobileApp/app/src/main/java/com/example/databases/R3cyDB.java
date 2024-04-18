@@ -655,11 +655,10 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
             execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, 2, 'Đặng Thị Thanh Trúc', '0910587896', 'Huế', 'Phong Điền', 'Phường 4', '35/8 Trần Hưng Đạo', 1, 'nhà riêng')");
             execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, 3, 'Đặng Lê Như Quỳnh', '0923535896', 'Bình Định', 'Tuy Phước', 'Phường 5', '40 Lê Duẩn', 1, 'nhà riêng')");
             execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, 4, 'Hồ Lê Thanh Trúc', '0971237410', 'Quảng Ngãi', 'Bình Sơn', 'Phường 6', '12/246 Trần Bình Trọng', 1, 'nhà riêng')");
-            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, 5, 'Nguyễn Thảo Nguyên', '0956335872', 'Phú Yên', 'Tuy Hoà', 'Phường 7', '79 Võ Thị Sáu', 1, 'nhà riêng')");
+            execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, 4, 'Nguyễn Thảo Nguyên', '0956335872', 'Phú Yên', 'Tuy Hoà', 'Phường 7', '79 Võ Thị Sáu', 1, 'nhà riêng')");
         }
     }
 
-    // Trong lớp R3cyDB, thêm một phương thức mới để lấy ID của bản ghi mới nhất
     public int getLastInsertedAddressId() {
         SQLiteDatabase db = getReadableDatabase();
         int lastInsertedId = -1;
@@ -669,6 +668,63 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
             cursor.close();
         }
         return lastInsertedId;
+    }
+    public List<Address> getAddressesForCustomer(int customerId) {
+        List<Address> addresses = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            String selection = ADDRESS_CUSTOMER_ID + " = ?";
+            String[] selectionArgs = { String.valueOf(customerId) };
+            cursor = db.query(TBl_ADDRESS, null, selection, selectionArgs, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    int columnIndexAddressId = cursor.getColumnIndex(ADDRESS_ID);
+                    int addressId = cursor.getInt(columnIndexAddressId);
+
+                    int columnIndexAddressCustomerId = cursor.getColumnIndex(ADDRESS_CUSTOMER_ID);
+                    int addressCustomerId = cursor.getInt(columnIndexAddressCustomerId);
+
+                    int columnIndexReceiverName = cursor.getColumnIndex(RECEIVER_NAME);
+                    String receiverName = cursor.getString(columnIndexReceiverName);
+
+                    int columnIndexReceiverPhone = cursor.getColumnIndex(RECEIVER_PHONE);
+                    String receiverPhone = cursor.getString(columnIndexReceiverPhone);
+
+                    int columnIndexProvince = cursor.getColumnIndex(PROVINCE);
+                    String province = cursor.getString(columnIndexProvince);
+
+                    int columnIndexDistrict = cursor.getColumnIndex(DISTRICT);
+                    String district = cursor.getString(columnIndexDistrict);
+
+                    int columnIndexWard = cursor.getColumnIndex(WARD);
+                    String ward = cursor.getString(columnIndexWard);
+
+                    int columnIndexAddressDetails = cursor.getColumnIndex(ADDRESS_DETAILS);
+                    String addressDetails = cursor.getString(columnIndexAddressDetails);
+
+                    int columnIndexIsDefault = cursor.getColumnIndex(IS_DEFAULT);
+                    int isDefault = cursor.getInt(columnIndexIsDefault);
+
+                    int columnIndexAddressType = cursor.getColumnIndex(ADDRESS_TYPE);
+                    String addressType = cursor.getString(columnIndexAddressType);
+
+                    // Tạo đối tượng Address từ dữ liệu lấy được từ Cursor
+                    Address address = new Address(addressId, addressCustomerId, receiverName, receiverPhone, province, district, ward, addressDetails, isDefault, addressType, false);
+
+                    // Thêm đối tượng Address vào danh sách addresses
+                    addresses.add(address);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e("DATABASE_ERROR", "Error retrieving data: " + e.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return addresses;
     }
     @SuppressLint("Range")
     public Address getAddressById(int addressId) {
@@ -710,6 +766,39 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
         }
         return address;
     }
+    public Address getDefaultAddress(int customerId) {
+        // Lấy danh sách tất cả các địa chỉ của khách hàng
+        List<Address> addresses = getAddressesForCustomer(customerId);
+
+        // Tìm địa chỉ mặc định trong danh sách
+        for (Address address : addresses) {
+            if (address.getIsDefault() == 1) {
+                return address; // Trả về địa chỉ mặc định nếu tìm thấy
+            }
+        }
+
+        // Trả về null nếu không tìm thấy địa chỉ mặc định
+        return null;
+    }
+
+    public Address getMaxAddress(int customerId) {
+        // Lấy danh sách tất cả các địa chỉ của khách hàng
+        List<Address> addresses = getAddressesForCustomer(customerId);
+
+        // Tìm địa chỉ có addressId lớn nhất trong danh sách
+        Address maxAddress = null;
+        int maxAddressId = -1;
+        for (Address address : addresses) {
+            if (address.getAddressId() > maxAddressId) {
+                maxAddressId = address.getAddressId();
+                maxAddress = address;
+            }
+        }
+
+        // Trả về địa chỉ có addressId lớn nhất hoặc null nếu không có địa chỉ nào
+        return maxAddress;
+    }
+
 
 
 
@@ -771,72 +860,7 @@ public Customer getCustomerByEmail(String email) {
     // Trả về đối tượng Customer
     return customer;
 }
-    public List<Address> getAddressesForLoggedInCustomer(String email) {
-        Customer customer = getCustomerByEmail(email);
-        if (customer != null) {
-            return getAddressesForCustomer(customer.getCustomerId());
-        } else {
-            return new ArrayList<>();
-        }
-    }
 
-    public List<Address> getAddressesForCustomer(int customerId) {
-        List<Address> addresses = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = null;
-        try {
-            String selection = ADDRESS_CUSTOMER_ID + " = ?";
-            String[] selectionArgs = { String.valueOf(customerId) };
-            cursor = db.query(TBl_ADDRESS, null, selection, selectionArgs, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    int columnIndexAddressId = cursor.getColumnIndex(ADDRESS_ID);
-                    int addressId = cursor.getInt(columnIndexAddressId);
-
-                    int columnIndexAddressCustomerId = cursor.getColumnIndex(ADDRESS_CUSTOMER_ID);
-                    int addressCustomerId = cursor.getInt(columnIndexAddressCustomerId);
-
-                    int columnIndexReceiverName = cursor.getColumnIndex(RECEIVER_NAME);
-                    String receiverName = cursor.getString(columnIndexReceiverName);
-
-                    int columnIndexReceiverPhone = cursor.getColumnIndex(RECEIVER_PHONE);
-                    String receiverPhone = cursor.getString(columnIndexReceiverPhone);
-
-                    int columnIndexProvince = cursor.getColumnIndex(PROVINCE);
-                    String province = cursor.getString(columnIndexProvince);
-
-                    int columnIndexDistrict = cursor.getColumnIndex(DISTRICT);
-                    String district = cursor.getString(columnIndexDistrict);
-
-                    int columnIndexWard = cursor.getColumnIndex(WARD);
-                    String ward = cursor.getString(columnIndexWard);
-
-                    int columnIndexAddressDetails = cursor.getColumnIndex(ADDRESS_DETAILS);
-                    String addressDetails = cursor.getString(columnIndexAddressDetails);
-
-                    int columnIndexIsDefault = cursor.getColumnIndex(IS_DEFAULT);
-                    int isDefault = cursor.getInt(columnIndexIsDefault);
-
-                    int columnIndexAddressType = cursor.getColumnIndex(ADDRESS_TYPE);
-                    String addressType = cursor.getString(columnIndexAddressType);
-
-                    // Tạo đối tượng Address từ dữ liệu lấy được từ Cursor
-                    Address address = new Address(addressId, addressCustomerId, receiverName, receiverPhone, province, district, ward, addressDetails, isDefault, addressType, false);
-
-                    // Thêm đối tượng Address vào danh sách addresses
-                    addresses.add(address);
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.e("DATABASE_ERROR", "Error retrieving data: " + e.getMessage());
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            db.close();
-        }
-        return addresses;
-    }
 
 
 public boolean checkEmailExists(String email) {
