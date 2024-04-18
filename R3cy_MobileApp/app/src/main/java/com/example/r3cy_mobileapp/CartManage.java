@@ -230,30 +230,3 @@ public class CartManage extends AppCompatActivity {
 
     }
 }
-//        binding.btnMuaHang.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Tạo một danh sách mới để chứa các sản phẩm được chọn
-//                ArrayList<CartItem> selectedItems = new ArrayList<>();
-//
-//                // Duyệt qua danh sách sản phẩm và kiểm tra xem sản phẩm nào được chọn
-//                for (CartItem item : cartItems) {
-//                    if (item.isSelected()) {
-//                        selectedItems.add(item); // Thêm sản phẩm đã được chọn vào danh sách
-//                    }
-//                }
-//
-//                // Kiểm tra xem có sản phẩm được chọn không
-//                if (selectedItems.isEmpty()) {
-//                    // Nếu không có sản phẩm nào được chọn, hiển thị Toast thông báo
-//                    Toast.makeText(getApplicationContext(), "Vui lòng chọn sản phẩm", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    // Nếu có sản phẩm được chọn, chuyển sang trang checkout và gửi danh sách các sản phẩm đã chọn đi
-//                    Intent intent = new Intent(CartManage.this, Checkout.class);
-//                    // Tạo một ArrayList mới để chứa các phần tử của selectedItems
-//                    intent.putParcelableArrayListExtra("selectedItems", selectedItems);
-//                    startActivity(intent);
-//                }
-//            }
-//        });
-

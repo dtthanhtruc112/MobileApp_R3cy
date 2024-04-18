@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDao {
-    R3cyDB   dbHelper;;
+   R3cyDB   dbHelper;
 
     public ProductDao(R3cyDB dbHelper) {
         this.dbHelper = dbHelper;

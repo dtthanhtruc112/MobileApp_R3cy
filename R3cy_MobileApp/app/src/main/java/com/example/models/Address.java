@@ -28,6 +28,7 @@ public class Address {
         this.isSelected = isSelected;
     }
 
+
     public int getAddressId() {
         return AddressId;
     }

@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.example.models.Address;
 import com.example.models.Coupon;
+import com.example.r3cy_mobileapp.CartManage;
+import com.example.r3cy_mobileapp.Checkout_AddressList;
 import com.example.r3cy_mobileapp.R;
 
 import java.util.List;
@@ -19,6 +21,12 @@ public class AddressAdapter extends BaseAdapter {
     Activity activity;
     int item_layout;
     List<Address> addresses;
+
+    public AddressAdapter(Activity activity, int item_layout, List<Address> addresses) {
+        this.activity = activity;
+        this.item_layout = item_layout;
+        this.addresses = addresses;
+    }
 
     @Override
     public int getCount() {
@@ -49,6 +57,9 @@ public class AddressAdapter extends BaseAdapter {
             holder.txtReceiverPhone = convertView.findViewById(R.id.txtReceiverPhone);
             holder.txtDetailAddress = convertView.findViewById(R.id.txtDetailAddress);
             holder.txtGeneralAddress = convertView.findViewById(R.id.txtGeneralAddress);
+            holder.txtDefaultAddress = convertView.findViewById(R.id.txtDefaultAddress);
+            holder.txtDeleteAddress = convertView.findViewById(R.id.txtDeleteAddress);
+            holder.txtEditAddress = convertView.findViewById(R.id.txtEditAddress);
 
             convertView.setTag(holder);
         } else {
@@ -62,14 +73,29 @@ public class AddressAdapter extends BaseAdapter {
         holder.txtReceiverName.setText(address.getReceiverName());
         holder.txtReceiverPhone.setText(address.getReceiverPhone());
         holder.txtDetailAddress.setText(address.getAddressDetails());
-        holder.txtGeneralAddress.setText(address.getWard() + " , " + address.getDistrict() + ", " + address.getProvince());
+        holder.txtGeneralAddress.setText(address.getWard() + ", " + address.getDistrict() + ", " + address.getProvince());
+
+        // Kiểm tra nếu là địa chỉ mặc định thì hiển thị txtDefaultAddress, ngược lại ẩn đi
+        if (address.getIsDefault() == 1) {
+            holder.txtDefaultAddress.setVisibility(View.VISIBLE);
+        } else {
+            holder.txtDefaultAddress.setVisibility(View.GONE);
+        }
+        // Xóa địa chỉ
+        holder.txtDeleteAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int AddressId = address.getAddressId();
+                ((Checkout_AddressList) v.getContext()).openDialogDeleteAddress(address);
+                }
+            });
+
 
         return convertView;
     }
 
     public static class ViewHolderAddress{
         RadioButton rdbSelected;
-        TextView txtReceiverName, txtReceiverPhone, txtDetailAddress, txtGeneralAddress, txtDeleteAddress, txtEditAddress;
-        Button btnDefaultAddress;
+        TextView txtReceiverName, txtReceiverPhone, txtDetailAddress, txtGeneralAddress, txtDefaultAddress, txtDeleteAddress, txtEditAddress;
     }
 }
