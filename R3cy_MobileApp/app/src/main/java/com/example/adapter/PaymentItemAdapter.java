@@ -17,7 +17,9 @@ import androidx.annotation.NonNull;
 import com.example.models.CartItem;
 import com.example.r3cy_mobileapp.R;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class PaymentItemAdapter extends ArrayAdapter<CartItem> {
     private Context mContext;
@@ -60,7 +62,13 @@ public class PaymentItemAdapter extends ArrayAdapter<CartItem> {
         holder.txtproductName.setText(item.getProductName());
         holder.txtproductCategory.setText(item.getProductCategory());
         holder.txtproductQuantity.setText(String.valueOf(item.getProductQuantity()));
-        holder.txtproductPrice.setText(String.valueOf(item.getProductPrice()));
+
+        // Định dạng giá sản phẩm thành tiền tệ
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
+        String formattedPrice = numberFormat.format(item.getProductPrice());
+        holder.txtproductPrice.setText(formattedPrice);
+
+
         // Hiển thị ảnh sản phẩm từ byte array
         byte[] imageBytes = item.getProductThumb();
 

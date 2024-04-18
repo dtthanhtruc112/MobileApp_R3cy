@@ -20,7 +20,9 @@ import com.example.models.Coupon;
 import com.example.r3cy_mobileapp.CartManage;
 import com.example.r3cy_mobileapp.R;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class CartAdapter extends BaseAdapter {
     Activity activity;
@@ -81,6 +83,7 @@ public class CartAdapter extends BaseAdapter {
 
         ViewHolderCart holder;
 
+
         if (convertView == null) {
             holder = new ViewHolderCart();
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -108,7 +111,11 @@ public class CartAdapter extends BaseAdapter {
         holder.txt_ProductName.setText(cartItem.getProductName());
         holder.txt_ProductCategory.setText(cartItem.getProductCategory());
         holder.txtQuantity.setText(String.valueOf(cartItem.getProductQuantity()));
-        holder.txt_ProductPrice.setText(String.valueOf(cartItem.getProductPrice()));
+        // Định dạng giá sản phẩm thành tiền tệ
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
+        String formattedPrice = numberFormat.format(cartItem.getProductPrice());
+        holder.txt_ProductPrice.setText(formattedPrice);
+
 
         holder.txtDeleteCartItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,7 +185,8 @@ public class CartAdapter extends BaseAdapter {
 
         // Cập nhật txtTotalAmount nếu đã được đặt
         if (txtTotalAmount != null) {
-            txtTotalAmount.setText(String.valueOf(totalAmount));
+            NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
+            txtTotalAmount.setText(numberFormat.format(totalAmount));
         }
         return totalAmount;
     }

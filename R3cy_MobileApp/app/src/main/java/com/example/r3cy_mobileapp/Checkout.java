@@ -18,7 +18,9 @@ import com.example.r3cy_mobileapp.databinding.ActivityCheckoutBinding;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Checkout extends AppCompatActivity {
 
@@ -66,17 +68,26 @@ public class Checkout extends AppCompatActivity {
 
         // Tính tổng số tiền từ danh sách các mục đã chọn
         double totalAmount = calculateTotalAmount(selectedItems);
-        binding.txtTotalAmount.setText(String.valueOf(totalAmount));
-
-        double shippingFee = 25000;
-//        cố định bằng 25000
-        binding.txtShippingfee.setText(String.valueOf(shippingFee));
+        double shippingFee = 25000; //        cố định bằng 25000
         double couponShipping = 0;//        Hoặc bằng 1 hàm nào đó tính couponshipping
-        binding.txtCouponShipping.setText(String.valueOf(couponShipping));
         double couponOrder = 0; //        Hoặc bằng 1 hàm nào đó tính couponorder
-        binding.txtDiscountOrder.setText(String.valueOf(couponOrder));
         double totalOrderValue = totalAmount + shippingFee -couponOrder - couponShipping;
-        binding.txtTotalOrderValue.setText(String.valueOf(totalOrderValue));
+
+        // Định dạng số
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
+        String formattedTotalOrderValue = numberFormat.format(totalOrderValue);
+        String formattedCouponOrder = numberFormat.format(couponOrder);
+        String formattedCouponShipping = numberFormat.format(couponShipping);
+        String formattedShippingFee = numberFormat.format(shippingFee);
+        String formattedTotalAmount = numberFormat.format(totalAmount);
+
+// Gán giá trị định dạng vào TextView
+        binding.txtTotalOrderValue.setText(formattedTotalOrderValue);
+        binding.txtShippingfee.setText(formattedShippingFee);
+        binding.txtCouponShipping.setText(formattedCouponShipping);
+        binding.txtDiscountOrder.setText(formattedCouponOrder);
+        binding.txtTotalAmount.setText(formattedTotalAmount);
+
 
 
         // Khởi tạo adapter và thiết lập cho ListView
