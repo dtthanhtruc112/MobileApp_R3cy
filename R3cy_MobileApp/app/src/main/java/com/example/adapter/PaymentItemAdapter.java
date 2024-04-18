@@ -30,7 +30,6 @@ public class PaymentItemAdapter extends ArrayAdapter<CartItem> {
     }
 
 
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -79,7 +78,7 @@ public class PaymentItemAdapter extends ArrayAdapter<CartItem> {
 
 
 
-        public static class ViewHolderPayment{
+    public static class ViewHolderPayment{
         TextView txtproductName, txtproductCategory,txtproductPrice, txtproductQuantity;
         ImageView imv_ProductImage;
     }

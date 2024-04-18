@@ -42,9 +42,6 @@ public class Checkout extends AppCompatActivity {
     }
 
     private void loadData() {
-
-        // Lấy danh sách các CartItem từ Intent
-//        ArrayList<CartItem> selectedItems = getIntent().getParcelableArrayListExtra("selectedItems");
         // Lấy danh sách các sản phẩm đã chọn từ SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("selected_items", Context.MODE_PRIVATE);
         String serializedList = sharedPreferences.getString("selected_items_list", null);
@@ -67,9 +64,32 @@ public class Checkout extends AppCompatActivity {
             Log.d("SharedPreferences", "Không có dữ liệu được lưu trong SharedPreferences.");
         }
 
+        // Tính tổng số tiền từ danh sách các mục đã chọn
+        double totalAmount = calculateTotalAmount(selectedItems);
+        binding.txtTotalAmount.setText(String.valueOf(totalAmount));
+
+        double shippingFee = 25000;
+//        cố định bằng 25000
+        binding.txtShippingfee.setText(String.valueOf(shippingFee));
+        double couponShipping = 0;//        Hoặc bằng 1 hàm nào đó tính couponshipping
+        binding.txtCouponShipping.setText(String.valueOf(couponShipping));
+        double couponOrder = 0; //        Hoặc bằng 1 hàm nào đó tính couponorder
+        binding.txtDiscountOrder.setText(String.valueOf(couponOrder));
+        double totalOrderValue = totalAmount + shippingFee -couponOrder - couponShipping;
+        binding.txtTotalOrderValue.setText(String.valueOf(totalOrderValue));
+
+
         // Khởi tạo adapter và thiết lập cho ListView
         adapter = new PaymentItemAdapter(this, R.layout.payment_item, selectedItems);
         binding.lvPaymentItemList.setAdapter(adapter);
 
+    }
+    // Phương thức để tính tổng số tiền từ danh sách các mục đã chọn
+    private double calculateTotalAmount(ArrayList<CartItem> selectedItems) {
+        double totalAmount = 0.0;
+        for (CartItem item : selectedItems) {
+            totalAmount += item.getProductPrice() * item.getProductQuantity();
+        }
+        return totalAmount;
     }
 }
