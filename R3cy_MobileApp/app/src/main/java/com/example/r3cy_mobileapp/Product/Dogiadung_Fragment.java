@@ -16,7 +16,9 @@ import static com.example.databases.R3cyDB.PRODUCT_THUMB;
 import static com.example.databases.R3cyDB.SALE_PRICE;
 import static com.example.databases.R3cyDB.SOLD_QUANTITY;
 import static com.example.databases.R3cyDB.STATUS;
+import static com.example.databases.R3cyDB.TBl_PRODUCT;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -43,8 +45,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.adapter.CartAdapter;
 import com.example.adapter.ProductAdapter;
+import com.example.dao.ProductDao;
+import com.example.dao.ProductDao2;
 import com.example.databases.R3cyDB;
+import com.example.models.CartItem;
 import com.example.models.Product;
 import com.example.interfaces.ProductInterface;
 import com.example.r3cy_mobileapp.R;
@@ -65,12 +71,14 @@ import java.util.Locale;
 
 public class Dogiadung_Fragment extends Fragment {
      private FragmentDogiadungBinding binding;
-        private List<Product> products;
+        ArrayList<Product> products;
         Product product;
         R3cyDB db;
+        ProductDao2 productDao2;
         ProductAdapter adapter;
         RecyclerView rvProducts;
         Intent intent;
+        SQLiteDatabase database;
 
         @Nullable
         @Override
@@ -113,58 +121,28 @@ public class Dogiadung_Fragment extends Fragment {
 
 
 
-        private void createDb() {
-            db = new R3cyDB(getContext());
-            db.createSampleProduct();
+    private void createDb() {
+        db = new R3cyDB(getContext());
+
+        if (db != null) {
+            Log.d("Dogiadung", "Database created successfully");
+        } else {
+            Log.e("Dogiadung", "Failed to create database");
         }
+        db.createSampleProduct();
+        // Khởi tạo productDao sau khi database được khởi tạo xong
+        productDao2 = new ProductDao2(db);
+    }
 
 
 
         private void loadData() {
 
+            // Lấy dữ liệu từ ProductDao
+            products = (ArrayList<Product>) productDao2.getProducts();
+            Log.i("ProductSize", "Number of items retrieved: " + products.size());
 
-            products = db.getProductsByCategory("Đồ gia dụng");
-            Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT + " WHERE Category = 'Đồ gia dụng' ");
-            while (cursor.moveToNext()) {
-                try {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                    Date createdDate = dateFormat.parse(cursor.getString(11));
-
-                products.add(new Product(
-                        cursor.getInt(0), //ProductID
-                        cursor.getString(1), //ProductName
-                        cursor.getDouble(2), // ProductPrice
-                        cursor.getString(3), //ProductDescription
-                        cursor.getBlob(4), //ProductThumb
-                        cursor.getInt(5), //Hot
-                        cursor.getString(6), //Category
-                        cursor.getInt(7), //Inventory
-                        cursor.getDouble(8), //ProductRate
-                        cursor.getDouble(9), //SalePrice
-                        cursor.getInt(10), //SoldQuantity
-                        cursor.getString(11), //CreatedDate
-                        cursor.getInt(12), //Status
-                        cursor.getBlob(13), //img1
-                        cursor.getBlob(14), //img2
-                        cursor.getBlob(15) //img3
-                ));
-            } catch (ParseException | NumberFormatException e) {
-                e.printStackTrace();
-            }
-                Log.d("ProductInfo", "Product ID: " + product.getProductID());
-                Log.d("ProductInfo", "Product Name: " + product.getProductName());
-            }
-            cursor.close();
-            Log.d("ProductInfo", "Number of products retrieved: " + products.size());
-
-
-//                String ProductName = cursor.getString(1);
-//                String ProductDescription = cursor.getString(3);
-//                String Category = cursor.getString(6);
-//                Double SalePrice = cursor.getDouble(9);
-//                Double ProductRate = cursor.getDouble(8);
-
-
+            // Khởi tạo adapter và thiết lập cho ListView
             binding.rvProducts.setLayoutManager(new GridLayoutManager(getContext(),2));
             adapter = new ProductAdapter(getContext(), R.layout.viewholder_category_list, products);
             binding.rvProducts.setAdapter(adapter);

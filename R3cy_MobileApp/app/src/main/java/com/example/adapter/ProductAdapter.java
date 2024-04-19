@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dao.ProductDao2;
 import com.example.models.Product;
 import com.example.r3cy_mobileapp.Product.Product_Detail;
 import com.example.r3cy_mobileapp.R;
@@ -26,9 +27,10 @@ import java.util.List;
 import java.util.Locale;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
-    private Context context;
+    Context context;
     int viewholder_category_list;
-    private List<Product> products;
+    List<Product> products;
+    private ProductDao2 productDao2;
 
     public ProductAdapter(Context context, int viewholder_category_list, List<Product> products) {
         this.context = context;
@@ -36,52 +38,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         this.products = products;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
-        notifyDataSetChanged();
+//    Phương thức setter cho ProductDao2
 
+    public void setProductDao2 (ProductDao2 productDao2){
+        this.productDao2 = productDao2;
     }
-
-    @NonNull
-    @Override
-    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.viewholder_category_list, parent, false);
-        return new ProductViewHolder(view);
-    }
-    @Override
-    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.viewholder_category_list, null);
-
-        ImageView imvProductThumb = recyclerView.findViewById(R.id.imvProductThumb);
-        TextView txtProductName = recyclerView.findViewById(R.id.txtProductName);
-        TextView txtCategory = recyclerView.findViewById(R.id.txtCategory);
-        TextView txtProductDescription = recyclerView.findViewById(R.id.txtProductDescription);
-        TextView txtSalePrice = recyclerView.findViewById(R.id.txtSalePrice);
-        TextView txtProductRate = recyclerView.findViewById(R.id.txtProductRate);
-
-        Product product = products.get(position);
-
-        Bitmap bmProductThumb = BitmapFactory.decodeByteArray(product.getProductThumb(), 0, product.getProductThumb().length);
-        imvProductThumb.setImageBitmap(bmProductThumb);
-        txtProductName.setText(product.getProductName());
-        txtCategory.setText(product.getCategory());
-        txtProductDescription.setText(product.getProductDescription());
-        txtSalePrice.setText(String.format("%.0f", product.getSalePrice()));
-        txtProductRate.setText(String.format("%.0f", product.getProductRate()));
-
-
-//        Listener khi click vào item sp
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, Product_Detail.class);
-                intent.putExtra("productID", product.getProductID());
-                context.startActivity(intent);
-            }
-        });
-    }
-
 
     @Override
     public int getItemCount() {
@@ -95,8 +56,68 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
+
+//    public void setProducts(List<Product> products) {
+//        this.products = products;
+//        notifyDataSetChanged();
+//
+//    }
+
+    @NonNull
+    @Override
+    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.viewholder_category_list, parent, false);
+        return new ProductViewHolder(view);
+    }
+
+
+    @Override
+    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.viewholder_category_list, null);
+
+        holder.imvProductThumb = recyclerView.findViewById(R.id.imvProductThumb);
+        holder.txtProductName = recyclerView.findViewById(R.id.txtProductName);
+        holder.txtCategory = recyclerView.findViewById(R.id.txtCategory);
+        holder.txtProductDescription = recyclerView.findViewById(R.id.txtProductDescription);
+        holder.txtSalePrice = recyclerView.findViewById(R.id.txtSalePrice);
+        holder.txtProductRate = recyclerView.findViewById(R.id.txtProductRate);
+
+        Product product = products.get(position);
+
+        Bitmap bmProductThumb = BitmapFactory.decodeByteArray(product.getProductThumb(), 0, product.getProductThumb().length);
+        holder.imvProductThumb.setImageBitmap(bmProductThumb);
+        holder.txtProductName.setText(product.getProductName());
+        holder.txtCategory.setText(product.getCategory());
+        holder.txtProductDescription.setText(product.getProductDescription());
+        holder.txtSalePrice.setText(String.format("%.0f", product.getSalePrice()));
+        holder.txtProductRate.setText(String.format("%.0f", product.getProductRate()));
+
+        // Hiển thị hình ảnh từ byte[]
+        byte[] imageBytes = product.getProductThumb();
+        if (imageBytes != null && imageBytes.length > 0) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+            holder.imvProductThumb.setImageBitmap(bitmap);
+        } else {
+            // Nếu không có hình ảnh, có thể hiển thị một hình ảnh mặc định hoặc ẩn ImageView
+            holder.imvProductThumb.setImageResource(R.drawable.dtt_giangsinh1);
+        }
+
+//        Listener khi click vào item sp
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, Product_Detail.class);
+                intent.putExtra("productID", product.getProductID());
+                context.startActivity(intent);
+            }
+        });
+    }
+
+
+
 
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder {

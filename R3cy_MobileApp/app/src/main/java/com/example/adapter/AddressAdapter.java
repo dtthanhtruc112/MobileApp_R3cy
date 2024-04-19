@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.models.Address;
 import com.example.models.Coupon;
-import com.example.r3cy_mobileapp.CartManage;
+//import com.example.r3cy_mobileapp.CartManage;
 import com.example.r3cy_mobileapp.Checkout_AddressList;
 import com.example.r3cy_mobileapp.R;
 

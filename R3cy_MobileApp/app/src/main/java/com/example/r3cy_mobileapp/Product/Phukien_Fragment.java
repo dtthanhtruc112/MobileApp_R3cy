@@ -16,7 +16,9 @@ import static com.example.databases.R3cyDB.PRODUCT_THUMB;
 import static com.example.databases.R3cyDB.SALE_PRICE;
 import static com.example.databases.R3cyDB.SOLD_QUANTITY;
 import static com.example.databases.R3cyDB.STATUS;
+import static com.example.databases.R3cyDB.TBl_PRODUCT;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -121,49 +123,85 @@ public class Phukien_Fragment extends Fragment {
 
 
 
+
     private void loadData() {
 
+        products = new ArrayList<>();
+//
+////            products = db.getProductsByCategory("Đồ gia dụng");
+//            Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT);
+//            while (cursor.moveToNext()) {
+//                try {
+//                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+//                    Date createdDate = dateFormat.parse(cursor.getString(11));
+//
+//                products.add(new Product(
+//                        cursor.getInt(0), //ProductID
+//                        cursor.getString(1), //ProductName
+//                        cursor.getDouble(2), // ProductPrice
+//                        cursor.getString(3), //ProductDescription
+//                        cursor.getBlob(4), //ProductThumb
+//                        cursor.getInt(5), //Hot
+//                        cursor.getString(6), //Category
+//                        cursor.getInt(7), //Inventory
+//                        cursor.getDouble(8), //ProductRate
+//                        cursor.getDouble(9), //SalePrice
+//                        cursor.getInt(10), //SoldQuantity
+//                        cursor.getString(11), //CreatedDate
+//                        cursor.getInt(12), //Status
+//                        cursor.getBlob(13), //img1
+//                        cursor.getBlob(14), //img2
+//                        cursor.getBlob(15) //img3
+//                ));
+//            } catch (ParseException | NumberFormatException e) {
+//                e.printStackTrace();
+//            }
+//                Log.d("ProductInfo", "Product ID: " + product.getProductID());
+//                Log.d("ProductInfo", "Product Name: " + product.getProductName());
+//            }
+//            cursor.close();
+//            Log.d("ProductInfo", "Number of products retrieved: " + products.size());
+//
+//
+////                String ProductName = cursor.getString(1);
+////                String ProductDescription = cursor.getString(3);
+////                String Category = cursor.getString(6);
+////                Double SalePrice = cursor.getDouble(9);
+////                Double ProductRate = cursor.getDouble(8);
+//
+        try (Cursor cursor = db.getData("SELECT * FROM " + TBl_PRODUCT)){
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    @SuppressLint("Range") int ProductID = cursor.getInt(cursor.getColumnIndex(PRODUCT_ID));
+                    @SuppressLint("Range") String ProductName = cursor.getString(cursor.getColumnIndex(PRODUCT_NAME));
+                    @SuppressLint("Range") double SalePrice = cursor.getDouble(cursor.getColumnIndex(SALE_PRICE));
+                    @SuppressLint("Range") String ProductDescription = cursor.getString(cursor.getColumnIndex(PRODUCT_DESCRIPTION));
+                    @SuppressLint("Range") byte[] ProductThumb = cursor.getBlob(cursor.getColumnIndex(PRODUCT_THUMB));
+                    @SuppressLint("Range") String Category = cursor.getString(cursor.getColumnIndex(CATEGORY));
+                    @SuppressLint("Range") int Inventory = cursor.getInt(cursor.getColumnIndex(INVENTORY));
+                    @SuppressLint("Range") double ProductPrice = cursor.getDouble(cursor.getColumnIndex(PRODUCT_PRICE));
+                    @SuppressLint("Range") double ProductRate = cursor.getDouble(cursor.getColumnIndex(PRODUCT_RATE));
+                    @SuppressLint("Range") int SoldQuantity = cursor.getInt(cursor.getColumnIndex(SOLD_QUANTITY));
+                    @SuppressLint("Range") String CreatedDate = cursor.getString(cursor.getColumnIndex(CREATED_DATE));
+                    @SuppressLint("Range") int Status = cursor.getInt(cursor.getColumnIndex(STATUS));
+                    @SuppressLint("Range") byte[] Img1 = cursor.getBlob(cursor.getColumnIndex(PRODUCT_IMG1));
+                    @SuppressLint("Range") byte[] Img2 = cursor.getBlob(cursor.getColumnIndex(PRODUCT_IMG2));
+                    @SuppressLint("Range") byte[] Img3 = cursor.getBlob(cursor.getColumnIndex(PRODUCT_IMG3));
+                    @SuppressLint("Range") int Hot = cursor.getInt(cursor.getColumnIndex(HOT));
 
-        products = db.getProductsByCategory("Đồ gia dụng");
-        Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT + " WHERE Category = 'Đồ gia dụng' ");
-        while (cursor.moveToNext()) {
-            try {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                Date createdDate = dateFormat.parse(cursor.getString(11));
+                    // Tạo một đối tượng Product từ dữ liệu
+                    Product product = new Product(ProductID, ProductName, ProductPrice, ProductDescription, ProductThumb, Hot, Category, Inventory, ProductRate, SalePrice, SoldQuantity, CreatedDate, Status, Img1, Img2, Img3);
 
-                products.add(new Product(
-                        cursor.getInt(0), //ProductID
-                        cursor.getString(1), //ProductName
-                        cursor.getDouble(2), // ProductPrice
-                        cursor.getString(3), //ProductDescription
-                        cursor.getBlob(4), //ProductThumb
-                        cursor.getInt(5), //Hot
-                        cursor.getString(6), //Category
-                        cursor.getInt(7), //Inventory
-                        cursor.getDouble(8), //ProductRate
-                        cursor.getDouble(9), //SalePrice
-                        cursor.getInt(10), //SoldQuantity
-                        cursor.getString(11), //CreatedDate
-                        cursor.getInt(12), //Status
-                        cursor.getBlob(13), //img1
-                        cursor.getBlob(14), //img2
-                        cursor.getBlob(15) //img3
-                ));
-            } catch (ParseException | NumberFormatException e) {
-                e.printStackTrace();
+                    // Thêm sản phẩm vào danh sách
+                    products.add(product);
+                } while (cursor.moveToNext());}
+        } catch (Exception e) {
+            Log.e("ProductInfo", "Error loading products:", e);  // Log potential errors
+        } finally {
+            if (db != null) {
+                db.close(); // Ensure database connection is closed even on exceptions
             }
-            Log.d("ProductInfo", "Product ID: " + product.getProductID());
-            Log.d("ProductInfo", "Product Name: " + product.getProductName());
         }
-        cursor.close();
-        Log.d("ProductInfo", "Number of products retrieved: " + products.size());
-
-
-//                String ProductName = cursor.getString(1);
-//                String ProductDescription = cursor.getString(3);
-//                String Category = cursor.getString(6);
-//                Double SalePrice = cursor.getDouble(9);
-//                Double ProductRate = cursor.getDouble(8);
 
 
         binding.rvProducts.setLayoutManager(new GridLayoutManager(getContext(),2));
