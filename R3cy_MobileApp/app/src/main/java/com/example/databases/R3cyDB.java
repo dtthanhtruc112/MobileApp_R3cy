@@ -659,6 +659,46 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
         }
     }
 
+    public Customer getCustomerByEmail1(String email) {
+        // Đọc cơ sở dữ liệu
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Câu truy vấn SQL
+        String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
+
+        // Thực thi câu truy vấn
+        Cursor cursor = db.rawQuery(query, new String[]{email});
+
+        Customer customer = null;
+
+        // Nếu có kết quả từ câu truy vấn
+        if (cursor.moveToFirst()) {
+            // Lấy thông tin từ cursor
+            @SuppressLint("Range") int customerId = cursor.getInt(cursor.getColumnIndex(CUSTOMER_ID));
+            @SuppressLint("Range") String username = cursor.getString(cursor.getColumnIndex(USERNAME));
+            @SuppressLint("Range") String fullName = cursor.getString(cursor.getColumnIndex(FULLNAME));
+            @SuppressLint("Range") int gender = cursor.getInt(cursor.getColumnIndex(GENDER));
+            @SuppressLint("Range") String emaill = cursor.getString(cursor.getColumnIndex(EMAIL));
+            @SuppressLint("Range") String phone = cursor.getString(cursor.getColumnIndex(PHONE));
+            @SuppressLint("Range") String password = cursor.getString(cursor.getColumnIndex(PASSWORD));
+            @SuppressLint("Range") int membershipScore = cursor.getInt(cursor.getColumnIndex(MEMBERSHIP_SCORE));
+            @SuppressLint("Range") String birthday = cursor.getString(cursor.getColumnIndex(BIRTHDAY));
+            @SuppressLint("Range") byte[] customerThumb = cursor.getBlob(cursor.getColumnIndex(CUSTOMER_THUMB));
+            @SuppressLint("Range") String customerType = cursor.getString(cursor.getColumnIndex(CUSTOMER_TYPE));
+
+// Tạo đối tượng Customer
+            customer = new Customer(customerId, username, fullName, gender, emaill, phone, password, membershipScore, birthday, customerThumb, customerType);
+        }
+
+        // Đóng cursor và đóng cơ sở dữ liệu
+        cursor.close();
+        db.close();
+
+        // Trả về đối tượng Customer
+        return customer;
+    }
+
+
     public int getLastInsertedAddressId() {
         SQLiteDatabase db = getReadableDatabase();
         int lastInsertedId = -1;

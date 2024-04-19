@@ -160,7 +160,7 @@ public class TichDiem extends AppCompatActivity {
         }
 
         // Lấy thông tin của khách hàng dựa trên email từ SharedPreferences
-        customer = db.getCustomerByEmail(email);
+        customer = db.getCustomerByEmail1(email);
 
 //        Cursor c1 = db.getData("SELECT * FROM " + R3cyDB.TBL_CUSTOMER);
 //        if (c1.moveToFirst()){

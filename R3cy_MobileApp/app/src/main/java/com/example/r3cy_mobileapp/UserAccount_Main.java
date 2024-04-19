@@ -80,28 +80,28 @@ public class UserAccount_Main extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
         String email = preferences.getString("string", "");
 
-        // Nếu không có email từ SharedPreferences, không thực hiện gì cả
-        if (email.isEmpty()) {
-            return;
-        }
-        ArrayList<UserInfo> customer = db.getLoggedinUserDetailsMain(email);
-//        // Kiểm tra xem email có null không
-//        if (email != null) {
-//            // Lấy thông tin người dùng từ cơ sở dữ liệu
-//            ArrayList<UserInfo> customer = db.getLoggedinUserDetailsMain(email);
-//
-//            // Kiểm tra xem danh sách khách hàng có trống không
-//            if (customer != null && customer.size() > 0) {
-//                UserInfo userInfo = customer.get(0);
-//                name.setText(userInfo.getFullName());
-//            } else {
-//                // Xử lý trường hợp không tìm thấy thông tin người dùng
-//                Toast.makeText(this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
-//            }
-//        } else {
-//            // Xử lý trường hợp không nhận được email từ Intent
-//            Toast.makeText(this, "Không nhận được thông tin email", Toast.LENGTH_SHORT).show();
+//        // Nếu không có email từ SharedPreferences, không thực hiện gì cả
+//        if (email.isEmpty()) {
+//            return;
 //        }
+//        ArrayList<UserInfo> customer = db.getLoggedinUserDetailsMain(email);
+//        // Kiểm tra xem email có null không
+        if (email != null) {
+            // Lấy thông tin người dùng từ cơ sở dữ liệu
+            ArrayList<UserInfo> customer = db.getLoggedinUserDetailsMain(email);
+
+            // Kiểm tra xem danh sách khách hàng có trống không
+            if (customer != null && customer.size() > 0) {
+                UserInfo userInfo = customer.get(0);
+                name.setText(userInfo.getFullName());
+            } else {
+                // Xử lý trường hợp không tìm thấy thông tin người dùng
+                Toast.makeText(this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            // Xử lý trường hợp không nhận được email từ Intent
+            Toast.makeText(this, "Không nhận được thông tin email", Toast.LENGTH_SHORT).show();
+        }
 
     }
 

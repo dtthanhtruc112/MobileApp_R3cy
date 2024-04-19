@@ -81,6 +81,8 @@ public class TrangChu extends AppCompatActivity {
         loadData();
     }
 
+
+
     private void createDb() {
         db = new R3cyDB(this);
         db.createSampleProduct();
@@ -169,7 +171,31 @@ public class TrangChu extends AppCompatActivity {
             timer.cancel();
             timer =null;
         }
+
+
+
+            // Xóa SharedPreferences
+            SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+        editor.remove("key_name");
+        editor.apply();
+
+
+
+
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // Xóa SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear(); // Xóa tất cả các giá trị trong SharedPreferences
+        editor.apply();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

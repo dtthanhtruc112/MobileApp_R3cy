@@ -17,6 +17,7 @@ import com.example.databases.R3cyDB;
 import com.example.models.Customer;
 import com.example.r3cy_mobileapp.R;
 import com.example.r3cy_mobileapp.Signup;
+import com.example.r3cy_mobileapp.TrangChu;
 import com.example.r3cy_mobileapp.UserAccount_Info;
 import com.example.r3cy_mobileapp.UserAccount_Main;
 
@@ -73,6 +74,18 @@ public class Signin_Main extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // Xóa SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear(); // Xóa tất cả các giá trị trong SharedPreferences
+        editor.apply();
+    }
+
     private void signIn() {
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
@@ -96,6 +109,9 @@ public class Signin_Main extends AppCompatActivity {
                 SharedPreferences.Editor editor = preferences.edit();
 
                 editor.putString("string", email);
+
+                Intent intent = new Intent(Signin_Main.this, TrangChu.class);
+                startActivity(intent);
 
                 editor.apply();
 
