@@ -540,65 +540,68 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
         c.close();
         return numberOfRows;
     }
-    public boolean insertDataOrder(String ORDER_ID, String ORDER_CUSTOMER_ID, String ORDER_DATE, String PAYMENT_METHOD, String PAYMENT_ID, String COUPON_ID, double TOTAL_ORDER_VALUE, String ORDER_STATUS, String ORDER_NOTE, String DELIVERY_DATE, String DISCOUNT, double SHIPPING_FEE, double TOTAL_AMOUNT, String PAYMENT_STATUS, String ADDRESS_ID) {
-        SQLiteDatabase database = getWritableDatabase();
-        String sql = "INSERT INTO " + TBl_ORDER + "(" +
-                ORDER_ID + ", " +
-                ORDER_CUSTOMER_ID + ", " +
-                ORDER_DATE + ", " +
-                PAYMENT_METHOD + ", " +
-                PAYMENT_ID + ", " +
-                COUPON_ID + ", " +
-                TOTAL_ORDER_VALUE + ", " +
-                ORDER_STATUS + ", " +
-                ORDER_NOTE + ", " +
-                DELIVERY_DATE + ", " +
-                DISCOUNT + ", " +
-                SHIPPING_FEE + ", " +
-                TOTAL_AMOUNT + ", " +
-                PAYMENT_STATUS + ", " +
-                ADDRESS_ID +
-                ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+//    public boolean insertDataOrder(String OrderID, String OrderCusID, String OrderDate, String PaymentMethod, String PaymentID, String CouponID, double TotalValuePrice, String OrderStatus, String OrderNote, String DeliveryDate, String Discount, double ShippingFee, double TotalAmount, String PaymentStatus, String Address) {
+//        SQLiteDatabase database = getWritableDatabase();
+//        String sql = "INSERT INTO " + TBl_ORDER + "(" +
+//                ORDER_ID + ", " +
+//                ORDER_CUSTOMER_ID + ", " +
+//                ORDER_DATE + ", " +
+//                PAYMENT_METHOD + ", " +
+//                PAYMENT_ID + ", " +
+//                COUPON_ID + ", " +
+//                TOTAL_ORDER_VALUE + ", " +
+//                ORDER_STATUS + ", " +
+//                ORDER_NOTE + ", " +
+//                DELIVERY_DATE + ", " +
+//                DISCOUNT + ", " +
+//                SHIPPING_FEE + ", " +
+//                TOTAL_AMOUNT + ", " +
+//                PAYMENT_STATUS + ", " +
+//                ADDRESS_ID +
+//                ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+//
+//        SQLiteStatement statement = database.compileStatement(sql);
+//
+//// Chuyển đổi chuỗi ngày tháng thành đối tượng Date
+////        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+////        Date date;
+////        try {
+////            date = sdf.parse(OrderDate);
+////        } catch (ParseException e) {
+////            e.printStackTrace();
+////            return true;
+////        }
+//        statement.bindString(1, OrderID);
+//        statement.bindString(2, OrderCusID);
+//        statement.bindString(3, OrderDate);
+//        statement.bindString(4, PaymentMethod);
+//        statement.bindString(5, PaymentID);
+//        statement.bindString(6, CouponID);
+//        statement.bindDouble(7, TotalValuePrice);
+//        statement.bindString(8, OrderStatus);
+//        statement.bindString(9, OrderNote);
+//        statement.bindString(10, DeliveryDate);
+//        statement.bindString(11, Discount);
+//        statement.bindDouble(12, ShippingFee);
+//        statement.bindDouble(13, TotalAmount);
+//        statement.bindString(14, PaymentStatus);
+//        statement.bindString(15, Address);
+//
+//
+//        long result = statement.executeInsert();
+//        boolean  success = result != -1;
+//        Log.d("DatabaseHelper", "Insert data result: " + success);
+//        return success;
+//    }
+    public void createSampleDataOrder() {
+        if (numbOfRowsOrder() == 0) {
+            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, null, '14-04-2024'', 'COD', null, null, 236000, 'Đang giao', 'Che tên sản phẩm', '15-04-2024', '0', 35000, 200000, 'Chưa thanh toán', null)");
+            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, null, '15-04-2024'', 'COD', null, null, 232000, 'Đang giao', 'Che tên sản phẩm', '16-04-2024', '0', 30000, 220000, 'Chưa thanh toán', null)");
+            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, null, '16-04-2024'', 'COD', null, null, 205000, 'Đang giao', 'Che tên sản phẩm', '17-04-2024', '0', 25000, 210000, 'Chưa thanh toán', null)");
+            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, null, '17-04-2024'', 'COD', null, null, 135000, 'Đang giao', 'Che tên sản phẩm', '18-04-2024', '0', 15000, 250000, 'Chưa thanh toán', null)");
+            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, null, '18-04-2024'', 'COD', null, null, 165000, 'Đang giao', 'Che tên sản phẩm', '19-04-2024', '0', 35000, 260000, 'Chưa thanh toán', null)");
 
-        SQLiteStatement statement = database.compileStatement(sql);
-
-// Chuyển đổi chuỗi ngày tháng thành đối tượng Date
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        Date date;
-        try {
-            date = sdf.parse(ORDER_DATE);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return false;
         }
-        statement.bindString(1, ORDER_ID);
-        statement.bindString(2, ORDER_CUSTOMER_ID);
-        statement.bindString(3, ORDER_DATE);
-        statement.bindString(4, PAYMENT_METHOD);
-        statement.bindString(5, PAYMENT_ID);
-        statement.bindString(6, COUPON_ID);
-        statement.bindDouble(7, TOTAL_ORDER_VALUE);
-        statement.bindString(8, ORDER_STATUS);
-        statement.bindString(9, ORDER_NOTE);
-        statement.bindString(10, DELIVERY_DATE);
-        statement.bindString(11, DISCOUNT);
-        statement.bindDouble(12, SHIPPING_FEE);
-        statement.bindDouble(13, TOTAL_AMOUNT);
-        statement.bindString(14, PAYMENT_STATUS);
-        statement.bindString(15, ADDRESS_ID);
-
-
-        long result = statement.executeInsert();
-        boolean  success = result != -1;
-        Log.d("DatabaseHelper", "Insert data result: " + success);
-        return success;
-    }
-    public void createSampleDataOrder(){
-        insertDataOrder(null,null,"14-04-2024","COD", null, null, 235000, "Đang giao", "Che tên sản phẩm", "15-04-2024", "0", 35000, 200000, "Chưa thanh toán", null);
-        insertDataOrder(null,null,"15-04-2003","COD", null, null, 165000, "Chờ lấy hàng", "Che tên sản phẩm", "16-04-2024", "10%", 35000, 130000, "Chưa thanh toán", null);
-        insertDataOrder(null,null,"16-04-2003","COD", null, null, 185000, "Đang giao", "Che tên sản phẩm", "17-04-2024", "0", 35000, 150000, "Chưa thanh toán", null);
-        insertDataOrder(null,null,"17-04-2003","COD", null, null, 175000, "Đang giao", "Che tên sản phẩm", "18-04-2024", "0", 35000, 140000, "Chưa thanh toán", null);
-        insertDataOrder(null,null,"18-04-2003","COD", null, null, 215000, "Đang giao", "Che tên sản phẩm", "19-04-2024", "0", 35000, 180000, "Chưa thanh toán", null);
     }
 
     public int numbOfRowsOrderLine(){
@@ -608,37 +611,39 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
         return numberOfRows;
     }
 
-    public boolean insertDataOrderLine(String ORDER_LINE_ID, String ORDER_LINE_ORDER_ID, String ORDER_LINE_PRODUCT_ID, double ORDER_SALE_PRICE, String QUANTITY) {
-        SQLiteDatabase database = getWritableDatabase();
-        String sql = "INSERT INTO " + TBl_ORDER_LINE + "(" +
-                ORDER_LINE_ID + ", " +
-                ORDER_LINE_ORDER_ID + ", " +
-                ORDER_LINE_PRODUCT_ID + ", " +
-                ORDER_SALE_PRICE + ", " +
-                QUANTITY +
-                ") VALUES(?,?,?,?,?)";
-
-        SQLiteStatement statement = database.compileStatement(sql);
-
+//    public boolean insertDataOrderLine(int OrderLineID, int OrderLineOrderId, int OrderLineProductID, double OrderSalePrice, int Quantity) {
+//        SQLiteDatabase database = getWritableDatabase();
+//        String sql = "INSERT INTO " + TBl_ORDER_LINE + "(" +
+//                ORDER_LINE_ID + ", " +
+//                ORDER_LINE_ORDER_ID + ", " +
+//                ORDER_LINE_PRODUCT_ID + ", " +
+//                ORDER_SALE_PRICE + ", " +
+//                QUANTITY +
+//                ") VALUES(?,?,?,?,?)";
 //
-        statement.bindString(1, ORDER_LINE_ID);
-        statement.bindString(2, ORDER_LINE_ORDER_ID);
-        statement.bindString(3, ORDER_LINE_PRODUCT_ID);
-        statement.bindDouble(4, ORDER_SALE_PRICE);
-        statement.bindString(5, QUANTITY);
-
-
-        long result = statement.executeInsert();
-        boolean  success = result != -1;
-        Log.d("DatabaseHelper", "Insert data result: " + success);
-        return success;
-    }
-    public void createSampleDataOrderLine(){
-        insertDataOrderLine(null,null,null,160000, "4");
-        insertDataOrderLine(null,null,null,150000, "2");
-        insertDataOrderLine(null,null,null,140000, "3");
-        insertDataOrderLine(null,null,null,150000, "1");
-        insertDataOrderLine(null,null,null,170000, "2");
+//        SQLiteStatement statement = database.compileStatement(sql);
+//
+////
+//        statement.bindLong(1, OrderLineID);
+//        statement.bindLong(2, OrderLineOrderId);
+//        statement.bindLong(3, OrderLineProductID);
+//        statement.bindDouble(4, OrderSalePrice);
+//        statement.bindLong(5, Quantity);
+//
+//
+//        long result = statement.executeInsert();
+//        boolean  success = result != -1;
+//        Log.d("DatabaseHelper", "Insert data result: " + success);
+//        return success;
+//    }
+    public void createSampleDataOrderLine() {
+        if (numbOfRowsOrderLine() == 0) {
+            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, null, 160000, 4)");
+            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, null, 150000, 3)");
+            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, null, 140000, 3)");
+            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, null, 150000, 2)");
+            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, null, 170000, 1)");
+        }
     }
 
     public int numbOfRowsAddress(){
