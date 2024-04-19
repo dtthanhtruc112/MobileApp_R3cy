@@ -88,12 +88,6 @@ public class Signup extends AppCompatActivity {
             return;
         }
 
-        // Kiểm tra số điện thoại có lớn hơn 10 chữ số không
-        if (!isValidPhoneNumber(password)) {
-            Toast.makeText(this, "Số điện thoại phải lớn hơn 10 chữ số", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         // Kiểm tra độ dài mật khẩu
         if (password.length() < 8) {
             Toast.makeText(this, "Mật khẩu phải chứa ít nhất 8 ký tự", Toast.LENGTH_SHORT).show();
@@ -132,11 +126,6 @@ public class Signup extends AppCompatActivity {
     // Phương thức kiểm tra định dạng email
     private boolean isValidEmail(CharSequence target) {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
-    }
-
-    // Phương thức kiểm tra số điện thoại có lớn hơn 10 chữ số
-    private boolean isValidPhoneNumber(String phoneNumber) {
-        return phoneNumber.length() >= 10;
     }
 
     // Phương thức để bật hoặc tắt xem mật khẩu
