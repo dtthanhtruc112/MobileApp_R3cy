@@ -4,12 +4,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -76,6 +78,7 @@ public class Checkout_AddressList extends AppCompatActivity {
         // Khởi tạo adapter và thiết lập cho ListView
         adapter = new AddressAdapter(this, R.layout.address_item, addresses);
         binding.lvAddressList.setAdapter(adapter);
+
     }
     public void openDialogDeleteAddress(Address a){
         AlertDialog.Builder builder = new AlertDialog.Builder(Checkout_AddressList.this);
@@ -130,4 +133,11 @@ public class Checkout_AddressList extends AppCompatActivity {
         startActivity(intent);
 
     }
+    public void openCheckoutActivity(Address a){
+        Intent intent = new Intent(this, Checkout.class);
+        intent.putExtra("ADDRESS_ID", a.getAddressId());
+        startActivity(intent);
+
+    }
+
 }

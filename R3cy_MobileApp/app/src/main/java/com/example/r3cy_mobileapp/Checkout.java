@@ -1,7 +1,9 @@
 package com.example.r3cy_mobileapp;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.adapter.CartAdapter;
 import com.example.adapter.PaymentItemAdapter;
@@ -38,6 +41,9 @@ public class Checkout extends AppCompatActivity {
     ArrayList<CartItem> selectedItems;
 
     Address address;
+    private int addressIdFromIntent;
+//    address khi đổi địa chỉ nhận hàng
+    private static final int ADDRESS_SELECTION_REQUEST_CODE = 1;
 
     int customerId = 1;
 //    Thay customer lấy sau khi login ra
@@ -50,9 +56,25 @@ public class Checkout extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         createDb();
-        loadData();
-        displayAddress(); // Hiển thị địa chỉ
         addEvents();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("test", "onResume");
+        loadDataCart();
+
+        // Lấy ID của địa chỉ từ Intent
+        addressIdFromIntent = getIntent().getIntExtra("ADDRESS_ID", -1);
+        if (addressIdFromIntent == -1) {
+            // Xử lí lỗi nếu không có ID
+            Toast.makeText(this, "Không lấy được addressId từ intent", Toast.LENGTH_SHORT).show();
+            displayAddress();
+        } else {
+            displayAddress();
+        }
+
+
     }
     private void createDb() {
         db = new R3cyDB(this);
@@ -65,7 +87,7 @@ public class Checkout extends AppCompatActivity {
         }
     }
 
-    private void loadData() {
+    private void loadDataCart() {
         // Lấy danh sách các sản phẩm đã chọn từ SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("selected_items", Context.MODE_PRIVATE);
         String serializedList = sharedPreferences.getString("selected_items_list", null);
@@ -116,8 +138,10 @@ public class Checkout extends AppCompatActivity {
         binding.addressLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                Intent intent = new Intent(Checkout.this, Checkout_AddressList.class);
+//                startActivity(intent);
                 Intent intent = new Intent(Checkout.this, Checkout_AddressList.class);
-                startActivity(intent);
+                startActivityForResult(intent, ADDRESS_SELECTION_REQUEST_CODE);
             }
         });
     }
@@ -129,21 +153,42 @@ public class Checkout extends AppCompatActivity {
         return totalAmount;
     }
     // Kiểm tra và hiển thị địa chỉ mặc định hoặc địa chỉ có addressId lớn nhất
+//    private void displayAddress() {
+//        Address defaultAddress = db.getDefaultAddress(customerId);
+//        Address maxAddress = db.getMaxAddress(customerId);
+//
+//        if (defaultAddress != null) {
+//            displayAddressOnUI(defaultAddress);
+//        } else if (maxAddress != null) {
+//            displayAddressOnUI(maxAddress);
+//        } else {
+//            // Không có địa chỉ nào, hiển thị nút "Thêm địa chỉ nhận hàng"
+//            displayAddAddressButton();
+//        }
+//    }
     private void displayAddress() {
-        Address defaultAddress = db.getDefaultAddress(customerId);
-        Address maxAddress = db.getMaxAddress(customerId);
+        // Nếu chưa có addressIdFromIntent (tức là chưa chọn địa chỉ từ trang danh sách địa chỉ)
+        if (addressIdFromIntent == -1) {
+            Address defaultAddress = db.getDefaultAddress(customerId);
+            Address maxAddress = db.getMaxAddress(customerId);
 
-        if (defaultAddress != null) {
-            // Hiển thị địa chỉ mặc định
-            displayAddressOnUI(defaultAddress);
-        } else if (maxAddress != null) {
-            // Hiển thị địa chỉ có addressId lớn nhất
-            displayAddressOnUI(maxAddress);
+            if (defaultAddress != null) {
+                displayAddressOnUI(defaultAddress);
+            } else if (maxAddress != null) {
+                displayAddressOnUI(maxAddress);
+            } else {
+                // Không có địa chỉ nào, hiển thị nút "Thêm địa chỉ nhận hàng"
+                displayAddAddressButton();
+            }
         } else {
-            // Không có địa chỉ nào, hiển thị nút "Thêm địa chỉ nhận hàng"
-            displayAddAddressButton();
+            // Nếu đã có addressIdFromIntent, hiển thị địa chỉ tương ứng
+            Address selectedAddress = db.getAddressById(addressIdFromIntent);
+            if (selectedAddress != null) {
+                displayAddressOnUI(selectedAddress);
+            }
         }
     }
+
 
     // Hiển thị địa chỉ lên giao diện
     private void displayAddressOnUI(Address address) {
@@ -157,9 +202,6 @@ public class Checkout extends AppCompatActivity {
     private void displayAddAddressButton() {
         // Ẩn các TextView hiển thị địa chỉ
         binding.addressLayout.setVisibility(View.GONE);
-//        binding.txtReceiver.setVisibility(View.GONE);
-//        binding.txtAddress.setVisibility(View.GONE);
-
 
         binding.txtAddAddress.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,5 +212,24 @@ public class Checkout extends AppCompatActivity {
         });
 
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADDRESS_SELECTION_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                // Nhận addressId được chọn từ trang danh sách địa chỉ
+                int selectedAddressId = data.getIntExtra("SELECTED_ADDRESS_ID", -1);
+                if (selectedAddressId != -1) {
+                    // Cập nhật addressIdFromIntent với địa chỉ được chọn
+                    addressIdFromIntent = selectedAddressId;
+                    // Hiển thị địa chỉ đã được chọn
+                    displayAddress();
+                }
+            }
+        }
+    }
+
+
+
 
 }

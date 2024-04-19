@@ -1,6 +1,7 @@
 package com.example.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ public class AddressAdapter extends BaseAdapter {
     Activity activity;
     int item_layout;
     List<Address> addresses;
+
+
 
     public AddressAdapter(Activity activity, int item_layout, List<Address> addresses) {
         this.activity = activity;
@@ -60,6 +63,7 @@ public class AddressAdapter extends BaseAdapter {
             holder.txtDefaultAddress = convertView.findViewById(R.id.txtDefaultAddress);
             holder.txtDeleteAddress = convertView.findViewById(R.id.txtDeleteAddress);
             holder.txtEditAddress = convertView.findViewById(R.id.txtEditAddress);
+            holder.rdbSelected = convertView.findViewById(R.id.rdbSelected);
 
             convertView.setTag(holder);
         } else {
@@ -81,6 +85,7 @@ public class AddressAdapter extends BaseAdapter {
         } else {
             holder.txtDefaultAddress.setVisibility(View.GONE);
         }
+
         // Xóa địa chỉ
         holder.txtDeleteAddress.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +101,15 @@ public class AddressAdapter extends BaseAdapter {
                 ((Checkout_AddressList) v.getContext()).openEditAddressActivity(address);
             }
         });
+        holder.rdbSelected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int AddressId = address.getAddressId();
+                ((Checkout_AddressList) v.getContext()).openCheckoutActivity(address);
+            }
+        });
+
+
 
 
         return convertView;
@@ -103,6 +117,7 @@ public class AddressAdapter extends BaseAdapter {
 
     public static class ViewHolderAddress{
         RadioButton rdbSelected;
+
         TextView txtReceiverName, txtReceiverPhone, txtDetailAddress, txtGeneralAddress, txtDefaultAddress, txtDeleteAddress, txtEditAddress;
     }
 }
