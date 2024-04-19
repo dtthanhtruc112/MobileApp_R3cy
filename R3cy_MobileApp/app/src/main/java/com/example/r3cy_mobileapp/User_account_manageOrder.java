@@ -1,5 +1,7 @@
 package com.example.r3cy_mobileapp;
 
+import static java.security.AccessController.getContext;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -7,10 +9,12 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.database.CursorWindow;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.databases.R3cyDB;
 import com.example.r3cy_mobileapp.Fragment.OrderManage_cholayhang_Fragment;
 import com.example.r3cy_mobileapp.Fragment.OrderManage_choxuly_Fragment;
 import com.example.r3cy_mobileapp.Fragment.OrderManage_danggiao_Fragment;
@@ -24,6 +28,8 @@ import com.example.r3cy_mobileapp.databinding.ActivityUserAccountManageOrderBind
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.lang.reflect.Field;
+
 public class User_account_manageOrder extends AppCompatActivity {
     ActivityUserAccountManageOrderBinding binding;
     TabLayout tabLayout;
@@ -33,6 +39,7 @@ public class User_account_manageOrder extends AppCompatActivity {
     TextView textView1;
 
     ImageView btnback;
+    R3cyDB db;
 
 
     @Override
@@ -67,7 +74,24 @@ public class User_account_manageOrder extends AppCompatActivity {
                 }
             }
         }).attach();
+        try {
+            Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
+            field.setAccessible(true);
+            field.set(null, 100 * 1024 * 1024); //the 100MB is the new size
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        createDB();
     }
+
+    private void createDB() {
+
+            db = new R3cyDB(this);
+            db.createSampleDataOrder();
+
+    }
+
+
     private class TabAdapter extends FragmentStateAdapter {
 
         public TabAdapter(@NonNull FragmentActivity fragmentActivity) {

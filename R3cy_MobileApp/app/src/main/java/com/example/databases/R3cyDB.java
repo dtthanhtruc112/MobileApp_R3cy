@@ -594,11 +594,11 @@ public class R3cyDB extends SQLiteOpenHelper {
 //    }
     public void createSampleDataOrder() {
         if (numbOfRowsOrder() == 0) {
-            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, null, '14-04-2024'', 'COD', null, null, 236000, 'Đang giao', 'Che tên sản phẩm', '15-04-2024', '0', 35000, 200000, 'Chưa thanh toán', null)");
-            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, null, '15-04-2024'', 'COD', null, null, 232000, 'Đang giao', 'Che tên sản phẩm', '16-04-2024', '0', 30000, 220000, 'Chưa thanh toán', null)");
-            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, null, '16-04-2024'', 'COD', null, null, 205000, 'Đang giao', 'Che tên sản phẩm', '17-04-2024', '0', 25000, 210000, 'Chưa thanh toán', null)");
-            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, null, '17-04-2024'', 'COD', null, null, 135000, 'Đang giao', 'Che tên sản phẩm', '18-04-2024', '0', 15000, 250000, 'Chưa thanh toán', null)");
-            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, null, '18-04-2024'', 'COD', null, null, 165000, 'Đang giao', 'Che tên sản phẩm', '19-04-2024', '0', 35000, 260000, 'Chưa thanh toán', null)");
+            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 1, '14-04-2024'', 'COD', null, null, 236000, 'Đang giao', 'Che tên sản phẩm', '15-04-2024', '0', 35000, 200000, 'Chưa thanh toán', null)");
+            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 2, '15-04-2024'', 'COD', null, null, 232000, 'Chờ xử lý', 'Che tên sản phẩm', '16-04-2024', '0', 30000, 220000, 'Chưa thanh toán', null)");
+            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 3, '16-04-2024'', 'COD', null, null, 205000, 'Chờ xác nhận', 'Che tên sản phẩm', '17-04-2024', '0', 25000, 210000, 'Chưa thanh toán', null)");
+            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 4, '17-04-2024'', 'COD', null, null, 135000, 'Hoàn thành', 'Che tên sản phẩm', '18-04-2024', '0', 15000, 250000, 'Chưa thanh toán', null)");
+            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 5, '18-04-2024'', 'COD', null, null, 165000, 'Đang giao', 'Che tên sản phẩm', '19-04-2024', '0', 35000, 260000, 'Chưa thanh toán', null)");
 
         }
     }
@@ -637,11 +637,11 @@ public class R3cyDB extends SQLiteOpenHelper {
 //    }
     public void createSampleDataOrderLine() {
         if (numbOfRowsOrderLine() == 0) {
-            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, null, 160000, 4)");
-            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, null, 150000, 3)");
-            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, null, 140000, 3)");
-            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, null, 150000, 2)");
-            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, null, 170000, 1)");
+            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, 1, 160000, 4)");
+            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, 2, 150000, 3)");
+            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, 3, 140000, 3)");
+            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, 4, 150000, 2)");
+            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, 5, 170000, 1)");
         }
     }
 
@@ -1294,6 +1294,30 @@ public class R3cyDB extends SQLiteOpenHelper {
             return false;
         }
     }
+    @SuppressLint("Range")
+    public String getOrderStatus(String orderstatus) {
+        SQLiteDatabase db = this.getReadableDatabase();
+//        String customerId = -1; // Giá trị mặc định nếu không tìm thấy customerId
+        String query = "SELECT * FROM " + TBl_ORDER + " WHERE " + ORDER_STATUS + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{orderstatus});
+        if (cursor != null && cursor.moveToFirst()) {
+            orderstatus = cursor.getString(cursor.getColumnIndex(ORDER_STATUS));
+//            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
+            cursor.close();
+
+        }
+
+        // Đóng con trỏ và database
+//        cursor.close();
+//        sqLiteDatabase.close();
+//
+
+        db.close();
+
+        return orderstatus;
+    }
+
+
 
 
 }

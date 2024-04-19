@@ -19,12 +19,12 @@ import java.util.List;
 import java.util.Locale;
 
 public class OrderAdapter extends BaseAdapter{
-    User_account_manageOrder activity;
+    Context context;
     int item_quanlydonhang;
     List<Order> orders;
 
-    public OrderAdapter(User_account_manageOrder activity, int item_quanlydonhang, List<Order> orders) {
-        this.activity = activity;
+    public OrderAdapter(Context context, int item_quanlydonhang, List<Order> orders) {
+        this.context = context;
         this.item_quanlydonhang = item_quanlydonhang;
         this.orders = orders;
     }
@@ -49,7 +49,7 @@ public class OrderAdapter extends BaseAdapter{
         ViewHolder holder;
         if (view == null){
             holder = new ViewHolder();
-            LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(item_quanlydonhang, null);
             holder.orderID = view.findViewById(R.id.order_ID);
             holder.orderStatus = view.findViewById(R.id.order_status);
@@ -65,10 +65,10 @@ public class OrderAdapter extends BaseAdapter{
             holder = (ViewHolder) view.getTag();
         }
         Order o = orders.get(position);
-        holder.orderID.setText(o.getOrderID());
+        holder.orderID.setText(String.valueOf(o.getOrderID()));
         holder.orderStatus.setText(o.getOrderStatus());
         holder.orderProductName.setText(o.getProductName());
-        holder.orderProductCount.setText(o.getQuantity());
+        holder.orderProductCount.setText(String.valueOf(o.getQuantity()));
         holder.orderProductPrice.setText(String.format(Locale.getDefault(), "%.0f đ", o.getOrderSalePrice()));
         holder.orderTotalPrice.setText(String.format(Locale.getDefault(), "%.0f đ", o.getTotalOrderValue()));
 
