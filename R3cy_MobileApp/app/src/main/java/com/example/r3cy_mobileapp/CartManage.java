@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.CursorWindow;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Base64;
@@ -25,6 +26,7 @@ import com.example.r3cy_mobileapp.databinding.ActivityCartManageBinding;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,6 +84,7 @@ public class CartManage extends AppCompatActivity {
     }
 
     private void loadData() {
+
         // Lấy dữ liệu từ ProductDao
         cartItems = (ArrayList<CartItem>) productDao.getCartItemsForCustomer(1);
         Log.i("CartItemSize", "Number of items retrieved: " + cartItems.size());

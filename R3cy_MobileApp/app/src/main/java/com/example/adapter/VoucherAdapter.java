@@ -21,24 +21,24 @@ import java.util.List;
 
 public class VoucherAdapter extends BaseAdapter {
     Activity activity;
-    int item_layout;
-    List<Voucher> coupons;
+    int item_voucher;
+    List<Voucher> vouchers;
 
 
-    public VoucherAdapter(Activity activity, int item_layout, List<Voucher> coupons) {
+    public VoucherAdapter(Activity activity, int item_layout, List<Voucher> vouchers) {
         this.activity = activity;
-        this.item_layout = item_layout;
-        this.coupons = coupons;
+        this.item_voucher = item_layout;
+        this.vouchers = vouchers;
     }
 
     @Override
     public int getCount() {
-        return coupons.size();
+        return vouchers.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return coupons.get(position);
+        return vouchers.get(position);
     }
 
     @Override
@@ -48,26 +48,26 @@ public class VoucherAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
-        CouponAdapter.ViewHolder holder = new CouponAdapter.ViewHolder();
+        ViewHolder holder = new ViewHolder();
         if (view == null) {
             //holder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(item_layout, null);
+            view = inflater.inflate(item_voucher, null);
 
             holder.txtCode = view.findViewById(R.id.txtCode);
             holder.txtTitle = view.findViewById(R.id.txtTitle);
-            holder.txtScore = view.findViewById(R.id.txtScore);
+            holder.txtHSD = view.findViewById(R.id.txtHSD);
             holder.btnDoiDiem = view.findViewById(R.id.btnDoiDiem);
 
             view.setTag(holder);
         } else {
-            holder = (CouponAdapter.ViewHolder) view.getTag();
+            holder = (ViewHolder) view.getTag();
         }
 
-        Voucher c = coupons.get(position);
+        Voucher c = vouchers.get(position);
         holder.txtCode.setText(c.getCOUPON_CODE());
         holder.txtTitle.setText(c.getCOUPON_TITLE());
-        holder.txtScore.setText(String.valueOf(c.getSCORE_MIN()));
+        holder.txtHSD.setText((CharSequence) c.getVALID_DATE());
         // Đặt vị trí vào tag của nút đổi điểm
         holder.btnDoiDiem.setTag(position);
 
@@ -79,7 +79,7 @@ public class VoucherAdapter extends BaseAdapter {
                 int clickedPosition = (int) v.getTag();
 
                 // Lấy coupon tương ứng với vị trí
-                Voucher clickedCoupon = coupons.get(clickedPosition);
+                Voucher clickedCoupon = vouchers.get(clickedPosition);
 
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("COUPON", (Serializable) clickedCoupon);
@@ -101,7 +101,7 @@ public class VoucherAdapter extends BaseAdapter {
     }
 
     public static class ViewHolder{
-        TextView txtCode, txtTitle, txtScore;
+        TextView txtCode, txtTitle, txtScore, txtHSD;
         Button btnDoiDiem;
     }
 }

@@ -1,6 +1,8 @@
 package com.example.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +69,7 @@ public class UserInfoAdapter extends BaseAdapter {
             holder.email = view.findViewById(R.id.editemail);
             holder.gender = view.findViewById(R.id.editgioitinh);
             holder.birthday = view.findViewById(R.id.ngaysinh);
+            holder.thumb = view.findViewById(R.id.imv_uservatar);
 
 
             view.setTag(holder);
@@ -81,13 +84,22 @@ public class UserInfoAdapter extends BaseAdapter {
         holder.email.setText(userInfo.getEmail());
         holder.gender.setText(userInfo.getGender());
         holder.birthday.setText(userInfo.getBirthday());
+        Bitmap bmThumb = BitmapFactory.decodeByteArray(userInfo.getThumb(), 0, userInfo.getThumb().length);
 
+        holder.thumb.setImageBitmap(bmThumb);
 //        holder.imvEdit.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                activity.openDialogEdit(p);
 //            }
 //        });
+        byte[] imageBytes = userInfo.getThumb();
+        if (imageBytes != null && imageBytes.length > 0) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+            holder.thumb.setImageBitmap(bitmap);
+        } else {
+            holder.thumb.setImageResource(R.drawable.dtt_giangsinh1);
+        }
 
         holder.btnchinhsua.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,5 +116,6 @@ public class UserInfoAdapter extends BaseAdapter {
     public static class ViewHolder{
         TextView fullname, username, phone, email, gender, birthday;
         Button btnchinhsua;
+        ImageView thumb;
     }
 }

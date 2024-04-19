@@ -1194,10 +1194,13 @@ public class R3cyDB extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             // Lấy thông tin từ cursor
             @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
+            @SuppressLint("Range") byte[] thumb = cursor.getBlob(cursor.getColumnIndex(CUSTOMER_THUMB));
+
 
             UserInfo userInfo = new UserInfo();
 //            customer.getFullName(), customer.getUsername(), customer.getPhone(), String.valueOf(customer.getGender()), customer.getBirthday(), customer.getEmail(), customer.getCustomerId();
             userInfo.setFullName(name);
+            userInfo.setThumb(thumb);
 
             customers.add(userInfo);
         }
@@ -1225,6 +1228,7 @@ public class R3cyDB extends SQLiteOpenHelper {
             @SuppressLint("Range") String phone = cursor.getString(cursor.getColumnIndex(PHONE));
             @SuppressLint("Range") String gender = cursor.getString(cursor.getColumnIndex(GENDER));
             @SuppressLint("Range") String birthday = cursor.getString(cursor.getColumnIndex(BIRTHDAY));
+            @SuppressLint("Range") byte[] thumb = cursor.getBlob(cursor.getColumnIndex(CUSTOMER_THUMB));
 
 
             UserInfo userInfo = new UserInfo();
@@ -1234,6 +1238,7 @@ public class R3cyDB extends SQLiteOpenHelper {
             userInfo.setEmail(emails);
             userInfo.setGender(gender);
             userInfo.setBirthday(birthday);
+            userInfo.setThumb(thumb);
 
             customers.add(userInfo);
         }

@@ -47,8 +47,7 @@ public class OrderManage_danggiao_Fragment extends Fragment {
 
     R3cyDB dbR3cy;
     OrderAdapter adapter;
-    String orderstatus;
-    RecyclerView lvOrderTatca;
+
 
 
     public OrderManage_danggiao_Fragment() {
@@ -102,7 +101,7 @@ public class OrderManage_danggiao_Fragment extends Fragment {
         dbR3cy.createSampleDataOrder();
         dbR3cy.createSampleDataOrderLine();
         dbR3cy.createSampleProduct();
-//        orderdao = new Orderdao(dbR3cy);
+
     }
     public List<Order> getOrder() {
 

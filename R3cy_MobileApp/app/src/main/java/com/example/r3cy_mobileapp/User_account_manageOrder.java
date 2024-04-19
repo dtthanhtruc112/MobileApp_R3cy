@@ -90,6 +90,9 @@ public class User_account_manageOrder extends AppCompatActivity {
             db.createSampleDataOrder();
 
     }
+    public void showFragment(int position) {
+        viewPager2.setCurrentItem(position);
+    }
 
 
     private class TabAdapter extends FragmentStateAdapter {

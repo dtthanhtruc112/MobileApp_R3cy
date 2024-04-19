@@ -10,6 +10,15 @@ public class UserInfo implements Serializable {
     String gender;
     String  birthday;
 
+    public byte[] getThumb() {
+        return thumb;
+    }
+
+    public void setThumb(byte[] thumb) {
+        this.thumb = thumb;
+    }
+
+    byte [] thumb;
 
     public String getUserName() {
         return userName;

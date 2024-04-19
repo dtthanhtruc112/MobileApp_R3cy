@@ -151,7 +151,7 @@ private boolean isCustomerEligibleForCoupon(int customerId) {
                 }
                 c.close();
 
-                adapter = new CouponAdapter(this, R.layout.item_doidiem, coupons);
+                adapter = new CouponAdapter(this, R.layout.item_voucher, coupons);
                 binding.lvVoucher.setAdapter(adapter);
             } else {
                 Toast.makeText(User_account_voucher.this, "Không tìm thấy phiếu giảm giá cho khách hàng này", Toast.LENGTH_SHORT).show();
