@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -148,22 +149,35 @@ public class TichDiem extends AppCompatActivity {
     }
 
     private void getDataCustomer() {
-        Cursor c1 = db.getData("SELECT * FROM " + R3cyDB.TBL_CUSTOMER);
-        if (c1.moveToFirst()){
-            customer = new Customer(c1.getInt(0),
-                    c1.getString(1),
-                    c1.getString(2),
-                    c1.getInt(3),
-                    c1.getString(4),
-                    c1.getString(5),
-                    c1.getString(6),
-                    c1.getInt(7),
-                    c1.getString(8),
-                    c1.getBlob(9),
-                    c1.getString(10)
-            );
+
+        // Lấy email từ SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+        String email = preferences.getString("string", "");
+
+        // Nếu không có email từ SharedPreferences, không thực hiện gì cả
+        if (email.isEmpty()) {
+            return;
         }
-        c1.close();
+
+        // Lấy thông tin của khách hàng dựa trên email từ SharedPreferences
+        customer = db.getCustomerByEmail(email);
+
+//        Cursor c1 = db.getData("SELECT * FROM " + R3cyDB.TBL_CUSTOMER);
+//        if (c1.moveToFirst()){
+//            customer = new Customer(c1.getInt(0),
+//                    c1.getString(1),
+//                    c1.getString(2),
+//                    c1.getInt(3),
+//                    c1.getString(4),
+//                    c1.getString(5),
+//                    c1.getString(6),
+//                    c1.getInt(7),
+//                    c1.getString(8),
+//                    c1.getBlob(9),
+//                    c1.getString(10)
+//            );
+//        }
+//        c1.close();
 
         binding.txtCurrentClass.setText(customer.getCustomerType());
         binding.txtCurrentScore.setText(String.valueOf(customer.getMembershipScore()));

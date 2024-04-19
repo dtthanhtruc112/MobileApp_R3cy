@@ -22,5 +22,16 @@
         android:textColor="@color/white"
         android:gravity="center"
         android:textStyle="bold"/>
+    <Button
+        android:id="@+id/btnOpen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Khám phá ngay"
+        android:textSize="23sp"
+        android:backgroundTint="@color/white"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/blue"
+        android:textAllCaps="false"
+        android:textStyle="bold"/>
 
 </LinearLayout>

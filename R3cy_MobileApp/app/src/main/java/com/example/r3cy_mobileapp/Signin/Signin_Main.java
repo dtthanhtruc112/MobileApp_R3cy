@@ -3,6 +3,7 @@ package com.example.r3cy_mobileapp.Signin;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -90,6 +91,13 @@ public class Signin_Main extends AppCompatActivity {
             if (customer.getPassword().equals(password)) {
                 // Đăng nhập thành công
                 Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+
+                SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+
+                editor.putString("string", email);
+
+                editor.apply();
 
                 // Thực hiện các hoạt động sau khi đăng nhập thành công, ví dụ: chuyển hướng đến màn hình chính
 //                 Intent intent = new Intent(Signin_Main.this, UserAccount_Main.class);

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,13 +16,18 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.example.adapter.BannerAdapter;
 import com.example.adapter.ProductAdapter;
 import com.example.databases.R3cyDB;
 import com.example.models.Banners;
 import com.example.models.Product;
+import com.example.r3cy_mobileapp.Modau.Modau1;
+import com.example.r3cy_mobileapp.Modau.Modau2;
 import com.example.r3cy_mobileapp.Product.Product_List;
+import com.example.r3cy_mobileapp.Signin.Signin_Main;
 import com.example.r3cy_mobileapp.databinding.ActivityTrangChuBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -71,8 +77,8 @@ public class TrangChu extends AppCompatActivity {
         autoSlide();
         addEvents();
 
-//        createDb();
-//        loadData();
+        createDb();
+        loadData();
     }
 
     private void createDb() {
@@ -81,49 +87,53 @@ public class TrangChu extends AppCompatActivity {
     }
 
     private void loadData() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        binding.rcvProducts.setLayoutManager(layoutManager);
 
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-//        binding.rcvProducts.setLayoutManager(layoutManager);
-//
-//        products = new ArrayList<>();
-//        Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT);
-//        while (cursor.moveToNext()) {
-//            products.add(new Product(
-//                    cursor.getInt(0), //ProductID
-//                    cursor.getString(1), //ProductName
-//                    cursor.getDouble(2), // ProductPrice
-//                    cursor.getString(3), //ProductDescription
-//                    cursor.getBlob(4), //ProductThumb
-//                    cursor.getInt(5), //Hot
-//                    cursor.getString(6), //Category
-//                    cursor.getInt(7), //Inventory
-//                    cursor.getDouble(8), //ProductRate
-//                    cursor.getDouble(9), //SalePrice
-//                    cursor.getInt(10), //SoldQuantity
-//                    cursor.getString(11), //CreatedDate
-//                    cursor.getInt(12), //Status
-//                    cursor.getBlob(13), //img1
-//                    cursor.getBlob(14), //img2
-//                    cursor.getBlob(15) //img3
-//            ));
-//            Log.d("ProductInfo", "Product ID: " + product.getProductID());
-//            Log.d("ProductInfo", "Product Name: " + product.getProductName());
-//        }
-//        cursor.close();
-//        Log.d("ProductInfo", "Number of products retrieved: " + products.size());
-//
-//
-////                String ProductName = cursor.getString(1);
-////                String ProductDescription = cursor.getString(3);
-////                String Category = cursor.getString(6);
-////                Double SalePrice = cursor.getDouble(9);
-////                Double ProductRate = cursor.getDouble(8);
-//
-//
-//
-//        adapter = new ProductAdapter(this, R.layout.viewholder_category_list, products);
-//        binding.rcvProducts.setAdapter(adapter);
+        products = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT);
+
+            // Chỉ lấy 3 sản phẩm đầu tiên
+            int count = 0;
+            while (cursor.moveToNext() && count < 3) {
+                products.add(new Product(
+                        cursor.getInt(0), //ProductID
+                        cursor.getString(1), //ProductName
+                        cursor.getDouble(2), // ProductPrice
+                        cursor.getString(3), //ProductDescription
+                        cursor.getBlob(4), //ProductThumb
+                        cursor.getInt(5), //Hot
+                        cursor.getString(6), //Category
+                        cursor.getInt(7), //Inventory
+                        cursor.getDouble(8), //ProductRate
+                        cursor.getDouble(9), //SalePrice
+                        cursor.getInt(10), //SoldQuantity
+                        cursor.getString(11), //CreatedDate
+                        cursor.getInt(12), //Status
+                        cursor.getBlob(13), //img1
+                        cursor.getBlob(14), //img2
+                        cursor.getBlob(15) //img3
+                ));
+                count++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // In ra stack trace của ngoại lệ
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        Log.d("ProductInfo", "Number of products retrieved: " + products.size());
+
+        adapter = new ProductAdapter(this, R.layout.viewholder_category_list, products);
+        binding.rcvProducts.setAdapter(adapter);
     }
+
+
+
 
     private void autoSlide(){
         if(bannerList == null || bannerList.isEmpty() || viewPager == null){
@@ -187,6 +197,29 @@ public class TrangChu extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     private void addEvents() {
+        binding.btnDangnhap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+                String email = preferences.getString("string", "");
+
+                if (!email.isEmpty()) {
+                    // Đã đăng nhập
+                    Toast.makeText(TrangChu.this, "Đã đăng nhập", Toast.LENGTH_SHORT).show();
+                    // Thiết lập văn bản cho nút đăng nhập
+                    binding.btnDangnhap.setText("Đã đăng nhập");
+                    // Thực hiện hành động sau khi đăng nhập thành công
+                    // Ví dụ: điều hướng đến màn hình hoặc hành động mong muốn ở đây
+                } else {
+                    // Chưa đăng nhập
+                    Intent intent = new Intent(TrangChu.this, Signin_Main.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+
+
         navigationView = findViewById(R.id.mn_home);
         navigationView.setSelectedItemId(R.id.item_home);
 

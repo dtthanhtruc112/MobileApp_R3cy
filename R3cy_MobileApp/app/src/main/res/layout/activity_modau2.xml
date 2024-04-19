@@ -43,9 +43,9 @@
         android:text="Tiếp tục"
         android:textSize="23sp"
         android:backgroundTint="@color/blue"
-        android:background="@drawable/rounded_borders"
         android:layout_marginTop="40dp"
         android:textColor="@color/white"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false"
+        android:textStyle="bold"/>
 
 </LinearLayout>
