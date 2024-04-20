@@ -88,6 +88,7 @@ public class R3cyDB extends SQLiteOpenHelper {
     public static final String SALE_PRICE = "SalePrice";
     public static final String SOLD_QUANTITY = "SoldQuantity";
     public static final String CREATED_DATE = "CreatedDate";
+    public static final String UPDATED_DATE = "UpdatedDate";
     public static final String STATUS = "Status";
     public static final String PRODUCT_IMG1 = "img1";
     public static final String PRODUCT_IMG2 = "img2";
@@ -418,64 +419,64 @@ public class R3cyDB extends SQLiteOpenHelper {
         }
     }
 
-    //    INSERT. UPDATE, DELETE
-    public boolean execSql(String sql){
-        SQLiteDatabase db = getWritableDatabase();
-        try{
-            db.execSQL(sql);
-            return true;
-        }catch (Exception e){
-            Log.e("Error: ", e.toString());
-            return false;
-        }
-
+//    INSERT. UPDATE, DELETE
+public boolean execSql(String sql){
+    SQLiteDatabase db = getWritableDatabase();
+    try{
+        db.execSQL(sql);
+        return true;
+    }catch (Exception e){
+        Log.e("Error: ", e.toString());
+        return false;
     }
+
+}
 //    Ktra table có dữ liệu không
 
-    //    Kiểm tra bảng Coupon
-    public int numbOfRowsCoupon(){
-        Cursor c = getData("SELECT * FROM " + TBl_COUPON);
-        int numberOfRows = c.getCount();
-        c.close();
-        return numberOfRows;
+//    Kiểm tra bảng Coupon
+public int numbOfRowsCoupon(){
+    Cursor c = getData("SELECT * FROM " + TBl_COUPON);
+    int numberOfRows = c.getCount();
+    c.close();
+    return numberOfRows;
+}
+
+
+
+
+//    Thêm dữ liệu mẫu
+public void createSampleDataCart() {
+    if (numbOfRowsCart() == 0) {
+        execSql("INSERT INTO " + TBl_CART + " VALUES(null, 2, 2, 1)");
+        execSql("INSERT INTO " + TBl_CART + " VALUES(null, 3, 3, 2)");
+        execSql("INSERT INTO " + TBl_CART + " VALUES(null, 4, 4, 1)");
+        execSql("INSERT INTO " + TBl_CART + " VALUES(null, 1, 4, 1)");
+        execSql("INSERT INTO " + TBl_CART + " VALUES(null, 1, 5, 1)");
+        execSql("INSERT INTO " + TBl_CART + " VALUES(null, 1, 6, 1)");
     }
 
-
-
-
-    //    Thêm dữ liệu mẫu
-    public void createSampleDataCart() {
-        if (numbOfRowsCart() == 0) {
-            execSql("INSERT INTO " + TBl_CART + " VALUES(null, 2, 2, 1)");
-            execSql("INSERT INTO " + TBl_CART + " VALUES(null, 3, 3, 2)");
-            execSql("INSERT INTO " + TBl_CART + " VALUES(null, 4, 4, 1)");
-            execSql("INSERT INTO " + TBl_CART + " VALUES(null, 1, 4, 1)");
-            execSql("INSERT INTO " + TBl_CART + " VALUES(null, 1, 5, 1)");
-            execSql("INSERT INTO " + TBl_CART + " VALUES(null, 1, 6, 1)");
-        }
-
-    }
+}
     public int numbOfRowsCart(){
         Cursor c = getData("SELECT * FROM " + TBl_CART);
         int numberOfRows = c.getCount();
         c.close();
         return numberOfRows;
     }
-    // Dữ liệu mẫu Coupon
-    public void createSampleDataCoupon() {
-        if (numbOfRowsCoupon() == 0) {
-            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM10%', 'GIẢM 10% ĐƠN HÀNG CHO THÀNH VIÊN MỚI, GIẢM TỐI ĐA 30K', 100, 'percent', 'order', '2024-04-15', '2024-05-20', 100000, 30000, 0.10, 10, '[1, 2, 3]')");
-            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% ĐƠN HÀNG CHÀO MỪNG THÁNG 4, GIẢM TỐI ĐA 60K', 1000, 'percent', 'order', '2024-04-15', '2024-05-20', 200000, 60000, 0.20, 10, '[4, 5, 6]')");
-            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM30%', 'GIẢM 30% ĐƠN HÀNG TRI ÂN THÀNH VIÊN BẠC, GIẢM TỐI ĐA 90K', 5000, 'percent', 'order', '2024-04-15', '2024-05-20', 300000, 90000, 0.30, 10, '[7, 8, 9]')");
-            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM120K', 'GIẢM 120K ĐƠN HÀNG CHÀO MỪNG THÁNG 5', 10000, 'value', 'order', '2024-04-15', '2024-05-20', 400000, 120000, 120000, 10, '[10, 11, 12]')");
-            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM150K', 'GIẢM 150K ĐƠN HÀNG TRI ÂN THÀNH VIÊN KIM CƯƠNG', 20000, 'value', 'order', '2024-04-15', '2024-05-20', 500000, 150000, 150000, 10, '[13, 14, 15]')");
-            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 100000', 100, 'percent', 'ship', '2024-04-15', '2024-05-20', 100000, 30000, 0.20, 30, '[16, 17, 18]')");
-            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40%', 'GIẢM 40% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 200000', 1000, 'percent', 'ship', '2024-04-15', '2024-05-20', 200000, 30000, 0.40, 30, '[19, 20, 21]')");
-            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM60%', 'GIẢM 60% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 300000', 5000, 'percent', 'ship', '2024-04-15', '2024-05-20', 300000, 30000, 0.6, 30, '[22, 23, 24]')");
-            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40K', 'GIẢM 40K PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 400000 ', 10000, 'value', 'ship', '2024-04-15', '2024-05-20', 400000, 40000, 400000, 30, '[25, 26, 27]')");
-            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'FREESHIP', 'MIỄN PHÍ VẬN CHUYỂN', 20000, 'value', 'ship', '2024-04-15', '2024-05-20', 500000, 60000, 1, 30, '[28, 29, 30]')");
-        }
+// Dữ liệu mẫu Coupon
+public void createSampleDataCoupon() {
+    if (numbOfRowsCoupon() == 0) {
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM10%', 'GIẢM 10% ĐƠN HÀNG CHO THÀNH VIÊN MỚI, GIẢM TỐI ĐA 30K', 100, 'percent', 'order', '2024-04-15', '2024-05-20', 100000, 30000, 0.10, 10, '[1, 2, 3]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% ĐƠN HÀNG CHÀO MỪNG THÁNG 4, GIẢM TỐI ĐA 60K', 1000, 'percent', 'order', '2024-04-15', '2024-05-20', 200000, 60000, 0.20, 10, '[4, 5, 6]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM30%', 'GIẢM 30% ĐƠN HÀNG TRI ÂN THÀNH VIÊN BẠC, GIẢM TỐI ĐA 90K', 5000, 'percent', 'order', '2024-04-15', '2024-05-20', 300000, 90000, 0.30, 10, '[7, 8, 9]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM120K', 'GIẢM 120K ĐƠN HÀNG CHÀO MỪNG THÁNG 5', 10000, 'value', 'order', '2024-04-15', '2024-05-20', 400000, 120000, 120000, 10, '[10, 11, 12]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM150K', 'GIẢM 150K ĐƠN HÀNG TRI ÂN THÀNH VIÊN KIM CƯƠNG', 20000, 'value', 'order', '2024-04-15', '2024-05-20', 500000, 150000, 150000, 10, '[13, 14, 15]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 100000', 100, 'percent', 'ship', '2024-04-15', '2024-05-20', 100000, 30000, 0.20, 30, '[16, 17, 18]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40%', 'GIẢM 40% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 200000', 1000, 'percent', 'ship', '2024-04-15', '2024-05-20', 200000, 30000, 0.40, 30, '[19, 20, 21]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM60%', 'GIẢM 60% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 300000', 5000, 'percent', 'ship', '2024-04-15', '2024-05-20', 300000, 30000, 0.6, 30, '[22, 23, 24]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40K', 'GIẢM 40K PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 400000 ', 10000, 'value', 'ship', '2024-04-15', '2024-05-20', 400000, 40000, 400000, 30, '[25, 26, 27]')");
+        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'FREESHIP', 'MIỄN PHÍ VẬN CHUYỂN', 20000, 'value', 'ship', '2024-04-15', '2024-05-20', 500000, 60000, 1, 30, '[28, 29, 30]')");
     }
+}
 
     //Cập nhật coupon khi có người đổi điểm lấy quà
 // Method to add a new customer_id to the existing array in customer_ids field based on coupon_id
@@ -508,17 +509,17 @@ public class R3cyDB extends SQLiteOpenHelper {
         execSql(sql);
     }
 
-    //   Hàm lấy mảng customerid
-    public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
-        ArrayList<Integer> customerIds = new ArrayList<>();
-        if (customerIdsString != null && !customerIdsString.isEmpty()) {
-            String[] ids = customerIdsString.replaceAll("\\[|\\]", "").split(",\\s*");
-            for (String id : ids) {
-                customerIds.add(Integer.parseInt(id.trim()));
-            }
+//   Hàm lấy mảng customerid
+public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
+    ArrayList<Integer> customerIds = new ArrayList<>();
+    if (customerIdsString != null && !customerIdsString.isEmpty()) {
+        String[] ids = customerIdsString.replaceAll("\\[|\\]", "").split(",\\s*");
+        for (String id : ids) {
+            customerIds.add(Integer.parseInt(id.trim()));
         }
-        return customerIds;
     }
+    return customerIds;
+}
 
     // Phương thức để lấy danh sách customerIds từ cơ sở dữ liệu cho couponId cụ thể
     // Phương thức để lấy danh sách customerIds từ cơ sở dữ liệu cho couponId cụ thể
@@ -539,7 +540,7 @@ public class R3cyDB extends SQLiteOpenHelper {
         c.close();
         return numberOfRows;
     }
-//    public boolean insertDataOrder(String OrderID, String OrderCusID, String OrderDate, String PaymentMethod, String PaymentID, String CouponID, double TotalValuePrice, String OrderStatus, String OrderNote, String DeliveryDate, String Discount, double ShippingFee, double TotalAmount, String PaymentStatus, String Address) {
+//    public boolean insertDataOrder(String ORDER_ID, String ORDER_CUSTOMER_ID, String ORDER_DATE, String PAYMENT_METHOD, String PAYMENT_ID, String COUPON_ID, double TOTAL_ORDER_VALUE, String ORDER_STATUS, String ORDER_NOTE, String DELIVERY_DATE, String DISCOUNT, double SHIPPING_FEE, double TOTAL_AMOUNT, String PAYMENT_STATUS, String ADDRESS_ID) {
 //        SQLiteDatabase database = getWritableDatabase();
 //        String sql = "INSERT INTO " + TBl_ORDER + "(" +
 //                ORDER_ID + ", " +
@@ -562,29 +563,29 @@ public class R3cyDB extends SQLiteOpenHelper {
 //        SQLiteStatement statement = database.compileStatement(sql);
 //
 //// Chuyển đổi chuỗi ngày tháng thành đối tượng Date
-////        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-////        Date date;
-////        try {
-////            date = sdf.parse(OrderDate);
-////        } catch (ParseException e) {
-////            e.printStackTrace();
-////            return true;
-////        }
-//        statement.bindString(1, OrderID);
-//        statement.bindString(2, OrderCusID);
-//        statement.bindString(3, OrderDate);
-//        statement.bindString(4, PaymentMethod);
-//        statement.bindString(5, PaymentID);
-//        statement.bindString(6, CouponID);
-//        statement.bindDouble(7, TotalValuePrice);
-//        statement.bindString(8, OrderStatus);
-//        statement.bindString(9, OrderNote);
-//        statement.bindString(10, DeliveryDate);
-//        statement.bindString(11, Discount);
-//        statement.bindDouble(12, ShippingFee);
-//        statement.bindDouble(13, TotalAmount);
-//        statement.bindString(14, PaymentStatus);
-//        statement.bindString(15, Address);
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+//        Date date;
+//        try {
+//            date = sdf.parse(ORDER_DATE);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//        statement.bindString(1, ORDER_ID);
+//        statement.bindString(2, ORDER_CUSTOMER_ID);
+//        statement.bindString(3, ORDER_DATE);
+//        statement.bindString(4, PAYMENT_METHOD);
+//        statement.bindString(5, PAYMENT_ID);
+//        statement.bindString(6, COUPON_ID);
+//        statement.bindDouble(7, TOTAL_ORDER_VALUE);
+//        statement.bindString(8, ORDER_STATUS);
+//        statement.bindString(9, ORDER_NOTE);
+//        statement.bindString(10, DELIVERY_DATE);
+//        statement.bindString(11, DISCOUNT);
+//        statement.bindDouble(12, SHIPPING_FEE);
+//        statement.bindDouble(13, TOTAL_AMOUNT);
+//        statement.bindString(14, PAYMENT_STATUS);
+//        statement.bindString(15, ADDRESS_ID);
 //
 //
 //        long result = statement.executeInsert();
@@ -592,15 +593,12 @@ public class R3cyDB extends SQLiteOpenHelper {
 //        Log.d("DatabaseHelper", "Insert data result: " + success);
 //        return success;
 //    }
-    public void createSampleDataOrder() {
-        if (numbOfRowsOrder() == 0) {
-            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 1, '14-04-2024'', 'COD', null, null, 236000, 'Đang giao', 'Che tên sản phẩm', '15-04-2024', '0', 35000, 200000, 'Chưa thanh toán', null)");
-            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 2, '15-04-2024'', 'COD', null, null, 232000, 'Chờ xử lý', 'Che tên sản phẩm', '16-04-2024', '0', 30000, 220000, 'Chưa thanh toán', null)");
-            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 3, '16-04-2024'', 'COD', null, null, 205000, 'Chờ xác nhận', 'Che tên sản phẩm', '17-04-2024', '0', 25000, 210000, 'Chưa thanh toán', null)");
-            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 4, '17-04-2024'', 'COD', null, null, 135000, 'Hoàn thành', 'Che tên sản phẩm', '18-04-2024', '0', 15000, 250000, 'Chưa thanh toán', null)");
-            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 5, '18-04-2024'', 'COD', null, null, 165000, 'Đang giao', 'Che tên sản phẩm', '19-04-2024', '0', 35000, 260000, 'Chưa thanh toán', null)");
-
-        }
+    public void createSampleDataOrder(){
+        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 1, '14-04-2024'', 'COD', null, null, 236000, 'Đang giao', 'Che tên sản phẩm', '15-04-2024', '0', 35000, 200000, 'Chưa thanh toán', null)");
+        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 2, '15-04-2024'', 'COD', null, null, 232000, 'Chờ xử lý', 'Che tên sản phẩm', '16-04-2024', '0', 30000, 220000, 'Chưa thanh toán', null)");
+        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 3, '16-04-2024'', 'COD', null, null, 205000, 'Chờ xác nhận', 'Che tên sản phẩm', '17-04-2024', '0', 25000, 210000, 'Chưa thanh toán', null)");
+        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 4, '17-04-2024'', 'COD', null, null, 135000, 'Hoàn thành', 'Che tên sản phẩm', '18-04-2024', '0', 15000, 250000, 'Chưa thanh toán', null)");
+        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 5, '18-04-2024'', 'COD', null, null, 165000, 'Đang giao', 'Che tên sản phẩm', '19-04-2024', '0', 35000, 260000, 'Chưa thanh toán', null)");
     }
 
     public int numbOfRowsOrderLine(){
@@ -610,7 +608,7 @@ public class R3cyDB extends SQLiteOpenHelper {
         return numberOfRows;
     }
 
-//    public boolean insertDataOrderLine(int OrderLineID, int OrderLineOrderId, int OrderLineProductID, double OrderSalePrice, int Quantity) {
+//    public boolean insertDataOrderLine(String ORDER_LINE_ID, String ORDER_LINE_ORDER_ID, String ORDER_LINE_PRODUCT_ID, double ORDER_SALE_PRICE, String QUANTITY) {
 //        SQLiteDatabase database = getWritableDatabase();
 //        String sql = "INSERT INTO " + TBl_ORDER_LINE + "(" +
 //                ORDER_LINE_ID + ", " +
@@ -623,11 +621,11 @@ public class R3cyDB extends SQLiteOpenHelper {
 //        SQLiteStatement statement = database.compileStatement(sql);
 //
 ////
-//        statement.bindLong(1, OrderLineID);
-//        statement.bindLong(2, OrderLineOrderId);
-//        statement.bindLong(3, OrderLineProductID);
-//        statement.bindDouble(4, OrderSalePrice);
-//        statement.bindLong(5, Quantity);
+//        statement.bindString(1, ORDER_LINE_ID);
+//        statement.bindString(2, ORDER_LINE_ORDER_ID);
+//        statement.bindString(3, ORDER_LINE_PRODUCT_ID);
+//        statement.bindDouble(4, ORDER_SALE_PRICE);
+//        statement.bindString(5, QUANTITY);
 //
 //
 //        long result = statement.executeInsert();
@@ -635,14 +633,12 @@ public class R3cyDB extends SQLiteOpenHelper {
 //        Log.d("DatabaseHelper", "Insert data result: " + success);
 //        return success;
 //    }
-    public void createSampleDataOrderLine() {
-        if (numbOfRowsOrderLine() == 0) {
-            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, 1, 160000, 4)");
-            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, 2, 150000, 3)");
-            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, 3, 140000, 3)");
-            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, 4, 150000, 2)");
-            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, 5, 170000, 1)");
-        }
+    public void createSampleDataOrderLine(){
+        execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, 1, 160000, 4)");
+        execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, 2, 150000, 3)");
+        execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, 3, 140000, 3)");
+        execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, 4, 150000, 2)");
+        execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, null, 5, 170000, 1)");
     }
 
     public int numbOfRowsAddress(){
@@ -858,90 +854,90 @@ public class R3cyDB extends SQLiteOpenHelper {
 
 
     // Kiểm tra bảng Customer
-    public int numbOfRowsCustomer(){
+public int numbOfRowsCustomer(){
         Cursor c = getData("SELECT * FROM " + TBL_CUSTOMER);
         int numberOfRows = c.getCount();
         c.close();
         return numberOfRows;
+}
+
+public boolean insertCustomer(String fullName, String email, String password) {
+    SQLiteDatabase db = this.getWritableDatabase();
+    ContentValues values = new ContentValues();
+    values.put(FULLNAME, fullName);
+    values.put(EMAIL, email);
+    values.put(PASSWORD, password);
+    long result = db.insert(TBL_CUSTOMER, null, values);
+    db.close();
+    return result != -1;
+}
+public Customer getCustomerByEmail(String email) {
+    // Đọc cơ sở dữ liệu
+    SQLiteDatabase db = this.getReadableDatabase();
+
+    // Câu truy vấn SQL
+    String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
+
+    // Thực thi câu truy vấn
+    Cursor cursor = db.rawQuery(query, new String[]{email});
+
+    Customer customer = null;
+
+    // Nếu có kết quả từ câu truy vấn
+    if (cursor.moveToFirst()) {
+        // Lấy thông tin từ cursor
+        @SuppressLint("Range") int customerId = cursor.getInt(cursor.getColumnIndex(CUSTOMER_ID));
+        @SuppressLint("Range") String username = cursor.getString(cursor.getColumnIndex(USERNAME));
+        @SuppressLint("Range") String password = cursor.getString(cursor.getColumnIndex(PASSWORD));
+        // Tạo đối tượng Customer
+        customer = new Customer(customerId, username, email, password);
     }
 
-    public boolean insertCustomer(String fullName, String email, String password) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(FULLNAME, fullName);
-        values.put(EMAIL, email);
-        values.put(PASSWORD, password);
-        long result = db.insert(TBL_CUSTOMER, null, values);
-        db.close();
-        return result != -1;
+    // Đóng cursor và đóng cơ sở dữ liệu
+    cursor.close();
+    db.close();
+
+    // Trả về đối tượng Customer
+    return customer;
+}
+
+
+
+public boolean checkEmailExists(String email) {
+    SQLiteDatabase db = this.getReadableDatabase();
+    Cursor cursor = db.query(TBL_CUSTOMER,
+            new String[]{CUSTOMER_ID},
+            EMAIL + "=?",
+            new String[]{email},
+            null, null, null);
+    int count = cursor.getCount();
+    cursor.close();
+    return count > 0;
+}
+
+public void createSampleDataCustomer(){
+    if (numbOfRowsCustomer() == 0){
+        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'anhltt', 'Lê Thị Tuyết Anh', 'Nữ', 'anhltt21411@gmail.com', '0911235896', 'anhltt21411@', 25500, '01/02/2003', null, 'Kim cương')");
+        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'trucdtt', 'Đặng Thị Thanh Trúc', 'Nữ', 'trucdtt21411@gmail.com', '0910587896', 'trucdtt21411@', 2000, '01/10/2003', null, 'Đồng')");
+        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'quynhdln', 'Đặng Lê Như Quỳnh', 'Nữ', 'quynhdln21411@gmail.com', '0923535896', 'quynhdln21411@', 7000, '15/02/2003', null, 'Bạc')");
+        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'truchlt', 'Hồ Lê Thanh Trúc', 'Nữ', 'truchlt21411@gmail.com', '0971237410', 'truchlt21411@', 1500, '21/08/2003', null, 'Vàng')");
+        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'nguyennt', 'Nguyễn Thảo Nguyên', 'Nữ', 'nguyennt21411@gmail.com', '0956335872', 'nguyennt21411@', 22000, '11/12/2003', null, 'Kim Cương' )");
     }
-    public Customer getCustomerByEmail(String email) {
-        // Đọc cơ sở dữ liệu
-        SQLiteDatabase db = this.getReadableDatabase();
+}
 
-        // Câu truy vấn SQL
-        String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
-
-        // Thực thi câu truy vấn
-        Cursor cursor = db.rawQuery(query, new String[]{email});
-
-        Customer customer = null;
-
-        // Nếu có kết quả từ câu truy vấn
-        if (cursor.moveToFirst()) {
-            // Lấy thông tin từ cursor
-            @SuppressLint("Range") int customerId = cursor.getInt(cursor.getColumnIndex(CUSTOMER_ID));
-            @SuppressLint("Range") String username = cursor.getString(cursor.getColumnIndex(USERNAME));
-            @SuppressLint("Range") String password = cursor.getString(cursor.getColumnIndex(PASSWORD));
-            // Tạo đối tượng Customer
-            customer = new Customer(customerId, username, email, password);
-        }
-
-        // Đóng cursor và đóng cơ sở dữ liệu
-        cursor.close();
-        db.close();
-
-        // Trả về đối tượng Customer
-        return customer;
-    }
-
-
-
-    public boolean checkEmailExists(String email) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TBL_CUSTOMER,
-                new String[]{CUSTOMER_ID},
-                EMAIL + "=?",
-                new String[]{email},
-                null, null, null);
-        int count = cursor.getCount();
-        cursor.close();
-        return count > 0;
-    }
-
-    public void createSampleDataCustomer(){
-        if (numbOfRowsCustomer() == 0){
-            execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'anhltt', 'Lê Thị Tuyết Anh', 'Nữ', 'anhltt21411@gmail.com', '0911235896', 'anhltt21411@', 25500, '01/02/2003', null, 'Kim cương')");
-            execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'trucdtt', 'Đặng Thị Thanh Trúc', 'Nữ', 'trucdtt21411@gmail.com', '0910587896', 'trucdtt21411@', 2000, '01/10/2003', null, 'Đồng')");
-            execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'quynhdln', 'Đặng Lê Như Quỳnh', 'Nữ', 'quynhdln21411@gmail.com', '0923535896', 'quynhdln21411@', 7000, '15/02/2003', null, 'Bạc')");
-            execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'truchlt', 'Hồ Lê Thanh Trúc', 'Nữ', 'truchlt21411@gmail.com', '0971237410', 'truchlt21411@', 1500, '21/08/2003', null, 'Vàng')");
-            execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'nguyennt', 'Nguyễn Thảo Nguyên', 'Nữ', 'nguyennt21411@gmail.com', '0956335872', 'nguyennt21411@', 22000, '11/12/2003', null, 'Kim Cương' )");
-        }
-    }
-
-    // Ràng buộc Hạng tvien với Score
+// Ràng buộc Hạng tvien với Score
 // Update điểm và hạng thành viên
-    public void updateCustomerMembership(int customerId, int newMembershipScore) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(MEMBERSHIP_SCORE, newMembershipScore);
+public void updateCustomerMembership(int customerId, int newMembershipScore) {
+    SQLiteDatabase db = this.getWritableDatabase();
+    ContentValues values = new ContentValues();
+    values.put(MEMBERSHIP_SCORE, newMembershipScore);
 
-        String newCustomerType = calculateCustomerType(newMembershipScore); // Tính toán loại khách hàng mới dựa trên điểm thành viên mới
-        values.put(CUSTOMER_TYPE, newCustomerType);
+    String newCustomerType = calculateCustomerType(newMembershipScore); // Tính toán loại khách hàng mới dựa trên điểm thành viên mới
+    values.put(CUSTOMER_TYPE, newCustomerType);
 
-        db.update(TBL_CUSTOMER, values, CUSTOMER_ID + " = ?", new String[]{String.valueOf(customerId)});
-        db.close();
-    }
+    db.update(TBL_CUSTOMER, values, CUSTOMER_ID + " = ?", new String[]{String.valueOf(customerId)});
+    db.close();
+}
 
     public String calculateCustomerType(int membershipScore) {
         if (membershipScore >= 0 && membershipScore < 1000) {
@@ -1014,10 +1010,9 @@ public class R3cyDB extends SQLiteOpenHelper {
         return numberOfRows;
     }
 
-    public boolean insertData(int ProductID, String ProductName, double ProductPrice, String ProductDescription, byte[] ProductThumb, int Hot, String Category, int Inventory, double ProductRate, double SalePrice, int SoldQuantiy, String CreatedDate, int Status, byte[] Img1, byte[] Img2, byte[] Img3) {
-        SQLiteDatabase database = getReadableDatabase();
+    public boolean insertData(String ProductName, double ProductPrice, String ProductDescription, byte[] ProductThumb, int Hot, String Category, int Inventory, double ProductRate, double SalePrice, int SoldQuantiy, String CreatedDate, int Status, byte[] Img1, byte[] Img2, byte[] Img3) {
+        SQLiteDatabase database = getWritableDatabase();
         String sql = "INSERT INTO " + TBl_PRODUCT + "(" +
-                PRODUCT_ID + ", " +
                 PRODUCT_NAME + ", " +
                 PRODUCT_PRICE + ", " +
                 PRODUCT_DESCRIPTION + ", " +
@@ -1036,7 +1031,7 @@ public class R3cyDB extends SQLiteOpenHelper {
                 ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         SQLiteStatement statement = database.compileStatement(sql);
-        statement.bindLong(0,ProductID);
+
         statement.bindString(1, ProductName);
         statement.bindDouble(2, ProductPrice);
         statement.bindString(3, ProductDescription);
@@ -1061,21 +1056,18 @@ public class R3cyDB extends SQLiteOpenHelper {
 
     public void createSampleProduct() {
         if (numbOfRowsProduct() == 0){
-            insertData(1, "Đĩa nhỏ", 120000, "Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường. Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu. Thiết kế nhỏ gọn và tiện lợi làm cho sản phẩm trở thành người bạn đồng hành lý tưởng, không chỉ phục vụ nhu cầu hàng ngày mà còn thúc đẩy ý thức về một lối sống bền vững. Đĩa nhỏ từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian sống mà còn là một biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc  giữ gìn cho hành tinh xanh của chúng ta. Hãy chọn lựa thông minh và hòa mình vào những giải pháp bảo vệ môi trường với sản phẩm độc đáo này.", convertPhoto(context, R.drawable.dgd_dia1), 1, "Đồ gia dụng", 60, 4.5, 100000, 87, "2024/04/10", 1, convertPhoto(context, R.drawable.dgd_dia1), convertPhoto(context, R.drawable.dgd_dia2), convertPhoto(context, R.drawable.dgd_dia3));
-            insertData(2,"Khay đựng xà phòng", 170000, "Khay đựng bánh xà phòng từ nhựa tái chế là sự kết hợp hoàn hảo giữa tính thực tế và cam kết với môi trường. Với nguyên liệu là nhựa tái chế, sản phẩm này không chỉ giúp giảm lượng chất thải nhựa mà còn thể hiện tinh thần chăm sóc đối với hành tinh xanh của chúng ta. Thiết kế của khay đựng bánh xà phòng không chỉ đơn giản mà còn linh hoạt, phù hợp với mọi không gian nhà tắm. Sự sáng tạo trong cách sử dụng nguyên liệu tái chế không chỉ làm cho sản phẩm trở nên độc đáo mà còn đặt ra một tiêu chí mới cho việc chọn lựa sản phẩm gia dụng có trách nhiệm với môi trường. Khay đựng bánh xà phòng từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian nhà tắm mà còn là một bước nhỏ nhưng ý nghĩa trong hành trình chung của chúng ta để bảo vệ và giữ gìn cho hành tinh xanh, trong từng lựa chọn hàng ngày của chúng ta.", convertPhoto(context, R.drawable.dgd_xaphong1), 0, "Đồ gia dụng", 60, 4.7, 150000, 45, "2024/04/10", 1, convertPhoto(context, R.drawable.dgd_xaphong1), convertPhoto(context, R.drawable.dgd_xaphong2), convertPhoto(context, R.drawable.dgd_xaphong3));
-            insertData(3,"Lót ly", 110000, "Đồ lót ly từ nhựa tái chế là sự kết hợp độc đáo giữa sự thoải mái và cam kết với môi trường. Với việc sử dụng nguyên liệu là nhựa tái chế, sản phẩm không chỉ mang lại cảm giác mềm mại và thoải mái cho người sử dụng mà còn đóng góp vào việc giảm lượng chất thải nhựa. Thiết kế của đồ lót ly không chỉ chú trọng đến sự thoải mái và tôn lên vẻ đẹp tự nhiên, mà còn thể hiện sự chấp nhận trách nhiệm với môi trường. Việc sử dụng nhựa tái chế không chỉ là một xu hướng tiêu dùng thông minh mà còn là sự đóng góp tích cực vào việc bảo vệ nguồn tài nguyên tự nhiên và giảm thiểu ảnh hưởng tiêu cực đối với hệ sinh thái. Đồ lót ly từ nhựa tái chế không chỉ là lựa chọn thông minh cho sự thoải mái hàng ngày mà còn là một cách để chúng ta cùng nhau xây dựng một lối sống thân thiện với môi trường, đồng thời thể hiện sự quan tâm đến sức khỏe và hành tinh xanh của chúng ta.", convertPhoto(context, R.drawable.dgd_lotly1), 1, "Đồ gia dụng", 60, 4.0, 100000, 100, "2024/04/10", 1, convertPhoto(context, R.drawable.dgd_lotly1), convertPhoto(context, R.drawable.dgd_lotly2), convertPhoto(context, R.drawable.dgd_lotly3));
-            insertData(4,"Giá đỡ laptop", 220000, "Giá đỡ laptop từ nhựa tái chế là một phụ kiện không thể thiếu cho những người sử dụng máy tính xách tay, kết hợp giữa tính thực tế và tầm nhìn bền vững. Với sự sáng tạo trong việc sử dụng nhựa tái chế, sản phẩm không chỉ tạo ra một nơi thoải mái để đặt laptop mà còn là cách nhỏ nhưng tích cực để giảm lượng chất thải nhựa. Thiết kế nhẹ nhàng và linh hoạt của giá đỡ không chỉ giúp người dùng duy trì tư duy làm việc hiệu quả mà còn hỗ trợ vào nỗ lực chung của cộng đồng trong việc giữ gìn môi trường. Sự cam kết đối với nhựa tái chế không chỉ là một xu hướng tiêu dùng mà còn là một lối sống, và sản phẩm giá đỡ laptop này là minh chứng rõ ràng cho sự hài hòa giữa tiện ích và sự chấp nhận trách nhiệm với môi trường. Hãy lựa chọn giá đỡ laptop từ nhựa tái chế để không chỉ tận hưởng sự thuận tiện mà còn tham gia vào cuộc hành trình bảo vệ hành tinh của chúng ta.", convertPhoto(context, R.drawable.dgd_laptop1), 0, "Đồ gia dụng", 60, 5, 200000, 30, "2024/04/10", 1, convertPhoto(context, R.drawable.dgd_laptop1), convertPhoto(context, R.drawable.dgd_laptop2), convertPhoto(context, R.drawable.dgd_latop3));
-            insertData(5,"Dây cờ trang trí tiệc", 120000, "Dây cờ là một sản phẩm trang trí không thể thiếu cho bất kỳ buổi tiệc nào, và đặc biệt, chúng tôi tự hào giới thiệu dòng sản phẩm dây cờ được làm từ nhựa tái chế. Sự sáng tạo trong thiết kế không chỉ tạo ra không khí vui tươi và phấn khích cho bất kỳ dịp lễ nào mà còn góp phần tích cực vào nỗ lực bảo vệ môi trường. Với việc sử dụng nhựa tái chế, chúng tôi cam kết giảm lượng chất thải nhựa và tái sử dụng nguyên liệu, giữ cho không gian tiệc tùng trở nên thú vị hơn mà không ảnh hưởng đến môi trường. Dây cờ từ nhựa tái chế không chỉ đẹp mắt mà còn là một cách thúc đẩy ý thức về trách nhiệm xã hội và bảo vệ hành tinh xanh chúng ta. Hãy tận hưởng những khoảnh khắc vui vẻ và đồng thời hỗ trợ vào việc giữ cho hành tinh của chúng ta trở nên bền vững hơn.", convertPhoto(context, R.drawable.dtt_dayco1), 1, "Đồ trang trí", 60, 4.5, 100000, 25, "2024/04/03", 1, convertPhoto(context, R.drawable.dtt_dayco1), convertPhoto(context, R.drawable.dtt_dayco2), convertPhoto(context, R.drawable.dtt_dayco3));
-            insertData(6,"Đồ trang trí giáng sinh", 90000, "Đồ trang trí Giáng Sinh 3D không chỉ làm mới không khí của mùa lễ hội mà còn là biểu tượng của sự sang trọng và ý thức về môi trường. Với việc sử dụng nhựa tái chế, sản phẩm này không chỉ tạo ra một không gian lễ hội ấm cúng mà còn đóng góp tích cực vào việc giảm lượng chất thải nhựa. Mỗi chiếc đồ trang trí được chế tạo với kỹ thuật 3D độc đáo, tạo nên hiệu ứng thị giác đặc sắc và sống động, làm tôn lên vẻ đẹp của mùa Giáng Sinh. Việc tái chế nhựa không chỉ giúp giảm tác động tiêu cực đối với môi trường mà còn thúc đẩy ý thức về việc sử dụng tài nguyên tái chế trong sản xuất. Đồ trang trí Giáng Sinh 3D là sự kết hợp hoàn hảo giữa sự sang trọng, sáng tạo và ý thức môi trường. Bằng cách chọn lựa sản phẩm này, chúng ta không chỉ tận hưởng không khí lễ hội phấn khích mà còn thể hiện sự quan tâm đến bảo vệ môi trường và chọn lựa bền vững trong mọi hoạt động.", convertPhoto(context, R.drawable.dtt_giangsinh1), 0, "Đồ trang trí", 60, 4.6, 70000, 80, "2024/04/10", 1, convertPhoto(context, R.drawable.dtt_giangsinh1), convertPhoto(context, R.drawable.dtt_giangsinh2), convertPhoto(context, R.drawable.dtt_giangsinh3));
-            insertData(7,"Đồng hồ treo tường", 370000, "Đồng hồ treo tường từ nhựa tái chế không chỉ là một sản phẩm thời gian mà còn là biểu tượng của sự sáng tạo và tôn trọng đối với môi trường. Với thiết kế độc đáo, sản phẩm này là sự kết hợp hoàn hảo giữa vẻ ngoại hình tinh tế và cam kết với lối sống bền vững. Bằng cách sử dụng nhựa tái chế, đồng hồ treo tường không chỉ giảm lượng rác thải nhựa mà còn giúp tái chế nguyên liệu, đóng góp vào việc bảo vệ môi trường. Sự linh hoạt trong việc tạo hình và màu sắc của sản phẩm này không chỉ làm mới không gian sống mà còn thể hiện tầm quan trọng của việc chọn lựa sản phẩm có trách nhiệm với môi trường. Đồng hồ treo tường từ nhựa tái chế không chỉ đơn thuần là một phụ kiện trang trí, mà còn là biểu tượng của lối sống ý thức về môi trường. Việc đặt mình vào ngôi nhà của bạn không chỉ làm tăng thêm vẻ đẹp mà còn là bước nhỏ nhưng ý nghĩa để góp phần vào việc bảo vệ hành tinh của chúng ta.", convertPhoto(context, R.drawable.dtt_dongho1), 1, "Đồ trang trí", 60, 4.2, 350000, 100, "2024/04/03", 1, convertPhoto(context, R.drawable.dtt_dongho1), convertPhoto(context, R.drawable.dtt_dongho2), convertPhoto(context, R.drawable.dtt_dongho3));
-            insertData(8,"Móc khóa hình đảo Kos", 110000, "Móc khóa hình đảo Kos là một tác phẩm sáng tạo không chỉ đẹp mắt mà còn mang đến sự ý thức về môi trường. Được tạo ra từ nhựa tái chế, sản phẩm này là biểu tượng của sự kết hợp giữa nghệ thuật và bảo vệ môi trường. Hình ảnh đảo Kos được minh họa trên móc khóa không chỉ đẹp mắt mà còn là cách tuyệt vời để kỷ niệm và tôn vinh vẻ đẹp của đảo nổi tiếng này. Với việc sử dụng nguyên liệu tái chế, chúng ta không chỉ giảm lượng chất thải nhựa mà còn thúc đẩy tư duy bền vững trong sản xuất. Mỗi chiếc móc khóa không chỉ là một sản phẩm thực tế, mà còn là một cách để chia sẻ thông điệp về ý thức môi trường và sự cần thiết của việc bảo vệ những địa điểm đẹp tự nhiên như đảo Kos. Đặt mình vào túi của bạn, sản phẩm này không chỉ là một chiếc móc khóa mà còn là một tuyên ngôn về sự đồng lòng trong việc bảo vệ hành tinh của chúng ta.", convertPhoto(context, R.drawable.pk_mockhoakos1), 0, "Đồ trang trí", 60, 5.0, 90000, 67, "2024/04/03", 1, convertPhoto(context, R.drawable.pk_mockhoakos1), convertPhoto(context, R.drawable.pk_mockhoakos2), convertPhoto(context, R.drawable.pk_mockhoakos1));
-            insertData(9,"Bông tai hình bông hoa", 160000, "Bông tai hình bông hoa là một biểu tượng của sự thanh lịch và sáng tạo, mang đến cho người đeo không chỉ vẻ đẹp tinh tế mà còn là niềm tự hào về việc chọn lựa có trách nhiệm với môi trường. Sản phẩm này được chế tạo từ nhựa tái chế, đó là một bước tiến quan trọng trong việc giảm lượng chất thải nhựa và giữ cho tài nguyên tự nhiên được bảo vệ. Bông hoa tinh tế được tái tạo từ nhựa tái chế không chỉ là một tuyên ngôn về sự đẹp đẽ mà còn là một cam kết vững chắc đối với bảo vệ môi trường. Việc sử dụng nguyên liệu tái chế giúp giảm áp lực đặt ra cho hệ sinh thái và hỗ trợ trong việc xây dựng một tương lai bền vững. Bông tai hình bông hoa không chỉ là một phụ kiện thời trang, mà còn là biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc duy trì sự cân bằng giữa thời trang và bảo vệ môi trường.", convertPhoto(context, R.drawable.pk_bongtai_hoa1), 1, "Phụ kiện", 60, 4.5, 140000, 56, "2024/04/10", 1, convertPhoto(context, R.drawable.pk_bongtai_hoa1), convertPhoto(context, R.drawable.pk_bongtai_hoa2), convertPhoto(context, R.drawable.pk_bongtai_hoa3));
-            insertData(10,"Bông tai hình chữ nhật", 120000, "Bông tai hình chữ nhật không chỉ là một biểu tượng của sự đơn giản và hiện đại trong thế giới thời trang mà còn là một minh chứng cho sự sáng tạo và chăm sóc đối với môi trường. Sản phẩm này được tạo ra từ nhựa tái chế, một lựa chọn thông minh và đảm bảo, giúp giảm lượng chất thải nhựa và bảo vệ nguồn tài nguyên tự nhiên. Thiết kế hình chữ nhật đơn giản nhưng tinh tế của bông tai mang lại sự linh hoạt trong việc kết hợp với nhiều phong cách thời trang khác nhau. Đồng thời, việc sử dụng nhựa tái chế không chỉ giúp giảm áp lực đặt ra cho môi trường mà còn thể hiện cam kết đối với phong cách sống bền vững và tiêu thụ có trách nhiệm. Bông tai hình chữ nhật không chỉ là một chiếc phụ kiện thời trang độc đáo mà còn là biểu tượng của ý thức môi trường. Sử dụng sản phẩm này không chỉ là một cách để thể hiện cái tôi cá nhân mà còn là bước nhỏ nhưng ý nghĩa trong việc góp phần vào việc giữ cho hành tinh của chúng ta trở nên bền vững hơn", convertPhoto(context, R.drawable.pk_bongtai_hcn1), 0, "Phụ kiện", 60, 4.7, 100000, 48, "2024/04/03", 1, convertPhoto(context, R.drawable.pk_bongtai_hcn1), convertPhoto(context, R.drawable.pk_bongtai_hcn2), convertPhoto(context, R.drawable.pk_bongtai_hcn3));
-            insertData(11,"Móc khóa hình mặt cười", 110000, "Móc khóa hình mặt cười là một phụ kiện vui nhộn và thân thiện với môi trường, được sáng tạo từ nhựa tái chế. Thiết kế này không chỉ mang lại sự hứng khởi với hình ảnh mặt cười thân quen mà còn góp phần giảm lượng chất thải nhựa đối với môi trường. Sử dụng nhựa tái chế là một cam kết đối với bảo vệ hành tinh của chúng ta, tạo ra một sản phẩm không chỉ phản ánh tính cách lạc quan mà còn thể hiện tinh thần chăm sóc môi trường. Mỗi chiếc móc khóa không chỉ là một biểu tượng vui nhộn mà còn là một bước tiến tích cực trong việc hướng tới một lối sống bền vững và ý thức môi trường. Sở hữu một chiếc móc khóa hình mặt cười không chỉ là thêm vào bộ sưu tập phụ kiện cá nhân của bạn mà còn là cách để bạn thể hiện sự quan tâm đến môi trường.", convertPhoto(context, R.drawable.pk_mockhoacuoi), 1, "Phụ kiện", 60, 4.0, 90000, 89, "2024/04/03", 1, convertPhoto(context, R.drawable.pk_mockhoacuoi), convertPhoto(context, R.drawable.pk_mockhoacuoi), convertPhoto(context, R.drawable.pk_mockhoacuoi));
-            insertData(12,"Móc khóa rùa biển", 110000, "Móc khóa hình rùa biển là một sáng tạo độc đáo kết hợp giữa thiết kế đáng yêu và tôn trọng môi trường. Sản phẩm này làm từ nhựa tái chế, chú trọng đến việc giảm lượng chất thải nhựa và ảnh hưởng tích cực đến bảo vệ hệ sinh thái biển cả. Hình rùa biển được chọn làm điểm nhấn cho móc khóa không chỉ vì sự đáng yêu mà còn vì ý nghĩa mà chúng mang lại trong việc góp phần bảo vệ động vật biển. Sự kết hợp giữa ý thức môi trường và thiết kế sáng tạo khiến cho sản phẩm này trở thành một cách tuyệt vời để thể hiện phong cách cá nhân của bạn trong khi đồng thời chung tay bảo vệ môi trường xanh - nơi rùa biển và nhiều loài động vật khác gọi là nhà.", convertPhoto(context, R.drawable.pk_mockhoarua1), 0, "Phụ kiện", 60, 4.5, 90000, 50, "2024/04/10", 1, convertPhoto(context, R.drawable.pk_mockhoarua1), convertPhoto(context, R.drawable.pk_mockhoarua2), convertPhoto(context, R.drawable.pk_mockhoarua3));
-
-            //            execSql("INSERT INTO " + TBl_PRODUCT + " VALUES(null,'Đĩa nhỏ', 120000, 'Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường. Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu. Thiết kế nhỏ gọn và tiện lợi làm cho sản phẩm trở thành người bạn đồng hành lý tưởng, không chỉ phục vụ nhu cầu hàng ngày mà còn thúc đẩy ý thức về một lối sống bền vững. Đĩa nhỏ từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian sống mà còn là một biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc  giữ gìn cho hành tinh xanh của chúng ta. Hãy chọn lựa thông minh và hòa mình vào những giải pháp bảo vệ môi trường với sản phẩm độc đáo này.', convertPhoto(context, R.drawable.dgd_dia1), 1, 'Đồ gia dụng', 60, 4.5, 100000, 87, '2024/04/10', 1, convertPhoto(context, R.drawable.dgd_dia1), convertPhoto(context, R.drawable.dgd_dia2), convertPhoto(context, R.drawable.dgd_dia3)");
-//jdiofigfgefehg
+            insertData("Đĩa nhỏ", 120000, "Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường. Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu. Thiết kế nhỏ gọn và tiện lợi làm cho sản phẩm trở thành người bạn đồng hành lý tưởng, không chỉ phục vụ nhu cầu hàng ngày mà còn thúc đẩy ý thức về một lối sống bền vững. Đĩa nhỏ từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian sống mà còn là một biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc  giữ gìn cho hành tinh xanh của chúng ta. Hãy chọn lựa thông minh và hòa mình vào những giải pháp bảo vệ môi trường với sản phẩm độc đáo này.", convertPhoto(context, R.drawable.dgd_dia1), 1, "Đồ gia dụng", 60, 4.5, 100000, 87, "2024/04/10", 1, convertPhoto(context, R.drawable.dgd_dia1), convertPhoto(context, R.drawable.dgd_dia2), convertPhoto(context, R.drawable.dgd_dia3));
+            insertData("Khay đựng xà phòng", 170000, "Khay đựng bánh xà phòng từ nhựa tái chế là sự kết hợp hoàn hảo giữa tính thực tế và cam kết với môi trường. Với nguyên liệu là nhựa tái chế, sản phẩm này không chỉ giúp giảm lượng chất thải nhựa mà còn thể hiện tinh thần chăm sóc đối với hành tinh xanh của chúng ta. Thiết kế của khay đựng bánh xà phòng không chỉ đơn giản mà còn linh hoạt, phù hợp với mọi không gian nhà tắm. Sự sáng tạo trong cách sử dụng nguyên liệu tái chế không chỉ làm cho sản phẩm trở nên độc đáo mà còn đặt ra một tiêu chí mới cho việc chọn lựa sản phẩm gia dụng có trách nhiệm với môi trường. Khay đựng bánh xà phòng từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian nhà tắm mà còn là một bước nhỏ nhưng ý nghĩa trong hành trình chung của chúng ta để bảo vệ và giữ gìn cho hành tinh xanh, trong từng lựa chọn hàng ngày của chúng ta.", convertPhoto(context, R.drawable.dgd_xaphong1), 0, "Đồ gia dụng", 60, 4.7, 150000, 45, "2024/04/10", 1, convertPhoto(context, R.drawable.dgd_xaphong1), convertPhoto(context, R.drawable.dgd_xaphong2), convertPhoto(context, R.drawable.dgd_xaphong3));
+            insertData("Lót ly", 110000, "Đồ lót ly từ nhựa tái chế là sự kết hợp độc đáo giữa sự thoải mái và cam kết với môi trường. Với việc sử dụng nguyên liệu là nhựa tái chế, sản phẩm không chỉ mang lại cảm giác mềm mại và thoải mái cho người sử dụng mà còn đóng góp vào việc giảm lượng chất thải nhựa. Thiết kế của đồ lót ly không chỉ chú trọng đến sự thoải mái và tôn lên vẻ đẹp tự nhiên, mà còn thể hiện sự chấp nhận trách nhiệm với môi trường. Việc sử dụng nhựa tái chế không chỉ là một xu hướng tiêu dùng thông minh mà còn là sự đóng góp tích cực vào việc bảo vệ nguồn tài nguyên tự nhiên và giảm thiểu ảnh hưởng tiêu cực đối với hệ sinh thái. Đồ lót ly từ nhựa tái chế không chỉ là lựa chọn thông minh cho sự thoải mái hàng ngày mà còn là một cách để chúng ta cùng nhau xây dựng một lối sống thân thiện với môi trường, đồng thời thể hiện sự quan tâm đến sức khỏe và hành tinh xanh của chúng ta.", convertPhoto(context, R.drawable.dgd_lotly1), 1, "Đồ gia dụng", 60, 4.0, 100000, 100, "2024/04/10", 1, convertPhoto(context, R.drawable.dgd_lotly1), convertPhoto(context, R.drawable.dgd_lotly2), convertPhoto(context, R.drawable.dgd_lotly3));
+            insertData("Giá đỡ laptop", 220000, "Giá đỡ laptop từ nhựa tái chế là một phụ kiện không thể thiếu cho những người sử dụng máy tính xách tay, kết hợp giữa tính thực tế và tầm nhìn bền vững. Với sự sáng tạo trong việc sử dụng nhựa tái chế, sản phẩm không chỉ tạo ra một nơi thoải mái để đặt laptop mà còn là cách nhỏ nhưng tích cực để giảm lượng chất thải nhựa. Thiết kế nhẹ nhàng và linh hoạt của giá đỡ không chỉ giúp người dùng duy trì tư duy làm việc hiệu quả mà còn hỗ trợ vào nỗ lực chung của cộng đồng trong việc giữ gìn môi trường. Sự cam kết đối với nhựa tái chế không chỉ là một xu hướng tiêu dùng mà còn là một lối sống, và sản phẩm giá đỡ laptop này là minh chứng rõ ràng cho sự hài hòa giữa tiện ích và sự chấp nhận trách nhiệm với môi trường. Hãy lựa chọn giá đỡ laptop từ nhựa tái chế để không chỉ tận hưởng sự thuận tiện mà còn tham gia vào cuộc hành trình bảo vệ hành tinh của chúng ta.", convertPhoto(context, R.drawable.dgd_laptop1), 0, "Đồ gia dụng", 60, 5, 200000, 30, "2024/04/10", 1, convertPhoto(context, R.drawable.dgd_laptop1), convertPhoto(context, R.drawable.dgd_laptop2), convertPhoto(context, R.drawable.dgd_latop3));
+            insertData("Dây cờ trang trí tiệc", 120000, "Dây cờ là một sản phẩm trang trí không thể thiếu cho bất kỳ buổi tiệc nào, và đặc biệt, chúng tôi tự hào giới thiệu dòng sản phẩm dây cờ được làm từ nhựa tái chế. Sự sáng tạo trong thiết kế không chỉ tạo ra không khí vui tươi và phấn khích cho bất kỳ dịp lễ nào mà còn góp phần tích cực vào nỗ lực bảo vệ môi trường. Với việc sử dụng nhựa tái chế, chúng tôi cam kết giảm lượng chất thải nhựa và tái sử dụng nguyên liệu, giữ cho không gian tiệc tùng trở nên thú vị hơn mà không ảnh hưởng đến môi trường. Dây cờ từ nhựa tái chế không chỉ đẹp mắt mà còn là một cách thúc đẩy ý thức về trách nhiệm xã hội và bảo vệ hành tinh xanh chúng ta. Hãy tận hưởng những khoảnh khắc vui vẻ và đồng thời hỗ trợ vào việc giữ cho hành tinh của chúng ta trở nên bền vững hơn.", convertPhoto(context, R.drawable.dtt_dayco1), 1, "Đồ trang trí", 60, 4.5, 100000, 25, "2024/04/03", 1, convertPhoto(context, R.drawable.dtt_dayco1), convertPhoto(context, R.drawable.dtt_dayco2), convertPhoto(context, R.drawable.dtt_dayco3));
+            insertData("Đồ trang trí giáng sinh", 90000, "Đồ trang trí Giáng Sinh 3D không chỉ làm mới không khí của mùa lễ hội mà còn là biểu tượng của sự sang trọng và ý thức về môi trường. Với việc sử dụng nhựa tái chế, sản phẩm này không chỉ tạo ra một không gian lễ hội ấm cúng mà còn đóng góp tích cực vào việc giảm lượng chất thải nhựa. Mỗi chiếc đồ trang trí được chế tạo với kỹ thuật 3D độc đáo, tạo nên hiệu ứng thị giác đặc sắc và sống động, làm tôn lên vẻ đẹp của mùa Giáng Sinh. Việc tái chế nhựa không chỉ giúp giảm tác động tiêu cực đối với môi trường mà còn thúc đẩy ý thức về việc sử dụng tài nguyên tái chế trong sản xuất. Đồ trang trí Giáng Sinh 3D là sự kết hợp hoàn hảo giữa sự sang trọng, sáng tạo và ý thức môi trường. Bằng cách chọn lựa sản phẩm này, chúng ta không chỉ tận hưởng không khí lễ hội phấn khích mà còn thể hiện sự quan tâm đến bảo vệ môi trường và chọn lựa bền vững trong mọi hoạt động.", convertPhoto(context, R.drawable.dtt_giangsinh1), 0, "Đồ trang trí", 60, 4.6, 70000, 80, "2024/04/10", 1, convertPhoto(context, R.drawable.dtt_giangsinh1), convertPhoto(context, R.drawable.dtt_giangsinh2), convertPhoto(context, R.drawable.dtt_giangsinh3));
+            insertData("Đồng hồ treo tường", 370000, "Đồng hồ treo tường từ nhựa tái chế không chỉ là một sản phẩm thời gian mà còn là biểu tượng của sự sáng tạo và tôn trọng đối với môi trường. Với thiết kế độc đáo, sản phẩm này là sự kết hợp hoàn hảo giữa vẻ ngoại hình tinh tế và cam kết với lối sống bền vững. Bằng cách sử dụng nhựa tái chế, đồng hồ treo tường không chỉ giảm lượng rác thải nhựa mà còn giúp tái chế nguyên liệu, đóng góp vào việc bảo vệ môi trường. Sự linh hoạt trong việc tạo hình và màu sắc của sản phẩm này không chỉ làm mới không gian sống mà còn thể hiện tầm quan trọng của việc chọn lựa sản phẩm có trách nhiệm với môi trường. Đồng hồ treo tường từ nhựa tái chế không chỉ đơn thuần là một phụ kiện trang trí, mà còn là biểu tượng của lối sống ý thức về môi trường. Việc đặt mình vào ngôi nhà của bạn không chỉ làm tăng thêm vẻ đẹp mà còn là bước nhỏ nhưng ý nghĩa để góp phần vào việc bảo vệ hành tinh của chúng ta.", convertPhoto(context, R.drawable.dtt_dongho1), 1, "Đồ trang trí", 60, 4.2, 350000, 100, "2024/04/03", 1, convertPhoto(context, R.drawable.dtt_dongho1), convertPhoto(context, R.drawable.dtt_dongho2), convertPhoto(context, R.drawable.dtt_dongho3));
+            insertData("Móc khóa hình đảo Kos", 110000, "Móc khóa hình đảo Kos là một tác phẩm sáng tạo không chỉ đẹp mắt mà còn mang đến sự ý thức về môi trường. Được tạo ra từ nhựa tái chế, sản phẩm này là biểu tượng của sự kết hợp giữa nghệ thuật và bảo vệ môi trường. Hình ảnh đảo Kos được minh họa trên móc khóa không chỉ đẹp mắt mà còn là cách tuyệt vời để kỷ niệm và tôn vinh vẻ đẹp của đảo nổi tiếng này. Với việc sử dụng nguyên liệu tái chế, chúng ta không chỉ giảm lượng chất thải nhựa mà còn thúc đẩy tư duy bền vững trong sản xuất. Mỗi chiếc móc khóa không chỉ là một sản phẩm thực tế, mà còn là một cách để chia sẻ thông điệp về ý thức môi trường và sự cần thiết của việc bảo vệ những địa điểm đẹp tự nhiên như đảo Kos. Đặt mình vào túi của bạn, sản phẩm này không chỉ là một chiếc móc khóa mà còn là một tuyên ngôn về sự đồng lòng trong việc bảo vệ hành tinh của chúng ta.", convertPhoto(context, R.drawable.pk_mockhoakos1), 0, "Đồ trang trí", 60, 5.0, 90000, 67, "2024/04/03", 1, convertPhoto(context, R.drawable.pk_mockhoakos1), convertPhoto(context, R.drawable.pk_mockhoakos2), convertPhoto(context, R.drawable.pk_mockhoakos1));
+            insertData("Bông tai hình bông hoa", 160000, "Bông tai hình bông hoa là một biểu tượng của sự thanh lịch và sáng tạo, mang đến cho người đeo không chỉ vẻ đẹp tinh tế mà còn là niềm tự hào về việc chọn lựa có trách nhiệm với môi trường. Sản phẩm này được chế tạo từ nhựa tái chế, đó là một bước tiến quan trọng trong việc giảm lượng chất thải nhựa và giữ cho tài nguyên tự nhiên được bảo vệ. Bông hoa tinh tế được tái tạo từ nhựa tái chế không chỉ là một tuyên ngôn về sự đẹp đẽ mà còn là một cam kết vững chắc đối với bảo vệ môi trường. Việc sử dụng nguyên liệu tái chế giúp giảm áp lực đặt ra cho hệ sinh thái và hỗ trợ trong việc xây dựng một tương lai bền vững. Bông tai hình bông hoa không chỉ là một phụ kiện thời trang, mà còn là biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc duy trì sự cân bằng giữa thời trang và bảo vệ môi trường.", convertPhoto(context, R.drawable.pk_bongtai_hoa1), 1, "Phụ kiện", 60, 4.5, 140000, 56, "2024/04/10", 1, convertPhoto(context, R.drawable.pk_bongtai_hoa1), convertPhoto(context, R.drawable.pk_bongtai_hoa2), convertPhoto(context, R.drawable.pk_bongtai_hoa3));
+            insertData("Bông tai hình chữ nhật", 120000, "Bông tai hình chữ nhật không chỉ là một biểu tượng của sự đơn giản và hiện đại trong thế giới thời trang mà còn là một minh chứng cho sự sáng tạo và chăm sóc đối với môi trường. Sản phẩm này được tạo ra từ nhựa tái chế, một lựa chọn thông minh và đảm bảo, giúp giảm lượng chất thải nhựa và bảo vệ nguồn tài nguyên tự nhiên. Thiết kế hình chữ nhật đơn giản nhưng tinh tế của bông tai mang lại sự linh hoạt trong việc kết hợp với nhiều phong cách thời trang khác nhau. Đồng thời, việc sử dụng nhựa tái chế không chỉ giúp giảm áp lực đặt ra cho môi trường mà còn thể hiện cam kết đối với phong cách sống bền vững và tiêu thụ có trách nhiệm. Bông tai hình chữ nhật không chỉ là một chiếc phụ kiện thời trang độc đáo mà còn là biểu tượng của ý thức môi trường. Sử dụng sản phẩm này không chỉ là một cách để thể hiện cái tôi cá nhân mà còn là bước nhỏ nhưng ý nghĩa trong việc góp phần vào việc giữ cho hành tinh của chúng ta trở nên bền vững hơn", convertPhoto(context, R.drawable.pk_bongtai_hcn1), 0, "Phụ kiện", 60, 4.7, 100000, 48, "2024/04/03", 1, convertPhoto(context, R.drawable.pk_bongtai_hcn1), convertPhoto(context, R.drawable.pk_bongtai_hcn2), convertPhoto(context, R.drawable.pk_bongtai_hcn3));
+            insertData("Móc khóa hình mặt cười", 110000, "Móc khóa hình mặt cười là một phụ kiện vui nhộn và thân thiện với môi trường, được sáng tạo từ nhựa tái chế. Thiết kế này không chỉ mang lại sự hứng khởi với hình ảnh mặt cười thân quen mà còn góp phần giảm lượng chất thải nhựa đối với môi trường. Sử dụng nhựa tái chế là một cam kết đối với bảo vệ hành tinh của chúng ta, tạo ra một sản phẩm không chỉ phản ánh tính cách lạc quan mà còn thể hiện tinh thần chăm sóc môi trường. Mỗi chiếc móc khóa không chỉ là một biểu tượng vui nhộn mà còn là một bước tiến tích cực trong việc hướng tới một lối sống bền vững và ý thức môi trường. Sở hữu một chiếc móc khóa hình mặt cười không chỉ là thêm vào bộ sưu tập phụ kiện cá nhân của bạn mà còn là cách để bạn thể hiện sự quan tâm đến môi trường.", convertPhoto(context, R.drawable.pk_mockhoacuoi), 1, "Phụ kiện", 60, 4.0, 90000, 89, "2024/04/03", 1, convertPhoto(context, R.drawable.pk_mockhoacuoi), convertPhoto(context, R.drawable.pk_mockhoacuoi), convertPhoto(context, R.drawable.pk_mockhoacuoi));
+            insertData("Móc khóa rùa biển", 110000, "Móc khóa hình rùa biển là một sáng tạo độc đáo kết hợp giữa thiết kế đáng yêu và tôn trọng môi trường. Sản phẩm này làm từ nhựa tái chế, chú trọng đến việc giảm lượng chất thải nhựa và ảnh hưởng tích cực đến bảo vệ hệ sinh thái biển cả. Hình rùa biển được chọn làm điểm nhấn cho móc khóa không chỉ vì sự đáng yêu mà còn vì ý nghĩa mà chúng mang lại trong việc góp phần bảo vệ động vật biển. Sự kết hợp giữa ý thức môi trường và thiết kế sáng tạo khiến cho sản phẩm này trở thành một cách tuyệt vời để thể hiện phong cách cá nhân của bạn trong khi đồng thời chung tay bảo vệ môi trường xanh - nơi rùa biển và nhiều loài động vật khác gọi là nhà.", convertPhoto(context, R.drawable.pk_mockhoarua1), 0, "Phụ kiện", 60, 4.5, 90000, 50, "2024/04/10", 1, convertPhoto(context, R.drawable.pk_mockhoarua1), convertPhoto(context, R.drawable.pk_mockhoarua2), convertPhoto(context, R.drawable.pk_mockhoarua3));
 
         }
 
@@ -1088,7 +1080,7 @@ public class R3cyDB extends SQLiteOpenHelper {
         return outputStream.toByteArray();
     }
 
-    //    Kiểm tra bảng Discuss
+//    Kiểm tra bảng Discuss
     public int numbOfRowsDiscuss(){
         Cursor c = getData("SELECT * FROM " + TBl_DISCUSS);
         int numberOfRows = c.getCount();
@@ -1194,13 +1186,10 @@ public class R3cyDB extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             // Lấy thông tin từ cursor
             @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
-            @SuppressLint("Range") byte[] thumb = cursor.getBlob(cursor.getColumnIndex(CUSTOMER_THUMB));
-
 
             UserInfo userInfo = new UserInfo();
 //            customer.getFullName(), customer.getUsername(), customer.getPhone(), String.valueOf(customer.getGender()), customer.getBirthday(), customer.getEmail(), customer.getCustomerId();
             userInfo.setFullName(name);
-            userInfo.setThumb(thumb);
 
             customers.add(userInfo);
         }
@@ -1228,7 +1217,6 @@ public class R3cyDB extends SQLiteOpenHelper {
             @SuppressLint("Range") String phone = cursor.getString(cursor.getColumnIndex(PHONE));
             @SuppressLint("Range") String gender = cursor.getString(cursor.getColumnIndex(GENDER));
             @SuppressLint("Range") String birthday = cursor.getString(cursor.getColumnIndex(BIRTHDAY));
-            @SuppressLint("Range") byte[] thumb = cursor.getBlob(cursor.getColumnIndex(CUSTOMER_THUMB));
 
 
             UserInfo userInfo = new UserInfo();
@@ -1238,7 +1226,6 @@ public class R3cyDB extends SQLiteOpenHelper {
             userInfo.setEmail(emails);
             userInfo.setGender(gender);
             userInfo.setBirthday(birthday);
-            userInfo.setThumb(thumb);
 
             customers.add(userInfo);
         }
@@ -1324,5 +1311,9 @@ public class R3cyDB extends SQLiteOpenHelper {
 
 
 
-
 }
+
+
+
+
+

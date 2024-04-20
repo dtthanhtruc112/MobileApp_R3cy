@@ -166,6 +166,12 @@ public class UserAccount_Main extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), Signin_Main.class);
                     startActivity(intent);
                     Toast.makeText(UserAccount_Main.this, "Đăng xuất thành công !", Toast.LENGTH_SHORT).show();
+                // Xóa SharedPreferences
+                SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.remove("key_name");
+                editor.apply();
+
             }
         });
         binding.usScore.setOnClickListener(new View.OnClickListener() {

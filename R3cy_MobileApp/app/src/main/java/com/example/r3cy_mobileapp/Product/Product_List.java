@@ -85,7 +85,7 @@ public class Product_List extends AppCompatActivity implements ProductInterface 
     }
         private void createDb() {
         db = new R3cyDB(this);
-        db.createSampleProduct();
+//        db.createSampleProduct1();
     }
 
     private List<Product> getProducts() {

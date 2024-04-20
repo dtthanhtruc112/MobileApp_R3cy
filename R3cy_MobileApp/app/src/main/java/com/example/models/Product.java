@@ -14,9 +14,9 @@ public class Product {
     private int SoldQuantity;
     private String CreatedDate;
     private int Status;
-    private byte[] Img1;
-    private byte[] Img2;
-    private byte[] Img3;
+    private byte[] img1;
+    private byte[] img2;
+    private byte[] img3;
 
 
 //    constructor
@@ -36,9 +36,9 @@ public class Product {
         SoldQuantity = soldQuantity;
         CreatedDate = createdDate;
         Status = status;
-        this.Img1 = img1;
-        this.Img2 = img2;
-        this.Img3 = img3;
+        this.img1 = img1;
+        this.img2 = img2;
+        this.img3 = img3;
     }
 
     public int getProductID() {
@@ -146,26 +146,26 @@ public class Product {
     }
 
     public byte[] getImg1() {
-        return Img1;
+        return img1;
     }
 
     public void setImg1(byte[] img1) {
-        this.Img1 = img1;
+        this.img1 = img1;
     }
 
     public byte[] getImg2() {
-        return Img2;
+        return img2;
     }
 
     public void setImg2(byte[] img2) {
-        this.Img2 = img2;
+        this.img2 = img2;
     }
 
     public byte[] getImg3() {
-        return Img3;
+        return img3;
     }
 
     public void setImg3(byte[] img3) {
-        this.Img3 = img3;
+        this.img3 = img3;
     }
 }
