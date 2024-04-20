@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -267,8 +268,7 @@ public class R3cyDB extends SQLiteOpenHelper {
             SALE_PRICE + " REAL NOT NULL," +
             SOLD_QUANTITY + " INTEGER," +
             CREATED_DATE + " DATE DEFAULT ('2024-04-03')," +
-            STATUS + " INTEGER DEFAULT 1," +
-            "PRIMARY KEY (" + PRODUCT_ID + ")" +
+            STATUS + " INTEGER DEFAULT 1" +
             ")";
 
 
@@ -509,10 +509,12 @@ public void createSampleDataCoupon() {
 //   Hàm lấy mảng customerid
 public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
     ArrayList<Integer> customerIds = new ArrayList<>();
-    if (customerIdsString != null && !customerIdsString.isEmpty()) {
-        String[] ids = customerIdsString.replaceAll("\\[|\\]", "").split(",\\s*");
-        for (String id : ids) {
-            customerIds.add(Integer.parseInt(id.trim()));
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+        if (customerIdsString != null && !customerIdsString.isEmpty()) {
+            String[] ids = customerIdsString.replaceAll("\\[|\\]", "").split(",\\s*");
+            for (String id : ids) {
+                customerIds.add(Integer.parseInt(id.trim()));
+            }
         }
     }
     return customerIds;
@@ -1043,7 +1045,7 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
                 SOLD_QUANTITY + ", " +
                 CREATED_DATE + ", " +
                 STATUS +
-                ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
 
         SQLiteStatement statement = database.compileStatement(sql);
 
@@ -1085,7 +1087,10 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
 
     }
     private byte[] convertPhoto(Context context, int resourceId) {
-        BitmapDrawable drawable = (BitmapDrawable) context.getDrawable(resourceId);
+        BitmapDrawable drawable = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            drawable = (BitmapDrawable) context.getDrawable(resourceId);
+        }
         Bitmap bitmap = drawable.getBitmap();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
@@ -1295,28 +1300,28 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
             return false;
         }
     }
-    @SuppressLint("Range")
-    public String getOrderStatus(String orderstatus) {
-        SQLiteDatabase db = this.getReadableDatabase();
-//        String customerId = -1; // Giá trị mặc định nếu không tìm thấy customerId
-        String query = "SELECT * FROM " + TBl_ORDER + " WHERE " + ORDER_STATUS + " = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{orderstatus});
-        if (cursor != null && cursor.moveToFirst()) {
-            orderstatus = cursor.getString(cursor.getColumnIndex(ORDER_STATUS));
-//            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
-            cursor.close();
-
-        }
-
-        // Đóng con trỏ và database
-//        cursor.close();
-//        sqLiteDatabase.close();
+//    @SuppressLint("Range")
+//    public String getOrderStatus(String orderstatus) {
+//        SQLiteDatabase db = this.getReadableDatabase();
+////        String customerId = -1; // Giá trị mặc định nếu không tìm thấy customerId
+//        String query = "SELECT * FROM " + TBl_ORDER + " WHERE " + ORDER_STATUS + " = ?";
+//        Cursor cursor = db.rawQuery(query, new String[]{orderstatus});
+//        if (cursor != null && cursor.moveToFirst()) {
+//            orderstatus = cursor.getString(cursor.getColumnIndex(ORDER_STATUS));
+////            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
+//            cursor.close();
 //
-
-        db.close();
-
-        return orderstatus;
-    }
+//        }
+//
+//        // Đóng con trỏ và database
+////        cursor.close();
+////        sqLiteDatabase.close();
+////
+//
+//        db.close();
+//
+//        return orderstatus;
+//    }
 
 
 

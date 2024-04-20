@@ -106,13 +106,10 @@ public class Product_List extends AppCompatActivity implements ProductInterface 
                 @SuppressLint("Range") int SoldQuantity = cursor.getInt(cursor.getColumnIndex(SOLD_QUANTITY));
                 @SuppressLint("Range") String CreatedDate = cursor.getString(cursor.getColumnIndex(CREATED_DATE));
                 @SuppressLint("Range") int Status = cursor.getInt(cursor.getColumnIndex(STATUS));
-                @SuppressLint("Range") byte[] Img1 = cursor.getBlob(cursor.getColumnIndex(PRODUCT_IMG1));
-                @SuppressLint("Range") byte[] Img2 = cursor.getBlob(cursor.getColumnIndex(PRODUCT_IMG2));
-                @SuppressLint("Range") byte[] Img3 = cursor.getBlob(cursor.getColumnIndex(PRODUCT_IMG3));
                 @SuppressLint("Range") int Hot = cursor.getInt(cursor.getColumnIndex(HOT));
 
                 // Tạo một đối tượng Product từ dữ liệu
-                Product product = new Product(ProductID, ProductName,  ProductPrice,  ProductDescription,  ProductThumb,  Hot,  Category,  Inventory,  ProductRate,  SalePrice,  SoldQuantity,  CreatedDate,  Status,  Img1,  Img2,  Img3);
+                Product product = new Product(ProductID, ProductName,  ProductPrice,  ProductDescription,  ProductThumb,  Hot,  Category,  Inventory,  ProductRate,  SalePrice,  SoldQuantity,  CreatedDate,  Status);
 
                 // Thêm sản phẩm vào danh sách
                 products.add(product);

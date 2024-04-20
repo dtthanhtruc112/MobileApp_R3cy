@@ -114,13 +114,13 @@
             android:name=".CartManage"
             android:exported="false" />
         <activity
-            android:name=".TrangChu"
+            android:name=".UserAccount_Main"
             android:exported="false" />
         <activity
             android:name=".User_account_manageOrder"
             android:exported="false" />
         <activity
-            android:name=".UserAccount_Main"
+            android:name=".TrangChu"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

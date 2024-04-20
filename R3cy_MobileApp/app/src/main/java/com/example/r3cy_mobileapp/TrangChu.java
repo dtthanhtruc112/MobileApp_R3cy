@@ -31,6 +31,7 @@ import com.example.r3cy_mobileapp.Signin.Signin_Main;
 import com.example.r3cy_mobileapp.databinding.ActivityTrangChuBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -117,7 +118,9 @@ public class TrangChu extends AppCompatActivity {
                             cursor.getInt(12)
                     ));
 
-            }
+            } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }}
 
 
         Log.d("ProductInfo", "Number of products retrieved: " + products.size());
