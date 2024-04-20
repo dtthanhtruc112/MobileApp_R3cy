@@ -46,7 +46,7 @@
             android:name=".DoiDiem"
             android:exported="false" />
         <activity
-            android:name=".UserAccount_Main"
+            android:name=".Product.Product_List"
             android:exported="false" />
         <activity
             android:name=".Product.Product_Search"
@@ -111,16 +111,16 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".Product.Product_List"
+            android:name=".CartManage"
             android:exported="false" />
         <activity
-            android:name=".CartManage"
+            android:name=".TrangChu"
             android:exported="false" />
         <activity
             android:name=".User_account_manageOrder"
             android:exported="false" />
         <activity
-            android:name=".TrangChu"
+            android:name=".UserAccount_Main"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

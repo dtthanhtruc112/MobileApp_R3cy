@@ -1,8 +1,10 @@
 package com.example.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +13,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.models.Coupon;
 import com.example.models.Order;
+import com.example.r3cy_mobileapp.DoiDiem_ChiTiet;
 import com.example.r3cy_mobileapp.R;
+import com.example.r3cy_mobileapp.UserAccount_OrderRating;
 import com.example.r3cy_mobileapp.User_account_manageOrder;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 
@@ -58,6 +64,7 @@ public class OrderAdapter extends BaseAdapter{
             holder.orderProductCount = view.findViewById(R.id.order_productcount);
             holder.orderProductPrice = view.findViewById(R.id.order_productprice);
             holder.orderTotalPrice = view.findViewById(R.id.order_totalprice);
+            holder.btndanhgia = view.findViewById(R.id.btnorder_danhgia);
 
 
             view.setTag(holder);
@@ -69,8 +76,25 @@ public class OrderAdapter extends BaseAdapter{
         holder.orderStatus.setText(o.getOrderStatus());
         holder.orderProductName.setText(o.getProductName());
         holder.orderProductCount.setText(String.valueOf(o.getQuantity()));
-        holder.orderProductPrice.setText(String.format(Locale.getDefault(), "%.0f đ", o.getOrderSalePrice()));
+        holder.orderProductPrice.setText(String.valueOf(o.getProductPrice()));
         holder.orderTotalPrice.setText(String.format(Locale.getDefault(), "%.0f đ", o.getTotalOrderValue()));
+        holder.btndanhgia.setTag(position);
+        holder.btndanhgia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int clickedPosition = (int) v.getTag();
+
+                Order clickedOrder = orders.get(clickedPosition);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("ORDER", (Serializable) clickedOrder);
+
+                Intent intent = new Intent(context, UserAccount_OrderRating.class);
+                intent.putExtra("Package", bundle);
+                context.startActivity(intent);
+            }
+        });
+
 
         byte[] productImg = o.getProductImg();
         if (productImg != null) {

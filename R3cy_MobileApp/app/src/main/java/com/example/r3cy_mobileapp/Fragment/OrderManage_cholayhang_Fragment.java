@@ -1,39 +1,30 @@
 package com.example.r3cy_mobileapp.Fragment;
 
-import static android.content.Intent.getIntent;
-
-import android.content.Intent;
+import android.annotation.SuppressLint;
 import android.database.Cursor;
+import android.database.CursorWindow;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.example.adapter.CouponAdapter;
 import com.example.adapter.OrderAdapter;
-import com.example.adapter.ProductAdapter;
 import com.example.databases.R3cyDB;
-import com.example.models.Coupon;
 import com.example.models.Order;
-import com.example.models.Product;
 import com.example.r3cy_mobileapp.R;
-import com.example.r3cy_mobileapp.User_account_manageOrder;
-import com.example.r3cy_mobileapp.User_account_voucher;
 import com.example.r3cy_mobileapp.databinding.FragmentOrderManageCholayhangBinding;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,14 +42,13 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
     FragmentOrderManageCholayhangBinding binding;
-    R3cyDB db;
-    String email;
-    OrderAdapter adapter;
-    private List<Order> products;
-    Order product;
+    List<Order> orders;
 
-    RecyclerView rvProducts;
-    Intent intent;
+
+    R3cyDB dbR3cy;
+    OrderAdapter adapter;
+
+
 
     public OrderManage_cholayhang_Fragment() {
         // Required empty public constructor
@@ -89,24 +79,112 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
 //        addEvents();
 
     }
-    private void createDb() {
-        db = new R3cyDB(getContext());
-        db.createSampleProduct();
-    }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        Log.i("test", "onResume");
-
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentOrderManageCholayhangBinding.inflate(inflater, container, false);
         return binding.getRoot();
+    }
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        createDb();
+        loadData();
+
+
+    }
+
+
+
+
+    private void createDb() {
+        dbR3cy = new R3cyDB(getContext());
+        dbR3cy.createSampleDataOrder();
+        dbR3cy.createSampleDataOrderLine();
+        dbR3cy.createSampleProduct();
+    }
+    public List<Order> getOrder() {
+
+        String orderStatus = dbR3cy.getOrderStatus("Chờ lấy hàng");
+        List<Order> orders = new ArrayList<>();
+        SQLiteDatabase db = dbR3cy.getReadableDatabase();
+        Cursor cursor = null;
+//
+
+        try {
+            String query = "SELECT " +
+                    "o." + R3cyDB.ORDER_ID + ", " +
+                    "ol." + R3cyDB.ORDER_LINE_ID + ", " +
+                    "ol." + R3cyDB.ORDER_LINE_ORDER_ID + ", " +
+                    "ol." + R3cyDB.ORDER_LINE_PRODUCT_ID + ", " +
+                    "ol." + R3cyDB.ORDER_SALE_PRICE + ", " +
+                    "ol." + R3cyDB.QUANTITY + ", " +
+                    "o." + R3cyDB.ORDER_CUSTOMER_ID + ", " +
+                    "o." + R3cyDB.TOTAL_ORDER_VALUE + ", " +
+                    "o." + R3cyDB.ORDER_STATUS + ", " +
+                    "o." + R3cyDB.TOTAL_AMOUNT + ", " +
+                    "p." + R3cyDB.PRODUCT_IMG1 + ", " +
+                    "p." + R3cyDB.PRODUCT_NAME + ", " +
+                    "p." + R3cyDB.PRODUCT_PRICE + ", " +
+                    "p." + R3cyDB.PRODUCT_ID +
+                    " FROM " + R3cyDB.TBl_ORDER + " o " + " " +
+                    " INNER JOIN " + R3cyDB.TBl_ORDER_LINE + " ol" +
+                    " ON o." + R3cyDB.ORDER_ID + " = ol." + R3cyDB.ORDER_LINE_ORDER_ID + " " +
+                    " INNER JOIN " + R3cyDB.TBl_PRODUCT + " p" +
+                    " ON ol." + R3cyDB.ORDER_LINE_PRODUCT_ID + " = p." + R3cyDB.PRODUCT_ID +
+                    " WHERE o. " + R3cyDB.ORDER_STATUS + " LIKE '%" + orderStatus + "%'";
+
+            cursor = db.rawQuery(query, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    @SuppressLint("Range") int OrderId = cursor.getInt(cursor.getColumnIndex(R3cyDB.ORDER_ID));
+                    @SuppressLint("Range") int OrderLineID = cursor.getInt(cursor.getColumnIndex(R3cyDB.ORDER_LINE_ID));
+                    @SuppressLint("Range") int OrderLineProductID = cursor.getInt(cursor.getColumnIndex(R3cyDB.ORDER_LINE_PRODUCT_ID));
+                    @SuppressLint("Range") double OrderSalePrice = cursor.getDouble(cursor.getColumnIndex(R3cyDB.ORDER_SALE_PRICE));
+                    @SuppressLint("Range") double ProductPrice = cursor.getDouble(cursor.getColumnIndex(R3cyDB.PRODUCT_PRICE));
+                    @SuppressLint("Range") String Quantity = cursor.getString(cursor.getColumnIndex(R3cyDB.QUANTITY));
+                    @SuppressLint("Range") int OrderCustomerID = cursor.getInt(cursor.getColumnIndex(R3cyDB.ORDER_CUSTOMER_ID));
+                    @SuppressLint("Range") double TotalOrderValue = cursor.getDouble(cursor.getColumnIndex(R3cyDB.TOTAL_ORDER_VALUE));
+                    @SuppressLint("Range") String OrderStatus = cursor.getString(cursor.getColumnIndex(R3cyDB.ORDER_STATUS));
+                    @SuppressLint("Range") double TotalAmount = cursor.getDouble(cursor.getColumnIndex(R3cyDB.TOTAL_AMOUNT));
+                    @SuppressLint("Range") byte[] ProductImg = cursor.getBlob(cursor.getColumnIndex(R3cyDB.PRODUCT_IMG1));
+                    @SuppressLint("Range") String ProductName = cursor.getString(cursor.getColumnIndex(R3cyDB.PRODUCT_NAME));
+
+                    Order order = new Order(OrderId, OrderLineID, OrderLineProductID, OrderSalePrice, Quantity, OrderCustomerID, ProductPrice, TotalOrderValue, OrderStatus, TotalAmount, ProductImg, ProductName);
+                    orders.add(order);
+                } while (cursor.moveToNext());
+            } else {
+                Log.d("DATABASE", "No data retrieved.");
+            }
+        } catch (Exception e) {
+            Log.e("DATABASE_ERROR", "Error retrieving data: " + e.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+
+        return orders;
+    }
+
+    private void loadData() {
+        try {
+            Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
+            field.setAccessible(true);
+            field.set(null, 100 * 1024 * 1024); //the 100MB is the new size
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        List<Order> Order;
+        orders = (List<Order>) getOrder();
+        adapter = new OrderAdapter(getContext(), R.layout.item_quanlydonhang, orders);
+        binding.lvOrderCholayhang.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
     }
 
 }
