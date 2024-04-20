@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -103,6 +104,7 @@ public class Signin_Main extends AppCompatActivity {
             }
         });
     }
+
     // Phương thức xử lý đăng ký với Google
     private void signInWithGoogle() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
@@ -139,6 +141,17 @@ public class Signin_Main extends AppCompatActivity {
             }
         }
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // Xóa SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear(); // Xóa tất cả các giá trị trong SharedPreferences
+        editor.apply();
+    }
+
     private void signIn() {
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
@@ -158,11 +171,17 @@ public class Signin_Main extends AppCompatActivity {
                 // Đăng nhập thành công
                 Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
 
-                // Thực hiện các hoạt động sau khi đăng nhập thành công, ví dụ: chuyển hướng đến màn hình chính
-                 Intent intent = new Intent(Signin_Main.this, TrangChu.class);
-                 intent.putExtra("key_email", email);
-                 startActivity(intent);
-                 finish();
+                SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+
+                editor.putString("string", email);
+
+                Intent intent = new Intent(Signin_Main.this, TrangChu.class);
+                startActivity(intent);
+
+                editor.apply();
+
+                finish();
             } else {
                 // Sai mật khẩu
                 Toast.makeText(this, "Sai mật khẩu", Toast.LENGTH_SHORT).show();

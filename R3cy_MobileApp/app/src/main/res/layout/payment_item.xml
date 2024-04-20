@@ -74,14 +74,7 @@
                             android:textSize="16sp"
                             android:textStyle="bold"
                             />
-                        <TextView
-                            android:text="₫ "
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:textSize="14sp"
-                            android:textColor="@color/black"
-                            android:gravity="center_vertical"
-                            android:layout_gravity="top"/>
+
                     </LinearLayout>
 
 

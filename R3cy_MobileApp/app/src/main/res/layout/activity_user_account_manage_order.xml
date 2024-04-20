@@ -50,14 +50,14 @@
             />
 
     </HorizontalScrollView>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        >-->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager_manageOrder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    </ScrollView>
+        android:layout_height="match_parent"/>
+<!--    </ScrollView>-->
 
 </LinearLayout>

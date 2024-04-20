@@ -37,7 +37,7 @@ public class Product_Search extends AppCompatActivity {
 
         rvProducts = binding.rvProducts;
         rvProducts.setLayoutManager(new GridLayoutManager(this, 2));
-        adapter = new ProductAdapter(this, R.layout.viewholder_category_list, initData());
+//        adapter = new ProductAdapter(this, initData());
         rvProducts.setAdapter(adapter);
 
         SearchView searchView = findViewById(R.id.search_view);
@@ -72,7 +72,7 @@ public class Product_Search extends AppCompatActivity {
 
             // Cập nhật RecyclerView với kết quả đã lọc
             private void updateRecyclerView(List<Product> filteredProducts) {
-                adapter.setProducts(filteredProducts);
+//                adapter.setProducts(filteredProducts);
                 adapter.notifyDataSetChanged();
             }
 

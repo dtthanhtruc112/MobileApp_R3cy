@@ -14,15 +14,12 @@ public class Product {
     private int SoldQuantity;
     private String CreatedDate;
     private int Status;
-    private byte[] img1;
-    private byte[] img2;
-    private byte[] img3;
 
 
 //    constructor
 
 
-    public Product(int productID, String productName, double productPrice, String productDescription, byte[] productThumb, int hot, String category, int inventory, double productRate, double salePrice, int soldQuantity, String createdDate, int status, byte[] img1, byte[] img2, byte[] img3) {
+    public Product(int productID, String productName, double productPrice, String productDescription, byte[] productThumb, int hot, String category, int inventory, double productRate, double salePrice, int soldQuantity, String createdDate, int status) {
         ProductID = productID;
         ProductName = productName;
         ProductPrice = productPrice;
@@ -36,9 +33,7 @@ public class Product {
         SoldQuantity = soldQuantity;
         CreatedDate = createdDate;
         Status = status;
-        this.img1 = img1;
-        this.img2 = img2;
-        this.img3 = img3;
+
     }
 
     public int getProductID() {
@@ -145,27 +140,4 @@ public class Product {
         Status = status;
     }
 
-    public byte[] getImg1() {
-        return img1;
-    }
-
-    public void setImg1(byte[] img1) {
-        this.img1 = img1;
-    }
-
-    public byte[] getImg2() {
-        return img2;
-    }
-
-    public void setImg2(byte[] img2) {
-        this.img2 = img2;
-    }
-
-    public byte[] getImg3() {
-        return img3;
-    }
-
-    public void setImg3(byte[] img3) {
-        this.img3 = img3;
-    }
 }

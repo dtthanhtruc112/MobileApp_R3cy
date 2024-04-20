@@ -1,6 +1,8 @@
 package com.example.models;
 
-public class Address {
+import java.io.Serializable;
+
+public class Address implements Serializable {
     int AddressId;
     int CustomerID;
     String ReceiverName;
@@ -27,6 +29,7 @@ public class Address {
         AddressType = addressType;
         this.isSelected = isSelected;
     }
+
 
     public int getAddressId() {
         return AddressId;

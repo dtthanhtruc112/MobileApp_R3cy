@@ -68,30 +68,47 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <Button
-                    android:id="@+id/btnDefaultAddress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mặc định"
-                    android:textAllCaps="false"
-                    android:backgroundTint="@color/blue"
-                    android:textColor="@color/black"
-                    android:layout_marginEnd="30dp"/>
+                android:orientation="horizontal"
+                android:weightSum="10">
+                <LinearLayout
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5">
+                    <TextView
+                        android:id="@+id/txtDefaultAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Mặc định"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:background="@drawable/blog_border"
+                        android:padding="8dp" />
 
-                <TextView
-                    android:id="@+id/txtDeleteAddress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Xóa"
-                    android:textColor="@color/blue"
-                    android:layout_marginEnd="10dp"/>
-                <TextView
-                    android:id="@+id/txtEditAddress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Chỉnh sửa"
-                    android:textColor="@color/blue"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_weight="5"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:gravity="end|center_vertical"
+                    android:layout_marginEnd="20dp">
+                    <TextView
+                        android:id="@+id/txtDeleteAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Xóa"
+                        android:textColor="@color/blue"
+                        android:layout_marginEnd="10dp"/>
+                    <TextView
+                        android:id="@+id/txtEditAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chỉnh sửa"
+                        android:textColor="@color/blue"/>
+
+                </LinearLayout>
+
+
 
 
             </LinearLayout>

@@ -23,7 +23,12 @@ import java.util.ArrayList;
 public class UserAccount_Info extends AppCompatActivity {
 
     ActivityUserAccountInfoBinding binding;
-    TextView name, username, phone, useremail, gender, birthday;
+    TextView name;
+    TextView username;
+    TextView phone;
+    TextView useremail;
+    TextView gender;
+    TextView birthday;
     Button btnedit;
     String email;
     R3cyDB db;

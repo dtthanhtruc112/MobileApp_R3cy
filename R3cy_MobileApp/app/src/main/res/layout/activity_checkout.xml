@@ -39,12 +39,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
+                android:id="@+id/ContainerAddressLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <LinearLayout
                     android:id="@+id/addressLayout"
                     android:padding="10dp"
+                    android:weightSum="10"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -55,7 +57,7 @@
                     <LinearLayout
                         android:layout_width="20dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="8"
                         android:orientation="vertical">
                         <TextView
                             android:layout_width="wrap_content"
@@ -73,8 +75,43 @@
                             android:layout_height="wrap_content"
                             android:text="Địa chỉ nhận hàng chính xác"/>
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="end">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal"
+
+                            android:src="@drawable/baseline_chevron_right_24" />
+
+                    </LinearLayout>
+
+
 
                 </LinearLayout>
+                <TextView
+                    android:id="@+id/txtAddAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="80dp"
+                    android:text="Thêm địa chỉ nhận hàng"
+                    android:layout_marginBottom="10dp"
+                    android:padding="10dp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:background="@drawable/btn_blue_stroke"
+                    />
+
+                <View
+                    android:layout_width="380dp"
+                    android:layout_height="0.3dp"
+                    android:background="@android:color/darker_gray" />
+
 
                 <com.example.customs.NonScrollListView
                     android:id="@+id/lvPaymentItemList"
@@ -292,7 +329,7 @@
                             android:layout_marginEnd="20dp"
                             android:gravity="end"
                             android:layout_weight="4"
-                            android:text="25.000đ"
+                            android:text="25000"
                             android:textColor="@color/black"
                             android:textSize="13sp"/>
                     </TableRow>
@@ -318,7 +355,7 @@
                             android:layout_marginEnd="20dp"
                             android:gravity="end"
                             android:layout_weight="4"
-                            android:text="0đ"
+                            android:text="0"
                             android:textColor="@color/black"
                             android:textSize="13sp"/>
                     </TableRow>
@@ -344,7 +381,7 @@
                             android:layout_marginEnd="20dp"
                             android:gravity="end"
                             android:layout_weight="4"
-                            android:text="20.000đ"
+                            android:text="20000"
                             android:textColor="@color/black"
                             android:textSize="13sp"/>
                     </TableRow>
@@ -371,7 +408,7 @@
                             android:layout_marginEnd="20dp"
                             android:gravity="end"
                             android:layout_weight="4"
-                            android:text="305.000đ"
+                            android:text="305000"
                             android:textStyle="bold"
                             android:textColor="@color/black"
                             android:textSize="16sp"/>

@@ -36,6 +36,7 @@
         android:orientation="vertical"
         android:layout_marginBottom="12dp">
         <TextView
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Liên hệ"
@@ -43,6 +44,7 @@
             android:textStyle="bold"
             android:layout_marginBottom="10dp"/>
         <EditText
+            android:id="@+id/edtReceiverName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_blue_stroke"
@@ -53,6 +55,7 @@
             android:paddingHorizontal="10dp"
             android:layout_marginBottom="8dp"/>
         <EditText
+            android:id="@+id/edtReceiverPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_blue_stroke"
@@ -76,6 +79,7 @@
             android:textStyle="bold"
             android:layout_marginBottom="10dp"/>
         <EditText
+            android:id="@+id/edtProvince"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_blue_stroke"
@@ -86,6 +90,7 @@
             android:paddingHorizontal="10dp"
             android:layout_marginBottom="8dp"/>
         <EditText
+            android:id="@+id/edtDistrict"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_blue_stroke"
@@ -96,6 +101,7 @@
             android:textSize="11sp"
             android:layout_marginBottom="8dp"/>
         <EditText
+            android:id="@+id/edtWard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_blue_stroke"
@@ -106,6 +112,7 @@
             android:textSize="11sp"
             android:layout_marginBottom="8dp"/>
         <EditText
+            android:id="@+id/edtDetailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_blue_stroke"
@@ -145,7 +152,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/editTextConfirmPassword"
+                android:id="@+id/txtDefault"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
@@ -172,6 +179,7 @@
 
 
         <Button
+            android:id="@+id/btnSaveAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
