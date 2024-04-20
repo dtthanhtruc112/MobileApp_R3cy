@@ -91,7 +91,7 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
     }
     private void createDb() {
         db = new R3cyDB(getContext());
-        db.createSampleProduct();
+        db.createSampleProduct1();
     }
 
     @Override

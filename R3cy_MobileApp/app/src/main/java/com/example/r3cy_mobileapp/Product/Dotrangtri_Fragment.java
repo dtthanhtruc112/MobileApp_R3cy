@@ -116,7 +116,7 @@ public class Dotrangtri_Fragment extends Fragment {
 
     private void createDb() {
         db = new R3cyDB(getContext());
-        db.createSampleProduct();
+        db.createSampleProduct1();
     }
 
 
@@ -144,10 +144,7 @@ public class Dotrangtri_Fragment extends Fragment {
                         cursor.getDouble(9), //SalePrice
                         cursor.getInt(10), //SoldQuantity
                         cursor.getString(11), //CreatedDate
-                        cursor.getInt(12), //Status
-                        cursor.getBlob(13), //img1
-                        cursor.getBlob(14), //img2
-                        cursor.getBlob(15) //img3
+                        cursor.getInt(12) //Status
                 ));
             } catch (ParseException | NumberFormatException e) {
                 e.printStackTrace();
@@ -167,7 +164,7 @@ public class Dotrangtri_Fragment extends Fragment {
 
 
         binding.rvProducts.setLayoutManager(new GridLayoutManager(getContext(),2));
-        adapter = new ProductAdapter(getContext(), R.layout.viewholder_category_list, products);
+        adapter = new ProductAdapter(getContext(), products);
         binding.rvProducts.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 

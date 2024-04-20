@@ -27,12 +27,10 @@ import java.util.Locale;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private Context context;
-    int viewholder_category_list;
     private List<Product> products;
 
-    public ProductAdapter(Context context, int viewholder_category_list, List<Product> products) {
+    public ProductAdapter(Context context, List<Product> products) {
         this.context = context;
-        this.viewholder_category_list = viewholder_category_list;
         this.products = products;
     }
 
@@ -45,33 +43,25 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.viewholder_category_list, parent, false);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.viewholder_category_list, parent, false);
+
         return new ProductViewHolder(view);
     }
+
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.viewholder_category_list, null);
-
-        ImageView imvProductThumb = recyclerView.findViewById(R.id.imvProductThumb);
-        TextView txtProductName = recyclerView.findViewById(R.id.txtProductName);
-        TextView txtCategory = recyclerView.findViewById(R.id.txtCategory);
-        TextView txtProductDescription = recyclerView.findViewById(R.id.txtProductDescription);
-        TextView txtSalePrice = recyclerView.findViewById(R.id.txtSalePrice);
-        TextView txtProductRate = recyclerView.findViewById(R.id.txtProductRate);
-
         Product product = products.get(position);
 
         Bitmap bmProductThumb = BitmapFactory.decodeByteArray(product.getProductThumb(), 0, product.getProductThumb().length);
-        imvProductThumb.setImageBitmap(bmProductThumb);
-        txtProductName.setText(product.getProductName());
-        txtCategory.setText(product.getCategory());
-        txtProductDescription.setText(product.getProductDescription());
-        txtSalePrice.setText(String.format("%.0f", product.getSalePrice()));
-        txtProductRate.setText(String.format("%.0f", product.getProductRate()));
+        holder.imvProductThumb.setImageBitmap(bmProductThumb);
+        holder.txtProductName.setText(product.getProductName());
+        holder.txtCategory.setText(product.getCategory());
+//        holder.txtProductDescription.setText(product.getProductDescription());
+        holder.txtSalePrice.setText(String.format(Locale.getDefault(), "%.0f", product.getSalePrice()));
+        holder.txtProductRate.setText(String.format(Locale.getDefault(), "%.0f", product.getProductRate()));
 
-
-//        Listener khi click vào item sp
+        // Listener khi click vào item sp
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +71,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             }
         });
     }
+
 
 
     @Override
@@ -110,7 +101,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             imvProductThumb = itemView.findViewById(R.id.imvProductThumb);
             txtProductName = itemView.findViewById(R.id.txtProductName);
             txtSalePrice = itemView.findViewById(R.id.txtSalePrice);
-            txtProductDescription = itemView.findViewById(R.id.txtProductDescription);
+//            txtProductDescription = itemView.findViewById(R.id.txtProductDescription);
             txtCategory = itemView.findViewById(R.id.txtCategory);
             txtProductRate = itemView.findViewById(R.id.txtProductRate);
 

@@ -20,6 +20,7 @@ import com.example.adapter.CartAdapter;
 import com.example.dao.ProductDao;
 import com.example.databases.R3cyDB;
 import com.example.models.CartItem;
+import com.example.models.Customer;
 import com.example.r3cy_mobileapp.databinding.ActivityCartManageBinding;
 
 import java.io.ByteArrayOutputStream;
@@ -67,7 +68,7 @@ public class CartManage extends AppCompatActivity {
         } else {
             Log.e("CartManage", "Failed to create database");
         }
-        db.createSampleProduct();
+        db.createSampleProduct1();
         db.createSampleDataCustomer();
         db.createSampleDataCart();
         // Khởi tạo productDao sau khi database được khởi tạo xong
@@ -82,8 +83,22 @@ public class CartManage extends AppCompatActivity {
     }
 
     private void loadData() {
+        // Lấy email từ SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+        String email = preferences.getString("string", "");
+
+        // Nếu không có email từ SharedPreferences, không thực hiện gì cả
+        if (email.isEmpty()) {
+            return;
+        }
+
+        // Lấy thông tin của khách hàng dựa trên email từ SharedPreferences
+        Customer customer = db.getCustomerByEmail1(email);
+
+        int Customerid = customer.getCustomerId();
+
         // Lấy dữ liệu từ ProductDao
-        cartItems = (ArrayList<CartItem>) productDao.getCartItemsForCustomer(1);
+        cartItems = (ArrayList<CartItem>) productDao.getCartItemsForCustomer(Customerid);
         Log.i("CartItemSize", "Number of items retrieved: " + cartItems.size());
         // Khởi tạo adapter và thiết lập cho ListView
         adapter = new CartAdapter(this, R.layout.cartitem, cartItems);
