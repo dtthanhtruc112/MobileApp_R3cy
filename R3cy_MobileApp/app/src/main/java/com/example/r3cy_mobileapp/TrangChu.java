@@ -3,6 +3,7 @@ package com.example.r3cy_mobileapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -23,6 +24,8 @@ import com.example.adapter.ProductAdapter;
 import com.example.databases.R3cyDB;
 import com.example.models.Banners;
 import com.example.models.Product;
+import com.example.r3cy_mobileapp.Modau.Modau1;
+import com.example.r3cy_mobileapp.Modau.Modau2;
 import com.example.r3cy_mobileapp.Product.Product_List;
 import com.example.r3cy_mobileapp.Signin.Signin_Main;
 import com.example.r3cy_mobileapp.databinding.ActivityTrangChuBinding;
@@ -71,34 +74,32 @@ public class TrangChu extends AppCompatActivity {
         BannerAdapter bannerAdapter =(BannerAdapter) new BannerAdapter(bannerList);
         viewPager.setAdapter(bannerAdapter);
 
-        createDb();
-        loadData();
-
         autoSlide();
         addEvents();
 
-
+        createDb();
+        loadData();
     }
 
 
 
     private void createDb() {
         db = new R3cyDB(this);
-        db.createSampleProduct1();
+        db.createSampleProduct();
     }
 
     private void loadData() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         binding.rcvProducts.setLayoutManager(layoutManager);
-//        products = (ArrayList<ProductVer2>) productdaover2.getProductForProduct(5);
-//        Log.i("CartItemSize", "Number of items retrieved: " + products.size());
 
         products = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT);
 
-        Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT);
-
-            while (cursor.moveToNext()) {
-            try {
+            // Chỉ lấy 3 sản phẩm đầu tiên
+            int count = 0;
+            while (cursor.moveToNext() && count < 3) {
                 products.add(new Product(
                         cursor.getInt(0), //ProductID
                         cursor.getString(1), //ProductName
@@ -112,41 +113,24 @@ public class TrangChu extends AppCompatActivity {
                         cursor.getDouble(9), //SalePrice
                         cursor.getInt(10), //SoldQuantity
                         cursor.getString(11), //CreatedDate
-                        cursor.getInt(12)//Status
+                        cursor.getInt(12), //Status
+                        cursor.getBlob(13), //img1
+                        cursor.getBlob(14), //img2
+                        cursor.getBlob(15) //img3
                 ));
-            } catch (Exception e) {
-                e.printStackTrace(); // In ra stack trace của ngoại lệ
+                count++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // In ra stack trace của ngoại lệ
+        } finally {
+            if (cursor != null) {
+                cursor.close();
             }
         }
-        cursor.close();
-
-//        Cursor cursor = null;
-//        try {
-//            cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT);
-//
-//            // Chỉ lấy 3 sản phẩm đầu tiên
-//            int count = 0;
-//            while (cursor.moveToNext() && count < 3) {
-//                products.add(new ProductVer2(
-//                        cursor.getInt(0), //ProductID
-//                        cursor.getString(1), //ProductName
-//
-//                        cursor.getDouble(9), //SalePrice
-//                        cursor.getBlob(4), //ProductThumb
-//                        cursor.getString(6), //Category
-//                        cursor.getDouble(8) //ProductRate
-//                ));
-//                count++;
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace(); // In ra stack trace của ngoại lệ
-//        }
-//
-//        cursor.close();
 
         Log.d("ProductInfo", "Number of products retrieved: " + products.size());
 
-        adapter = new ProductAdapter(this, products);
+        adapter = new ProductAdapter(this, R.layout.viewholder_category_list, products);
         binding.rcvProducts.setAdapter(adapter);
     }
 

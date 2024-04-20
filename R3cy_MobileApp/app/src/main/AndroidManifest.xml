@@ -37,10 +37,10 @@
             android:name=".Signup"
             android:exported="false" />
         <activity
-            android:name=".User_account_voucher"
+            android:name=".Signin.Signin_Main"
             android:exported="false" />
         <activity
-            android:name=".Signin.Signin_Main"
+            android:name=".Checkout"
             android:exported="false" />
         <activity
             android:name=".DoiDiem"
@@ -98,7 +98,7 @@
             android:exported="false"
             android:theme="@style/Theme.Design.NoActionBar" />
         <activity
-            android:name=".UserAccount_Main"
+            android:name=".User_account_voucher"
             android:exported="false"
             android:theme="@style/Theme.Design.NoActionBar" />
         <activity
@@ -111,16 +111,16 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".Checkout"
+            android:name=".CartManage"
             android:exported="false" />
         <activity
-            android:name=".CartManage"
+            android:name=".TrangChu"
             android:exported="false" />
         <activity
             android:name=".User_account_manageOrder"
             android:exported="false" />
         <activity
-            android:name=".TrangChu"
+            android:name=".UserAccount_Main"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

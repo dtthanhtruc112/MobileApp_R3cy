@@ -2,6 +2,7 @@ package com.example.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.CursorWindow;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -11,6 +12,7 @@ import com.example.databases.R3cyDB;
 import com.example.models.CartItem;
 import com.example.r3cy_mobileapp.R;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 

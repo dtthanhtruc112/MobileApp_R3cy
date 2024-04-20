@@ -72,7 +72,7 @@ public class Product_Search extends AppCompatActivity {
 
             // Cập nhật RecyclerView với kết quả đã lọc
             private void updateRecyclerView(List<Product> filteredProducts) {
-                adapter.setProducts(filteredProducts);
+//                adapter.setProducts(filteredProducts);
                 adapter.notifyDataSetChanged();
             }
 

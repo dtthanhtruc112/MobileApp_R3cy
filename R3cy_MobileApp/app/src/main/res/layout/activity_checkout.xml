@@ -99,18 +99,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="80dp"
                     android:text="Thêm địa chỉ nhận hàng"
+                    android:layout_marginBottom="10dp"
                     android:padding="10dp"
                     android:textStyle="bold"
                     android:gravity="center"
                     android:textColor="@color/black"
                     android:background="@drawable/btn_blue_stroke"
                     />
+
                 <View
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@android:color/darker_gray"/>
+                    android:layout_width="380dp"
+                    android:layout_height="0.3dp"
+                    android:background="@android:color/darker_gray" />
 
 
                 <com.example.customs.NonScrollListView

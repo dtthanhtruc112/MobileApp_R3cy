@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Product.Product_detail"
+    tools:context=".Product.Product_Detail"
     android:orientation="vertical"
     android:padding="20dp"
     android:background="@color/white">
@@ -44,7 +44,7 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/imvThumb"
+                android:id="@+id/imvProductThumb"
                 android:layout_width="wrap_content"
                 android:layout_height="370dp"
                 android:layout_gravity="center"
@@ -75,7 +75,7 @@
                     android:id="@+id/txtProductName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Đĩa đựng xà phòng"
+                    android:text="...Đĩa đựng xà phòng"
                     android:textColor="@color/blue"
                     android:textSize="15sp"
                     android:textStyle="bold"
@@ -95,7 +95,7 @@
                     android:id="@+id/txtProductDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường.
+                    android:text="...Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường.
 
 Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu. Thiết kế nhỏ gọn và tiện lợi làm cho sản phẩm trở thành người bạn đồng hành lý tưởng, không chỉ phục vụ nhu cầu hàng ngày mà còn thúc đẩy ý thức về một lối sống bền vững.
 
@@ -215,7 +215,7 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="15dp"
-                        android:text="4.5 "
+                        android:text="...4.5 "
                         android:textColor="@color/black"
                         android:textSize="13sp" />
 
@@ -266,7 +266,7 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sản phẩm bền chắc, thân thiện với môi trường. Tôi sẽ trải nghiệm thêm nhiều sản phẩm ở shop nữa"/>
+                    android:text="...Sản phẩm bền chắc, thân thiện với môi trường. Tôi sẽ trải nghiệm thêm nhiều sản phẩm ở shop nữa"/>
 
 
             </LinearLayout>
@@ -301,6 +301,7 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
                         android:layout_height="30dp"
                         android:src="@drawable/icon_question"/>
                     <TextView
+                        android:id="@+id/txtDiscussContent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Sản phẩm này có thể được custom lại theo ý tôi không, tôi muốn đổi màu sản phẩm."
@@ -318,6 +319,7 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
                         android:layout_height="30dp"
                         android:src="@drawable/icon_answer"/>
                     <TextView
+                        android:id="@+id/txtRespondContent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Được ạ. Bạn có thể truy cập mục Sản phẩm Custom ở trang chủ để gửi yêu cầu custom nh!"
@@ -376,7 +378,7 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
                     android:textSize="13sp"/>
 
                 <EditText
-                    android:id="@+id/edtCusName"
+                    android:id="@+id/edtCusMail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="Nhập tên của bạn..."

@@ -1,9 +1,15 @@
 package com.example.r3cy_mobileapp;
 
+import static android.app.PendingIntent.getActivity;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +25,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +34,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.databases.R3cyDB;
+import com.example.models.Address;
 import com.example.models.UserInfo;
+import com.example.r3cy_mobileapp.Fragment.OrderManage_cholayhang_Fragment;
+import com.example.r3cy_mobileapp.Fragment.OrderManage_choxuly_Fragment;
+import com.example.r3cy_mobileapp.Fragment.OrderManage_danggiao_Fragment;
+import com.example.r3cy_mobileapp.Fragment.OrderManage_hoanthanh_Fragment;
 import com.example.r3cy_mobileapp.Signin.Signin_Main;
 import com.example.r3cy_mobileapp.databinding.ActivityUserAccountMainBinding;
 
@@ -42,6 +54,8 @@ public class UserAccount_Main extends AppCompatActivity {
     TextView name;
     String email;
     R3cyDB db;
+    ViewPager2 viewPager2;
+    User_account_manageOrder activity;
 
 
     @Override
@@ -65,6 +79,8 @@ public class UserAccount_Main extends AppCompatActivity {
 
         });
         name = binding.txtTen;
+        viewPager2 = findViewById(R.id.view_pager);
+
 
         // Nhận giá trị email từ Intent
         email = getIntent().getStringExtra("key_email");
@@ -165,7 +181,81 @@ public class UserAccount_Main extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        binding.usAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Checkout_AddressList.class);
+                startActivity(intent);
+            }
+        });
+        binding.txtchoxuly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(getApplicationContext(), User_account_manageOrder.class);
+                startActivity(intent);
+            }
+        });
+        binding.btnchoxuly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(getApplicationContext(), User_account_manageOrder.class);
+                startActivity(intent);
+            }
+        });
+        binding.txtdanhgia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(getApplicationContext(), User_account_manageOrder.class);
+                startActivity(intent);
+            }
+        });
+        binding.btndanhgia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(getApplicationContext(), User_account_manageOrder.class);
+                startActivity(intent);
+            }
+        });
+        binding.txtdanggiao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(getApplicationContext(), User_account_manageOrder.class);
+                startActivity(intent);
+            }
+        });
+        binding.btndanggiao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(getApplicationContext(), User_account_manageOrder.class);
+                startActivity(intent);
+            }
+        });
+        binding.txtcholayhang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(getApplicationContext(), User_account_manageOrder.class);
+                startActivity(intent);
+            }
+        });
+
+//        binding.btncholayhang.setOnClickListener(new CholayhangOnClickListener(this));
+
     }
+//    public class CholayhangOnClickListener implements View.OnClickListener {
+//        private User_account_manageOrder activity;
+//
+//        public CholayhangOnClickListener(User_account_manageOrder activity) {
+//            this.activity = activity;
+//        }
+//
+//        @Override
+//        public void onClick(View v) {
+//            if (activity != null) {
+//                // Chuyển đến TabLayout và hiển thị Fragment tương ứng
+//                activity.showFragment(2); // Vị trí 2 là vị trí của Fragment OrderManage_cholayhang_Fragment()
+//            }
+//        }
+//    }
 
 
 
