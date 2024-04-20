@@ -1,12 +1,24 @@
 package com.example.models;
 
-public class Order {
+import java.io.Serializable;
+
+public class Order implements Serializable {
     int OrderID;
     int OrderLineID;
     int OrderLineProductID;
     double OrderSalePrice;
     String Quantity;
     int OrderCusID;
+
+    public double getProductPrice() {
+        return ProductPrice;
+    }
+
+    public void setProductPrice(double productPrice) {
+        ProductPrice = productPrice;
+    }
+
+    double ProductPrice;
 
 
     double TotalOrderValue;
@@ -38,13 +50,14 @@ public class Order {
     String productName;
 
 
-    public Order(int orderID, int orderLineID, int orderLineProductID, double orderSalePrice, String quantity, int orderCusID, double totalOrderValue, String orderStatus, double totalAmount, byte[] productImg, String productName) {
+    public Order(int orderID, int orderLineID, int orderLineProductID, double orderSalePrice, String quantity, int orderCusID, double productPrice, double totalOrderValue, String orderStatus, double totalAmount, byte[] productImg, String productName) {
         OrderID = orderID;
         OrderLineID = orderLineID;
         OrderLineProductID = orderLineProductID;
         OrderSalePrice = orderSalePrice;
         Quantity = quantity;
         OrderCusID = orderCusID;
+        ProductPrice = productPrice;
         TotalOrderValue = totalOrderValue;
         OrderStatus = orderStatus;
         TotalAmount = totalAmount;

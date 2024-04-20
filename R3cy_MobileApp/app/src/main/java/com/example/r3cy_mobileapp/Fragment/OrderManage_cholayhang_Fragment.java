@@ -93,7 +93,10 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
         createDb();
         loadData();
 
+
     }
+
+
 
 
     private void createDb() {
@@ -124,6 +127,7 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
                     "o." + R3cyDB.TOTAL_AMOUNT + ", " +
                     "p." + R3cyDB.PRODUCT_IMG1 + ", " +
                     "p." + R3cyDB.PRODUCT_NAME + ", " +
+                    "p." + R3cyDB.PRODUCT_PRICE + ", " +
                     "p." + R3cyDB.PRODUCT_ID +
                     " FROM " + R3cyDB.TBl_ORDER + " o " + " " +
                     " INNER JOIN " + R3cyDB.TBl_ORDER_LINE + " ol" +
@@ -140,6 +144,7 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
                     @SuppressLint("Range") int OrderLineID = cursor.getInt(cursor.getColumnIndex(R3cyDB.ORDER_LINE_ID));
                     @SuppressLint("Range") int OrderLineProductID = cursor.getInt(cursor.getColumnIndex(R3cyDB.ORDER_LINE_PRODUCT_ID));
                     @SuppressLint("Range") double OrderSalePrice = cursor.getDouble(cursor.getColumnIndex(R3cyDB.ORDER_SALE_PRICE));
+                    @SuppressLint("Range") double ProductPrice = cursor.getDouble(cursor.getColumnIndex(R3cyDB.PRODUCT_PRICE));
                     @SuppressLint("Range") String Quantity = cursor.getString(cursor.getColumnIndex(R3cyDB.QUANTITY));
                     @SuppressLint("Range") int OrderCustomerID = cursor.getInt(cursor.getColumnIndex(R3cyDB.ORDER_CUSTOMER_ID));
                     @SuppressLint("Range") double TotalOrderValue = cursor.getDouble(cursor.getColumnIndex(R3cyDB.TOTAL_ORDER_VALUE));
@@ -148,7 +153,7 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
                     @SuppressLint("Range") byte[] ProductImg = cursor.getBlob(cursor.getColumnIndex(R3cyDB.PRODUCT_IMG1));
                     @SuppressLint("Range") String ProductName = cursor.getString(cursor.getColumnIndex(R3cyDB.PRODUCT_NAME));
 
-                    Order order = new Order(OrderId, OrderLineID, OrderLineProductID, OrderSalePrice, Quantity, OrderCustomerID, TotalOrderValue, OrderStatus, TotalAmount, ProductImg, ProductName);
+                    Order order = new Order(OrderId, OrderLineID, OrderLineProductID, OrderSalePrice, Quantity, OrderCustomerID, ProductPrice, TotalOrderValue, OrderStatus, TotalAmount, ProductImg, ProductName);
                     orders.add(order);
                 } while (cursor.moveToNext());
             } else {

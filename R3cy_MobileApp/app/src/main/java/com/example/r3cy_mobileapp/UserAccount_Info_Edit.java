@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -32,7 +33,7 @@ public class UserAccount_Info_Edit extends AppCompatActivity {
         username = binding.editusername;
         phone = binding.editphonenumber;
         useremail = binding.editemail;
-        gender = binding.editgioitinh;
+//        gender = binding.editgioitinh;
         birthday = binding.ngaysinh;
         btnedit =binding.btnSave;
 //        btnCancel =binding.btnCancle;
@@ -44,6 +45,9 @@ public class UserAccount_Info_Edit extends AppCompatActivity {
         useremail.setText(userInfos.getEmail());
         birthday.setText(userInfos.getBirthday());
         gender.setText(userInfos.getGender());
+        String[] gender1 = {"Nam", "Nữ", "Khác"};
+        ArrayAdapter<String> adapterAddress = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, gender1);
+        binding.editgioitinh.setAdapter(adapterAddress);
         // Gọi phương thức để tải thông tin người dùng
 //        db = new R3cyDB(this);
 //
@@ -65,11 +69,13 @@ public class UserAccount_Info_Edit extends AppCompatActivity {
 //    }
 
     public  void  upateUserProfile(View view){
+        String gender1 = (String) binding.editgioitinh.getSelectedItem();
+
         String name1 = name.getText().toString();
         String username1 = username.getText().toString();
         String phone1 = phone.getText().toString();
         String email = useremail.getText().toString();
-        String gender1 = gender.getText().toString();
+//        String gender1 = gender.getText().toString();
         String birthday1 = birthday.getText().toString();
 
         db = new R3cyDB(this);
