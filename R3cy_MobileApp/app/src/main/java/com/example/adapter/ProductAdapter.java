@@ -56,7 +56,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         ImageView imvProductThumb = recyclerView.findViewById(R.id.imvProductThumb);
         TextView txtProductName = recyclerView.findViewById(R.id.txtProductName);
         TextView txtCategory = recyclerView.findViewById(R.id.txtCategory);
-        TextView txtProductDescription = recyclerView.findViewById(R.id.txtProductDescription);
+//        TextView txtProductDescription = recyclerView.findViewById(R.id.txtProductDescription);
         TextView txtSalePrice = recyclerView.findViewById(R.id.txtSalePrice);
         TextView txtProductRate = recyclerView.findViewById(R.id.txtProductRate);
 
@@ -66,7 +66,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         imvProductThumb.setImageBitmap(bmProductThumb);
         txtProductName.setText(product.getProductName());
         txtCategory.setText(product.getCategory());
-        txtProductDescription.setText(product.getProductDescription());
+//        txtProductDescription.setText(product.getProductDescription());
         txtSalePrice.setText(String.format("%.0f", product.getSalePrice()));
         txtProductRate.setText(String.format("%.0f", product.getProductRate()));
 
@@ -110,7 +110,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             imvProductThumb = itemView.findViewById(R.id.imvProductThumb);
             txtProductName = itemView.findViewById(R.id.txtProductName);
             txtSalePrice = itemView.findViewById(R.id.txtSalePrice);
-            txtProductDescription = itemView.findViewById(R.id.txtProductDescription);
+//            txtProductDescription = itemView.findViewById(R.id.txtProductDescription);
             txtCategory = itemView.findViewById(R.id.txtCategory);
             txtProductRate = itemView.findViewById(R.id.txtProductRate);
 

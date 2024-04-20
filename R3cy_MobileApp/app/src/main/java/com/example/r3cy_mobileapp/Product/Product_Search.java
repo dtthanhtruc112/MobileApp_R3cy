@@ -37,7 +37,7 @@ public class Product_Search extends AppCompatActivity {
 
         rvProducts = binding.rvProducts;
         rvProducts.setLayoutManager(new GridLayoutManager(this, 2));
-        adapter = new ProductAdapter(this, initData());
+//        adapter = new ProductAdapter(this, initData());
         rvProducts.setAdapter(adapter);
 
         SearchView searchView = findViewById(R.id.search_view);

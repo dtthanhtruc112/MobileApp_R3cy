@@ -144,10 +144,7 @@ public class Phukien_Fragment extends Fragment {
                         cursor.getDouble(9), //SalePrice
                         cursor.getInt(10), //SoldQuantity
                         cursor.getString(11), //CreatedDate
-                        cursor.getInt(12), //Status
-                        cursor.getBlob(13), //img1
-                        cursor.getBlob(14), //img2
-                        cursor.getBlob(15) //img3
+                        cursor.getInt(12)
                 ));
             } catch (ParseException | NumberFormatException e) {
                 e.printStackTrace();

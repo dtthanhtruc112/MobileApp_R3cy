@@ -93,40 +93,32 @@ public class TrangChu extends AppCompatActivity {
         binding.rcvProducts.setLayoutManager(layoutManager);
 
         products = new ArrayList<>();
-        Cursor cursor = null;
-        try {
-            cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT);
+
+
+            Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT);
 
             // Chỉ lấy 3 sản phẩm đầu tiên
-            int count = 0;
-            while (cursor.moveToNext() && count < 3) {
-                products.add(new Product(
-                        cursor.getInt(0), //ProductID
-                        cursor.getString(1), //ProductName
-                        cursor.getDouble(2), // ProductPrice
-                        cursor.getString(3), //ProductDescription
-                        cursor.getBlob(4), //ProductThumb
-                        cursor.getInt(5), //Hot
-                        cursor.getString(6), //Category
-                        cursor.getInt(7), //Inventory
-                        cursor.getDouble(8), //ProductRate
-                        cursor.getDouble(9), //SalePrice
-                        cursor.getInt(10), //SoldQuantity
-                        cursor.getString(11), //CreatedDate
-                        cursor.getInt(12), //Status
-                        cursor.getBlob(13), //img1
-                        cursor.getBlob(14), //img2
-                        cursor.getBlob(15) //img3
-                ));
-                count++;
+
+            while (cursor.moveToNext() ) {
+                try {
+                    products.add(new Product(
+                            cursor.getInt(0), //ProductID
+                            cursor.getString(1), //ProductName
+                            cursor.getDouble(2), // ProductPrice
+                            cursor.getString(3), //ProductDescription
+                            cursor.getBlob(4), //ProductThumb
+                            cursor.getInt(5), //Hot
+                            cursor.getString(6), //Category
+                            cursor.getInt(7), //Inventory
+                            cursor.getDouble(8), //ProductRate
+                            cursor.getDouble(9), //SalePrice
+                            cursor.getInt(10), //SoldQuantity
+                            cursor.getString(11), //CreatedDate
+                            cursor.getInt(12)
+                    ));
+
             }
-        } catch (Exception e) {
-            e.printStackTrace(); // In ra stack trace của ngoại lệ
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
+
 
         Log.d("ProductInfo", "Number of products retrieved: " + products.size());
 

@@ -1,6 +1,8 @@
 package com.example.dao;
 
+import static com.example.databases.R3cyDB.CATEGORY;
 import static com.example.databases.R3cyDB.PRODUCT_ID;
+import static com.example.databases.R3cyDB.TBl_PRODUCT;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,7 +10,6 @@ import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import com.example.databases.R3cyDB;
-import com.example.models.CartItem;
 import com.example.models.Product;
 
 import java.util.ArrayList;
@@ -21,103 +22,66 @@ public class ProductDao2 {
         this.dbHelper = dbHelper;
     }
 
-    public List<Product> getProducts() {
+    public List<Product> getProductsByCategory(String category ) {
         List<Product> products = new ArrayList<>();
-        SQLiteDatabase db = null;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+//        SQLiteDatabase db = null;
         Cursor cursor = null;
 
         try {
-            db = dbHelper.getReadableDatabase();
-            String query = "SELECT " +
-                    "p." + R3cyDB.PRODUCT_ID + ", " +
-                    "p." + R3cyDB.PRODUCT_NAME + ", " +
-                    "p." + R3cyDB.PRODUCT_PRICE + ", " +
-                    "p." + R3cyDB.PRODUCT_DESCRIPTION + ", " +
-                    "p." + R3cyDB.PRODUCT_THUMB + ", " +
-                    "p." + R3cyDB.HOT + ", " +
-                    "p." + R3cyDB.CATEGORY + ", " +
-                    "p." + R3cyDB.INVENTORY + ", " +
-                    "p." + R3cyDB.PRODUCT_RATE + ", " +
-                    "p." + R3cyDB.SALE_PRICE + ", " +
-                    "p." + R3cyDB.SOLD_QUANTITY + ", " +
-                    "p." + R3cyDB.CREATED_DATE + ", " +
-                    "p." + R3cyDB.STATUS + ", " +
-                    "p." + R3cyDB.PRODUCT_IMG1 + ", " +
-                    "p." + R3cyDB.PRODUCT_IMG2 + ", " +
-                    "p." + R3cyDB.PRODUCT_IMG3 +
-                    " FROM " + R3cyDB.TBl_PRODUCT + " p";
 
-            cursor = db.rawQuery(query, null);
+            String query = "SELECT * FROM " + R3cyDB.TBl_PRODUCT + " WHERE " + CATEGORY + "=?";
+            cursor = db.rawQuery(query, new String[]{CATEGORY});
 
             if (cursor != null && cursor.moveToFirst()) {
-                int columnIndexProductId = cursor.getColumnIndex(PRODUCT_ID);
-                int columnIndexProductName = cursor.getColumnIndex(R3cyDB.PRODUCT_NAME);
-                int columnIndexProductPrice = cursor.getColumnIndex(R3cyDB.PRODUCT_PRICE);
-                int columnIndexProductDescription = cursor.getColumnIndex(R3cyDB.PRODUCT_DESCRIPTION);
-                int columnIndexProductThumb = cursor.getColumnIndex(R3cyDB.PRODUCT_THUMB);
-                int columnIndexHot = cursor.getColumnIndex(R3cyDB.HOT);
-                int columnIndexCategory = cursor.getColumnIndex(R3cyDB.CATEGORY);
-                int columnIndexInventory = cursor.getColumnIndex(R3cyDB.INVENTORY);
-                int columnIndexProductRate = cursor.getColumnIndex(R3cyDB.PRODUCT_RATE);
-                int columnIndexSalePrice = cursor.getColumnIndex(R3cyDB.SALE_PRICE);
-                int columnIndexSoldQuantity = cursor.getColumnIndex(R3cyDB.SOLD_QUANTITY);
-                int columnIndexCreatedDate = cursor.getColumnIndex(R3cyDB.CREATED_DATE);
-                int columnIndexStatus = cursor.getColumnIndex(R3cyDB.STATUS);
-                int columnIndexImg1 = cursor.getColumnIndex(R3cyDB.PRODUCT_IMG1);
-                int columnIndexImg2 = cursor.getColumnIndex(R3cyDB.PRODUCT_IMG2);
-                int columnIndexImg3 = cursor.getColumnIndex(R3cyDB.PRODUCT_IMG3);
+                do {
+                    int columnIndexProductId = cursor.getColumnIndex(R3cyDB.PRODUCT_ID);
+                    int columnIndexProductName = cursor.getColumnIndex(R3cyDB.PRODUCT_NAME);
+                    int columnIndexProductPrice = cursor.getColumnIndex(R3cyDB.PRODUCT_PRICE);
+                    int columnIndexProductDescription = cursor.getColumnIndex(R3cyDB.PRODUCT_DESCRIPTION);
+                    int columnIndexProductThumb = cursor.getColumnIndex(R3cyDB.PRODUCT_THUMB);
+                    int columnIndexHot = cursor.getColumnIndex(R3cyDB.HOT);
+                    int columnIndexCategory = cursor.getColumnIndex(R3cyDB.CATEGORY);
+                    int columnIndexInventory = cursor.getColumnIndex(R3cyDB.INVENTORY);
+                    int columnIndexProductRate = cursor.getColumnIndex(R3cyDB.PRODUCT_RATE);
+                    int columnIndexSalePrice = cursor.getColumnIndex(R3cyDB.SALE_PRICE);
+                    int columnIndexSoldQuantity = cursor.getColumnIndex(R3cyDB.SOLD_QUANTITY);
+                    int columnIndexCreatedDate = cursor.getColumnIndex(R3cyDB.CREATED_DATE);
+                    int columnIndexStatus = cursor.getColumnIndex(R3cyDB.STATUS);
+                    int columnIndexImg1 = cursor.getColumnIndex(R3cyDB.PRODUCT_IMG1);
+                    int columnIndexImg2 = cursor.getColumnIndex(R3cyDB.PRODUCT_IMG2);
+                    int columnIndexImg3 = cursor.getColumnIndex(R3cyDB.PRODUCT_IMG3);
 
-                if (columnIndexProductId != -1 && columnIndexProductName != -1 && columnIndexCategory != -1
-                        && columnIndexSalePrice != -1 && columnIndexProductThumb != -1 && columnIndexProductDescription != -1) {
+                    int productID = cursor.getInt(columnIndexProductId);
+                    String productName = cursor.getString(columnIndexProductName);
+                    double productPrice = cursor.getDouble(columnIndexProductPrice);
+                    String productDescription = cursor.getString(columnIndexProductDescription);
+                    byte[] productThumb = cursor.getBlob(columnIndexProductThumb);
+                    int hot = cursor.getInt(columnIndexHot);
+                    String productCategory = cursor.getString(columnIndexCategory);
+                    int inventory = cursor.getInt(columnIndexInventory);
+                    double productRate = cursor.getDouble(columnIndexProductRate);
+                    double salePrice = cursor.getDouble(columnIndexSalePrice);
+                    int soldQuantity = cursor.getInt(columnIndexSoldQuantity);
+                    String createdDate = cursor.getString(columnIndexCreatedDate);
+                    byte[] img1 = cursor.getBlob(columnIndexImg1);
+                    byte[] img2 = cursor.getBlob(columnIndexImg2);
+                    byte[] img3 = cursor.getBlob(columnIndexImg3);
+                    int status = cursor.getInt(columnIndexStatus);
 
-                    while (cursor.moveToNext()) {
-
-
-                        int ProductID = cursor.getInt(columnIndexProductId);
-                        String ProductName = cursor.getString(columnIndexProductName);
-                        double ProductPrice = cursor.getDouble(columnIndexProductPrice);
-                        String ProductDescription = cursor.getString(columnIndexProductDescription);
-                        byte[] ProductThumb = cursor.getBlob(columnIndexProductThumb);
-                        int Hot = cursor.getInt(columnIndexHot);
-                        String Category = cursor.getString(columnIndexCategory);
-                        int Inventory = cursor.getInt(columnIndexInventory);
-                        double ProductRate = cursor.getDouble(columnIndexProductRate);
-                        double SalePrice = cursor.getDouble(columnIndexSalePrice);
-                        int SoldQuantity = cursor.getInt(columnIndexSoldQuantity);
-                        String CreatedDate = cursor.getString(columnIndexCreatedDate);
-                        byte[] Img1 = cursor.getBlob(columnIndexImg1);
-                        byte[] Img2 = cursor.getBlob(columnIndexImg2);
-                        byte[] Img3 = cursor.getBlob(columnIndexImg3);
-                        int Status = cursor.getInt(columnIndexStatus);
-
-
-                        // Tạo đối tượng Product từ dữ liệu lấy được từ Cursor và thêm vào danh sách products
-                        Product product = new Product(ProductID, ProductName, ProductPrice, ProductDescription, ProductThumb, Hot, Category, Inventory, ProductRate, SalePrice, SoldQuantity, CreatedDate, Status, Img1, Img2, Img3);
-                        products.add(product);
-                    }
-                }else {
-                    Log.e("R3cyDB", "One or more column indexes are invalid.");
-                    Log.e("R3cyDB", "Invalid columns: " +
-                            "columnIndexProductId: " + columnIndexProductId + ", " +
-                            "columnIndexProductName: " + columnIndexProductName + ", " +
-                            "columnIndexCategory: " + columnIndexCategory + ", " +
-                            "columnIndexSalePrice: " + columnIndexSalePrice + ", " +
-                            "columnIndexProductThumb: " + columnIndexProductThumb + ", " +
-                            "columnIndexProductDescription: " + columnIndexProductDescription);
-                }
+                    Product product = new Product(productID, productName, productPrice, productDescription, productThumb, hot, productCategory, inventory, productRate, salePrice, soldQuantity, createdDate, status);
+                    products.add(product);
+                } while (cursor.moveToNext());
             } else {
-                Log.d("R3cyDB", "No products found.");
+                Log.d("R3cyDB", "No products found for category: " + category);
             }
         } catch (SQLiteException e) {
-            Log.e("R3cyDB", "Error getting products: " + e.getMessage());
+            Log.e("R3cyDB", "Error getting products by category: " + e.getMessage());
         } finally {
-            // Đóng Cursor và SQLiteDatabase nếu chúng không null
             if (cursor != null) {
                 cursor.close();
             }
-            if (db != null) {
-                db.close();
-            }
+            db.close();
         }
 
         return products;
