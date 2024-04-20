@@ -39,7 +39,7 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
         
         
         db = new R3cyDB(this);
-        db.createSampleDataCustomer();
+//        db.createSampleDataCustomer();
 
         addEvents();
 

@@ -1,30 +1,47 @@
 package com.example.r3cy_mobileapp;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.databases.R3cyDB;
+import com.example.models.Customer;
 import com.example.r3cy_mobileapp.Signin.Signin_Main;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 public class Signup extends AppCompatActivity {
 
     private R3cyDB db;
     private EditText editTextFullName, editTextEmail, editTextPassword, editTextConfirmPassword;
     private Button buttonSignUp;
-    private TextView textViewSignIn;
+    private TextView textViewSignIn, textViewGoogleSignIn;
     private ImageView imageViewIconEye1, imageViewIconEye2;
     private boolean isPasswordVisible1 = false;
     private boolean isPasswordVisible2 = false;
+    private DatabaseReference mDatabase;
+    private GoogleApiClient mGoogleApiClient;
+    private static final int RC_SIGN_IN = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +49,8 @@ public class Signup extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         db = new R3cyDB(this);
+        db.createSampleDataCustomer();
+        mDatabase = FirebaseDatabase.getInstance().getReference("customers");
 
         editTextFullName = findViewById(R.id.editTextFullName);
         editTextEmail = findViewById(R.id.editTextEmail);
@@ -40,9 +59,29 @@ public class Signup extends AppCompatActivity {
 
         buttonSignUp = findViewById(R.id.buttonSignUp);
         textViewSignIn = findViewById(R.id.textViewSignIn);
+        textViewGoogleSignIn = findViewById(R.id.textViewGoogleSignIn);
         imageViewIconEye1 = findViewById(R.id.imageViewIconEye1);
         imageViewIconEye2 = findViewById(R.id.imageViewIconEye2);
 
+        // Cấu hình Google Sign-In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("1099003817418-4jnf7k3nlfdft8g8dc9u4f6ij0epfiev.apps.googleusercontent.com")
+                .requestEmail()
+                .build();
+
+        // Khởi tạo GoogleApiClient
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, connectionResult -> Toast.makeText(Signup.this, "Kết nối với Google thất bại", Toast.LENGTH_SHORT).show())
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+        // Xử lý sự kiện khi nhấn vào nút đăng ký với Google
+        textViewGoogleSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signInWithGoogle();
+            }
+        });
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +108,43 @@ public class Signup extends AppCompatActivity {
                 togglePasswordVisibility2();
             }
         });
+    }
+
+    // Phương thức xử lý đăng ký với Google
+    private void signInWithGoogle() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    // Xử lý kết quả trả về từ việc đăng ký với Google
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Kết quả trả về từ Intent đăng ký với Google
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+                // Đăng nhập thành công, thực hiện đăng nhập vào Firebase Authentication
+                Toast.makeText(this, "Đăng nhập với Google thành công", Toast.LENGTH_SHORT).show();
+                GoogleSignInAccount account = result.getSignInAccount();
+                Log.v("SignUpActivity", "success: " + account.getEmail());
+                Log.v("SignUpActivity", "success: " + account.getDisplayName());
+                // Kiểm tra email tồn tại trong cơ sở dữ liệu
+                if (!db.checkEmailExists(account.getEmail())) {
+                    db.insertCustomer(account.getDisplayName(), account.getEmail(), "");
+                }
+                // Chuyển đến trang chủ
+                Intent intent = new Intent(Signup.this, TrangChu.class);
+                intent.putExtra("key_email", account.getEmail());
+                startActivity(intent);
+                finish();
+            } else {
+                // Đăng nhập thất bại
+                Toast.makeText(this, "Đăng nhập với Google thất bại", Toast.LENGTH_SHORT).show();
+                Log.v("SignUpActivity", "error: " + result.getStatus());
+            }
+        }
     }
 
     private void signUp() {
