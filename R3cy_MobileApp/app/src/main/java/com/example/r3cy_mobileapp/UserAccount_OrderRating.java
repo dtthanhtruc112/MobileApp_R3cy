@@ -3,6 +3,8 @@ package com.example.r3cy_mobileapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.example.databases.R3cyDB;
@@ -45,6 +47,9 @@ public class UserAccount_OrderRating extends AppCompatActivity {
                 binding.txtproductname.setText(order.getProductName());
                 binding.productcount.setText(String.valueOf(order.getQuantity()));
                 binding.productprice.setText(String.valueOf(order.getProductPrice()));
+                byte[] imageData = order.getProductImg();
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+                binding.productimg.setImageBitmap(bitmap);
             }
         }
     }
