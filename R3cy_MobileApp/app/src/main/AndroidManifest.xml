@@ -34,7 +34,7 @@
             android:name=".TichDiem"
             android:exported="false" />
         <activity
-            android:name=".Signup"
+            android:name=".TrangChu"
             android:exported="false" />
         <activity
             android:name=".Signin.Signin_Main"
@@ -120,7 +120,7 @@
             android:name=".User_account_manageOrder"
             android:exported="false" />
         <activity
-            android:name=".TrangChu"
+            android:name=".Signup"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
