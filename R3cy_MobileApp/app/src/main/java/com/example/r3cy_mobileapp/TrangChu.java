@@ -20,9 +20,12 @@ import android.widget.Toast;
 
 import com.example.adapter.BannerAdapter;
 import com.example.adapter.ProductAdapter;
+import com.example.adapter.PromotionBannerAdapter;
 import com.example.databases.R3cyDB;
 import com.example.models.Banners;
 import com.example.models.Product;
+import com.example.models.ProductAtb;
+import com.example.models.PromotionBanner;
 import com.example.r3cy_mobileapp.Product.Product_List;
 import com.example.r3cy_mobileapp.Product.Product_Search;
 import com.example.r3cy_mobileapp.Signin.Signin_Main;
@@ -43,9 +46,12 @@ public class TrangChu extends AppCompatActivity {
     BottomNavigationView navigationView;
     R3cyDB db;
     private List<Product> products;
+    private List<PromotionBanner> promotionBanners;
     Product product;
     ProductAdapter adapter;
+    PromotionBannerAdapter adapterpromotion;
     String email;
+    ArrayList<ProductAtb> productAtbs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +91,8 @@ public class TrangChu extends AppCompatActivity {
 
         createDb();
         loadData();
+        loadpromotionbanner();
     }
-
 
 
     private void createDb() {
@@ -96,10 +102,16 @@ public class TrangChu extends AppCompatActivity {
     }
 
     private void loadData() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        binding.rcvProducts.setLayoutManager(layoutManager);
+        LinearLayoutManager layoutManagerProducts = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        binding.rcvProducts.setLayoutManager(layoutManagerProducts);
+
+        LinearLayoutManager layoutManagerProduct = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        binding.rcvProduct.setLayoutManager(layoutManagerProduct);
+
+
 
         products = new ArrayList<>();
+        productAtbs = new ArrayList<>();
 
         Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT);
 
@@ -118,6 +130,16 @@ public class TrangChu extends AppCompatActivity {
                             cursor.getDouble(8) // ProductRate
 
                     ));
+
+                    productAtbs.add(new ProductAtb(
+                            cursor.getInt(0), // ProductID
+                            cursor.getDouble(2), // ProductPrice
+                            cursor.getInt(5), // Hot
+                            cursor.getInt(7), // Inventory
+                            cursor.getInt(10), // SoldQuantity
+                            cursor.getString(11), // CreatedDate
+                            cursor.getInt(12) // Status
+                    ));
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
@@ -126,11 +148,53 @@ public class TrangChu extends AppCompatActivity {
             cursor.close(); // Close the cursor to avoid memory leaks
         }
 
+        List<Product> filteredProducts = filterProductsByHot(1);
+        List<Product> filteredProducts1 = filterProductsByHot(0);
+
         Log.d("ProductInfo", "Number of products retrieved: " + products.size());
 
-        adapter = new ProductAdapter(this, R.layout.viewholder_category_list, products);
+        adapter = new ProductAdapter(this, R.layout.viewholder_category_list,filteredProducts);
+
         binding.rcvProducts.setAdapter(adapter);
+
+        adapter = new ProductAdapter(this, R.layout.viewholder_category_list,filteredProducts1);
+        binding.rcvProduct.setAdapter(adapter);
 //        binding.rcvProduct.setAdapter(adapter);
+    }
+
+    private void loadpromotionbanner() {
+        LinearLayoutManager layoutManagerProducts = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        binding.rcvpromotionbanners.setLayoutManager(layoutManagerProducts);
+
+        promotionBanners = new ArrayList<>();
+        promotionBanners.add(new PromotionBanner(R.drawable.ctkm, "Tri ân khách hàng"));
+        promotionBanners.add(new PromotionBanner(R.drawable.ctkm2, "Ngày lễ Black Friday"));
+
+        adapterpromotion = new PromotionBannerAdapter(this, promotionBanners);
+        binding.rcvpromotionbanners.setAdapter(adapterpromotion);
+
+    }
+
+    private List<Product> filterProductsByHot(int hotValue) {
+        List<Product> filteredProducts = new ArrayList<>();
+        for (Product product : products) {
+            int productId = product.getProductID();
+            ProductAtb productAtb = getProductAtbById(productId);
+
+            if (productAtb != null && productAtb.getHot() == hotValue) {
+                filteredProducts.add(product);
+            }
+        }
+        return filteredProducts;
+    }
+
+    private ProductAtb getProductAtbById(int productId) {
+        for (ProductAtb productAtb : productAtbs) {
+            if (productAtb.getProductID() == productId) {
+                return productAtb;
+            }
+        }
+        return null;
     }
 
 
@@ -281,6 +345,7 @@ public class TrangChu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TrangChu.this, UserAccount_Policy.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
@@ -289,6 +354,7 @@ public class TrangChu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TrangChu.this, UserAccount_Policy.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
@@ -297,6 +363,7 @@ public class TrangChu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TrangChu.this, UserAccount_Policy.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
@@ -305,9 +372,39 @@ public class TrangChu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TrangChu.this, UserAccount_Policy.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
+
+        binding.btnopenProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TrangChu.this, Product_List.class);
+                intent.putExtra("key_email", email);
+                startActivity(intent);
+            }
+        });
+
+        binding.btnopenProduct1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TrangChu.this, Product_List.class);
+                intent.putExtra("key_email", email);
+                startActivity(intent);
+            }
+        });
+
+
+        binding.btnopenProduct2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TrangChu.this, Product_List.class);
+                intent.putExtra("key_email", email);
+                startActivity(intent);
+            }
+        });
+
 
 
 

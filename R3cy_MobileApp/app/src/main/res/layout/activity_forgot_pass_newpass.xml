@@ -113,7 +113,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="32dp"
-                android:background="@drawable/rounded_borders"
                 android:backgroundTint="@color/blue"
                 android:text="Hoàn Tất"
                 android:textAllCaps="false"

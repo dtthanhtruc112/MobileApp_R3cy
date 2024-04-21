@@ -208,6 +208,7 @@
                         android:orientation="vertical">
 
                         <ImageButton
+                            android:id="@+id/btnopenProduct"
                             android:layout_width="80dp"
                             android:layout_height="80dp"
                             android:background="@drawable/btn_blue_stroke"
@@ -230,6 +231,7 @@
                         android:orientation="vertical">
 
                         <ImageButton
+                            android:id="@+id/btnopenProduct1"
                             android:layout_width="80dp"
                             android:layout_height="80dp"
                             android:background="@drawable/btn_blue_stroke"
@@ -252,6 +254,7 @@
                         android:orientation="vertical">
 
                         <ImageButton
+                            android:id="@+id/btnopenProduct2"
                             android:layout_width="80dp"
                             android:layout_height="80dp"
                             android:background="@drawable/btn_blue_stroke"
@@ -277,6 +280,13 @@
                     android:textColor="@color/blue"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvpromotionbanners"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal" />
 
                 <TextView
                     android:layout_width="wrap_content"
