@@ -21,9 +21,11 @@ import android.widget.Toast;
 
 import com.example.adapter.BannerAdapter;
 import com.example.adapter.ProductAdapter;
+import com.example.adapter.ProductAdapterVer2;
 import com.example.databases.R3cyDB;
 import com.example.models.Banners;
 import com.example.models.Product;
+import com.example.models.ProductVer2;
 import com.example.r3cy_mobileapp.Modau.Modau1;
 import com.example.r3cy_mobileapp.Modau.Modau2;
 import com.example.r3cy_mobileapp.Product.Product_List;
@@ -45,9 +47,9 @@ public class TrangChu extends AppCompatActivity {
     Timer timer;
     BottomNavigationView navigationView;
     R3cyDB db;
-    private List<Product> products;
+    private List<ProductVer2> products;
     Product product;
-    ProductAdapter adapter;
+    ProductAdapterVer2 adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +80,8 @@ public class TrangChu extends AppCompatActivity {
         autoSlide();
         addEvents();
 
-        createDb();
-        loadData();
+//        createDb();
+//        loadData();
     }
 
 
@@ -95,39 +97,34 @@ public class TrangChu extends AppCompatActivity {
 
         products = new ArrayList<>();
 
+        Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT);
 
-            Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT);
-
-            // Chỉ lấy 3 sản phẩm đầu tiên
-
-            while (cursor.moveToNext() ) {
+        // Chỉ lấy 3 sản phẩm đầu tiên
+        try {
+            while (cursor.moveToNext()) {
                 try {
-                    products.add(new Product(
-                            cursor.getInt(0), //ProductID
-                            cursor.getString(1), //ProductName
-                            cursor.getDouble(2), // ProductPrice
-                            cursor.getString(3), //ProductDescription
-                            cursor.getBlob(4), //ProductThumb
-                            cursor.getInt(5), //Hot
-                            cursor.getString(6), //Category
-                            cursor.getInt(7), //Inventory
-                            cursor.getDouble(8), //ProductRate
-                            cursor.getDouble(9), //SalePrice
-                            cursor.getInt(10), //SoldQuantity
-                            cursor.getString(11), //CreatedDate
-                            cursor.getInt(12)
+                    products.add(new ProductVer2(
+                            cursor.getInt(0), // ProductID
+                            cursor.getString(1), // ProductName
+                            cursor.getBlob(4), // ProductThumb
+                            cursor.getString(6), // Category
+                            cursor.getDouble(8), // ProductRate
+                            cursor.getDouble(9) // SalePrice
                     ));
-
-            } catch (NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     e.printStackTrace();
-                }}
-
+                }
+            }
+        } finally {
+            cursor.close(); // Close the cursor to avoid memory leaks
+        }
 
         Log.d("ProductInfo", "Number of products retrieved: " + products.size());
 
-        adapter = new ProductAdapter(this, R.layout.viewholder_category_list, products);
+        adapter = new ProductAdapterVer2(this, products);
         binding.rcvProducts.setAdapter(adapter);
     }
+
 
 
 
