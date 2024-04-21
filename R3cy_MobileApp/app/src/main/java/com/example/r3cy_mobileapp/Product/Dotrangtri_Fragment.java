@@ -122,41 +122,28 @@ public class Dotrangtri_Fragment extends Fragment {
 
 
     private void loadData() {
+        products = new ArrayList<>();
 
-
-//        products = db.getProductsByCategory("Đồ gia dụng");
-        Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT + " WHERE Category = 'Đồ gia dụng' ");
+        Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT  + " WHERE Category = 'Đồ trang trí' ");
         while (cursor.moveToNext()) {
             try {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                Date createdDate = dateFormat.parse(cursor.getString(11));
-
                 products.add(new Product(
-                        cursor.getInt(0), //ProductID
-                        cursor.getBlob(1), //ProductThumb
-                        cursor.getString(2), //ProductName
-                        cursor.getDouble(3), //SalePrice
-                        cursor.getString(4), //Category
-                        cursor.getString(5), //ProductDescription
-                        cursor.getDouble(6) //ProductRate
+                        cursor.getInt(0), // ProductID
+                        cursor.getBlob(4), // ProductThumb
+                        cursor.getString(1), // ProductName
+                        cursor.getDouble(9), // SalePrice
+                        cursor.getString(6), // Category
+                        cursor.getString(3), //Description
+                        cursor.getDouble(8) // ProductRate
                 ));
-            } catch (ParseException | NumberFormatException e) {
+
+            } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
-            Log.d("ProductInfo", "Product ID: " + product.getProductID());
-            Log.d("ProductInfo", "Product Name: " + product.getProductName());
         }
         cursor.close();
-        Log.d("ProductInfo", "Number of products retrieved: " + products.size());
 
-
-//                String ProductName = cursor.getString(1);
-//                String ProductDescription = cursor.getString(3);
-//                String Category = cursor.getString(6);
-//                Double SalePrice = cursor.getDouble(9);
-//                Double ProductRate = cursor.getDouble(8);
-
-
+        // Khởi tạo adapter và thiết lập cho ListView
         binding.rvProducts.setLayoutManager(new GridLayoutManager(getContext(),2));
         adapter = new ProductAdapter(getContext(), R.layout.viewholder_category_list, products);
         binding.rvProducts.setAdapter(adapter);

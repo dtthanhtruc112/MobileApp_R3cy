@@ -1,44 +1,40 @@
 package com.example.r3cy_mobileapp.Product;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.adapter.PhotoViewpager2Adapter;
+import com.example.adapter.ProductAdapter;
 import com.example.databases.R3cyDB;
 //import com.example.models.Discuss;
-import com.example.models.Photo;
 import com.example.models.Product;
 import com.example.r3cy_mobileapp.R;
 import com.example.r3cy_mobileapp.databinding.ActivityProductDetailBinding;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.text.NumberFormat;
 import java.util.List;
-
-import me.relex.circleindicator.CircleIndicator3;
+import java.util.Locale;
 
 public class Product_Detail extends AppCompatActivity {
     ActivityProductDetailBinding binding;
 
-    TextView txtQuantity, txtProductName, txtSalePrice, txtProductDescription, txtProductRate, txtDiscussContent, txtRespondContent;
+    TextView txtQuantity, txtProductName,txtDiscuss, txtSalePrice, txtProductDescription, txtProductRate, txtDiscussContent, txtRespondContent;
     ImageView btnIncreaseQuantity;
     ImageView btnDecreaseQuantity, imvProductThumb;
     EditText edtDiscuss, edtCusMail;
-    private List<Integer> imageResourceIds;
-    private PhotoViewpager2Adapter adapter;
+    private ProductAdapter adapter;
+    private List<Product> products;
+    Product product;
     private int quantity = 1; //Giá trị mặc định số lượng là 1
 
     private SQLiteDatabase database;
@@ -55,118 +51,95 @@ public class Product_Detail extends AppCompatActivity {
         txtSalePrice = findViewById(R.id.txtSalePrice);
         txtProductDescription = findViewById(R.id.txtProductDescription);
         txtProductRate = findViewById(R.id.txtProductRate);
-        imvProductThumb= findViewById(R.id.imvProductThumb);
-
-
+        imvProductThumb = findViewById(R.id.imvProductThumb);
         txtQuantity = findViewById(R.id.txtQuantity);
         btnIncreaseQuantity = findViewById(R.id.btnIncreaseQuantity);
         btnDecreaseQuantity = findViewById(R.id.btnDecreaseQuantity);
         txtDiscussContent = findViewById(R.id.txtDiscussContent);
         txtRespondContent = findViewById(R.id.txtRespondContent);
+        edtDiscuss = findViewById(R.id.edtDiscuss);
+        edtCusMail = findViewById(R.id.edtCusMail);
+        txtDiscuss = findViewById(R.id.txtDiscuss);
 
 
-
-//        giá trị mặc định của số lượng
         txtQuantity.setText(String.valueOf(quantity));
 
-
-        //    truy xuất thông tin sản phẩm từ intent
         Intent intent = getIntent();
-        if(intent != null && intent.hasExtra("ProductName") && intent.hasExtra("SalePrice") && intent.hasExtra("ProductDescription") && intent.hasExtra("ProductRate") && intent.hasExtra("ProductThumb")) {
-            String productName = intent.getStringExtra("ProductName");
-            double salePrice = intent.getDoubleExtra("SalePrice", 0.0);
-            String productDescription = intent.getStringExtra("ProductDescription");
-            double productRate = intent.getDoubleExtra("ProductRate", 0.0);
-            byte[] productThumb = intent.getByteArrayExtra("ProductThumb");
+        if (intent != null && intent.hasExtra("ProductID")) {
+            int productID = intent.getIntExtra("ProductID", -1);
+            if (productID != -1) {
+                db = new R3cyDB(this);
+                Product product = db.getProductByID(productID);
 
-            // Hiển thị thông tin sản phẩm
-            showProductDetail(productName, salePrice, productDescription, productRate, productThumb);
+                if (product != null) {
+                    showProductDetail(product);
+                } else {
+                    Toast.makeText(this, "Không tìm thấy sản phẩm", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            } else {
+                Toast.makeText(this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
+                finish();
+            }
         } else {
             Toast.makeText(this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
             finish();
         }
 
-        addControls();
         addEvents();
-
     }
 
-    private void showProductDetail(String productName, double salePrice, String productDescription, double productRate, byte[] productThumb) {
+    private void showProductDetail(Product product) {
+        txtProductName.setText(product.getProductName());
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
+        txtSalePrice.setText(numberFormat.format(product.getSalePrice()));
+        txtProductDescription.setText(product.getProductDescription());
+        txtProductRate.setText(String.format("%.1f đ", product.getProductRate()));
 
-        txtProductName.setText(productName);
-        txtSalePrice.setText(String.format("%.0f đ", salePrice));
-        txtProductDescription.setText(productDescription);
-        txtProductRate.setText(String.format("%.1f đ", productRate));
-
-        // Hiển thị hình ảnh sản phẩm (nếu có)
+        byte[] productThumb = product.getProductThumb();
         if (productThumb != null && productThumb.length > 0) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(productThumb, 0, productThumb.length);
             imvProductThumb.setImageBitmap(bitmap);
         } else {
-            // Nếu không có hình ảnh, có thể hiển thị một hình ảnh mặc định hoặc ẩn ImageView
             imvProductThumb.setImageResource(R.drawable.dgd_dia2);
         }
     }
-
-    private void addControls() {
-        edtDiscuss = findViewById(R.id.edtDiscuss);
-        edtCusMail = findViewById(R.id.edtCusMail);
-    }
-
 
     private void addEvents() {
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish(); // Kết thúc hoạt động hiện tại và quay lại trang trước đó
+                finish();
             }
         });
 
+        btnIncreaseQuantity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quantity++;
+                txtQuantity.setText(String.valueOf(quantity));
+            }
+        });
 
-
-        // Sự kiện khi click vào nút +
-//        btnIncreaseQuantity.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                quantity++;
-//                txtQuantity.setText(String.valueOf(quantity));
-//            }
-//        });
-
-        // Sự kiện khi click -
         btnDecreaseQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(quantity > 1) {
+                if (quantity > 1) {
                     quantity--;
                     txtQuantity.setText(String.valueOf(quantity));
                 }
             }
         });
+
+        Button btnGui = findViewById(R.id.btnGui);
+        btnGui.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Lấy nội dung từ EditText
+                String userInput = edtDiscuss.getText().toString();
+                // Hiển thị nội dung trong TextView
+                txtDiscuss.setText(userInput);
+            }
+        });
     }
-
-        //            Truy vấn discuss
-        Product product = null;
-//        String DiscussContent = db.getDiscussContent(product.getProductID());
-//        String RespondContent = db.getRespondContent(product.getProductID());
-//
-//        txtDiscussContent.setText(DiscussContent);
-//        txtRespondContent.setText(RespondContent);
-    }
-
-
-
-
-
-
-
-//    private void showProductDetail(Product product) {
-//        binding.imvProductThumb.setImageBitmap(product.getProductThumb());
-//        binding.txtProductName.setText(product.getProductName());
-//        binding.txtSalePrice.setText(String.format("%.0f đ", product.getSalePrice()));
-//        binding.txtProductDescription.setText(product.getProductDescription());
-//        binding.txtProductRate.setText(String.valueOf(product.getProductRate()));
-//
-//
-//    }
-
+}

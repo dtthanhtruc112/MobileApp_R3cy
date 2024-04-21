@@ -51,15 +51,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        Product product = products.get(position);
+        Product product = products.get(holder.getAdapterPosition());
 
         Bitmap bmProductThumb = BitmapFactory.decodeByteArray(product.getProductThumb(), 0, product.getProductThumb().length);
         holder.imvProductThumb.setImageBitmap(bmProductThumb);
         holder.txtProductName.setText(product.getProductName());
         holder.txtCategory.setText(product.getCategory());
-//    holder.txtProductDescription.setText(product.getProductDescription());
-//        holder.txtSalePrice.setText(String.format(Locale.getDefault(), "%.0f", product.getSalePrice()));
-        holder.txtProductRate.setText(String.format(Locale.getDefault(), "%.0f", product.getProductRate()));
+        holder.txtProductRate.setText(String.format(Locale.getDefault(), "%.1f", product.getProductRate()));
 
         NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
         holder.txtSalePrice.setText(numberFormat.format(product.getSalePrice()));
@@ -69,9 +67,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, Product_Detail.class);
-                intent.putExtra("productID", product.getProductID());
-                context.startActivity(intent);
+                // Kiểm tra xem danh sách sản phẩm có phần tử không
+                if (products != null && !products.isEmpty()) {
+                    // Lấy sản phẩm được click
+                    Product clickedProduct = products.get(holder.getAdapterPosition());
+
+                    // Tạo Intent để chuyển sang màn hình chi tiết sản phẩm
+                    Intent intent = new Intent(v.getContext(), Product_Detail.class);
+                    // Chuyển dữ liệu của sản phẩm qua Intent
+                    intent.putExtra("ProductID", product.getProductID());
+
+                    // Khởi chạy Activity mới
+                    v.getContext().startActivity(intent);
+                }
             }
         });
     }

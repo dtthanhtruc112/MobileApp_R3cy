@@ -53,10 +53,10 @@
             android:name=".UserAccount_Main"
             android:exported="false" />
         <activity
-            android:name=".Product.Product_Detail"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".Product.Product_List"
+            android:name=".Product.Product_Search"
             android:exported="false" />
         <activity
             android:name=".DoiDiem_ChiTiet"
@@ -112,19 +112,19 @@
             android:name=".CustomProduct"
             android:exported="false" />
         <activity
-            android:name=".Signup"
+            android:name=".Product.Product_Detail"
             android:exported="false" />
         <activity
             android:name=".CartManage"
             android:exported="false" />
         <activity
-            android:name=".Product.Product_Search"
+            android:name=".Signup"
             android:exported="false" />
         <activity
             android:name=".User_account_manageOrder"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Product.Product_List"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
