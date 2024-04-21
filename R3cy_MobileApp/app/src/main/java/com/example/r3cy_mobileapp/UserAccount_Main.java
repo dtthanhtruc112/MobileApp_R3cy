@@ -56,6 +56,7 @@ public class UserAccount_Main extends AppCompatActivity {
     R3cyDB db;
     ViewPager2 viewPager2;
     User_account_manageOrder activity;
+    String email1;
 
 
     @Override
@@ -81,6 +82,11 @@ public class UserAccount_Main extends AppCompatActivity {
         name = binding.txtTen;
         viewPager2 = findViewById(R.id.view_pager);
 
+        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+        email1 = preferences.getString("string", "");
+
+        Log.d("SharedPreferences", "Email ở useracc: " + email1);
+
 
         // Nhận giá trị email từ Intent
         email = getIntent().getStringExtra("key_email");
@@ -93,8 +99,7 @@ public class UserAccount_Main extends AppCompatActivity {
     private void getUserDetails() {
         db = new R3cyDB(this);
         // Lấy email từ SharedPreferences
-        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
-        String email = preferences.getString("string", "");
+
 
 //        // Nếu không có email từ SharedPreferences, không thực hiện gì cả
 //        if (email.isEmpty()) {
@@ -102,9 +107,9 @@ public class UserAccount_Main extends AppCompatActivity {
 //        }
 //        ArrayList<UserInfo> customer = db.getLoggedinUserDetailsMain(email);
 //        // Kiểm tra xem email có null không
-        if (email != null) {
+        if (email1 != null) {
             // Lấy thông tin người dùng từ cơ sở dữ liệu
-            ArrayList<UserInfo> customer = db.getLoggedinUserDetailsMain(email);
+            ArrayList<UserInfo> customer = db.getLoggedinUserDetailsMain(email1);
 
             // Kiểm tra xem danh sách khách hàng có trống không
             if (customer != null && customer.size() > 0) {

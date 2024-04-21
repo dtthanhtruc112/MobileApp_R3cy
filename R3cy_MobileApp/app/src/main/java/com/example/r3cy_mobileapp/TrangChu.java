@@ -26,11 +26,17 @@ import com.example.databases.R3cyDB;
 import com.example.models.Banners;
 import com.example.models.Product;
 import com.example.models.ProductVer2;
+import com.example.r3cy_mobileapp.Fragment.Policy_Fragment;
+import com.example.r3cy_mobileapp.Fragment.Policy_baomat_Fragment;
+import com.example.r3cy_mobileapp.Fragment.Policy_dichvu_Fragment;
+import com.example.r3cy_mobileapp.Fragment.Policy_doitra_Fragment;
 import com.example.r3cy_mobileapp.Modau.Modau1;
 import com.example.r3cy_mobileapp.Modau.Modau2;
 import com.example.r3cy_mobileapp.Product.Product_List;
 import com.example.r3cy_mobileapp.Signin.Signin_Main;
 import com.example.r3cy_mobileapp.databinding.ActivityTrangChuBinding;
+import com.example.r3cy_mobileapp.databinding.PolicyBanhangBinding;
+import com.example.r3cy_mobileapp.databinding.PolicyBaomatBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.ParseException;
@@ -50,6 +56,7 @@ public class TrangChu extends AppCompatActivity {
     private List<ProductVer2> products;
     Product product;
     ProductAdapterVer2 adapter;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +84,15 @@ public class TrangChu extends AppCompatActivity {
         BannerAdapter bannerAdapter =(BannerAdapter) new BannerAdapter(bannerList);
         viewPager.setAdapter(bannerAdapter);
 
+        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+        email = preferences.getString("string", "");
+
+        Log.d("SharedPreferences", "Email: " + email);
+
         autoSlide();
         addEvents();
 
-//        createDb();
+        createDb();
 //        loadData();
     }
 
@@ -88,7 +100,8 @@ public class TrangChu extends AppCompatActivity {
 
     private void createDb() {
         db = new R3cyDB(this);
-        db.createSampleProduct();
+//        db.createSampleProduct();
+        db.createSampleDataCustomer();
     }
 
     private void loadData() {
@@ -166,26 +179,17 @@ public class TrangChu extends AppCompatActivity {
 
 
 
-            // Xóa SharedPreferences
-            SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-        editor.remove("key_name");
-        editor.apply();
-
-
-
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        // Xóa SharedPreferences
+        // Xóa dữ liệu email từ SharedPreferences
         SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.clear(); // Xóa tất cả các giá trị trong SharedPreferences
+        editor.remove("string"); // Xóa dữ liệu email
         editor.apply();
+
+        Log.d("SharedPreferences", "Email ở Ondestroy: " + email);
+
+
+
+
     }
 
 
@@ -218,8 +222,7 @@ public class TrangChu extends AppCompatActivity {
         binding.btnDangnhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
-                String email = preferences.getString("string", "");
+
 
                 if (!email.isEmpty()) {
                     // Đã đăng nhập
@@ -237,6 +240,63 @@ public class TrangChu extends AppCompatActivity {
             }
         });
 
+        binding.btnCustom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TrangChu.this, CustomProduct.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.btnThugom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(TrangChu.this, Thugom.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.btnFAQ.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TrangChu.this, FAQsPage.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.btnCSbaomat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TrangChu.this, Policy_baomat_Fragment.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.btnCSbanhang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TrangChu.this, Policy_Fragment.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.btnCSdoitra.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TrangChu.this, Policy_doitra_Fragment.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.btnCSdichvu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TrangChu.this, Policy_dichvu_Fragment.class);
+                startActivity(intent);
+            }
+        });
+
+
 
         navigationView = findViewById(R.id.mn_home);
         navigationView.setSelectedItemId(R.id.item_home);
@@ -252,7 +312,7 @@ public class TrangChu extends AppCompatActivity {
                     overridePendingTransition(0,0);
                     return true;
                 } else if (item.getItemId() == R.id.item_blog) {
-                    Intent intent2 =new Intent(getApplicationContext(),AboutUs.class);
+                    Intent intent2 =new Intent(getApplicationContext(),BlogDetail.class);
                     intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent2);
                     overridePendingTransition(0,0);

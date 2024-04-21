@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".Modau.Modau4"
     android:orientation="vertical"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    android:background="@color/white">
 
     <ImageView
         android:layout_width="350dp"

@@ -108,7 +108,7 @@
             android:name=".CustomProduct"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Signup"
             android:exported="false" />
         <activity
             android:name=".CartManage"
@@ -120,7 +120,7 @@
             android:name=".User_account_manageOrder"
             android:exported="false" />
         <activity
-            android:name=".Signup"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
