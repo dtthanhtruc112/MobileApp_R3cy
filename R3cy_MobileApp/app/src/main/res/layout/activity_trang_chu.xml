@@ -83,31 +83,31 @@
                 <TableRow android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <ImageView android:layout_width="50dp"
+                    <ImageView android:layout_width="40dp"
                         android:layout_height="50dp"
                         android:src="@drawable/baseline_shopping_bag_24"
                         android:background="@drawable/btn_blue"
                         android:layout_margin="10dp"/>
 
-                    <ImageView android:layout_width="50dp"
+                    <ImageView android:layout_width="40dp"
                         android:layout_height="50dp"
                         android:src="@drawable/baseline_credit_card_24"
                         android:background="@drawable/btn_blue"
                         android:layout_margin="10dp"/>
 
-                    <ImageView android:layout_width="50dp"
+                    <ImageView android:layout_width="40dp"
                         android:layout_height="50dp"
                         android:src="@drawable/baseline_question_mark_24"
                         android:background="@drawable/btn_blue"
                         android:layout_margin="10dp"/>
 
-                    <ImageView android:layout_width="50dp"
+                    <ImageView android:layout_width="40dp"
                         android:layout_height="50dp"
                         android:src="@drawable/baseline_edit_document_24"
                         android:background="@drawable/btn_blue"
                         android:layout_margin="10dp"/>
 
-                    <ImageView android:layout_width="50dp"
+                    <ImageView android:layout_width="40dp"
                         android:layout_height="50dp"
                         android:src="@drawable/baseline_fire_truck_24"
                         android:background="@drawable/btn_blue"
@@ -471,7 +471,7 @@ TP. Thủ Đức, TP. Hồ Chí Minh"
                     android:layout_marginEnd="15dp"/>
 
                 <TextView
-                    android:id="@id/btnCSdoitra"
+                    android:id="@+id/btnCSdoitra"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"

@@ -3,7 +3,6 @@ package com.example.r3cy_mobileapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -21,25 +20,14 @@ import android.widget.Toast;
 
 import com.example.adapter.BannerAdapter;
 import com.example.adapter.ProductAdapter;
-import com.example.adapter.ProductAdapterVer2;
 import com.example.databases.R3cyDB;
 import com.example.models.Banners;
 import com.example.models.Product;
-import com.example.models.ProductVer2;
-import com.example.r3cy_mobileapp.Fragment.Policy_Fragment;
-import com.example.r3cy_mobileapp.Fragment.Policy_baomat_Fragment;
-import com.example.r3cy_mobileapp.Fragment.Policy_dichvu_Fragment;
-import com.example.r3cy_mobileapp.Fragment.Policy_doitra_Fragment;
-import com.example.r3cy_mobileapp.Modau.Modau1;
-import com.example.r3cy_mobileapp.Modau.Modau2;
 import com.example.r3cy_mobileapp.Product.Product_List;
 import com.example.r3cy_mobileapp.Signin.Signin_Main;
 import com.example.r3cy_mobileapp.databinding.ActivityTrangChuBinding;
-import com.example.r3cy_mobileapp.databinding.PolicyBanhangBinding;
-import com.example.r3cy_mobileapp.databinding.PolicyBaomatBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -53,9 +41,9 @@ public class TrangChu extends AppCompatActivity {
     Timer timer;
     BottomNavigationView navigationView;
     R3cyDB db;
-    private List<ProductVer2> products;
+    private List<Product> products;
     Product product;
-    ProductAdapterVer2 adapter;
+    ProductAdapter adapter;
     String email;
 
     @Override
@@ -93,14 +81,14 @@ public class TrangChu extends AppCompatActivity {
         addEvents();
 
         createDb();
-//        loadData();
+        loadData();
     }
 
 
 
     private void createDb() {
         db = new R3cyDB(this);
-//        db.createSampleProduct();
+        db.createSampleProduct();
         db.createSampleDataCustomer();
     }
 
@@ -116,13 +104,16 @@ public class TrangChu extends AppCompatActivity {
         try {
             while (cursor.moveToNext()) {
                 try {
-                    products.add(new ProductVer2(
+                    products.add(new Product(
                             cursor.getInt(0), // ProductID
-                            cursor.getString(1), // ProductName
                             cursor.getBlob(4), // ProductThumb
+                            cursor.getString(1), // ProductName
+                            cursor.getDouble(9), // SalePrice
+
                             cursor.getString(6), // Category
-                            cursor.getDouble(8), // ProductRate
-                            cursor.getDouble(9) // SalePrice
+                            cursor.getString(3),
+                            cursor.getDouble(8) // ProductRate
+
                     ));
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
@@ -134,8 +125,9 @@ public class TrangChu extends AppCompatActivity {
 
         Log.d("ProductInfo", "Number of products retrieved: " + products.size());
 
-        adapter = new ProductAdapterVer2(this, products);
+        adapter = new ProductAdapter(this, R.layout.viewholder_category_list, products);
         binding.rcvProducts.setAdapter(adapter);
+//        binding.rcvProduct.setAdapter(adapter);
     }
 
 
@@ -267,7 +259,7 @@ public class TrangChu extends AppCompatActivity {
         binding.btnCSbaomat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TrangChu.this, Policy_baomat_Fragment.class);
+                Intent intent = new Intent(TrangChu.this, UserAccount_Policy.class);
                 startActivity(intent);
             }
         });
@@ -275,7 +267,7 @@ public class TrangChu extends AppCompatActivity {
         binding.btnCSbanhang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TrangChu.this, Policy_Fragment.class);
+                Intent intent = new Intent(TrangChu.this, UserAccount_Policy.class);
                 startActivity(intent);
             }
         });
@@ -283,7 +275,7 @@ public class TrangChu extends AppCompatActivity {
         binding.btnCSdoitra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TrangChu.this, Policy_doitra_Fragment.class);
+                Intent intent = new Intent(TrangChu.this, UserAccount_Policy.class);
                 startActivity(intent);
             }
         });
@@ -291,7 +283,7 @@ public class TrangChu extends AppCompatActivity {
         binding.btnCSdichvu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TrangChu.this, Policy_dichvu_Fragment.class);
+                Intent intent = new Intent(TrangChu.this, UserAccount_Policy.class);
                 startActivity(intent);
             }
         });

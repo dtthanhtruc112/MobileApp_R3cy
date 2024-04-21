@@ -21,6 +21,7 @@ import com.example.r3cy_mobileapp.R;
 
 import org.w3c.dom.Text;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -50,28 +51,21 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.viewholder_category_list, null);
-
-        ImageView imvProductThumb = recyclerView.findViewById(R.id.imvProductThumb);
-        TextView txtProductName = recyclerView.findViewById(R.id.txtProductName);
-        TextView txtCategory = recyclerView.findViewById(R.id.txtCategory);
-//        TextView txtProductDescription = recyclerView.findViewById(R.id.txtProductDescription);
-        TextView txtSalePrice = recyclerView.findViewById(R.id.txtSalePrice);
-        TextView txtProductRate = recyclerView.findViewById(R.id.txtProductRate);
-
         Product product = products.get(position);
 
         Bitmap bmProductThumb = BitmapFactory.decodeByteArray(product.getProductThumb(), 0, product.getProductThumb().length);
-        imvProductThumb.setImageBitmap(bmProductThumb);
-        txtProductName.setText(product.getProductName());
-        txtCategory.setText(product.getCategory());
-//        txtProductDescription.setText(product.getProductDescription());
-        txtSalePrice.setText(String.format("%.0f", product.getSalePrice()));
-        txtProductRate.setText(String.format("%.0f", product.getProductRate()));
+        holder.imvProductThumb.setImageBitmap(bmProductThumb);
+        holder.txtProductName.setText(product.getProductName());
+        holder.txtCategory.setText(product.getCategory());
+//    holder.txtProductDescription.setText(product.getProductDescription());
+//        holder.txtSalePrice.setText(String.format(Locale.getDefault(), "%.0f", product.getSalePrice()));
+        holder.txtProductRate.setText(String.format(Locale.getDefault(), "%.0f", product.getProductRate()));
+
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
+        holder.txtSalePrice.setText(numberFormat.format(product.getSalePrice()));
 
 
-//        Listener khi click vào item sp
+        // Listener khi click vào item sp
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +75,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             }
         });
     }
+
 
 
     @Override

@@ -268,8 +268,7 @@ public class R3cyDB extends SQLiteOpenHelper {
             SALE_PRICE + " REAL NOT NULL," +
             SOLD_QUANTITY + " INTEGER," +
             CREATED_DATE + " DATE DEFAULT ('2024-04-03')," +
-            STATUS + " INTEGER DEFAULT 1," +
-            "PRIMARY KEY (" + PRODUCT_ID + ")" +
+            STATUS + " INTEGER DEFAULT 1" +
             ")";
 
 
