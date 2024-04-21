@@ -48,6 +48,7 @@
                     android:src="@drawable/icon_lock" />
 
                 <EditText
+                    android:id="@+id/newPasswordEditText"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
@@ -84,6 +85,7 @@
                     android:src="@drawable/icon_lock" />
 
                 <EditText
+                    android:id="@+id/confirmPasswordEditText"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
@@ -106,6 +108,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/completeButton"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
