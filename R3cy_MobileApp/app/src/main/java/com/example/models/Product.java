@@ -2,38 +2,25 @@ package com.example.models;
 
 public class Product {
     private int ProductID;
-    private String ProductName;
-    private double ProductPrice;
-    private String ProductDescription;
     private byte[] ProductThumb;
-    private int Hot;
-    private String Category;
-    private int Inventory;
-    private double ProductRate;
+    private String ProductName;
     private double SalePrice;
-    private int SoldQuantity;
-    private String CreatedDate;
-    private int Status;
+    private String Category;
+    private String ProductDescription;
+    private double ProductRate;
 
 
 //    constructor
+    public Product(){}
 
-
-    public Product(int productID, String productName, double productPrice, String productDescription, byte[] productThumb, int hot, String category, int inventory, double productRate, double salePrice, int soldQuantity, String createdDate, int status) {
+    public Product(int productID, byte[] productThumb, String productName, double salePrice, String category, String productDescription, double productRate) {
         ProductID = productID;
-        ProductName = productName;
-        ProductPrice = productPrice;
-        ProductDescription = productDescription;
         ProductThumb = productThumb;
-        Hot = hot;
-        Category = category;
-        Inventory = inventory;
-        ProductRate = productRate;
+        ProductName = productName;
         SalePrice = salePrice;
-        SoldQuantity = soldQuantity;
-        CreatedDate = createdDate;
-        Status = status;
-
+        Category = category;
+        ProductDescription = productDescription;
+        ProductRate = productRate;
     }
 
     public int getProductID() {
@@ -44,30 +31,6 @@ public class Product {
         ProductID = productID;
     }
 
-    public String getProductName() {
-        return ProductName;
-    }
-
-    public void setProductName(String productName) {
-        ProductName = productName;
-    }
-
-    public double getProductPrice() {
-        return ProductPrice;
-    }
-
-    public void setProductPrice(double productPrice) {
-        ProductPrice = productPrice;
-    }
-
-    public String getProductDescription() {
-        return ProductDescription;
-    }
-
-    public void setProductDescription(String productDescription) {
-        ProductDescription = productDescription;
-    }
-
     public byte[] getProductThumb() {
         return ProductThumb;
     }
@@ -76,36 +39,12 @@ public class Product {
         ProductThumb = productThumb;
     }
 
-    public int getHot() {
-        return Hot;
+    public String getProductName() {
+        return ProductName;
     }
 
-    public void setHot(int hot) {
-        Hot = hot;
-    }
-
-    public String getCategory() {
-        return Category;
-    }
-
-    public void setCategory(String category) {
-        Category = category;
-    }
-
-    public int getInventory() {
-        return Inventory;
-    }
-
-    public void setInventory(int inventory) {
-        Inventory = inventory;
-    }
-
-    public double getProductRate() {
-        return ProductRate;
-    }
-
-    public void setProductRate(double productRate) {
-        ProductRate = productRate;
+    public void setProductName(String productName) {
+        ProductName = productName;
     }
 
     public double getSalePrice() {
@@ -116,28 +55,27 @@ public class Product {
         SalePrice = salePrice;
     }
 
-    public int getSoldQuantity() {
-        return SoldQuantity;
+    public String getCategory() {
+        return Category;
     }
 
-    public void setSoldQuantity(int soldQuantity) {
-        SoldQuantity = soldQuantity;
+    public void setCategory(String category) {
+        Category = category;
     }
 
-    public String getCreatedDate() {
-        return CreatedDate;
+    public String getProductDescription() {
+        return ProductDescription;
     }
 
-    public void setCreatedDate(String createdDate) {
-        CreatedDate = createdDate;
+    public void setProductDescription(String productDescription) {
+        ProductDescription = productDescription;
     }
 
-    public int getStatus() {
-        return Status;
+    public double getProductRate() {
+        return ProductRate;
     }
 
-    public void setStatus(int status) {
-        Status = status;
+    public void setProductRate(double productRate) {
+        ProductRate = productRate;
     }
-
 }

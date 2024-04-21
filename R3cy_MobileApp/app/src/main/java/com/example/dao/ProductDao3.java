@@ -1,8 +1,6 @@
 package com.example.dao;
 
 import static com.example.databases.R3cyDB.CATEGORY;
-import static com.example.databases.R3cyDB.PRODUCT_ID;
-import static com.example.databases.R3cyDB.TBl_PRODUCT;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,14 +13,14 @@ import com.example.models.Product;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDao2 {
+public class ProductDao3 {
     R3cyDB dbHelper;
 
-    public ProductDao2(R3cyDB dbHelper) {
+    public ProductDao3(R3cyDB dbHelper) {
         this.dbHelper = dbHelper;
     }
 
-    public List<Product> getProductsByCategory(String category ) {
+    public List<Product> getProducts() {
         List<Product> products = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 //        SQLiteDatabase db = null;
@@ -30,8 +28,8 @@ public class ProductDao2 {
 
         try {
 
-            String query = "SELECT * FROM " + R3cyDB.TBl_PRODUCT + " WHERE " + CATEGORY + "=?";
-            cursor = db.rawQuery(query, new String[]{CATEGORY});
+            String query = "SELECT * FROM " + R3cyDB.TBl_PRODUCT;
+            cursor = db.rawQuery(query, null);
 
             if (cursor != null && cursor.moveToFirst()) {
                 do {
@@ -55,12 +53,13 @@ public class ProductDao2 {
 
                     Product product = new Product(productID, productThumb, productName, salePrice, productCategory, productDescription, productRate);
                     products.add(product);
+
                 } while (cursor.moveToNext());
             } else {
-                Log.d("R3cyDB", "No products found for category: " + category);
+                Log.d("R3cyDB", "No products found in database");
             }
         } catch (SQLiteException e) {
-            Log.e("R3cyDB", "Error getting products by category: " + e.getMessage());
+            Log.e("R3cyDB", "Error getting all products: " + e.getMessage());
         } finally {
             if (cursor != null) {
                 cursor.close();
@@ -69,5 +68,4 @@ public class ProductDao2 {
         }
 
         return products;
-    }
-}
+    }}

@@ -124,7 +124,7 @@ public class Phukien_Fragment extends Fragment {
     private void loadData() {
 
 
-        products = db.getProductsByCategory("Đồ gia dụng");
+//        products = db.getProductsByCategory("Đồ gia dụng");
         Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT + " WHERE Category = 'Đồ gia dụng' ");
         while (cursor.moveToNext()) {
             try {
@@ -133,18 +133,12 @@ public class Phukien_Fragment extends Fragment {
 
                 products.add(new Product(
                         cursor.getInt(0), //ProductID
-                        cursor.getString(1), //ProductName
-                        cursor.getDouble(2), // ProductPrice
-                        cursor.getString(3), //ProductDescription
-                        cursor.getBlob(4), //ProductThumb
-                        cursor.getInt(5), //Hot
-                        cursor.getString(6), //Category
-                        cursor.getInt(7), //Inventory
-                        cursor.getDouble(8), //ProductRate
-                        cursor.getDouble(9), //SalePrice
-                        cursor.getInt(10), //SoldQuantity
-                        cursor.getString(11), //CreatedDate
-                        cursor.getInt(12)
+                        cursor.getBlob(1), //ProductThumb
+                        cursor.getString(2), //ProductName
+                        cursor.getDouble(3), //SalePrice
+                        cursor.getString(4), //Category
+                        cursor.getString(5), //ProductDescription
+                        cursor.getDouble(6) //ProductRate
                 ));
             } catch (ParseException | NumberFormatException e) {
                 e.printStackTrace();

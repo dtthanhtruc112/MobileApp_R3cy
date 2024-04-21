@@ -45,25 +45,30 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.viewholder_category_list, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.viewholder_category_list, parent, false);
         return new ProductViewHolder(view);
     }
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.viewholder_category_list, null);
 
+        ImageView imvProductThumb = recyclerView.findViewById(R.id.imvProductThumb);
+        TextView txtProductName = recyclerView.findViewById(R.id.txtProductName);
+        TextView txtCategory = recyclerView.findViewById(R.id.txtCategory);
+//        TextView txtProductDescription = recyclerView.findViewById(R.id.txtProductDescription);
+        TextView txtSalePrice = recyclerView.findViewById(R.id.txtSalePrice);
+        TextView txtProductRate = recyclerView.findViewById(R.id.txtProductRate);
 
         Product product = products.get(position);
 
-
-
         Bitmap bmProductThumb = BitmapFactory.decodeByteArray(product.getProductThumb(), 0, product.getProductThumb().length);
-        holder.imvProductThumb.setImageBitmap(bmProductThumb);
-        holder.txtProductName.setText(product.getProductName());
-        holder.txtCategory.setText(product.getCategory());
+        imvProductThumb.setImageBitmap(bmProductThumb);
+        txtProductName.setText(product.getProductName());
+        txtCategory.setText(product.getCategory());
 //        txtProductDescription.setText(product.getProductDescription());
-        holder.txtSalePrice.setText(String.format("%.0f", product.getSalePrice()));
-        holder.txtProductRate.setText(String.format("%.0f", product.getProductRate()));
+        txtSalePrice.setText(String.format("%.0f", product.getSalePrice()));
+        txtProductRate.setText(String.format("%.0f", product.getProductRate()));
 
 
 //        Listener khi click vào item sp

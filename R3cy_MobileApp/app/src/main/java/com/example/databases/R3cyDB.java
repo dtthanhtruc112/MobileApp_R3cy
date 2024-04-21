@@ -14,7 +14,6 @@ import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -23,6 +22,7 @@ import com.example.models.Address;
 import com.example.models.CartItem;
 import com.example.models.Customer;
 import com.example.models.Product;
+import com.example.models.ProductAtb;
 import com.example.models.UserInfo;
 import com.example.r3cy_mobileapp.R;
 
@@ -268,7 +268,8 @@ public class R3cyDB extends SQLiteOpenHelper {
             SALE_PRICE + " REAL NOT NULL," +
             SOLD_QUANTITY + " INTEGER," +
             CREATED_DATE + " DATE DEFAULT ('2024-04-03')," +
-            STATUS + " INTEGER DEFAULT 1" +
+            STATUS + " INTEGER DEFAULT 1," +
+            "PRIMARY KEY (" + PRODUCT_ID + ")" +
             ")";
 
 
@@ -509,12 +510,10 @@ public void createSampleDataCoupon() {
 //   Hàm lấy mảng customerid
 public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
     ArrayList<Integer> customerIds = new ArrayList<>();
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-        if (customerIdsString != null && !customerIdsString.isEmpty()) {
-            String[] ids = customerIdsString.replaceAll("\\[|\\]", "").split(",\\s*");
-            for (String id : ids) {
-                customerIds.add(Integer.parseInt(id.trim()));
-            }
+    if (customerIdsString != null && !customerIdsString.isEmpty()) {
+        String[] ids = customerIdsString.replaceAll("\\[|\\]", "").split(",\\s*");
+        for (String id : ids) {
+            customerIds.add(Integer.parseInt(id.trim()));
         }
     }
     return customerIds;
@@ -1030,67 +1029,325 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
         return numberOfRows;
     }
 
-    public boolean insertData(String ProductName, double ProductPrice, String ProductDescription, byte[] ProductThumb, int Hot, String Category, int Inventory, double ProductRate, double SalePrice, int SoldQuantiy, String CreatedDate, int Status) {
-        SQLiteDatabase database = getReadableDatabase();
-        String sql = "INSERT INTO " + TBl_PRODUCT + "(" +
-                PRODUCT_NAME + ", " +
-                PRODUCT_PRICE + ", " +
-                PRODUCT_DESCRIPTION + ", " +
-                PRODUCT_THUMB + ", " +
-                HOT + ", " +
-                CATEGORY + ", " +
-                INVENTORY + ", " +
-                PRODUCT_RATE + ", " +
-                SALE_PRICE + ", " +
-                SOLD_QUANTITY + ", " +
-                CREATED_DATE + ", " +
-                STATUS +
-                ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+//    public boolean insertData(String ProductName, double ProductPrice, String ProductDescription, byte[] ProductThumb, int Hot, String Category, int Inventory, double ProductRate, double SalePrice, int SoldQuantiy, String CreatedDate, int Status) {
+//        SQLiteDatabase database = getReadableDatabase();
+//        String sql = "INSERT INTO " + TBl_PRODUCT + "(" +
+//                PRODUCT_NAME + ", " +
+//                PRODUCT_PRICE + ", " +
+//                PRODUCT_DESCRIPTION + ", " +
+//                PRODUCT_THUMB + ", " +
+//                HOT + ", " +
+//                CATEGORY + ", " +
+//                INVENTORY + ", " +
+//                PRODUCT_RATE + ", " +
+//                SALE_PRICE + ", " +
+//                SOLD_QUANTITY + ", " +
+//                CREATED_DATE + ", " +
+//                STATUS +
+//                ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+//
+//        SQLiteStatement statement = database.compileStatement(sql);
+//
+//        statement.bindString(1, ProductName);
+//        statement.bindDouble(2, ProductPrice);
+//        statement.bindString(3, ProductDescription);
+//        statement.bindBlob(4, ProductThumb);
+//        statement.bindLong(5, Hot);
+//        statement.bindString(6, Category);
+//        statement.bindLong(7, Inventory);
+//        statement.bindDouble(8, ProductRate);
+//        statement.bindDouble(9, SalePrice);
+//        statement.bindLong(10, SoldQuantiy);
+//        statement.bindString(11, CreatedDate);
+//        statement.bindLong(12, Status);
+//
+//        long result = statement.executeInsert();
+//        boolean  success = result != -1; // Trả về true nếu chèn thành công, false nếu không
+//        Log.d("DatabaseHelper", "Insert data result: " + success);
+//        return success;
+//    }
+//
+//    public void createSampleProduct() {
+//        if (numbOfRowsProduct() == 0){
+//            insertData("Đĩa nhỏ", 120000, "Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường. Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu. Thiết kế nhỏ gọn và tiện lợi làm cho sản phẩm trở thành người bạn đồng hành lý tưởng, không chỉ phục vụ nhu cầu hàng ngày mà còn thúc đẩy ý thức về một lối sống bền vững. Đĩa nhỏ từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian sống mà còn là một biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc  giữ gìn cho hành tinh xanh của chúng ta. Hãy chọn lựa thông minh và hòa mình vào những giải pháp bảo vệ môi trường với sản phẩm độc đáo này.", convertPhoto(context, R.drawable.dgd_dia1), 1, "Đồ gia dụng", 60, 4.5, 100000, 87, "2024/04/10", 1);
+//            insertData("Khay đựng xà phòng", 170000, "Khay đựng bánh xà phòng từ nhựa tái chế là sự kết hợp hoàn hảo giữa tính thực tế và cam kết với môi trường. Với nguyên liệu là nhựa tái chế, sản phẩm này không chỉ giúp giảm lượng chất thải nhựa mà còn thể hiện tinh thần chăm sóc đối với hành tinh xanh của chúng ta. Thiết kế của khay đựng bánh xà phòng không chỉ đơn giản mà còn linh hoạt, phù hợp với mọi không gian nhà tắm. Sự sáng tạo trong cách sử dụng nguyên liệu tái chế không chỉ làm cho sản phẩm trở nên độc đáo mà còn đặt ra một tiêu chí mới cho việc chọn lựa sản phẩm gia dụng có trách nhiệm với môi trường. Khay đựng bánh xà phòng từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian nhà tắm mà còn là một bước nhỏ nhưng ý nghĩa trong hành trình chung của chúng ta để bảo vệ và giữ gìn cho hành tinh xanh, trong từng lựa chọn hàng ngày của chúng ta.", convertPhoto(context, R.drawable.dgd_xaphong1), 0, "Đồ gia dụng", 60, 4.7, 150000, 45, "2024/04/10", 1);
+//            insertData("Lót ly", 110000, "Đồ lót ly từ nhựa tái chế là sự kết hợp độc đáo giữa sự thoải mái và cam kết với môi trường. Với việc sử dụng nguyên liệu là nhựa tái chế, sản phẩm không chỉ mang lại cảm giác mềm mại và thoải mái cho người sử dụng mà còn đóng góp vào việc giảm lượng chất thải nhựa. Thiết kế của đồ lót ly không chỉ chú trọng đến sự thoải mái và tôn lên vẻ đẹp tự nhiên, mà còn thể hiện sự chấp nhận trách nhiệm với môi trường. Việc sử dụng nhựa tái chế không chỉ là một xu hướng tiêu dùng thông minh mà còn là sự đóng góp tích cực vào việc bảo vệ nguồn tài nguyên tự nhiên và giảm thiểu ảnh hưởng tiêu cực đối với hệ sinh thái. Đồ lót ly từ nhựa tái chế không chỉ là lựa chọn thông minh cho sự thoải mái hàng ngày mà còn là một cách để chúng ta cùng nhau xây dựng một lối sống thân thiện với môi trường, đồng thời thể hiện sự quan tâm đến sức khỏe và hành tinh xanh của chúng ta.", convertPhoto(context, R.drawable.dgd_lotly1), 1, "Đồ gia dụng", 60, 4.0, 100000, 100, "2024/04/10", 1);
+//            insertData("Giá đỡ laptop", 220000, "Giá đỡ laptop từ nhựa tái chế là một phụ kiện không thể thiếu cho những người sử dụng máy tính xách tay, kết hợp giữa tính thực tế và tầm nhìn bền vững. Với sự sáng tạo trong việc sử dụng nhựa tái chế, sản phẩm không chỉ tạo ra một nơi thoải mái để đặt laptop mà còn là cách nhỏ nhưng tích cực để giảm lượng chất thải nhựa. Thiết kế nhẹ nhàng và linh hoạt của giá đỡ không chỉ giúp người dùng duy trì tư duy làm việc hiệu quả mà còn hỗ trợ vào nỗ lực chung của cộng đồng trong việc giữ gìn môi trường. Sự cam kết đối với nhựa tái chế không chỉ là một xu hướng tiêu dùng mà còn là một lối sống, và sản phẩm giá đỡ laptop này là minh chứng rõ ràng cho sự hài hòa giữa tiện ích và sự chấp nhận trách nhiệm với môi trường. Hãy lựa chọn giá đỡ laptop từ nhựa tái chế để không chỉ tận hưởng sự thuận tiện mà còn tham gia vào cuộc hành trình bảo vệ hành tinh của chúng ta.", convertPhoto(context, R.drawable.dgd_laptop1), 0, "Đồ gia dụng", 60, 5, 200000, 30, "2024/04/10", 1);
+//            insertData("Dây cờ trang trí tiệc", 120000, "Dây cờ là một sản phẩm trang trí không thể thiếu cho bất kỳ buổi tiệc nào, và đặc biệt, chúng tôi tự hào giới thiệu dòng sản phẩm dây cờ được làm từ nhựa tái chế. Sự sáng tạo trong thiết kế không chỉ tạo ra không khí vui tươi và phấn khích cho bất kỳ dịp lễ nào mà còn góp phần tích cực vào nỗ lực bảo vệ môi trường. Với việc sử dụng nhựa tái chế, chúng tôi cam kết giảm lượng chất thải nhựa và tái sử dụng nguyên liệu, giữ cho không gian tiệc tùng trở nên thú vị hơn mà không ảnh hưởng đến môi trường. Dây cờ từ nhựa tái chế không chỉ đẹp mắt mà còn là một cách thúc đẩy ý thức về trách nhiệm xã hội và bảo vệ hành tinh xanh chúng ta. Hãy tận hưởng những khoảnh khắc vui vẻ và đồng thời hỗ trợ vào việc giữ cho hành tinh của chúng ta trở nên bền vững hơn.", convertPhoto(context, R.drawable.dtt_dayco1), 1, "Đồ trang trí", 60, 4.5, 100000, 25, "2024/04/03", 1);
+//            insertData("Đồ trang trí giáng sinh", 90000, "Đồ trang trí Giáng Sinh 3D không chỉ làm mới không khí của mùa lễ hội mà còn là biểu tượng của sự sang trọng và ý thức về môi trường. Với việc sử dụng nhựa tái chế, sản phẩm này không chỉ tạo ra một không gian lễ hội ấm cúng mà còn đóng góp tích cực vào việc giảm lượng chất thải nhựa. Mỗi chiếc đồ trang trí được chế tạo với kỹ thuật 3D độc đáo, tạo nên hiệu ứng thị giác đặc sắc và sống động, làm tôn lên vẻ đẹp của mùa Giáng Sinh. Việc tái chế nhựa không chỉ giúp giảm tác động tiêu cực đối với môi trường mà còn thúc đẩy ý thức về việc sử dụng tài nguyên tái chế trong sản xuất. Đồ trang trí Giáng Sinh 3D là sự kết hợp hoàn hảo giữa sự sang trọng, sáng tạo và ý thức môi trường. Bằng cách chọn lựa sản phẩm này, chúng ta không chỉ tận hưởng không khí lễ hội phấn khích mà còn thể hiện sự quan tâm đến bảo vệ môi trường và chọn lựa bền vững trong mọi hoạt động.", convertPhoto(context, R.drawable.dtt_giangsinh1), 0, "Đồ trang trí", 60, 4.6, 70000, 80, "2024/04/10", 1);
+//            insertData("Đồng hồ treo tường", 370000, "Đồng hồ treo tường từ nhựa tái chế không chỉ là một sản phẩm thời gian mà còn là biểu tượng của sự sáng tạo và tôn trọng đối với môi trường. Với thiết kế độc đáo, sản phẩm này là sự kết hợp hoàn hảo giữa vẻ ngoại hình tinh tế và cam kết với lối sống bền vững. Bằng cách sử dụng nhựa tái chế, đồng hồ treo tường không chỉ giảm lượng rác thải nhựa mà còn giúp tái chế nguyên liệu, đóng góp vào việc bảo vệ môi trường. Sự linh hoạt trong việc tạo hình và màu sắc của sản phẩm này không chỉ làm mới không gian sống mà còn thể hiện tầm quan trọng của việc chọn lựa sản phẩm có trách nhiệm với môi trường. Đồng hồ treo tường từ nhựa tái chế không chỉ đơn thuần là một phụ kiện trang trí, mà còn là biểu tượng của lối sống ý thức về môi trường. Việc đặt mình vào ngôi nhà của bạn không chỉ làm tăng thêm vẻ đẹp mà còn là bước nhỏ nhưng ý nghĩa để góp phần vào việc bảo vệ hành tinh của chúng ta.", convertPhoto(context, R.drawable.dtt_dongho1), 1, "Đồ trang trí", 60, 4.2, 350000, 100, "2024/04/03", 1);
+//            insertData("Móc khóa hình đảo Kos", 110000, "Móc khóa hình đảo Kos là một tác phẩm sáng tạo không chỉ đẹp mắt mà còn mang đến sự ý thức về môi trường. Được tạo ra từ nhựa tái chế, sản phẩm này là biểu tượng của sự kết hợp giữa nghệ thuật và bảo vệ môi trường. Hình ảnh đảo Kos được minh họa trên móc khóa không chỉ đẹp mắt mà còn là cách tuyệt vời để kỷ niệm và tôn vinh vẻ đẹp của đảo nổi tiếng này. Với việc sử dụng nguyên liệu tái chế, chúng ta không chỉ giảm lượng chất thải nhựa mà còn thúc đẩy tư duy bền vững trong sản xuất. Mỗi chiếc móc khóa không chỉ là một sản phẩm thực tế, mà còn là một cách để chia sẻ thông điệp về ý thức môi trường và sự cần thiết của việc bảo vệ những địa điểm đẹp tự nhiên như đảo Kos. Đặt mình vào túi của bạn, sản phẩm này không chỉ là một chiếc móc khóa mà còn là một tuyên ngôn về sự đồng lòng trong việc bảo vệ hành tinh của chúng ta.", convertPhoto(context, R.drawable.pk_mockhoakos1), 0, "Đồ trang trí", 60, 5.0, 90000, 67, "2024/04/03", 1);
+//            insertData("Bông tai hình bông hoa", 160000, "Bông tai hình bông hoa là một biểu tượng của sự thanh lịch và sáng tạo, mang đến cho người đeo không chỉ vẻ đẹp tinh tế mà còn là niềm tự hào về việc chọn lựa có trách nhiệm với môi trường. Sản phẩm này được chế tạo từ nhựa tái chế, đó là một bước tiến quan trọng trong việc giảm lượng chất thải nhựa và giữ cho tài nguyên tự nhiên được bảo vệ. Bông hoa tinh tế được tái tạo từ nhựa tái chế không chỉ là một tuyên ngôn về sự đẹp đẽ mà còn là một cam kết vững chắc đối với bảo vệ môi trường. Việc sử dụng nguyên liệu tái chế giúp giảm áp lực đặt ra cho hệ sinh thái và hỗ trợ trong việc xây dựng một tương lai bền vững. Bông tai hình bông hoa không chỉ là một phụ kiện thời trang, mà còn là biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc duy trì sự cân bằng giữa thời trang và bảo vệ môi trường.", convertPhoto(context, R.drawable.pk_bongtai_hoa1), 1, "Phụ kiện", 60, 4.5, 140000, 56, "2024/04/10", 1);
+//            insertData("Bông tai hình chữ nhật", 120000, "Bông tai hình chữ nhật không chỉ là một biểu tượng của sự đơn giản và hiện đại trong thế giới thời trang mà còn là một minh chứng cho sự sáng tạo và chăm sóc đối với môi trường. Sản phẩm này được tạo ra từ nhựa tái chế, một lựa chọn thông minh và đảm bảo, giúp giảm lượng chất thải nhựa và bảo vệ nguồn tài nguyên tự nhiên. Thiết kế hình chữ nhật đơn giản nhưng tinh tế của bông tai mang lại sự linh hoạt trong việc kết hợp với nhiều phong cách thời trang khác nhau. Đồng thời, việc sử dụng nhựa tái chế không chỉ giúp giảm áp lực đặt ra cho môi trường mà còn thể hiện cam kết đối với phong cách sống bền vững và tiêu thụ có trách nhiệm. Bông tai hình chữ nhật không chỉ là một chiếc phụ kiện thời trang độc đáo mà còn là biểu tượng của ý thức môi trường. Sử dụng sản phẩm này không chỉ là một cách để thể hiện cái tôi cá nhân mà còn là bước nhỏ nhưng ý nghĩa trong việc góp phần vào việc giữ cho hành tinh của chúng ta trở nên bền vững hơn", convertPhoto(context, R.drawable.pk_bongtai_hcn1), 0, "Phụ kiện", 60, 4.7, 100000, 48, "2024/04/03", 1);
+//            insertData("Móc khóa hình mặt cười", 110000, "Móc khóa hình mặt cười là một phụ kiện vui nhộn và thân thiện với môi trường, được sáng tạo từ nhựa tái chế. Thiết kế này không chỉ mang lại sự hứng khởi với hình ảnh mặt cười thân quen mà còn góp phần giảm lượng chất thải nhựa đối với môi trường. Sử dụng nhựa tái chế là một cam kết đối với bảo vệ hành tinh của chúng ta, tạo ra một sản phẩm không chỉ phản ánh tính cách lạc quan mà còn thể hiện tinh thần chăm sóc môi trường. Mỗi chiếc móc khóa không chỉ là một biểu tượng vui nhộn mà còn là một bước tiến tích cực trong việc hướng tới một lối sống bền vững và ý thức môi trường. Sở hữu một chiếc móc khóa hình mặt cười không chỉ là thêm vào bộ sưu tập phụ kiện cá nhân của bạn mà còn là cách để bạn thể hiện sự quan tâm đến môi trường.", convertPhoto(context, R.drawable.pk_mockhoacuoi), 1, "Phụ kiện", 60, 4.0, 90000, 89, "2024/04/03", 1);
+//            insertData("Móc khóa rùa biển", 110000, "Móc khóa hình rùa biển là một sáng tạo độc đáo kết hợp giữa thiết kế đáng yêu và tôn trọng môi trường. Sản phẩm này làm từ nhựa tái chế, chú trọng đến việc giảm lượng chất thải nhựa và ảnh hưởng tích cực đến bảo vệ hệ sinh thái biển cả. Hình rùa biển được chọn làm điểm nhấn cho móc khóa không chỉ vì sự đáng yêu mà còn vì ý nghĩa mà chúng mang lại trong việc góp phần bảo vệ động vật biển. Sự kết hợp giữa ý thức môi trường và thiết kế sáng tạo khiến cho sản phẩm này trở thành một cách tuyệt vời để thể hiện phong cách cá nhân của bạn trong khi đồng thời chung tay bảo vệ môi trường xanh - nơi rùa biển và nhiều loài động vật khác gọi là nhà.", convertPhoto(context, R.drawable.pk_mockhoarua1), 0, "Phụ kiện", 60, 4.5, 90000, 50, "2024/04/10", 1);
+//
+//        }
+//
+//    }
 
-        SQLiteStatement statement = database.compileStatement(sql);
+    public boolean insertData(Product product, ProductAtb productAtb, SQLiteDatabase db) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(PRODUCT_NAME, product.getProductName());
+        contentValues.put(PRODUCT_PRICE, productAtb.getProductPrice());
+        contentValues.put(PRODUCT_DESCRIPTION, product.getProductDescription());
 
-        statement.bindString(1, ProductName);
-        statement.bindDouble(2, ProductPrice);
-        statement.bindString(3, ProductDescription);
-        statement.bindBlob(4, ProductThumb);
-        statement.bindLong(5, Hot);
-        statement.bindString(6, Category);
-        statement.bindLong(7, Inventory);
-        statement.bindDouble(8, ProductRate);
-        statement.bindDouble(9, SalePrice);
-        statement.bindLong(10, SoldQuantiy);
-        statement.bindString(11, CreatedDate);
-        statement.bindLong(12, Status);
+        byte[] thumbByteArray = product.getProductThumb();
+        contentValues.put(PRODUCT_THUMB, thumbByteArray);
 
-        long result = statement.executeInsert();
-        boolean  success = result != -1; // Trả về true nếu chèn thành công, false nếu không
-        Log.d("DatabaseHelper", "Insert data result: " + success);
-        return success;
+        contentValues.put(HOT, productAtb.getHot());
+        contentValues.put(CATEGORY, product.getCategory());
+        contentValues.put(INVENTORY, productAtb.getInventory());
+        contentValues.put(PRODUCT_RATE, product.getProductRate());
+        contentValues.put(SALE_PRICE, product.getSalePrice());
+        contentValues.put(SOLD_QUANTITY, productAtb.getSoldQuantity());
+        contentValues.put(CREATED_DATE, productAtb.getCreatedDate());
+        contentValues.put(STATUS, productAtb.getStatus());
+
+        long result = db.insert(TBl_PRODUCT, null, contentValues);
+
+        return result != -1;
     }
 
-    public void createSampleProduct() {
-        if (numbOfRowsProduct() == 0){
-            insertData("Đĩa nhỏ", 120000, "Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường. Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu. Thiết kế nhỏ gọn và tiện lợi làm cho sản phẩm trở thành người bạn đồng hành lý tưởng, không chỉ phục vụ nhu cầu hàng ngày mà còn thúc đẩy ý thức về một lối sống bền vững. Đĩa nhỏ từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian sống mà còn là một biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc  giữ gìn cho hành tinh xanh của chúng ta. Hãy chọn lựa thông minh và hòa mình vào những giải pháp bảo vệ môi trường với sản phẩm độc đáo này.", convertPhoto(context, R.drawable.dgd_dia1), 1, "Đồ gia dụng", 60, 4.5, 100000, 87, "2024/04/10", 1);
-            insertData("Khay đựng xà phòng", 170000, "Khay đựng bánh xà phòng từ nhựa tái chế là sự kết hợp hoàn hảo giữa tính thực tế và cam kết với môi trường. Với nguyên liệu là nhựa tái chế, sản phẩm này không chỉ giúp giảm lượng chất thải nhựa mà còn thể hiện tinh thần chăm sóc đối với hành tinh xanh của chúng ta. Thiết kế của khay đựng bánh xà phòng không chỉ đơn giản mà còn linh hoạt, phù hợp với mọi không gian nhà tắm. Sự sáng tạo trong cách sử dụng nguyên liệu tái chế không chỉ làm cho sản phẩm trở nên độc đáo mà còn đặt ra một tiêu chí mới cho việc chọn lựa sản phẩm gia dụng có trách nhiệm với môi trường. Khay đựng bánh xà phòng từ nhựa tái chế không chỉ là một phụ kiện hữu ích trong việc tổ chức không gian nhà tắm mà còn là một bước nhỏ nhưng ý nghĩa trong hành trình chung của chúng ta để bảo vệ và giữ gìn cho hành tinh xanh, trong từng lựa chọn hàng ngày của chúng ta.", convertPhoto(context, R.drawable.dgd_xaphong1), 0, "Đồ gia dụng", 60, 4.7, 150000, 45, "2024/04/10", 1);
-            insertData("Lót ly", 110000, "Đồ lót ly từ nhựa tái chế là sự kết hợp độc đáo giữa sự thoải mái và cam kết với môi trường. Với việc sử dụng nguyên liệu là nhựa tái chế, sản phẩm không chỉ mang lại cảm giác mềm mại và thoải mái cho người sử dụng mà còn đóng góp vào việc giảm lượng chất thải nhựa. Thiết kế của đồ lót ly không chỉ chú trọng đến sự thoải mái và tôn lên vẻ đẹp tự nhiên, mà còn thể hiện sự chấp nhận trách nhiệm với môi trường. Việc sử dụng nhựa tái chế không chỉ là một xu hướng tiêu dùng thông minh mà còn là sự đóng góp tích cực vào việc bảo vệ nguồn tài nguyên tự nhiên và giảm thiểu ảnh hưởng tiêu cực đối với hệ sinh thái. Đồ lót ly từ nhựa tái chế không chỉ là lựa chọn thông minh cho sự thoải mái hàng ngày mà còn là một cách để chúng ta cùng nhau xây dựng một lối sống thân thiện với môi trường, đồng thời thể hiện sự quan tâm đến sức khỏe và hành tinh xanh của chúng ta.", convertPhoto(context, R.drawable.dgd_lotly1), 1, "Đồ gia dụng", 60, 4.0, 100000, 100, "2024/04/10", 1);
-            insertData("Giá đỡ laptop", 220000, "Giá đỡ laptop từ nhựa tái chế là một phụ kiện không thể thiếu cho những người sử dụng máy tính xách tay, kết hợp giữa tính thực tế và tầm nhìn bền vững. Với sự sáng tạo trong việc sử dụng nhựa tái chế, sản phẩm không chỉ tạo ra một nơi thoải mái để đặt laptop mà còn là cách nhỏ nhưng tích cực để giảm lượng chất thải nhựa. Thiết kế nhẹ nhàng và linh hoạt của giá đỡ không chỉ giúp người dùng duy trì tư duy làm việc hiệu quả mà còn hỗ trợ vào nỗ lực chung của cộng đồng trong việc giữ gìn môi trường. Sự cam kết đối với nhựa tái chế không chỉ là một xu hướng tiêu dùng mà còn là một lối sống, và sản phẩm giá đỡ laptop này là minh chứng rõ ràng cho sự hài hòa giữa tiện ích và sự chấp nhận trách nhiệm với môi trường. Hãy lựa chọn giá đỡ laptop từ nhựa tái chế để không chỉ tận hưởng sự thuận tiện mà còn tham gia vào cuộc hành trình bảo vệ hành tinh của chúng ta.", convertPhoto(context, R.drawable.dgd_laptop1), 0, "Đồ gia dụng", 60, 5, 200000, 30, "2024/04/10", 1);
-            insertData("Dây cờ trang trí tiệc", 120000, "Dây cờ là một sản phẩm trang trí không thể thiếu cho bất kỳ buổi tiệc nào, và đặc biệt, chúng tôi tự hào giới thiệu dòng sản phẩm dây cờ được làm từ nhựa tái chế. Sự sáng tạo trong thiết kế không chỉ tạo ra không khí vui tươi và phấn khích cho bất kỳ dịp lễ nào mà còn góp phần tích cực vào nỗ lực bảo vệ môi trường. Với việc sử dụng nhựa tái chế, chúng tôi cam kết giảm lượng chất thải nhựa và tái sử dụng nguyên liệu, giữ cho không gian tiệc tùng trở nên thú vị hơn mà không ảnh hưởng đến môi trường. Dây cờ từ nhựa tái chế không chỉ đẹp mắt mà còn là một cách thúc đẩy ý thức về trách nhiệm xã hội và bảo vệ hành tinh xanh chúng ta. Hãy tận hưởng những khoảnh khắc vui vẻ và đồng thời hỗ trợ vào việc giữ cho hành tinh của chúng ta trở nên bền vững hơn.", convertPhoto(context, R.drawable.dtt_dayco1), 1, "Đồ trang trí", 60, 4.5, 100000, 25, "2024/04/03", 1);
-            insertData("Đồ trang trí giáng sinh", 90000, "Đồ trang trí Giáng Sinh 3D không chỉ làm mới không khí của mùa lễ hội mà còn là biểu tượng của sự sang trọng và ý thức về môi trường. Với việc sử dụng nhựa tái chế, sản phẩm này không chỉ tạo ra một không gian lễ hội ấm cúng mà còn đóng góp tích cực vào việc giảm lượng chất thải nhựa. Mỗi chiếc đồ trang trí được chế tạo với kỹ thuật 3D độc đáo, tạo nên hiệu ứng thị giác đặc sắc và sống động, làm tôn lên vẻ đẹp của mùa Giáng Sinh. Việc tái chế nhựa không chỉ giúp giảm tác động tiêu cực đối với môi trường mà còn thúc đẩy ý thức về việc sử dụng tài nguyên tái chế trong sản xuất. Đồ trang trí Giáng Sinh 3D là sự kết hợp hoàn hảo giữa sự sang trọng, sáng tạo và ý thức môi trường. Bằng cách chọn lựa sản phẩm này, chúng ta không chỉ tận hưởng không khí lễ hội phấn khích mà còn thể hiện sự quan tâm đến bảo vệ môi trường và chọn lựa bền vững trong mọi hoạt động.", convertPhoto(context, R.drawable.dtt_giangsinh1), 0, "Đồ trang trí", 60, 4.6, 70000, 80, "2024/04/10", 1);
-            insertData("Đồng hồ treo tường", 370000, "Đồng hồ treo tường từ nhựa tái chế không chỉ là một sản phẩm thời gian mà còn là biểu tượng của sự sáng tạo và tôn trọng đối với môi trường. Với thiết kế độc đáo, sản phẩm này là sự kết hợp hoàn hảo giữa vẻ ngoại hình tinh tế và cam kết với lối sống bền vững. Bằng cách sử dụng nhựa tái chế, đồng hồ treo tường không chỉ giảm lượng rác thải nhựa mà còn giúp tái chế nguyên liệu, đóng góp vào việc bảo vệ môi trường. Sự linh hoạt trong việc tạo hình và màu sắc của sản phẩm này không chỉ làm mới không gian sống mà còn thể hiện tầm quan trọng của việc chọn lựa sản phẩm có trách nhiệm với môi trường. Đồng hồ treo tường từ nhựa tái chế không chỉ đơn thuần là một phụ kiện trang trí, mà còn là biểu tượng của lối sống ý thức về môi trường. Việc đặt mình vào ngôi nhà của bạn không chỉ làm tăng thêm vẻ đẹp mà còn là bước nhỏ nhưng ý nghĩa để góp phần vào việc bảo vệ hành tinh của chúng ta.", convertPhoto(context, R.drawable.dtt_dongho1), 1, "Đồ trang trí", 60, 4.2, 350000, 100, "2024/04/03", 1);
-            insertData("Móc khóa hình đảo Kos", 110000, "Móc khóa hình đảo Kos là một tác phẩm sáng tạo không chỉ đẹp mắt mà còn mang đến sự ý thức về môi trường. Được tạo ra từ nhựa tái chế, sản phẩm này là biểu tượng của sự kết hợp giữa nghệ thuật và bảo vệ môi trường. Hình ảnh đảo Kos được minh họa trên móc khóa không chỉ đẹp mắt mà còn là cách tuyệt vời để kỷ niệm và tôn vinh vẻ đẹp của đảo nổi tiếng này. Với việc sử dụng nguyên liệu tái chế, chúng ta không chỉ giảm lượng chất thải nhựa mà còn thúc đẩy tư duy bền vững trong sản xuất. Mỗi chiếc móc khóa không chỉ là một sản phẩm thực tế, mà còn là một cách để chia sẻ thông điệp về ý thức môi trường và sự cần thiết của việc bảo vệ những địa điểm đẹp tự nhiên như đảo Kos. Đặt mình vào túi của bạn, sản phẩm này không chỉ là một chiếc móc khóa mà còn là một tuyên ngôn về sự đồng lòng trong việc bảo vệ hành tinh của chúng ta.", convertPhoto(context, R.drawable.pk_mockhoakos1), 0, "Đồ trang trí", 60, 5.0, 90000, 67, "2024/04/03", 1);
-            insertData("Bông tai hình bông hoa", 160000, "Bông tai hình bông hoa là một biểu tượng của sự thanh lịch và sáng tạo, mang đến cho người đeo không chỉ vẻ đẹp tinh tế mà còn là niềm tự hào về việc chọn lựa có trách nhiệm với môi trường. Sản phẩm này được chế tạo từ nhựa tái chế, đó là một bước tiến quan trọng trong việc giảm lượng chất thải nhựa và giữ cho tài nguyên tự nhiên được bảo vệ. Bông hoa tinh tế được tái tạo từ nhựa tái chế không chỉ là một tuyên ngôn về sự đẹp đẽ mà còn là một cam kết vững chắc đối với bảo vệ môi trường. Việc sử dụng nguyên liệu tái chế giúp giảm áp lực đặt ra cho hệ sinh thái và hỗ trợ trong việc xây dựng một tương lai bền vững. Bông tai hình bông hoa không chỉ là một phụ kiện thời trang, mà còn là biểu tượng của sự chấp nhận trách nhiệm cá nhân trong việc duy trì sự cân bằng giữa thời trang và bảo vệ môi trường.", convertPhoto(context, R.drawable.pk_bongtai_hoa1), 1, "Phụ kiện", 60, 4.5, 140000, 56, "2024/04/10", 1);
-            insertData("Bông tai hình chữ nhật", 120000, "Bông tai hình chữ nhật không chỉ là một biểu tượng của sự đơn giản và hiện đại trong thế giới thời trang mà còn là một minh chứng cho sự sáng tạo và chăm sóc đối với môi trường. Sản phẩm này được tạo ra từ nhựa tái chế, một lựa chọn thông minh và đảm bảo, giúp giảm lượng chất thải nhựa và bảo vệ nguồn tài nguyên tự nhiên. Thiết kế hình chữ nhật đơn giản nhưng tinh tế của bông tai mang lại sự linh hoạt trong việc kết hợp với nhiều phong cách thời trang khác nhau. Đồng thời, việc sử dụng nhựa tái chế không chỉ giúp giảm áp lực đặt ra cho môi trường mà còn thể hiện cam kết đối với phong cách sống bền vững và tiêu thụ có trách nhiệm. Bông tai hình chữ nhật không chỉ là một chiếc phụ kiện thời trang độc đáo mà còn là biểu tượng của ý thức môi trường. Sử dụng sản phẩm này không chỉ là một cách để thể hiện cái tôi cá nhân mà còn là bước nhỏ nhưng ý nghĩa trong việc góp phần vào việc giữ cho hành tinh của chúng ta trở nên bền vững hơn", convertPhoto(context, R.drawable.pk_bongtai_hcn1), 0, "Phụ kiện", 60, 4.7, 100000, 48, "2024/04/03", 1);
-            insertData("Móc khóa hình mặt cười", 110000, "Móc khóa hình mặt cười là một phụ kiện vui nhộn và thân thiện với môi trường, được sáng tạo từ nhựa tái chế. Thiết kế này không chỉ mang lại sự hứng khởi với hình ảnh mặt cười thân quen mà còn góp phần giảm lượng chất thải nhựa đối với môi trường. Sử dụng nhựa tái chế là một cam kết đối với bảo vệ hành tinh của chúng ta, tạo ra một sản phẩm không chỉ phản ánh tính cách lạc quan mà còn thể hiện tinh thần chăm sóc môi trường. Mỗi chiếc móc khóa không chỉ là một biểu tượng vui nhộn mà còn là một bước tiến tích cực trong việc hướng tới một lối sống bền vững và ý thức môi trường. Sở hữu một chiếc móc khóa hình mặt cười không chỉ là thêm vào bộ sưu tập phụ kiện cá nhân của bạn mà còn là cách để bạn thể hiện sự quan tâm đến môi trường.", convertPhoto(context, R.drawable.pk_mockhoacuoi), 1, "Phụ kiện", 60, 4.0, 90000, 89, "2024/04/03", 1);
-            insertData("Móc khóa rùa biển", 110000, "Móc khóa hình rùa biển là một sáng tạo độc đáo kết hợp giữa thiết kế đáng yêu và tôn trọng môi trường. Sản phẩm này làm từ nhựa tái chế, chú trọng đến việc giảm lượng chất thải nhựa và ảnh hưởng tích cực đến bảo vệ hệ sinh thái biển cả. Hình rùa biển được chọn làm điểm nhấn cho móc khóa không chỉ vì sự đáng yêu mà còn vì ý nghĩa mà chúng mang lại trong việc góp phần bảo vệ động vật biển. Sự kết hợp giữa ý thức môi trường và thiết kế sáng tạo khiến cho sản phẩm này trở thành một cách tuyệt vời để thể hiện phong cách cá nhân của bạn trong khi đồng thời chung tay bảo vệ môi trường xanh - nơi rùa biển và nhiều loài động vật khác gọi là nhà.", convertPhoto(context, R.drawable.pk_mockhoarua1), 0, "Phụ kiện", 60, 4.5, 90000, 50, "2024/04/10", 1);
+    public  void createSampleProduct(){
+        if (numbOfRowsProduct() == 0) {
+            SQLiteDatabase db = getReadableDatabase();
 
+//        Sản phẩm 1
+            Product product1 = new Product();
+            product1.setProductThumb(convertPhoto(context, R.drawable.dgd_dia1));
+            product1.setProductName("Đĩa nhỏ");
+            product1.setSalePrice(100000);
+            product1.setCategory("Đồ gia dụng");
+            product1.setProductDescription("Đĩa nhỏ từ nhựa tái chế là một sự sáng tạo độc đáo, kết hợp giữa tính tiện ích và lòng yêu thương đối với môi trường. Với nguyên liệu chủ đạo là nhựa tái chế, sản phẩm không chỉ làm giảm lượng chất thải nhựa mà còn thể hiện cam kết đối với bảo vệ môi trường. Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này không chỉ giúp tối ưu hóa không gian lưu trữ mà còn tạo điểm nhấn cho việc tái chế nguyên liệu..");
+            product1.setProductRate(4.5);
+
+            ProductAtb productAtb1 = new ProductAtb();
+            productAtb1.setProductPrice(120000);
+            productAtb1.setHot(1);
+            productAtb1.setInventory(60);
+            productAtb1.setSoldQuantity(87);
+            productAtb1.setCreatedDate("2024/04/03");
+            productAtb1.setStatus(1);
+
+            insertData(product1, productAtb1, db);
+
+            //        Sản phẩm 2
+            Product product2 = new Product();
+            product2.setProductThumb(convertPhoto(context, R.drawable.dgd_xaphong2));
+            product2.setProductName("Khay đựng xà phòng");
+            product2.setSalePrice(150000);
+            product2.setCategory("Đồ gia dụng");
+            product2.setProductDescription("Khay đựng bánh xà phòng từ nhựa tái chế là sự kết hợp hoàn hảo giữa tính thực tế và cam kết với môi trường. Với nguyên liệu là nhựa tái chế, sản phẩm này không chỉ giúp giảm lượng chất thải nhựa mà còn thể hiện tinh thần chăm sóc đối với hành tinh xanh của chúng ta.  ");
+            product2.setProductRate(4.5);
+
+            ProductAtb productAtb2 = new ProductAtb();
+            productAtb2.setProductPrice(170000);
+            productAtb2.setHot(1);
+            productAtb2.setInventory(60);
+            productAtb2.setSoldQuantity(65);
+            productAtb2.setCreatedDate("2024/04/03");
+            productAtb2.setStatus(1);
+
+            insertData(product2, productAtb2, db);
+
+            //        Sản phẩm 3
+            Product product3 = new Product();
+            product3.setProductThumb(convertPhoto(context, R.drawable.dgd_lotly1));
+            product3.setProductName("Lót ly");
+            product3.setSalePrice(90000);
+            product3.setCategory("Đồ gia dụng");
+            product3.setProductDescription(" Đồ lót ly từ nhựa tái chế là sự kết hợp độc đáo giữa sự thoải mái và cam kết với môi trường. Với việc sử dụng nguyên liệu là nhựa tái chế, sản phẩm không chỉ mang lại cảm giác mềm mại và thoải mái cho người sử dụng mà còn đóng góp vào việc giảm lượng chất thải nhựa. ");
+            product3.setProductRate(4.5);
+
+            ProductAtb productAtb3 = new ProductAtb();
+            productAtb3.setProductPrice(110000);
+            productAtb3.setHot(1);
+            productAtb3.setInventory(60);
+            productAtb3.setSoldQuantity(65);
+            productAtb3.setCreatedDate("2024/04/03");
+            productAtb3.setStatus(1);
+
+            insertData(product3, productAtb3, db);
+
+            //        Sản phẩm 4
+            Product product4 = new Product();
+            product4.setProductThumb(convertPhoto(context, R.drawable.dgd_laptop1));
+            product4.setProductName("Giá đỡ laptop");
+            product4.setSalePrice(180000);
+            product4.setCategory("Đồ gia dụng");
+            product4.setProductDescription("Giá treo đồ từ nhựa tái chế là sự kết hợp tuyệt vời giữa tính tiện ích và ý thức bảo vệ môi trường. Với nguyên liệu chính từ nhựa tái chế, sản phẩm không chỉ giúp giảm lượng chất thải nhựa mà còn là biểu tượng của cam kết với lối sống bền vững.");
+            product4.setProductRate(4.0);
+
+            ProductAtb productAtb4 = new ProductAtb();
+            productAtb4.setProductPrice(200000);
+            productAtb4.setHot(0);
+            productAtb4.setInventory(60);
+            productAtb4.setSoldQuantity(15);
+            productAtb4.setCreatedDate("2024/04/03");
+            productAtb4.setStatus(1);
+            insertData(product4, productAtb4, db);
+
+            //        Sản phẩm 5
+            Product product5 = new Product();
+            product5.setProductThumb(convertPhoto(context, R.drawable.dtt_dayco1));
+            product5.setProductName("Đồ trang trí giáng sinh 3D");
+            product5.setSalePrice(80000);
+            product5.setCategory("Đồ trang trí");
+            product5.setProductDescription(" Đồ trang trí Giáng Sinh 3D không chỉ làm mới không khí của mùa lễ hội mà còn là biểu tượng của sự sang trọng và ý thức về môi trường. Với việc sử dụng nhựa tái chế, sản phẩm này không chỉ tạo ra một không gian lễ hội ấm cúng mà còn đóng góp tích cực vào việc giảm lượng chất thải nhựa.");
+            product5.setProductRate(4.0);
+
+            ProductAtb productAtb5 = new ProductAtb();
+            productAtb5.setProductPrice(100000);
+            productAtb5.setHot(1);
+            productAtb5.setInventory(60);
+            productAtb5.setSoldQuantity(50);
+            productAtb5.setCreatedDate("2024/04/03");
+            productAtb5.setStatus(1);
+
+            insertData(product5, productAtb5, db);
+
+            //        Sản phẩm 6
+            Product product6 = new Product();
+            product6.setProductThumb(convertPhoto(context, R.drawable.dtt_dongho2));
+            product6.setProductName("Đồng hồ treo tường");
+            product6.setSalePrice(350000);
+            product6.setCategory("Đồ trang trí");
+            product6.setProductDescription("Đồng hồ treo tường từ nhựa tái chế không chỉ là một sản phẩm thời gian mà còn là biểu tượng của sự sáng tạo và tôn trọng đối với môi trường. Với thiết kế độc đáo, sản phẩm này là sự kết hợp hoàn hảo giữa vẻ ngoại hình tinh tế và cam kết với lối sống bền vững.");
+            product6.setProductRate(4.5);
+
+            ProductAtb productAtb6 = new ProductAtb();
+            productAtb6.setProductPrice(370000);
+            productAtb6.setHot(1);
+            productAtb6.setInventory(60);
+            productAtb6.setSoldQuantity(65);
+            productAtb6.setCreatedDate("2024/04/03");
+            productAtb6.setStatus(1);
+
+            insertData(product6, productAtb6, db);
+
+            //        Sản phẩm 7
+            Product product7 = new Product();
+            product7.setProductThumb(convertPhoto(context, R.drawable.pk_mockhoakos1));
+            product7.setProductName("Móc khóa hình đảo Kos");
+            product7.setSalePrice(90000);
+            product7.setCategory("Đồ trang trí");
+            product7.setProductDescription("Móc khóa hình đảo Kos là một tác phẩm sáng tạo không chỉ đẹp mắt mà còn mang đến sự ý thức về môi trường. Được tạo ra từ nhựa tái chế, sản phẩm này là biểu tượng của sự kết hợp giữa nghệ thuật và bảo vệ môi trường.");
+            product7.setProductRate(5.0);
+
+            ProductAtb productAtb7 = new ProductAtb();
+            productAtb7.setProductPrice(110000);
+            productAtb7.setHot(0);
+            productAtb7.setInventory(60);
+            productAtb7.setSoldQuantity(51);
+            productAtb7.setCreatedDate("2024/04/03");
+            productAtb7.setStatus(1);
+
+            insertData(product7, productAtb7, db);
+
+            //        Sản phẩm 8
+            Product product8 = new Product();
+            product8.setProductThumb(convertPhoto(context, R.drawable.pk_bongtairua2));
+            product8.setProductName("Dây cờ trang trí tiệc");
+            product8.setSalePrice(140000);
+            product8.setCategory("Đồ trang trí");
+            product8.setProductDescription("Dây cờ là một sản phẩm trang trí không thể thiếu cho bất kỳ buổi tiệc nào, và đặc biệt, chúng tôi tự hào giới thiệu dòng sản phẩm dây cờ được làm từ nhựa tái chế. Sự sáng tạo trong thiết kế không chỉ tạo ra không khí vui tươi và phấn khích cho bất kỳ dịp lễ nào mà còn góp phần tích cực vào nỗ lực bảo vệ môi trường.");
+            product8.setProductRate(4.0);
+
+            ProductAtb productAtb8 = new ProductAtb();
+            productAtb8.setProductPrice(160000);
+            productAtb8.setHot(1);
+            productAtb8.setInventory(60);
+            productAtb8.setSoldQuantity(65);
+            productAtb8.setCreatedDate("2024/04/03");
+            productAtb8.setStatus(1);
+
+            insertData(product8, productAtb8, db);
+
+            //        Sản phẩm 9
+            Product product9 = new Product();
+            product9.setProductThumb(convertPhoto(context, R.drawable.pk_bongtai_hcn1));
+            product9.setProductName("Bông tai hình chữ nhật");
+            product9.setSalePrice(140000);
+            product9.setCategory("Phụ kiện");
+            product9.setProductDescription("Bông tai hình chữ nhật không chỉ là một biểu tượng của sự đơn giản và hiện đại trong thế giới thời trang mà còn là một minh chứng cho sự sáng tạo và chăm sóc đối với môi trường. Thiết kế hình chữ nhật đơn giản nhưng tinh tế của bông tai mang lại sự linh hoạt trong việc kết hợp với nhiều phong cách thời trang khác nhau. ");
+            product9.setProductRate(4.0);
+
+            ProductAtb productAtb9 = new ProductAtb();
+            productAtb9.setProductPrice(160000);
+            productAtb9.setHot(1);
+            productAtb9.setInventory(60);
+            productAtb9.setSoldQuantity(65);
+            productAtb9.setCreatedDate("2024/04/03");
+            productAtb9.setStatus(0);
+
+            insertData(product9, productAtb9, db);
+
+            //        Sản phẩm 10
+            Product product10 = new Product();
+            product10.setProductThumb(convertPhoto(context, R.drawable.pk_bongtairua2));
+            product10.setProductName("Bông tai hình rùa biển");
+            product10.setSalePrice(140000);
+            product10.setCategory("Phụ kiện");
+            product10.setProductDescription("Bông tai hình rùa biển không chỉ là một phụ kiện thời trang quyến rũ mà còn là biểu tượng của sự ý thức về bảo vệ môi trường. Với thiết kế tinh tế và độc đáo, sản phẩm này không chỉ thu hút sự chú ý bởi vẻ đẹp của mình mà còn gửi đi một thông điệp mạnh mẽ về sự cần thiết của việc bảo vệ động vật biển.");
+            product10.setProductRate(4.5);
+
+            ProductAtb productAtb10 = new ProductAtb();
+            productAtb10.setProductPrice(160000);
+            productAtb10.setHot(0);
+            productAtb10.setInventory(60);
+            productAtb10.setSoldQuantity(65);
+            productAtb10.setCreatedDate("2024/04/03");
+            productAtb10.setStatus(1);
+
+            insertData(product10, productAtb10, db);
+
+            //        Sản phẩm 11
+            Product product11 = new Product();
+            product11.setProductThumb(convertPhoto(context, R.drawable.pk_bongtai_hoa2));
+            product11.setProductName("Bông tai hình bông hoa");
+            product11.setSalePrice(140000);
+            product11.setCategory("Đồ gia dụng");
+            product11.setProductDescription("Bông tai hình bông hoa là một biểu tượng của sự thanh lịch và sáng tạo, mang đến cho người đeo không chỉ vẻ đẹp tinh tế mà còn là niềm tự hào về việc chọn lựa có trách nhiệm với môi trường. ");
+            product11.setProductRate(5.0);
+
+            ProductAtb productAtb11 = new ProductAtb();
+            productAtb11.setProductPrice(160000);
+            productAtb11.setHot(0);
+            productAtb11.setInventory(60);
+            productAtb11.setSoldQuantity(65);
+            productAtb11.setCreatedDate("2024/04/03");
+            productAtb11.setStatus(1);
+
+            insertData(product11, productAtb11, db);
+
+            //        Sản phẩm 12
+            Product product12 = new Product();
+            product12.setProductThumb(convertPhoto(context, R.drawable.pk_mockhoacuoi));
+            product12.setProductName("Móc khóa hình mặt cười");
+            product12.setSalePrice(90000);
+            product12.setCategory("Đồ gia dụng");
+            product12.setProductDescription("Móc khóa hình mặt cười là một phụ kiện vui nhộn và thân thiện với môi trường, được sáng tạo từ nhựa tái chế. Thiết kế này không chỉ mang lại sự hứng khởi với hình ảnh mặt cười thân quen mà còn góp phần giảm lượng chất thải nhựa đối với môi trường.");
+            product12.setProductRate(4.0);
+
+            ProductAtb productAtb12 = new ProductAtb();
+            productAtb12.setProductPrice(110000);
+            productAtb12.setHot(0);
+            productAtb12.setInventory(60);
+            productAtb12.setSoldQuantity(65);
+            productAtb12.setCreatedDate("2024/04/03");
+            productAtb12.setStatus(0);
+
+            insertData(product12, productAtb12, db);
         }
 
     }
+
+
+
+
     private byte[] convertPhoto(Context context, int resourceId) {
-        BitmapDrawable drawable = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            drawable = (BitmapDrawable) context.getDrawable(resourceId);
-        }
+        BitmapDrawable drawable = (BitmapDrawable) context.getDrawable(resourceId);
         Bitmap bitmap = drawable.getBitmap();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
@@ -1152,42 +1409,40 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
         }
     }
 
-    public List<Product> getProductsByCategory(String category) {
-        List<Product> products = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        // Câu truy vấn SQL để lấy danh sách sản phẩm theo category
-        String selectQuery = "SELECT * FROM " + TBl_PRODUCT + " WHERE " + CATEGORY + " = ?";
-
-        Cursor cursor = db.rawQuery(selectQuery, new String[]{category});
-
-        // Lặp qua tất cả các hàng và thêm các sản phẩm vào danh sách productList
-        if (cursor.moveToFirst()) {
-            do {
-                products.add(new Product(
-                        cursor.getInt(0), //ProductID
-                        cursor.getString(1), //ProductName
-                        cursor.getDouble(2), // ProductPrice
-                        cursor.getString(3), //ProductDescription
-                        cursor.getBlob(4), //ProductThumb
-                        cursor.getInt(5), //Hot
-                        cursor.getString(6), //Category
-                        cursor.getInt(7), //Inventory
-                        cursor.getDouble(8), //ProductRate
-                        cursor.getDouble(9), //SalePrice
-                        cursor.getInt(10), //SoldQuantity
-                        cursor.getString(11), //CreatedDate
-                        cursor.getInt(12)
-                ));
-            } while (cursor.moveToNext());
-        }
-
-        // Đóng con trỏ và đóng kết nối cơ sở dữ liệu
-        cursor.close();
-        db.close();
-
-        return products;
-    }
+//    public List<Product> getProductsByCategory(String category) {
+//        List<Product> products = new ArrayList<>();
+//        SQLiteDatabase db = this.getReadableDatabase();
+//
+//        // Câu truy vấn SQL để lấy danh sách sản phẩm theo category
+//        String selectQuery = "SELECT * FROM " + TBl_PRODUCT + " WHERE " + CATEGORY + " = ?";
+//
+//        Cursor cursor = db.rawQuery(selectQuery, new String[]{category});
+//
+//        // Lặp qua tất cả các hàng và thêm các sản phẩm vào danh sách productList
+//        if (cursor.moveToFirst()) {
+//            do {
+//                products.add(new Product(
+//                        cursor.getInt(0), //ProductID
+//                        cursor.getString(1), //ProductName
+//                        cursor.getDouble(2), // ProductPrice
+//                        cursor.getString(3), //ProductDescription
+//                        cursor.getBlob(4), //ProductThumb
+//                        cursor.getInt(5), //Hot
+//                        cursor.getString(6), //Category
+//                        cursor.getInt(7), //Inventory
+//                        cursor.getDouble(8), //ProductRate
+//                        cursor.getDouble(9), //SalePrice
+//
+//                ));
+//            } while (cursor.moveToNext());
+//        }
+//
+//        // Đóng con trỏ và đóng kết nối cơ sở dữ liệu
+//        cursor.close();
+//        db.close();
+//
+//        return products;
+//    }
     public ArrayList<UserInfo> getLoggedinUserDetailsMain(String email) {
         ArrayList<UserInfo> customers = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
