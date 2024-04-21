@@ -21,6 +21,7 @@ import com.example.r3cy_mobileapp.R;
 
 import org.w3c.dom.Text;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -45,28 +46,26 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.viewholder_category_list, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.viewholder_category_list, parent, false);
         return new ProductViewHolder(view);
     }
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-
-
         Product product = products.get(position);
-
-
 
         Bitmap bmProductThumb = BitmapFactory.decodeByteArray(product.getProductThumb(), 0, product.getProductThumb().length);
         holder.imvProductThumb.setImageBitmap(bmProductThumb);
         holder.txtProductName.setText(product.getProductName());
         holder.txtCategory.setText(product.getCategory());
-//        txtProductDescription.setText(product.getProductDescription());
-        holder.txtSalePrice.setText(String.format("%.0f", product.getSalePrice()));
-        holder.txtProductRate.setText(String.format("%.0f", product.getProductRate()));
+//    holder.txtProductDescription.setText(product.getProductDescription());
+//        holder.txtSalePrice.setText(String.format(Locale.getDefault(), "%.0f", product.getSalePrice()));
+        holder.txtProductRate.setText(String.format(Locale.getDefault(), "%.0f", product.getProductRate()));
+
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
+        holder.txtSalePrice.setText(numberFormat.format(product.getSalePrice()));
 
 
-//        Listener khi click vào item sp
+        // Listener khi click vào item sp
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +75,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             }
         });
     }
+
 
 
     @Override

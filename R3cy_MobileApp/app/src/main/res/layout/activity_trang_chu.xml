@@ -7,7 +7,7 @@
     tools:context=".TrangChu"
     android:weightSum="10"
     android:orientation="vertical">
-    
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,8 +22,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
                 android:layout_marginTop="32dp"
+                android:layout_marginEnd="40dp"
                 android:background="@drawable/rounded_corners"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -57,9 +57,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout8"
-                android:orientation="horizontal">
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/vp_HomeBanner"
@@ -73,95 +73,102 @@
                 android:id="@+id/table"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:stretchColumns="*"
                 android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:stretchColumns="*"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView4">
 
-                <TableRow android:layout_width="match_parent"
+                <TableRow
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <ImageView android:layout_width="50dp"
+                    <ImageView
+                        android:layout_width="40dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/baseline_shopping_bag_24"
+                        android:layout_margin="10dp"
                         android:background="@drawable/btn_blue"
-                        android:layout_margin="10dp"/>
+                        android:src="@drawable/baseline_shopping_bag_24" />
 
-                    <ImageView android:layout_width="50dp"
+                    <ImageView
+                        android:layout_width="40dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/baseline_credit_card_24"
+                        android:layout_margin="10dp"
                         android:background="@drawable/btn_blue"
-                        android:layout_margin="10dp"/>
+                        android:src="@drawable/baseline_credit_card_24" />
 
-                    <ImageView android:layout_width="50dp"
+                    <ImageView
+                        android:layout_width="40dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/baseline_question_mark_24"
+                        android:layout_margin="10dp"
                         android:background="@drawable/btn_blue"
-                        android:layout_margin="10dp"/>
+                        android:src="@drawable/baseline_question_mark_24" />
 
-                    <ImageView android:layout_width="50dp"
+                    <ImageView
+                        android:layout_width="40dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/baseline_edit_document_24"
+                        android:layout_margin="10dp"
                         android:background="@drawable/btn_blue"
-                        android:layout_margin="10dp"/>
+                        android:src="@drawable/baseline_edit_document_24" />
 
-                    <ImageView android:layout_width="50dp"
+                    <ImageView
+                        android:layout_width="40dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/baseline_fire_truck_24"
+                        android:layout_margin="10dp"
                         android:background="@drawable/btn_blue"
-                        android:layout_margin="10dp"/>
+                        android:src="@drawable/baseline_fire_truck_24" />
 
                 </TableRow>
 
-                <TableRow android:layout_width="match_parent"
+                <TableRow
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
                         android:text="Tra cứu đơn hàng"
-                        android:textSize="11sp"
                         android:textColor="@color/black"
-                        android:gravity="center"
-                        android:layout_margin="10dp"/>
+                        android:textSize="11sp" />
 
                     <TextView
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
                         android:text="Thẻ tích điểm"
-                        android:textSize="11sp"
                         android:textColor="@color/black"
-                        android:gravity="center"
-                        android:layout_margin="10dp"/>
+                        android:textSize="11sp" />
 
                     <TextView
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
                         android:text="Câu hỏi thường gặp"
-                        android:textSize="11sp"
                         android:textColor="@color/black"
-                        android:gravity="center"
-                        android:layout_margin="10dp"/>
+                        android:textSize="11sp" />
 
                     <TextView
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
                         android:text="Custom sản phẩm"
-                        android:textSize="11sp"
                         android:textColor="@color/black"
-                        android:gravity="center"
-                        android:layout_margin="10dp"/>
+                        android:textSize="11sp" />
 
                     <TextView
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
-                        android:text="Thu gom"
-                        android:textSize="11sp"
-                        android:textColor="@color/black"
+                        android:layout_margin="10dp"
                         android:gravity="center"
-                        android:layout_margin="10dp"/>
+                        android:text="Thu gom"
+                        android:textColor="@color/black"
+                        android:textSize="11sp" />
 
 
                 </TableRow>
@@ -169,10 +176,11 @@
             </TableLayout>
 
             <LinearLayout
+                android:id="@+id/Linear0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="15dp"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
@@ -195,9 +203,9 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
+                        android:layout_marginEnd="25dp"
                         android:gravity="center"
-                        android:layout_marginEnd="25dp">
+                        android:orientation="vertical">
 
                         <ImageButton
                             android:layout_width="80dp"
@@ -217,9 +225,9 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
+                        android:layout_marginEnd="25dp"
                         android:gravity="center"
-                        android:layout_marginEnd="25dp">
+                        android:orientation="vertical">
 
                         <ImageButton
                             android:layout_width="80dp"
@@ -235,14 +243,13 @@
                             android:textSize="11sp" />
 
 
-
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:orientation="vertical">
 
                         <ImageButton
                             android:layout_width="80dp"
@@ -258,8 +265,6 @@
                             android:textSize="11sp" />
 
                     </LinearLayout>
-
-
 
 
                 </LinearLayout>
@@ -286,8 +291,8 @@
                     android:id="@+id/rcvProducts"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="5dp"/>
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -311,17 +316,263 @@
                     android:id="@+id/rcvProduct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="5dp"/>
-
-
-
-
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal" />
 
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
 
+                android:background="@color/blue"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Linear0">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="THÔNG TIN LIÊN HỆ"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="Số 669 QL 1, KP. 3, P. Linh Xuân,
+TP. Thủ Đức, TP. Hồ Chí Minh"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="info@r3cy.com"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="0123-456-789"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="TRỢ GIÚP"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btnCustom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="Custom sản phẩm"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btnThugom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="Thu gom nhựa cũ"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="Hướng dẫn sử dụng"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btnFAQ"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="FAQ"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="CHÍNH SÁCH"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btnCSbanhang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="Chính sách bán hàng"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btnCSdichvu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="Chính sách dịch vụ"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btnCSdoitra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="Chính sách đổi trả"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btnCSbaomat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="Chính sách bảo mật"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="CÁC KÊNH KẾT NỐI"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="15dp"
+                        android:src="@drawable/facebook" />
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginEnd="15dp"
+                        android:src="@drawable/tiktok" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="15dp"
+                        android:src="@drawable/instagram" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="THANH TOÁN AN TOÀN"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="15dp"
+                        android:src="@drawable/logonapas" />
+
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="15dp"
+                        android:src="@drawable/momo" />
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

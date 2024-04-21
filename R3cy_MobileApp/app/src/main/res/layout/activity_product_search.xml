@@ -26,6 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             app:searchIcon="@drawable/search_ic"
+            android:hint="Tìm kiếm sản phẩm..."
             android:background="@drawable/btn_grey_stroke"/>
 
     </LinearLayout>

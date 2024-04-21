@@ -175,11 +175,18 @@ public class Signin_Main extends AppCompatActivity {
                 SharedPreferences.Editor editor = preferences.edit();
 
                 editor.putString("string", email);
+                editor.apply();
+
+                String email1 = preferences.getString("string", "");
+
+                Log.d("SharedPreferences", "Email: " + email1);
 
                 Intent intent = new Intent(Signin_Main.this, TrangChu.class);
                 startActivity(intent);
 
-                editor.apply();
+
+
+                Log.d("email", "email: " + email);
 
                 finish();
             } else {

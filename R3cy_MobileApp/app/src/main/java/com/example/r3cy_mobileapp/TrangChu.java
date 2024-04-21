@@ -3,7 +3,6 @@ package com.example.r3cy_mobileapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -24,14 +23,11 @@ import com.example.adapter.ProductAdapter;
 import com.example.databases.R3cyDB;
 import com.example.models.Banners;
 import com.example.models.Product;
-import com.example.r3cy_mobileapp.Modau.Modau1;
-import com.example.r3cy_mobileapp.Modau.Modau2;
 import com.example.r3cy_mobileapp.Product.Product_List;
 import com.example.r3cy_mobileapp.Signin.Signin_Main;
 import com.example.r3cy_mobileapp.databinding.ActivityTrangChuBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -48,6 +44,7 @@ public class TrangChu extends AppCompatActivity {
     private List<Product> products;
     Product product;
     ProductAdapter adapter;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +72,11 @@ public class TrangChu extends AppCompatActivity {
         BannerAdapter bannerAdapter =(BannerAdapter) new BannerAdapter(bannerList);
         viewPager.setAdapter(bannerAdapter);
 
+        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+        email = preferences.getString("string", "");
+
+        Log.d("SharedPreferences", "Email: " + email);
+
         autoSlide();
         addEvents();
 
@@ -87,6 +89,7 @@ public class TrangChu extends AppCompatActivity {
     private void createDb() {
         db = new R3cyDB(this);
         db.createSampleProduct();
+        db.createSampleDataCustomer();
     }
 
     private void loadData() {
@@ -95,39 +98,38 @@ public class TrangChu extends AppCompatActivity {
 
         products = new ArrayList<>();
 
+        Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT);
 
-            Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT);
-
-            // Chỉ lấy 3 sản phẩm đầu tiên
-
-            while (cursor.moveToNext() ) {
+        // Chỉ lấy 3 sản phẩm đầu tiên
+        try {
+            while (cursor.moveToNext()) {
                 try {
                     products.add(new Product(
-                            cursor.getInt(0), //ProductID
-                            cursor.getString(1), //ProductName
-                            cursor.getDouble(2), // ProductPrice
-                            cursor.getString(3), //ProductDescription
-                            cursor.getBlob(4), //ProductThumb
-                            cursor.getInt(5), //Hot
-                            cursor.getString(6), //Category
-                            cursor.getInt(7), //Inventory
-                            cursor.getDouble(8), //ProductRate
-                            cursor.getDouble(9), //SalePrice
-                            cursor.getInt(10), //SoldQuantity
-                            cursor.getString(11), //CreatedDate
-                            cursor.getInt(12)
+                            cursor.getInt(0), // ProductID
+                            cursor.getBlob(4), // ProductThumb
+                            cursor.getString(1), // ProductName
+                            cursor.getDouble(9), // SalePrice
+
+                            cursor.getString(6), // Category
+                            cursor.getString(3),
+                            cursor.getDouble(8) // ProductRate
+
                     ));
-
-            } catch (NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     e.printStackTrace();
-                }}
-
+                }
+            }
+        } finally {
+            cursor.close(); // Close the cursor to avoid memory leaks
+        }
 
         Log.d("ProductInfo", "Number of products retrieved: " + products.size());
 
         adapter = new ProductAdapter(this, R.layout.viewholder_category_list, products);
         binding.rcvProducts.setAdapter(adapter);
+//        binding.rcvProduct.setAdapter(adapter);
     }
+
 
 
 
@@ -169,26 +171,17 @@ public class TrangChu extends AppCompatActivity {
 
 
 
-            // Xóa SharedPreferences
-            SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-        editor.remove("key_name");
-        editor.apply();
-
-
-
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        // Xóa SharedPreferences
+        // Xóa dữ liệu email từ SharedPreferences
         SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.clear(); // Xóa tất cả các giá trị trong SharedPreferences
+        editor.remove("string"); // Xóa dữ liệu email
         editor.apply();
+
+        Log.d("SharedPreferences", "Email ở Ondestroy: " + email);
+
+
+
+
     }
 
 
@@ -210,7 +203,7 @@ public class TrangChu extends AppCompatActivity {
             Intent intentCart = new Intent(TrangChu.this, CartManage.class);
             startActivity(intentCart);
         } else if (item.getItemId() == R.id.action_noti) {
-            Intent intentNoti = new Intent(TrangChu.this, AboutUs.class);
+            Intent intentNoti = new Intent(TrangChu.this, Notification.class);
             startActivity(intentNoti);
         }
 
@@ -221,8 +214,7 @@ public class TrangChu extends AppCompatActivity {
         binding.btnDangnhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
-                String email = preferences.getString("string", "");
+
 
                 if (!email.isEmpty()) {
                     // Đã đăng nhập
@@ -240,6 +232,63 @@ public class TrangChu extends AppCompatActivity {
             }
         });
 
+        binding.btnCustom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TrangChu.this, CustomProduct.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.btnThugom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(TrangChu.this, Thugom.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.btnFAQ.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TrangChu.this, FAQsPage.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.btnCSbaomat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TrangChu.this, UserAccount_Policy.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.btnCSbanhang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TrangChu.this, UserAccount_Policy.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.btnCSdoitra.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TrangChu.this, UserAccount_Policy.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.btnCSdichvu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TrangChu.this, UserAccount_Policy.class);
+                startActivity(intent);
+            }
+        });
+
+
 
         navigationView = findViewById(R.id.mn_home);
         navigationView.setSelectedItemId(R.id.item_home);
@@ -255,7 +304,7 @@ public class TrangChu extends AppCompatActivity {
                     overridePendingTransition(0,0);
                     return true;
                 } else if (item.getItemId() == R.id.item_blog) {
-                    Intent intent2 =new Intent(getApplicationContext(),AboutUs.class);
+                    Intent intent2 =new Intent(getApplicationContext(),BlogDetail.class);
                     intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent2);
                     overridePendingTransition(0,0);
