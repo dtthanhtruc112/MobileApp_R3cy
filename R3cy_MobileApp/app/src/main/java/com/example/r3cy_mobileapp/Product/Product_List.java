@@ -27,6 +27,8 @@ import androidx.viewpager.widget.ViewPager;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -54,7 +56,7 @@ public class Product_List extends AppCompatActivity implements ProductInterface 
     private ArrayList<Product> products;
 //    private List<Product> products;
     ActivityProductListBinding binding;
-    R3cyDB db;
+    R3cyDB dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,40 +86,54 @@ public class Product_List extends AppCompatActivity implements ProductInterface 
 
     }
         private void createDb() {
-        db = new R3cyDB(this);
-        db.createSampleProduct();
+        dbHelper = new R3cyDB(this);
+        dbHelper.createSampleProduct();
     }
 
     private List<Product> getProducts() {
-        List<Product> products = new ArrayList<>();
+        products = new ArrayList<>();
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
 
-        Cursor cursor = db.getData("SELECT * FROM " + TBl_PRODUCT);
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                @SuppressLint("Range") int ProductID = cursor.getInt(cursor.getColumnIndex(PRODUCT_ID));
-                @SuppressLint("Range") String ProductName = cursor.getString(cursor.getColumnIndex(PRODUCT_NAME));
-                @SuppressLint("Range") double SalePrice = cursor.getDouble(cursor.getColumnIndex(SALE_PRICE));
-                @SuppressLint("Range") String ProductDescription = cursor.getString(cursor.getColumnIndex(PRODUCT_DESCRIPTION));
-                @SuppressLint("Range") byte[] ProductThumb = cursor.getBlob(cursor.getColumnIndex(PRODUCT_THUMB));
-                @SuppressLint("Range") String Category = cursor.getString(cursor.getColumnIndex(CATEGORY));
-                @SuppressLint("Range") int Inventory = cursor.getInt(cursor.getColumnIndex(INVENTORY));
-                @SuppressLint("Range") double ProductPrice = cursor.getDouble(cursor.getColumnIndex(PRODUCT_PRICE));
-                @SuppressLint("Range") double ProductRate = cursor.getDouble(cursor.getColumnIndex(PRODUCT_RATE));
-                @SuppressLint("Range") int SoldQuantity = cursor.getInt(cursor.getColumnIndex(SOLD_QUANTITY));
-                @SuppressLint("Range") String CreatedDate = cursor.getString(cursor.getColumnIndex(CREATED_DATE));
-                @SuppressLint("Range") int Status = cursor.getInt(cursor.getColumnIndex(STATUS));
-                @SuppressLint("Range") int Hot = cursor.getInt(cursor.getColumnIndex(HOT));
+        try {
+            db = dbHelper.getReadableDatabase();
+            String query = "SELECT * FROM " + R3cyDB.TBl_PRODUCT;
+            cursor = db.rawQuery(query, null);
 
-                // Tạo một đối tượng Product từ dữ liệu
-                Product product = new Product(ProductID, ProductName,  ProductPrice,  ProductDescription,  ProductThumb,  Hot,  Category,  Inventory,  ProductRate,  SalePrice,  SoldQuantity,  CreatedDate,  Status);
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    int columnIndexProductId = cursor.getColumnIndex(R3cyDB.PRODUCT_ID);
+                    int columnIndexProductThumb = cursor.getColumnIndex(R3cyDB.PRODUCT_THUMB);
+                    int columnIndexProductName = cursor.getColumnIndex(R3cyDB.PRODUCT_NAME);
+                    int columnIndexSalePrice = cursor.getColumnIndex(R3cyDB.SALE_PRICE);
+                    int columnIndexCategory = cursor.getColumnIndex(R3cyDB.CATEGORY);
+                    int columnIndexProductDescription = cursor.getColumnIndex(R3cyDB.PRODUCT_DESCRIPTION);
+                    int columnIndexProductRate = cursor.getColumnIndex(R3cyDB.PRODUCT_RATE);
 
-                // Thêm sản phẩm vào danh sách
-                products.add(product);
-            } while (cursor.moveToNext());
 
-            cursor.close();
+                    int productID = cursor.getInt(columnIndexProductId);
+                    byte[] productThumb = cursor.getBlob(columnIndexProductThumb);
+                    String productName = cursor.getString(columnIndexProductName);
+                    double salePrice = cursor.getDouble(columnIndexSalePrice);
+                    String productCategory = cursor.getString(columnIndexCategory);
+                    String productDescription = cursor.getString(columnIndexProductDescription);
+                    double productRate = cursor.getDouble(columnIndexProductRate);
+
+
+                    Product product = new Product(productID, productThumb, productName, salePrice, productCategory, productDescription, productRate);
+                    products.add(product);
+                } while (cursor.moveToNext());
+            } else {
+                Log.d("R3cyDB", "No products found in database");
+            }
+        } catch (SQLiteException e) {
+            Log.e("R3cyDB", "Error getting all products: " + e.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
         }
-
         return products;
     }
 

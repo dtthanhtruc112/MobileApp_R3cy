@@ -14,7 +14,6 @@ import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -268,7 +267,8 @@ public class R3cyDB extends SQLiteOpenHelper {
             SALE_PRICE + " REAL NOT NULL," +
             SOLD_QUANTITY + " INTEGER," +
             CREATED_DATE + " DATE DEFAULT ('2024-04-03')," +
-            STATUS + " INTEGER DEFAULT 1" +
+            STATUS + " INTEGER DEFAULT 1," +
+            "PRIMARY KEY (" + PRODUCT_ID + ")" +
             ")";
 
 
@@ -509,12 +509,10 @@ public void createSampleDataCoupon() {
 //   Hàm lấy mảng customerid
 public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
     ArrayList<Integer> customerIds = new ArrayList<>();
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-        if (customerIdsString != null && !customerIdsString.isEmpty()) {
-            String[] ids = customerIdsString.replaceAll("\\[|\\]", "").split(",\\s*");
-            for (String id : ids) {
-                customerIds.add(Integer.parseInt(id.trim()));
-            }
+    if (customerIdsString != null && !customerIdsString.isEmpty()) {
+        String[] ids = customerIdsString.replaceAll("\\[|\\]", "").split(",\\s*");
+        for (String id : ids) {
+            customerIds.add(Integer.parseInt(id.trim()));
         }
     }
     return customerIds;
@@ -1045,7 +1043,7 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
                 SOLD_QUANTITY + ", " +
                 CREATED_DATE + ", " +
                 STATUS +
-                ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+                ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         SQLiteStatement statement = database.compileStatement(sql);
 
@@ -1087,10 +1085,7 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
 
     }
     private byte[] convertPhoto(Context context, int resourceId) {
-        BitmapDrawable drawable = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            drawable = (BitmapDrawable) context.getDrawable(resourceId);
-        }
+        BitmapDrawable drawable = (BitmapDrawable) context.getDrawable(resourceId);
         Bitmap bitmap = drawable.getBitmap();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
@@ -1152,42 +1147,40 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
         }
     }
 
-    public List<Product> getProductsByCategory(String category) {
-        List<Product> products = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        // Câu truy vấn SQL để lấy danh sách sản phẩm theo category
-        String selectQuery = "SELECT * FROM " + TBl_PRODUCT + " WHERE " + CATEGORY + " = ?";
-
-        Cursor cursor = db.rawQuery(selectQuery, new String[]{category});
-
-        // Lặp qua tất cả các hàng và thêm các sản phẩm vào danh sách productList
-        if (cursor.moveToFirst()) {
-            do {
-                products.add(new Product(
-                        cursor.getInt(0), //ProductID
-                        cursor.getString(1), //ProductName
-                        cursor.getDouble(2), // ProductPrice
-                        cursor.getString(3), //ProductDescription
-                        cursor.getBlob(4), //ProductThumb
-                        cursor.getInt(5), //Hot
-                        cursor.getString(6), //Category
-                        cursor.getInt(7), //Inventory
-                        cursor.getDouble(8), //ProductRate
-                        cursor.getDouble(9), //SalePrice
-                        cursor.getInt(10), //SoldQuantity
-                        cursor.getString(11), //CreatedDate
-                        cursor.getInt(12)
-                ));
-            } while (cursor.moveToNext());
-        }
-
-        // Đóng con trỏ và đóng kết nối cơ sở dữ liệu
-        cursor.close();
-        db.close();
-
-        return products;
-    }
+//    public List<Product> getProductsByCategory(String category) {
+//        List<Product> products = new ArrayList<>();
+//        SQLiteDatabase db = this.getReadableDatabase();
+//
+//        // Câu truy vấn SQL để lấy danh sách sản phẩm theo category
+//        String selectQuery = "SELECT * FROM " + TBl_PRODUCT + " WHERE " + CATEGORY + " = ?";
+//
+//        Cursor cursor = db.rawQuery(selectQuery, new String[]{category});
+//
+//        // Lặp qua tất cả các hàng và thêm các sản phẩm vào danh sách productList
+//        if (cursor.moveToFirst()) {
+//            do {
+//                products.add(new Product(
+//                        cursor.getInt(0), //ProductID
+//                        cursor.getString(1), //ProductName
+//                        cursor.getDouble(2), // ProductPrice
+//                        cursor.getString(3), //ProductDescription
+//                        cursor.getBlob(4), //ProductThumb
+//                        cursor.getInt(5), //Hot
+//                        cursor.getString(6), //Category
+//                        cursor.getInt(7), //Inventory
+//                        cursor.getDouble(8), //ProductRate
+//                        cursor.getDouble(9), //SalePrice
+//
+//                ));
+//            } while (cursor.moveToNext());
+//        }
+//
+//        // Đóng con trỏ và đóng kết nối cơ sở dữ liệu
+//        cursor.close();
+//        db.close();
+//
+//        return products;
+//    }
     public ArrayList<UserInfo> getLoggedinUserDetailsMain(String email) {
         ArrayList<UserInfo> customers = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
