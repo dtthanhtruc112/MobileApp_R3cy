@@ -30,6 +30,7 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
     Coupon coupon;
     R3cyDB db;
     Customer customer;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,12 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
         
         db = new R3cyDB(this);
 //        db.createSampleDataCustomer();
+
+//        email = getIntent().getStringExtra("key_email");
+        Intent intent =  getIntent();
+        Bundle bundle = intent.getBundleExtra("Package");
+        email = bundle.getString("key_email");
+        Log.d("SharedPreferences", "Email ở đổi điểm chi tiết: " + email);
 
         addEvents();
 
@@ -81,6 +88,7 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
 
                     // Hiển thị số ngày còn lại trên giao diện của bạn
                     binding.txtDayLeft.setText(String.valueOf(diffInDays));
+                    binding.txtDayLeft1.setText(String.valueOf(diffInDays));
                 }
             }
         }
@@ -174,9 +182,14 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
 
         if (updated){
             AlertDialog.Builder builder = new AlertDialog.Builder(DoiDiem_ChiTiet.this);
-            builder.setTitle("Đổi iểm thành công!");
+            builder.setTitle("Đổi điểm thành công!");
             builder.setIcon(android.R.drawable.ic_dialog_info);
             builder.setMessage("Bạn đã đổi điểm Coupon " + coupon.getCOUPON_CODE() + " thành công. Hãy kiểm tra trong trang tài khoản nhé!");
+
+            Intent intent = new Intent("com.example.r3cy_mobileapp.ACTION_POINTS_ACCUMULATED");
+            intent.putExtra("message", "Đổi điểm thành công" + coupon.getCOUPON_CODE());
+            // Gửi broadcast
+            sendBroadcast(intent);
 
             builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
@@ -189,6 +202,8 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
 
             Dialog dialog = builder.create();
             dialog.show();
+
+
 
         }else {
             Toast.makeText(this, "Fail!", Toast.LENGTH_SHORT).show();
@@ -228,22 +243,15 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
 
 
     private void getDataCustomer() {
-        Cursor c1 = db.getData("SELECT * FROM " + R3cyDB.TBL_CUSTOMER);
-        if (c1.moveToFirst()) {
-            customer = new Customer(c1.getInt(0),
-                    c1.getString(1),
-                    c1.getString(2),
-                    c1.getInt(3),
-                    c1.getString(4),
-                    c1.getString(5),
-                    c1.getString(6),
-                    c1.getInt(7),
-                    c1.getString(8),
-                    c1.getBlob(9),
-                    c1.getString(10)
-            );
+
+
+        // Nếu không có email từ SharedPreferences, không thực hiện gì cả
+        if (email == null) {
+            return;
         }
-        c1.close();
+
+        // Lấy thông tin của khách hàng dựa trên email từ SharedPreferences
+        customer = db.getCustomerByEmail1(email);
     }
 
     private void loadDataCoupon() {

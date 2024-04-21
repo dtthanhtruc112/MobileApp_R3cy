@@ -82,14 +82,15 @@ public class UserAccount_Main extends AppCompatActivity {
         name = binding.txtTen;
         viewPager2 = findViewById(R.id.view_pager);
 
-        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
-        email1 = preferences.getString("string", "");
-
-        Log.d("SharedPreferences", "Email ở useracc: " + email1);
+//        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+//        email1 = preferences.getString("string", "");
+//
+//        Log.d("SharedPreferences", "Email ở useracc: " + email1);
 
 
         // Nhận giá trị email từ Intent
         email = getIntent().getStringExtra("key_email");
+        Log.d("Intent", "Email ở useracc: " + email);
 
         // Gọi phương thức để tải thông tin người dùng
         getUserDetails();
@@ -107,9 +108,9 @@ public class UserAccount_Main extends AppCompatActivity {
 //        }
 //        ArrayList<UserInfo> customer = db.getLoggedinUserDetailsMain(email);
 //        // Kiểm tra xem email có null không
-        if (email1 != null) {
+        if (email != null) {
             // Lấy thông tin người dùng từ cơ sở dữ liệu
-            ArrayList<UserInfo> customer = db.getLoggedinUserDetailsMain(email1);
+            ArrayList<UserInfo> customer = db.getLoggedinUserDetailsMain(email);
 
             // Kiểm tra xem danh sách khách hàng có trống không
             if (customer != null && customer.size() > 0) {
@@ -171,11 +172,11 @@ public class UserAccount_Main extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), Signin_Main.class);
                     startActivity(intent);
                     Toast.makeText(UserAccount_Main.this, "Đăng xuất thành công !", Toast.LENGTH_SHORT).show();
-                // Xóa SharedPreferences
-                SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.remove("key_name");
-                editor.apply();
+//                // Xóa SharedPreferences
+//                SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+//                SharedPreferences.Editor editor = preferences.edit();
+//                editor.remove("key_name");
+//                editor.apply();
 
             }
         });
@@ -183,6 +184,7 @@ public class UserAccount_Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TichDiem.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });

@@ -39,6 +39,8 @@ public class TichDiem extends AppCompatActivity {
     Customer customer;
     R3cyDB db;
     private PieChart pieChart;
+    private int scoreDifference;
+    String email;
 
 
     @Override
@@ -52,6 +54,8 @@ public class TichDiem extends AppCompatActivity {
         db.createSampleDataCustomer();
 
         pieChart = findViewById(R.id.pie_chart);
+
+        email = getIntent().getStringExtra("key_email");
 
         addEvents();
     }
@@ -144,18 +148,21 @@ public class TichDiem extends AppCompatActivity {
         }
         c.close();
 
-        adapter = new CouponAdapterRecycler(this, coupons);
+        adapter = new CouponAdapterRecycler(this, coupons, email);
+        Log.d("SharedPreferences", "Email ở tích điểm: " + email);
         binding.rcvCoupon.setAdapter(adapter);
     }
 
     private void getDataCustomer() {
 
         // Lấy email từ SharedPreferences
-        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
-        String email = preferences.getString("string", "");
+//        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+//        String email = preferences.getString("string", "");
+
+
 
         // Nếu không có email từ SharedPreferences, không thực hiện gì cả
-        if (email.isEmpty()) {
+        if (email == null) {
             return;
         }
 
@@ -203,6 +210,11 @@ public class TichDiem extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(TichDiem.this, Product_List.class);
                 startActivity(intent);
+
+                intent = new Intent("com.example.r3cy_mobileapp.ACTION_POINTS_ACCUMULATED");
+                intent.putExtra("message", "Bạn đã tích thêm " + scoreDifference + " điểm");
+                // Gửi broadcast
+                sendBroadcast(intent);
             }
         });
 
@@ -210,6 +222,7 @@ public class TichDiem extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TichDiem.this, DoiDiem.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });

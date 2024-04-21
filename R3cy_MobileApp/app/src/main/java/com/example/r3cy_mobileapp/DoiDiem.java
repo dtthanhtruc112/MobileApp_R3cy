@@ -26,12 +26,15 @@ public class DoiDiem extends AppCompatActivity {
     CouponAdapter adapter;
     ArrayList<Coupon> coupons;
     R3cyDB db;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityDoiDiemBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        email = getIntent().getStringExtra("key_email");
 
         createDb();
 
@@ -105,6 +108,24 @@ public class DoiDiem extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish(); // Kết thúc hoạt động hiện tại và quay lại trang trước đó
+            }
+        });
+
+        binding.lvCoupon.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Lấy coupon tại vị trí đó
+                Coupon clickedCoupon = coupons.get(position);
+
+                // Tạo một Bundle và đưa thông tin của coupon vào
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("COUPON", clickedCoupon);
+                bundle.putString("key_email", email);
+
+                // Tạo Intent để chuyển đến trang mới và đính kèm Bundle
+                Intent intent = new Intent(DoiDiem.this, DoiDiem_ChiTiet.class);
+                intent.putExtra("Package", bundle);
+                startActivity(intent);
             }
         });
     }
