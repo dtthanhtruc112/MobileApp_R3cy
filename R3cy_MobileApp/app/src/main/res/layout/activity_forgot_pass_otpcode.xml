@@ -42,6 +42,8 @@
 
 
                 <EditText
+                    android:id="@+id/inputNumber1EditText"
+                    android:inputType="number"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@drawable/rounded_borders"
@@ -52,6 +54,8 @@
                     android:layout_marginRight="20dp"/>
 
                 <EditText
+                    android:id="@+id/inputNumber2EditText"
+                    android:inputType="number"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@drawable/rounded_borders"
@@ -62,6 +66,8 @@
                     android:layout_marginRight="20dp"/>
 
                 <EditText
+                    android:id="@+id/inputNumber3EditText"
+                    android:inputType="number"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@drawable/rounded_borders"
@@ -72,6 +78,8 @@
                     android:layout_marginRight="20dp"/>
 
                 <EditText
+                    android:id="@+id/inputNumber4EditText"
+                    android:inputType="number"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@drawable/rounded_borders"
@@ -83,6 +91,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/sendBtn"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

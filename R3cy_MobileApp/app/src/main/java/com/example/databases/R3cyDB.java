@@ -919,6 +919,16 @@ public Customer getCustomerByEmail(String email) {
     return customer;
 }
 
+public boolean updatePasswordByEmail(String email, String newPassword) {
+    SQLiteDatabase db = this.getWritableDatabase();
+    ContentValues values = new ContentValues();
+    values.put(PASSWORD, newPassword);
+
+    int rowsAffected = db.update(TBL_CUSTOMER, values, EMAIL + " = ?", new String[]{email});
+    db.close();
+
+    return rowsAffected > 0;
+}
 
 
 public boolean checkEmailExists(String email) {
@@ -1554,6 +1564,7 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
             return false;
         }
     }
+
 //    @SuppressLint("Range")
 //    public String getOrderStatus(String orderstatus) {
 //        SQLiteDatabase db = this.getReadableDatabase();
