@@ -203,7 +203,7 @@ public class TrangChu extends AppCompatActivity {
             Intent intentCart = new Intent(TrangChu.this, CartManage.class);
             startActivity(intentCart);
         } else if (item.getItemId() == R.id.action_noti) {
-            Intent intentNoti = new Intent(TrangChu.this, AboutUs.class);
+            Intent intentNoti = new Intent(TrangChu.this, Notification.class);
             startActivity(intentNoti);
         }
 

@@ -190,6 +190,11 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
             Dialog dialog = builder.create();
             dialog.show();
 
+            // Gửi thông báo đến Notification.java
+            Intent intent = new Intent(DoiDiem_ChiTiet.this, Notification.class);
+            intent.putExtra("notification", "Bạn đã đổi điểm Coupon " + coupon.getCOUPON_CODE() + " thành công.");
+            startActivity(intent);
+
         }else {
             Toast.makeText(this, "Fail!", Toast.LENGTH_SHORT).show();
         }

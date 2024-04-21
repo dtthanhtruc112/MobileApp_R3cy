@@ -39,6 +39,7 @@ public class TichDiem extends AppCompatActivity {
     Customer customer;
     R3cyDB db;
     private PieChart pieChart;
+    private int scoreDifference;
 
 
     @Override
@@ -203,6 +204,11 @@ public class TichDiem extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(TichDiem.this, Product_List.class);
                 startActivity(intent);
+
+                intent = new Intent("com.example.r3cy_mobileapp.ACTION_POINTS_ACCUMULATED");
+                intent.putExtra("message", "Bạn đã tích thêm " + scoreDifference + " điểm");
+                // Gửi broadcast
+                sendBroadcast(intent);
             }
         });
 
