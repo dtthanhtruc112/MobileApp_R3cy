@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -14,12 +15,17 @@ public class AboutUs extends AppCompatActivity {
 
     ActivityAboutUsBinding binding;
     private ImageView imvtrangchu;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityAboutUsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        email = getIntent().getStringExtra("key_email");
+
+        Log.d("SharedPreferences", "Email ở aboutus: " + email);
 
         addEvents();
 
@@ -40,6 +46,7 @@ public class AboutUs extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent= new Intent(AboutUs.this, Thugom.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });

@@ -226,5 +226,12 @@ public class TichDiem extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // Kết thúc hoạt động hiện tại và quay lại trang trước đó
+            }
+        });
     }
 }

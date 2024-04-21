@@ -213,6 +213,7 @@ public class TrangChu extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_search){
             Intent intentSearch = new Intent(TrangChu.this, Product_Search.class);
+
             startActivity(intentSearch);
         } else if (item.getItemId() == R.id.action_cart) {
             Intent intentCart = new Intent(TrangChu.this, CartManage.class);
@@ -220,6 +221,7 @@ public class TrangChu extends AppCompatActivity {
             startActivity(intentCart);
         } else if (item.getItemId() == R.id.action_noti) {
             Intent intentNoti = new Intent(TrangChu.this, Notification.class);
+            intentNoti.putExtra("key_email", email);
             startActivity(intentNoti);
         }
 
@@ -252,6 +254,7 @@ public class TrangChu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TrangChu.this, CustomProduct.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
@@ -260,6 +263,7 @@ public class TrangChu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent= new Intent(TrangChu.this, Thugom.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
@@ -268,6 +272,7 @@ public class TrangChu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TrangChu.this, FAQsPage.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
@@ -327,6 +332,7 @@ public class TrangChu extends AppCompatActivity {
                     return true;
                 } else if (item.getItemId() == R.id.item_store) {
                     Intent intent3 =new Intent(getApplicationContext(),AboutUs.class);
+                    intent3.putExtra("key_email", email);
                     intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent3);
                     overridePendingTransition(0,0);
