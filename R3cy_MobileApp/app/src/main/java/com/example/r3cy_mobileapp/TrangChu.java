@@ -24,6 +24,7 @@ import com.example.databases.R3cyDB;
 import com.example.models.Banners;
 import com.example.models.Product;
 import com.example.r3cy_mobileapp.Product.Product_List;
+import com.example.r3cy_mobileapp.Product.Product_Search;
 import com.example.r3cy_mobileapp.Signin.Signin_Main;
 import com.example.r3cy_mobileapp.databinding.ActivityTrangChuBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -72,8 +73,10 @@ public class TrangChu extends AppCompatActivity {
         BannerAdapter bannerAdapter =(BannerAdapter) new BannerAdapter(bannerList);
         viewPager.setAdapter(bannerAdapter);
 
-        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
-        email = preferences.getString("string", "");
+        email = getIntent().getStringExtra("key_email");
+
+//        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+//        email = preferences.getString("string", "");
 
         Log.d("SharedPreferences", "Email: " + email);
 
@@ -161,6 +164,18 @@ public class TrangChu extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (email != null) {
+            // Đã đăng nhập
+            Toast.makeText(TrangChu.this, "Đã đăng nhập", Toast.LENGTH_SHORT).show();
+            // Thiết lập văn bản cho nút đăng nhập
+            binding.btnDangnhap.setText("Đã đăng nhập");
+        }
+
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
 
@@ -197,13 +212,14 @@ public class TrangChu extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_search){
-            Intent intentSearch = new Intent(TrangChu.this, Product_List.class);
+            Intent intentSearch = new Intent(TrangChu.this, Product_Search.class);
             startActivity(intentSearch);
         } else if (item.getItemId() == R.id.action_cart) {
             Intent intentCart = new Intent(TrangChu.this, CartManage.class);
+            intentCart.putExtra("key_email", email);
             startActivity(intentCart);
         } else if (item.getItemId() == R.id.action_noti) {
-            Intent intentNoti = new Intent(TrangChu.this, AboutUs.class);
+            Intent intentNoti = new Intent(TrangChu.this, Notification.class);
             startActivity(intentNoti);
         }
 
@@ -216,7 +232,7 @@ public class TrangChu extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                if (!email.isEmpty()) {
+                if (email != null) {
                     // Đã đăng nhập
                     Toast.makeText(TrangChu.this, "Đã đăng nhập", Toast.LENGTH_SHORT).show();
                     // Thiết lập văn bản cho nút đăng nhập
@@ -317,6 +333,7 @@ public class TrangChu extends AppCompatActivity {
                     return true;
                 } else if (item.getItemId() == R.id.item_account) {
                     Intent intent4 =new Intent(getApplicationContext(),UserAccount_Main.class);
+                    intent4.putExtra("key_email", email);
                     intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent4);
                     overridePendingTransition(0,0);

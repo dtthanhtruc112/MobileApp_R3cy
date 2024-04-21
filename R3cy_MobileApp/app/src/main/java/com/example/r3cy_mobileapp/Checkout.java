@@ -21,6 +21,7 @@ import com.example.dao.ProductDao;
 import com.example.databases.R3cyDB;
 import com.example.models.Address;
 import com.example.models.CartItem;
+import com.example.models.Customer;
 import com.example.r3cy_mobileapp.databinding.ActivityCheckoutBinding;
 
 import java.io.ByteArrayInputStream;
@@ -45,7 +46,10 @@ public class Checkout extends AppCompatActivity {
 //    address khi đổi địa chỉ nhận hàng
     private static final int ADDRESS_SELECTION_REQUEST_CODE = 1;
 
-    int customerId = 1;
+    int customerId;
+
+    String email;
+    Customer customer;
 //    Thay customer lấy sau khi login ra
 
 
@@ -54,6 +58,12 @@ public class Checkout extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityCheckoutBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        email = getIntent().getStringExtra("key_email");
+
+        Log.d("SharedPreferences", "Email ở checkout: " + email);
+
+
 
         createDb();
         addEvents();
@@ -79,6 +89,7 @@ public class Checkout extends AppCompatActivity {
     private void createDb() {
         db = new R3cyDB(this);
         db.createSampleDataAddress();
+        db.createSampleDataCustomer();
 
         if (db != null) {
             Log.d("AddressListDB", "Database created successfully");
@@ -141,6 +152,7 @@ public class Checkout extends AppCompatActivity {
 //                Intent intent = new Intent(Checkout.this, Checkout_AddressList.class);
 //                startActivity(intent);
                 Intent intent = new Intent(Checkout.this, Checkout_AddressList.class);
+                intent.putExtra("key_email", email);
                 startActivityForResult(intent, ADDRESS_SELECTION_REQUEST_CODE);
             }
         });
@@ -167,6 +179,15 @@ public class Checkout extends AppCompatActivity {
 //        }
 //    }
     private void displayAddress() {
+        // Nếu không có email từ SharedPreferences, không thực hiện gì cả
+        if (email == null) {
+            return;
+        }
+
+        // Lấy thông tin của khách hàng dựa trên email từ SharedPreferences
+        customer = db.getCustomerByEmail1(email);
+        Log.d("customer", "customer ở checkout: " + customer.getFullName());
+        customerId = customer.getCustomerId();
         // Nếu chưa có addressIdFromIntent (tức là chưa chọn địa chỉ từ trang danh sách địa chỉ)
         if (addressIdFromIntent == -1) {
             Address defaultAddress = db.getDefaultAddress(customerId);
@@ -207,6 +228,7 @@ public class Checkout extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Checkout.this, Checkout_Address.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });

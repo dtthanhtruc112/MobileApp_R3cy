@@ -53,7 +53,7 @@
             android:name=".UserAccount_Main"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Product.Product_List"
             android:exported="false" />
         <activity
             android:name=".Product.Product_Search"
@@ -124,7 +124,7 @@
             android:name=".User_account_manageOrder"
             android:exported="false" />
         <activity
-            android:name=".Product.Product_List"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
