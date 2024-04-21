@@ -174,9 +174,14 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
 
         if (updated){
             AlertDialog.Builder builder = new AlertDialog.Builder(DoiDiem_ChiTiet.this);
-            builder.setTitle("Đổi iểm thành công!");
+            builder.setTitle("Đổi điểm thành công!");
             builder.setIcon(android.R.drawable.ic_dialog_info);
             builder.setMessage("Bạn đã đổi điểm Coupon " + coupon.getCOUPON_CODE() + " thành công. Hãy kiểm tra trong trang tài khoản nhé!");
+
+            Intent intent = new Intent("com.example.r3cy_mobileapp.ACTION_POINTS_ACCUMULATED");
+            intent.putExtra("message", "Đổi điểm thành công" + coupon.getCOUPON_CODE());
+            // Gửi broadcast
+            sendBroadcast(intent);
 
             builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
@@ -190,10 +195,6 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
             Dialog dialog = builder.create();
             dialog.show();
 
-            // Gửi thông báo đến Notification.java
-            Intent intent = new Intent(DoiDiem_ChiTiet.this, Notification.class);
-            intent.putExtra("notification", "Bạn đã đổi điểm Coupon " + coupon.getCOUPON_CODE() + " thành công.");
-            startActivity(intent);
 
         }else {
             Toast.makeText(this, "Fail!", Toast.LENGTH_SHORT).show();

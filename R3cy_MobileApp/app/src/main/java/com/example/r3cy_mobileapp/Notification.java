@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.example.adapter.NotificationAdapter;
 import com.example.databases.R3cyDB;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class Notification extends AppCompatActivity {
     private ImageView imvTrangChu;
     private ListView lvnotification;
     private ArrayList<String> notifications;
-    private ArrayAdapter<String> adapter;
+    private NotificationAdapter adapter;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -47,7 +48,7 @@ public class Notification extends AppCompatActivity {
         lvnotification = findViewById(R.id.lvnotification);
 
         notifications = new ArrayList<>(); // Khởi tạo notifications
-        adapter = new ArrayAdapter<>(this, R.layout.item_notification, R.id.notification_message, notifications);
+        adapter = new NotificationAdapter(this, notifications);
         lvnotification.setAdapter(adapter);
 
         imvTrangChu.setOnClickListener(new View.OnClickListener() {
