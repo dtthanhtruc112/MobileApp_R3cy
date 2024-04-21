@@ -3,14 +3,19 @@ package com.example.r3cy_mobileapp;
 import static java.security.AccessController.getContext;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.database.CursorWindow;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +29,9 @@ import com.example.r3cy_mobileapp.Fragment.Policy_Fragment;
 import com.example.r3cy_mobileapp.Fragment.Policy_baomat_Fragment;
 import com.example.r3cy_mobileapp.Fragment.Policy_dichvu_Fragment;
 import com.example.r3cy_mobileapp.Fragment.Policy_doitra_Fragment;
+import com.example.r3cy_mobileapp.Product.Product_List;
 import com.example.r3cy_mobileapp.databinding.ActivityUserAccountManageOrderBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -40,6 +47,8 @@ public class User_account_manageOrder extends AppCompatActivity {
 
     ImageView btnback;
     R3cyDB db;
+    BottomNavigationView navigationView;
+    String email;
 
 
     @Override
@@ -47,6 +56,18 @@ public class User_account_manageOrder extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityUserAccountManageOrderBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        //Custom action bar
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.custom_action_bar);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
+        email = getIntent().getStringExtra("key_email");
+
+        Log.d("SharedPreferences", "Email ở manageorder: " + email);
 
         tabLayout = findViewById(R.id.tabLayout_manageOrder);
         viewPager2 = findViewById(R.id.pager_manageOrder);
@@ -83,8 +104,59 @@ public class User_account_manageOrder extends AppCompatActivity {
         }
         createDB();
 
+        addEvents();
+
     }
 
+    private void addEvents() {
+        navigationView = findViewById(R.id.mn_home);
+        navigationView.setSelectedItemId(R.id.item_home);
+
+
+        navigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.item_product){
+                    Intent intent1 = new Intent(getApplicationContext(), Product_List.class);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent1);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_blog) {
+                    Intent intent2 =new Intent(getApplicationContext(),BlogDetail.class);
+                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent2);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_store) {
+                    Intent intent3 =new Intent(getApplicationContext(),AboutUs.class);
+                    intent3.putExtra("key_email", email);
+                    intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent3);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_account) {
+                    Intent intent4 =new Intent(getApplicationContext(),UserAccount_Main.class);
+                    intent4.putExtra("key_email", email);
+                    intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent4);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_home) {
+                    return true;
+                }
+                return false;}
+
+
+        });
+
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
 
 
     private void createDB() {

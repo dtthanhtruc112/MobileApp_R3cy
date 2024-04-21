@@ -5,12 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AboutUs"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="10">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:layout_weight="9">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -334,9 +336,8 @@ và thiết kế sản phẩm"
 
             <Button
                 android:id="@+id/btnOpenProduct"
-                android:layout_width="110dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#31B9F4"
                 android:text="Xem sản phẩm"
                 android:textStyle="bold"
                 android:layout_gravity="center"
@@ -344,7 +345,7 @@ và thiết kế sản phẩm"
                 android:layout_marginBottom="15dp"
                 android:textColor="@color/white"
                 android:textAllCaps="false"
-                android:background="@drawable/rounded_borders"/>
+                android:backgroundTint="@color/blue"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -433,5 +434,16 @@ TP. Thủ Đức, TP. Hồ Chí Minh"
         </LinearLayout>
 
     </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/mn_home"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        app:menu="@menu/bottom_nav_menu"
+        android:layout_gravity="end|bottom"
+        app:itemTextColor="@color/bottom_navigation_style"
+        app:itemIconTint="@color/bottom_navigation_style"
+        app:labelVisibilityMode="unlabeled"
+        android:layout_weight="1"/>
 
 </LinearLayout>
