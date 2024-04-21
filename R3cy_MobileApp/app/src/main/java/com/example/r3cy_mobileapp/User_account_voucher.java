@@ -1,5 +1,7 @@
 package com.example.r3cy_mobileapp;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -7,6 +9,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -14,7 +17,9 @@ import com.example.adapter.CouponAdapter;
 import com.example.databases.R3cyDB;
 import com.example.models.Coupon;
 import com.example.models.Customer;
+import com.example.r3cy_mobileapp.Product.Product_List;
 import com.example.r3cy_mobileapp.databinding.ActivityUserAccountVoucherBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,6 +35,7 @@ public class User_account_voucher extends AppCompatActivity {
     Customer customer;
     ArrayList<Coupon> coupons;
     String email;
+    BottomNavigationView navigationView;
 
 
     @Override
@@ -38,7 +44,17 @@ public class User_account_voucher extends AppCompatActivity {
         binding = ActivityUserAccountVoucherBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        //Custom action bar
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.custom_action_bar);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
         email = getIntent().getStringExtra("key_email");
+
+        Log.d("SharedPreferences", "Email ở voucher acc: " + email);
 //        }
 //        createDb();
 //        getDataCustomer();
@@ -171,6 +187,52 @@ private boolean isCustomerEligibleForCoupon(int customerId) {
             public void onClick(View v) {
                 finish(); // Kết thúc hoạt động hiện tại và quay lại trang trước đó
             }
+        });
+
+        navigationView = findViewById(R.id.mn_home);
+        navigationView.setSelectedItemId(R.id.item_home);
+
+
+        navigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.item_product){
+                    Intent intent1 = new Intent(getApplicationContext(), Product_List.class);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent1);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_blog) {
+                    Intent intent2 =new Intent(getApplicationContext(),BlogDetail.class);
+                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent2);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_store) {
+                    Intent intent3 =new Intent(getApplicationContext(),AboutUs.class);
+                    intent3.putExtra("key_email", email);
+                    intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent3);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_account) {
+                    Intent intent4 =new Intent(getApplicationContext(),UserAccount_Main.class);
+                    intent4.putExtra("key_email", email);
+                    intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent4);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_home) {
+                    Intent intent5 =new Intent(getApplicationContext(),TrangChu.class);
+                    intent5.putExtra("key_email", email);
+                    intent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent5);
+                    overridePendingTransition(0,0);
+                    return true;
+                }
+                return false;}
+
+
         });
     }
 

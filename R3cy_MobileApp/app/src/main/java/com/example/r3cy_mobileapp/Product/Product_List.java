@@ -54,7 +54,6 @@ public class Product_List extends AppCompatActivity implements ProductInterface 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private ArrayList<Product> products;
-//    private List<Product> products;
     ActivityProductListBinding binding;
     R3cyDB dbHelper;
 

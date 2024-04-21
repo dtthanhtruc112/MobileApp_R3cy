@@ -1,6 +1,7 @@
 package com.example.r3cy_mobileapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -10,11 +11,14 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.BulletSpan;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,8 +28,10 @@ import com.example.r3cy_mobileapp.Fragment.Policy_Fragment;
 import com.example.r3cy_mobileapp.Fragment.Policy_baomat_Fragment;
 import com.example.r3cy_mobileapp.Fragment.Policy_dichvu_Fragment;
 import com.example.r3cy_mobileapp.Fragment.Policy_doitra_Fragment;
+import com.example.r3cy_mobileapp.Product.Product_List;
 import com.example.r3cy_mobileapp.databinding.ActivityMainBinding;
 import com.example.r3cy_mobileapp.databinding.ActivityUserAccountPolicyBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -39,6 +45,8 @@ public class UserAccount_Policy extends AppCompatActivity {
     TextView textView1;
 
     ImageView btnback;
+    BottomNavigationView navigationView;
+    String email;
 
 
 
@@ -47,6 +55,17 @@ public class UserAccount_Policy extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityUserAccountPolicyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        //Custom action bar
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.custom_action_bar);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
+        email = getIntent().getStringExtra("key_email");
+        Log.d("Intent", "Email ở policy: " + email);
 
 
         tabLayout = findViewById(R.id.tabLayout);
@@ -73,8 +92,63 @@ public class UserAccount_Policy extends AppCompatActivity {
             }
         }).attach();
 
+        addEvents();
+
+    }
+
+    private void addEvents() {
+        navigationView = findViewById(R.id.mn_home);
+        navigationView.setSelectedItemId(R.id.item_home);
 
 
+        navigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.item_product){
+                    Intent intent1 = new Intent(getApplicationContext(), Product_List.class);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent1);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_blog) {
+                    Intent intent2 =new Intent(getApplicationContext(),BlogDetail.class);
+                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent2);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_store) {
+                    Intent intent3 =new Intent(getApplicationContext(),AboutUs.class);
+                    intent3.putExtra("key_email", email);
+                    intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent3);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_account) {
+                    Intent intent4 =new Intent(getApplicationContext(),UserAccount_Main.class);
+                    intent4.putExtra("key_email", email);
+                    intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent4);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_home) {
+                    Intent intent5 =new Intent(getApplicationContext(),TrangChu.class);
+                    intent5.putExtra("key_email", email);
+                    intent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent5);
+                    overridePendingTransition(0,0);
+                    return true;
+                }
+                return false;}
+
+
+        });
+
+        binding.btnback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 //    private void setBulletList(TextView textView, String s) {

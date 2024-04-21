@@ -12,6 +12,6 @@
         android:layout_marginHorizontal="20dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:textColor="@color/black"/>
+        android:textColor="@color/blue"/>
 
 </LinearLayout>

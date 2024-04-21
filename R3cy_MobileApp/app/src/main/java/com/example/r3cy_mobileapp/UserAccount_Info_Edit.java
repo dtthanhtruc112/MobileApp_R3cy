@@ -1,9 +1,13 @@
 package com.example.r3cy_mobileapp;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,7 +17,9 @@ import android.widget.Toast;
 
 import com.example.databases.R3cyDB;
 import com.example.models.UserInfo;
+import com.example.r3cy_mobileapp.Product.Product_List;
 import com.example.r3cy_mobileapp.databinding.ActivityUserAccountInfoEditBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -24,11 +30,25 @@ public class UserAccount_Info_Edit extends AppCompatActivity {
     String email;
     R3cyDB db;
     UserInfo userInfos;
+    BottomNavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityUserAccountInfoEditBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        //Custom action bar
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.custom_action_bar);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
+        email = getIntent().getStringExtra("key_email");
+
+        Log.d("SharedPreferences", "Email ở accinfoedit: " + email);
+
         name = binding.editname;
         username = binding.editusername;
         phone = binding.editphonenumber;
@@ -48,6 +68,8 @@ public class UserAccount_Info_Edit extends AppCompatActivity {
         String[] gender1 = {"Nam", "Nữ", "Khác"};
         ArrayAdapter<String> adapterAddress = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, gender1);
         binding.editgioitinh.setAdapter(adapterAddress);
+
+        addEvents();
         // Gọi phương thức để tải thông tin người dùng
 //        db = new R3cyDB(this);
 //
@@ -55,6 +77,61 @@ public class UserAccount_Info_Edit extends AppCompatActivity {
 //        addEvents();
 
 
+    }
+
+    private void addEvents() {
+        navigationView = findViewById(R.id.mn_home);
+        navigationView.setSelectedItemId(R.id.item_home);
+
+
+        navigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.item_product){
+                    Intent intent1 = new Intent(getApplicationContext(), Product_List.class);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent1);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_blog) {
+                    Intent intent2 =new Intent(getApplicationContext(),BlogDetail.class);
+                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent2);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_store) {
+                    Intent intent3 =new Intent(getApplicationContext(),AboutUs.class);
+                    intent3.putExtra("key_email", email);
+                    intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent3);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_account) {
+                    Intent intent4 =new Intent(getApplicationContext(),UserAccount_Main.class);
+                    intent4.putExtra("key_email", email);
+                    intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent4);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_home) {
+                    Intent intent5 =new Intent(getApplicationContext(),TrangChu.class);
+                    intent5.putExtra("key_email", email);
+                    intent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent5);
+                    overridePendingTransition(0,0);
+                    return true;
+                }
+                return false;}
+
+
+        });
+
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 //    private void addEvents() {

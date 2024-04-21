@@ -41,8 +41,8 @@ import java.util.List;
 
 public class R3cyDB extends SQLiteOpenHelper {
     Context context;
-    // Tên cơ sở dữ liệu
-
+    R3cyDB db;
+    ArrayList<Product> products;
     public static final String DATABASE_NAME = "r3cy_database.db";
     // Phiên bản cơ sở dữ liệu
     public static final int DATABASE_VERSION = 1;
@@ -1199,7 +1199,7 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
 
             //        Sản phẩm 5
             Product product5 = new Product();
-            product5.setProductThumb(convertPhoto(context, R.drawable.dtt_dayco1));
+            product5.setProductThumb(convertPhoto(context, R.drawable.dtt_giangsinh1));
             product5.setProductName("Đồ trang trí giáng sinh 3D");
             product5.setSalePrice(80000);
             product5.setCategory("Đồ trang trí");
@@ -1256,7 +1256,7 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
 
             //        Sản phẩm 8
             Product product8 = new Product();
-            product8.setProductThumb(convertPhoto(context, R.drawable.pk_bongtairua2));
+            product8.setProductThumb(convertPhoto(context, R.drawable.dtt_dayco1));
             product8.setProductName("Dây cờ trang trí tiệc");
             product8.setSalePrice(140000);
             product8.setCategory("Đồ trang trí");
@@ -1316,7 +1316,7 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
             product11.setProductThumb(convertPhoto(context, R.drawable.pk_bongtai_hoa2));
             product11.setProductName("Bông tai hình bông hoa");
             product11.setSalePrice(140000);
-            product11.setCategory("Đồ gia dụng");
+            product11.setCategory("Phụ kiện");
             product11.setProductDescription("Bông tai hình bông hoa là một biểu tượng của sự thanh lịch và sáng tạo, mang đến cho người đeo không chỉ vẻ đẹp tinh tế mà còn là niềm tự hào về việc chọn lựa có trách nhiệm với môi trường. ");
             product11.setProductRate(5.0);
 
@@ -1335,7 +1335,7 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
             product12.setProductThumb(convertPhoto(context, R.drawable.pk_mockhoacuoi));
             product12.setProductName("Móc khóa hình mặt cười");
             product12.setSalePrice(90000);
-            product12.setCategory("Đồ gia dụng");
+            product12.setCategory("Phụ kiện");
             product12.setProductDescription("Móc khóa hình mặt cười là một phụ kiện vui nhộn và thân thiện với môi trường, được sáng tạo từ nhựa tái chế. Thiết kế này không chỉ mang lại sự hứng khởi với hình ảnh mặt cười thân quen mà còn góp phần giảm lượng chất thải nhựa đối với môi trường.");
             product12.setProductRate(4.0);
 
@@ -1353,8 +1353,6 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
     }
 
 
-
-
     private byte[] convertPhoto(Context context, int resourceId) {
         BitmapDrawable drawable = (BitmapDrawable) context.getDrawable(resourceId);
         Bitmap bitmap = drawable.getBitmap();
@@ -1362,6 +1360,39 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
         return outputStream.toByteArray();
     }
+
+
+    public Product getProductByID(int productID) {
+        db = new R3cyDB(context);
+        db.createSampleProduct();
+        products = new ArrayList<>();
+
+        Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT);
+        while (cursor.moveToNext()) {
+            try {
+                Product product = new Product(
+                        cursor.getInt(0), // ProductID
+                        cursor.getBlob(4), // ProductThumb
+                        cursor.getString(1), // ProductName
+                        cursor.getDouble(9), // SalePrice
+                        cursor.getString(6), // Category
+                        cursor.getString(3), // Description
+                        cursor.getDouble(8) // ProductRate
+                );
+
+                if (product.getProductID() == productID) {
+                    cursor.close();
+                    return product; // Trả về sản phẩm nếu tìm thấy ID tương ứng
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        cursor.close();
+        return null;
+
+    }
+
 
 //    Kiểm tra bảng Discuss
     public int numbOfRowsDiscuss(){

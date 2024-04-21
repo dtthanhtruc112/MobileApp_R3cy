@@ -20,6 +20,7 @@ import com.example.adapter.CartAdapter;
 import com.example.dao.ProductDao;
 import com.example.databases.R3cyDB;
 import com.example.models.CartItem;
+import com.example.models.Customer;
 import com.example.r3cy_mobileapp.databinding.ActivityCartManageBinding;
 
 import java.io.ByteArrayOutputStream;
@@ -35,6 +36,8 @@ public class CartManage extends AppCompatActivity {
     R3cyDB db;
     ProductDao productDao;
     CartAdapter adapter;
+    String email;
+    Customer customer;
 
     ArrayList<CartItem> cartItems;
 
@@ -43,6 +46,10 @@ public class CartManage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityCartManageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        email = getIntent().getStringExtra("key_email");
+
+        Log.d("SharedPreferences", "Email ở cartmanage: " + email);
 
         createDb();
         addEvents();
@@ -82,8 +89,16 @@ public class CartManage extends AppCompatActivity {
     }
 
     private void loadData() {
+        // Nếu không có email từ SharedPreferences, không thực hiện gì cả
+        if (email == null) {
+            return;
+        }
+
+        // Lấy thông tin của khách hàng dựa trên email từ SharedPreferences
+        customer = db.getCustomerByEmail1(email);
+
         // Lấy dữ liệu từ ProductDao
-        cartItems = (ArrayList<CartItem>) productDao.getCartItemsForCustomer(1);
+        cartItems = (ArrayList<CartItem>) productDao.getCartItemsForCustomer(customer.getCustomerId());
         Log.i("CartItemSize", "Number of items retrieved: " + cartItems.size());
         // Khởi tạo adapter và thiết lập cho ListView
         adapter = new CartAdapter(this, R.layout.cartitem, cartItems);
@@ -223,6 +238,7 @@ public class CartManage extends AppCompatActivity {
 
                     // Chuyển sang trang Checkout
                     Intent intent = new Intent(CartManage.this, Checkout.class);
+                    intent.putExtra("key_email", email);
                     startActivity(intent);
                 }
             }

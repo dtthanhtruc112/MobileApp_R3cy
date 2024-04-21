@@ -385,6 +385,7 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
                     android:textSize="13sp"/>
 
                 <Button
+                    android:id="@+id/btnGui"
                     android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
@@ -394,8 +395,21 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
 
             </LinearLayout>
 
+            <TextView
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gợi ý cho bạn"
+                android:textColor="@color/blue"
+                android:textSize="16dp"
+                android:textStyle="bold"/>
 
-
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvProduct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"/>
 
 
         </LinearLayout>

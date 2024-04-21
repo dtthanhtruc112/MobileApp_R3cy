@@ -10,9 +10,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/logo_sizebu"
         android:label="@string/app_name_color"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/logo_sizebu"
         android:supportsRtl="true"
         android:theme="@style/Theme.R3cy_MobileApp"
         tools:targetApi="31">
@@ -53,10 +53,10 @@
             android:name=".UserAccount_Main"
             android:exported="false" />
         <activity
-            android:name=".Product.Product_Detail"
+            android:name=".Product.Product_List"
             android:exported="false" />
         <activity
-            android:name=".Product.Product_List"
+            android:name=".Product.Product_Search"
             android:exported="false" />
         <activity
             android:name=".DoiDiem_ChiTiet"
@@ -91,20 +91,16 @@
             android:exported="false" />
         <activity
             android:name=".Signin.ForgotPass_Newpass"
-            android:exported="false"
-            android:theme="@style/Theme.Design.NoActionBar" />
+            android:exported="false" />
         <activity
             android:name=".Signin.ForgotPass_OTPCode"
-            android:exported="false"
-            android:theme="@style/Theme.Design.NoActionBar" />
+            android:exported="false" />
         <activity
             android:name=".Signin.ForgotPass_Email"
-            android:exported="false"
-            android:theme="@style/Theme.Design.NoActionBar" />
+            android:exported="false"/>
         <activity
             android:name=".User_account_voucher"
-            android:exported="false"
-            android:theme="@style/Theme.Design.NoActionBar" />
+            android:exported="false"/>
         <activity
             android:name=".AboutUs"
             android:exported="false" />
@@ -112,13 +108,13 @@
             android:name=".CustomProduct"
             android:exported="false" />
         <activity
-            android:name=".Signup"
+            android:name=".Product.Product_Detail"
             android:exported="false" />
         <activity
             android:name=".CartManage"
             android:exported="false" />
         <activity
-            android:name=".Product.Product_Search"
+            android:name=".Signup"
             android:exported="false" />
         <activity
             android:name=".User_account_manageOrder"

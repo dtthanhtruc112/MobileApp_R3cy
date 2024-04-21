@@ -171,22 +171,24 @@ public class Signin_Main extends AppCompatActivity {
                 // Đăng nhập thành công
                 Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
 
-                SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
+//                SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+//                SharedPreferences.Editor editor = preferences.edit();
+//
+//                editor.putString("string", email);
+//                editor.apply();
+//
+//                String email1 = preferences.getString("string", "");
+//
+//                Log.d("SharedPreferences", "Email: " + email1);
 
-                editor.putString("string", email);
-                editor.apply();
-
-                String email1 = preferences.getString("string", "");
-
-                Log.d("SharedPreferences", "Email: " + email1);
-
+                // Chuyển đến trang chủ
                 Intent intent = new Intent(Signin_Main.this, TrangChu.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
 
 
 
-                Log.d("email", "email: " + email);
+//                Log.d("email", "email: " + email);
 
                 finish();
             } else {

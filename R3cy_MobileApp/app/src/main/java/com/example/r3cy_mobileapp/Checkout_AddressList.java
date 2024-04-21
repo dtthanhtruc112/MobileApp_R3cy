@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.adapter.AddressAdapter;
 import com.example.databases.R3cyDB;
 import com.example.models.Address;
+import com.example.models.Customer;
 import com.example.r3cy_mobileapp.databinding.ActivityCheckoutAddressListBinding;
 
 import java.util.ArrayList;
@@ -28,6 +29,10 @@ public class Checkout_AddressList extends AppCompatActivity {
     R3cyDB db;
     AddressAdapter adapter;
     ArrayList<Address> addresses;
+    String email;
+    Customer customer;
+    // Lấy CUSTOMER_ID từ SharedPreferences hoặc bất kỳ nguồn dữ liệu nào khác
+    int customerId ; // Thay bằng cách lấy CUSTOMER_ID thích hợp
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +41,23 @@ public class Checkout_AddressList extends AppCompatActivity {
         binding = ActivityCheckoutAddressListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        email = getIntent().getStringExtra("key_email");
+
+        Log.d("SharedPreferences", "Email ở checkout: " + email);
+
+
+
         createDb();
         addEvents();
+
+        // Nếu không có email từ SharedPreferences, không thực hiện gì cả
+        if (email == null) {
+            return;
+        }
+
+        // Lấy thông tin của khách hàng dựa trên email từ SharedPreferences
+        customer = db.getCustomerByEmail1(email);
+        customerId = customer.getCustomerId();
 
 
     }
@@ -56,6 +76,7 @@ public class Checkout_AddressList extends AppCompatActivity {
     private void createDb() {
         db = new R3cyDB(this);
         db.createSampleDataAddress();
+        db.createSampleDataCustomer();
 
         if (db != null) {
             Log.d("AddressListDB", "Database created successfully");
@@ -72,7 +93,7 @@ public class Checkout_AddressList extends AppCompatActivity {
 
     private void loadData() {
         // Lấy dữ liệu từ AddressDao
-        addresses = (ArrayList<Address>) db.getAddressesForCustomer(1);
+        addresses = (ArrayList<Address>) db.getAddressesForCustomer(customerId);
         Log.i("Address size", "Number of items retrieved: " + addresses.size());
 
         // Khởi tạo adapter và thiết lập cho ListView

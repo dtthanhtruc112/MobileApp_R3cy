@@ -4,6 +4,8 @@ import static android.app.PendingIntent.getActivity;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -27,6 +29,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -40,8 +43,10 @@ import com.example.r3cy_mobileapp.Fragment.OrderManage_cholayhang_Fragment;
 import com.example.r3cy_mobileapp.Fragment.OrderManage_choxuly_Fragment;
 import com.example.r3cy_mobileapp.Fragment.OrderManage_danggiao_Fragment;
 import com.example.r3cy_mobileapp.Fragment.OrderManage_hoanthanh_Fragment;
+import com.example.r3cy_mobileapp.Product.Product_List;
 import com.example.r3cy_mobileapp.Signin.Signin_Main;
 import com.example.r3cy_mobileapp.databinding.ActivityUserAccountMainBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,6 +62,7 @@ public class UserAccount_Main extends AppCompatActivity {
     ViewPager2 viewPager2;
     User_account_manageOrder activity;
     String email1;
+    BottomNavigationView navigationView;
 
 
     @Override
@@ -64,6 +70,15 @@ public class UserAccount_Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityUserAccountMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        //Custom action bar
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.custom_action_bar);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result ->{
             if(result.getResultCode() == RESULT_OK && result.getData() != null) {
                 if(openCam) {
@@ -82,14 +97,15 @@ public class UserAccount_Main extends AppCompatActivity {
         name = binding.txtTen;
         viewPager2 = findViewById(R.id.view_pager);
 
-        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
-        email1 = preferences.getString("string", "");
-
-        Log.d("SharedPreferences", "Email ở useracc: " + email1);
+//        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+//        email1 = preferences.getString("string", "");
+//
+//        Log.d("SharedPreferences", "Email ở useracc: " + email1);
 
 
         // Nhận giá trị email từ Intent
         email = getIntent().getStringExtra("key_email");
+        Log.d("Intent", "Email ở useracc: " + email);
 
         // Gọi phương thức để tải thông tin người dùng
         getUserDetails();
@@ -107,9 +123,9 @@ public class UserAccount_Main extends AppCompatActivity {
 //        }
 //        ArrayList<UserInfo> customer = db.getLoggedinUserDetailsMain(email);
 //        // Kiểm tra xem email có null không
-        if (email1 != null) {
+        if (email != null) {
             // Lấy thông tin người dùng từ cơ sở dữ liệu
-            ArrayList<UserInfo> customer = db.getLoggedinUserDetailsMain(email1);
+            ArrayList<UserInfo> customer = db.getLoggedinUserDetailsMain(email);
 
             // Kiểm tra xem danh sách khách hàng có trống không
             if (customer != null && customer.size() > 0) {
@@ -147,6 +163,7 @@ public class UserAccount_Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UserAccount_Main.this, UserAccount_Policy.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
@@ -154,6 +171,7 @@ public class UserAccount_Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UserAccount_Main.this, User_account_manageOrder.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
@@ -171,11 +189,11 @@ public class UserAccount_Main extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), Signin_Main.class);
                     startActivity(intent);
                     Toast.makeText(UserAccount_Main.this, "Đăng xuất thành công !", Toast.LENGTH_SHORT).show();
-                // Xóa SharedPreferences
-                SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.remove("key_name");
-                editor.apply();
+//                // Xóa SharedPreferences
+//                SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+//                SharedPreferences.Editor editor = preferences.edit();
+//                editor.remove("key_name");
+//                editor.apply();
 
             }
         });
@@ -183,6 +201,7 @@ public class UserAccount_Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TichDiem.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
@@ -190,6 +209,7 @@ public class UserAccount_Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Checkout_AddressList.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
@@ -197,6 +217,7 @@ public class UserAccount_Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent =new Intent(getApplicationContext(), User_account_manageOrder.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
@@ -204,6 +225,7 @@ public class UserAccount_Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent =new Intent(getApplicationContext(), User_account_manageOrder.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
@@ -211,6 +233,7 @@ public class UserAccount_Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent =new Intent(getApplicationContext(), User_account_manageOrder.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
@@ -218,6 +241,7 @@ public class UserAccount_Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent =new Intent(getApplicationContext(), User_account_manageOrder.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
@@ -225,6 +249,7 @@ public class UserAccount_Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent =new Intent(getApplicationContext(), User_account_manageOrder.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
@@ -232,6 +257,7 @@ public class UserAccount_Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent =new Intent(getApplicationContext(), User_account_manageOrder.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
@@ -239,8 +265,62 @@ public class UserAccount_Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent =new Intent(getApplicationContext(), User_account_manageOrder.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
+        });
+
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        navigationView = findViewById(R.id.mn_home);
+        navigationView.setSelectedItemId(R.id.item_home);
+
+
+        navigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.item_product){
+                    Intent intent1 = new Intent(getApplicationContext(), Product_List.class);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent1);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_blog) {
+                    Intent intent2 =new Intent(getApplicationContext(),BlogDetail.class);
+                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent2);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_store) {
+                    Intent intent3 =new Intent(getApplicationContext(),AboutUs.class);
+                    intent3.putExtra("key_email", email);
+                    intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent3);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_account) {
+                    Intent intent4 =new Intent(getApplicationContext(),UserAccount_Main.class);
+                    intent4.putExtra("key_email", email);
+                    intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent4);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_home) {
+                    Intent intent5 =new Intent(getApplicationContext(),TrangChu.class);
+                    intent5.putExtra("key_email", email);
+                    intent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent5);
+                    overridePendingTransition(0,0);
+                    return true;
+                }
+                return false;}
+
+
         });
 
 //        binding.btncholayhang.setOnClickListener(new CholayhangOnClickListener(this));

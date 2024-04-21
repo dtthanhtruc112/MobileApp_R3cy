@@ -25,12 +25,12 @@ public class CouponAdapterRecycler  extends RecyclerView.Adapter<CouponAdapterRe
 
     Context context;
     List<Coupon> coupons;
-//    private View.OnClickListener mListener;
+    String email;
 
-    public CouponAdapterRecycler(Context context, List<Coupon> coupons) {
+    public CouponAdapterRecycler(Context context, List<Coupon> coupons, String email) {
         this.context = context;
         this.coupons = coupons;
-//        this.mListener = mListener;
+        this.email = email;
     }
 
     @NonNull
@@ -58,13 +58,17 @@ public class CouponAdapterRecycler  extends RecyclerView.Adapter<CouponAdapterRe
                 // Lấy coupon tại vị trí đó
                 Coupon clickedCoupon = coupons.get(position);
 
-                // Tạo một Bundle và đưa thông tin của coupon vào
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("COUPON", clickedCoupon);
+
 
                 // Tạo Intent để chuyển đến trang mới và đính kèm Bundle
                 Intent intent = new Intent(context, DoiDiem_ChiTiet.class);
+
+                // Tạo một Bundle và đưa thông tin của coupon vào
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("COUPON", clickedCoupon);
+                bundle.putString("key_email", email);
                 intent.putExtra("Package", bundle);
+
                 context.startActivity(intent);
             }
         });

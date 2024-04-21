@@ -14,12 +14,17 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.databases.R3cyDB;
+import com.example.models.Customer;
 import com.example.r3cy_mobileapp.databinding.ActivityCheckoutAddressBinding;
 
 public class Checkout_Address extends AppCompatActivity {
 
     ActivityCheckoutAddressBinding binding ;
     R3cyDB db;
+    String email;
+    Customer customer;
+    // Lấy CUSTOMER_ID từ SharedPreferences hoặc bất kỳ nguồn dữ liệu nào khác
+    int customerId ; // Thay bằng cách lấy CUSTOMER_ID thích hợp
 
 
     @Override
@@ -28,13 +33,29 @@ public class Checkout_Address extends AppCompatActivity {
         binding = ActivityCheckoutAddressBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        email = getIntent().getStringExtra("key_email");
+
+        Log.d("SharedPreferences", "Email ở checkout: " + email);
+
+
+
         createDb();
 
         addEvent();
+
+        // Nếu không có email từ SharedPreferences, không thực hiện gì cả
+        if (email == null) {
+            return;
+        }
+
+        // Lấy thông tin của khách hàng dựa trên email từ SharedPreferences
+        customer = db.getCustomerByEmail1(email);
+        customerId = customer.getCustomerId();
     }
     private void createDb() {
         db = new R3cyDB(this);
         db.createSampleDataAddress();
+        db.createSampleDataCustomer();
 
         if (db != null) {
             Log.d("AddressListDB", "Database created successfully");
@@ -75,8 +96,7 @@ public class Checkout_Address extends AppCompatActivity {
         String detailAddress = binding.edtDetailAddress.getText().toString();
         int DefaultAddress = binding.switchDefaultAddress.isChecked() ? 1 : 0;
 
-        // Lấy CUSTOMER_ID từ SharedPreferences hoặc bất kỳ nguồn dữ liệu nào khác
-        int customerId = 1; // Thay bằng cách lấy CUSTOMER_ID thích hợp
+
 
         // Kiểm tra và xử lý dữ liệu
         if (receiverName.isEmpty() || receiverPhone.isEmpty() || province.isEmpty() || district.isEmpty() || ward.isEmpty() || detailAddress.isEmpty()) {
@@ -159,6 +179,7 @@ public class Checkout_Address extends AppCompatActivity {
 
                     // Chuyển đến màn hình khác (ví dụ: Danh sách địa chỉ)
                      Intent intent = new Intent(Checkout_Address.this, Checkout_AddressList.class);
+                    intent.putExtra("key_email", email);
                      startActivity(intent);
 
                     // Hoặc kết thúc activity hiện tại nếu không cần chuyển đến màn hình khác

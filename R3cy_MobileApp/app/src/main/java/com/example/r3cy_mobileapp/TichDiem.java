@@ -1,5 +1,7 @@
 package com.example.r3cy_mobileapp;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +12,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.adapter.CouponAdapter;
@@ -24,6 +27,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,6 +44,8 @@ public class TichDiem extends AppCompatActivity {
     R3cyDB db;
     private PieChart pieChart;
     private int scoreDifference;
+    String email;
+    BottomNavigationView navigationView;
 
 
     @Override
@@ -48,11 +54,21 @@ public class TichDiem extends AppCompatActivity {
         binding = ActivityTichDiemBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        //Custom action bar
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.custom_action_bar);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
         db = new R3cyDB(this);
         db.createSampleDataCoupon();
         db.createSampleDataCustomer();
 
         pieChart = findViewById(R.id.pie_chart);
+
+        email = getIntent().getStringExtra("key_email");
 
         addEvents();
     }
@@ -145,18 +161,21 @@ public class TichDiem extends AppCompatActivity {
         }
         c.close();
 
-        adapter = new CouponAdapterRecycler(this, coupons);
+        adapter = new CouponAdapterRecycler(this, coupons, email);
+        Log.d("SharedPreferences", "Email ở tích điểm: " + email);
         binding.rcvCoupon.setAdapter(adapter);
     }
 
     private void getDataCustomer() {
 
         // Lấy email từ SharedPreferences
-        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
-        String email = preferences.getString("string", "");
+//        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+//        String email = preferences.getString("string", "");
+
+
 
         // Nếu không có email từ SharedPreferences, không thực hiện gì cả
-        if (email.isEmpty()) {
+        if (email == null) {
             return;
         }
 
@@ -216,8 +235,62 @@ public class TichDiem extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TichDiem.this, DoiDiem.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
+        });
+
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // Kết thúc hoạt động hiện tại và quay lại trang trước đó
+            }
+        });
+
+        navigationView = findViewById(R.id.mn_home);
+        navigationView.setSelectedItemId(R.id.item_home);
+
+
+        navigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.item_product){
+                    Intent intent1 = new Intent(getApplicationContext(),Product_List.class);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent1);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_blog) {
+                    Intent intent2 =new Intent(getApplicationContext(),BlogDetail.class);
+                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent2);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_store) {
+                    Intent intent3 =new Intent(getApplicationContext(),AboutUs.class);
+                    intent3.putExtra("key_email", email);
+                    intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent3);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_account) {
+                    Intent intent4 =new Intent(getApplicationContext(),UserAccount_Main.class);
+                    intent4.putExtra("key_email", email);
+                    intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent4);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_home) {
+                    Intent intent5 =new Intent(getApplicationContext(),TrangChu.class);
+                    intent5.putExtra("key_email", email);
+                    intent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent5);
+                    overridePendingTransition(0,0);
+                    return true;
+                }
+                return false;}
+
+
         });
     }
 }
