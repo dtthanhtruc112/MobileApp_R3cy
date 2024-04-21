@@ -72,10 +72,8 @@ public class TrangChu extends AppCompatActivity {
         BannerAdapter bannerAdapter =(BannerAdapter) new BannerAdapter(bannerList);
         viewPager.setAdapter(bannerAdapter);
 
-        email = getIntent().getStringExtra("key_email");
-
-//        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
-//        email = preferences.getString("string", "");
+        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
+        email = preferences.getString("string", "");
 
         Log.d("SharedPreferences", "Email: " + email);
 
@@ -163,18 +161,6 @@ public class TrangChu extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (email != null) {
-            // Đã đăng nhập
-            Toast.makeText(TrangChu.this, "Đã đăng nhập", Toast.LENGTH_SHORT).show();
-            // Thiết lập văn bản cho nút đăng nhập
-            binding.btnDangnhap.setText("Đã đăng nhập");
-        }
-
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
 
@@ -217,7 +203,7 @@ public class TrangChu extends AppCompatActivity {
             Intent intentCart = new Intent(TrangChu.this, CartManage.class);
             startActivity(intentCart);
         } else if (item.getItemId() == R.id.action_noti) {
-            Intent intentNoti = new Intent(TrangChu.this, Notification.class);
+            Intent intentNoti = new Intent(TrangChu.this, AboutUs.class);
             startActivity(intentNoti);
         }
 
@@ -230,7 +216,7 @@ public class TrangChu extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                if (email != null) {
+                if (!email.isEmpty()) {
                     // Đã đăng nhập
                     Toast.makeText(TrangChu.this, "Đã đăng nhập", Toast.LENGTH_SHORT).show();
                     // Thiết lập văn bản cho nút đăng nhập
@@ -331,7 +317,6 @@ public class TrangChu extends AppCompatActivity {
                     return true;
                 } else if (item.getItemId() == R.id.item_account) {
                     Intent intent4 =new Intent(getApplicationContext(),UserAccount_Main.class);
-                    intent4.putExtra("key_email", email);
                     intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent4);
                     overridePendingTransition(0,0);
