@@ -1,10 +1,14 @@
 package com.example.r3cy_mobileapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -14,6 +18,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -27,6 +32,8 @@ import com.example.models.CartItem;
 import com.example.models.Customer;
 import com.example.models.Product;
 import com.example.models.ProductAtb;
+import com.example.r3cy_mobileapp.Product.Product_Detail;
+import com.example.r3cy_mobileapp.Signin.Signin_Main;
 import com.example.r3cy_mobileapp.databinding.ActivityCartManageBinding;
 
 import java.io.ByteArrayOutputStream;
@@ -102,42 +109,75 @@ public class CartManage extends AppCompatActivity {
     private void loadData() {
         // Nếu không có email từ SharedPreferences, không thực hiện gì cả
         if (email == null) {
-            return;
+            AlertDialog.Builder builder = new AlertDialog.Builder(CartManage.this);
+            builder.setMessage("Bạn chưa đăng nhập, vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
+            builder.setPositiveButton("Đăng nhập", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Chuyển đến trang đăng nhập khi nhấn nút Đăng nhập
+                    startActivity(new Intent(CartManage.this, Signin_Main.class));
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Không thực hiện gì nếu nhấn Cancel
+                    dialog.dismiss();
+                }
+            });
+            Dialog dialog = builder.create();
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialogInterface) {
+                    Button positiveButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+                    Button negativeButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE);
+
+                    // Set text color for "Ok" button
+                    positiveButton.setTextColor(ContextCompat.getColor(CartManage.this, R.color.blue));
+
+                    // Set text color for "Cancel" button
+                    negativeButton.setTextColor(ContextCompat.getColor(CartManage.this, R.color.blue));
+                }
+            });
+
+            dialog.show();
+        }else{
+            // Lấy thông tin của khách hàng dựa trên email từ SharedPreferences
+            customer = db.getCustomerByEmail1(email);
+
+            // Lấy dữ liệu từ ProductDao
+            cartItems = (ArrayList<CartItem>) productDao.getCartItemsForCustomer(customer.getCustomerId());
+            Log.i("CartItemSize", "Number of items retrieved: " + cartItems.size());
+            // Khởi tạo adapter và thiết lập cho ListView
+            adapter = new CartAdapter(this, R.layout.cartitem, cartItems);
+            binding.lvCartList.setAdapter(adapter);
+
+            // Set total amount TextView in adapter
+            adapter.setTxtTotalAmount(binding.txtTotalAmount);
+
+            // Thiết lập sự kiện lắng nghe khi số lượng giảm
+            adapter.setOnQuantityDecreaseListener(new CartAdapter.OnQuantityDecreaseListener() {
+                @Override
+                public void onDecrease(int position) {
+
+                    handleQuantityDecrease(position);
+                    // Set total amount TextView in adapter
+                    adapter.setTxtTotalAmount(binding.txtTotalAmount);
+                }
+            });
+
+            adapter.setOnQuantityIncreaseListener(new CartAdapter.OnQuantityIncreaseListener() {
+                @Override
+                public void onIncrease(int position) {
+
+                    handleQuantityIncrease(position);
+                    // Set total amount TextView in adapter
+                    adapter.setTxtTotalAmount(binding.txtTotalAmount);
+                }
+            });
         }
 
-        // Lấy thông tin của khách hàng dựa trên email từ SharedPreferences
-        customer = db.getCustomerByEmail1(email);
 
-        // Lấy dữ liệu từ ProductDao
-        cartItems = (ArrayList<CartItem>) productDao.getCartItemsForCustomer(customer.getCustomerId());
-        Log.i("CartItemSize", "Number of items retrieved: " + cartItems.size());
-        // Khởi tạo adapter và thiết lập cho ListView
-        adapter = new CartAdapter(this, R.layout.cartitem, cartItems);
-        binding.lvCartList.setAdapter(adapter);
-
-        // Set total amount TextView in adapter
-        adapter.setTxtTotalAmount(binding.txtTotalAmount);
-
-        // Thiết lập sự kiện lắng nghe khi số lượng giảm
-        adapter.setOnQuantityDecreaseListener(new CartAdapter.OnQuantityDecreaseListener() {
-            @Override
-            public void onDecrease(int position) {
-
-                handleQuantityDecrease(position);
-                // Set total amount TextView in adapter
-                adapter.setTxtTotalAmount(binding.txtTotalAmount);
-            }
-        });
-
-        adapter.setOnQuantityIncreaseListener(new CartAdapter.OnQuantityIncreaseListener() {
-            @Override
-            public void onIncrease(int position) {
-
-                handleQuantityIncrease(position);
-                // Set total amount TextView in adapter
-                adapter.setTxtTotalAmount(binding.txtTotalAmount);
-            }
-        });
 
 
 
@@ -180,11 +220,11 @@ public class CartManage extends AppCompatActivity {
                 }
             }
         } finally {
-            cursor.close(); // Close the cursor to avoid memory leaks
+            cursor.close();
         }
 
-        List<Product> filteredProducts = filterProductsByHot(1);
-        List<Product> filteredProducts1 = filterProductsByHot(0);
+//        List<Product> filteredProducts = filterProductsByHot(1);
+        List<Product> filteredProducts = filterProductsByHot(0);
 
         // Kiểm tra nếu danh sách products hoặc cartItems là null
         if (products == null) {
@@ -197,7 +237,7 @@ public class CartManage extends AppCompatActivity {
             return;
         }
 
-        // Lọc ra các sản phẩm đã hiển thị từ danh sách products
+        // Lọc ra các sản phẩm đã hiển thị từ danh sách cartitem
         List<Integer> shownProductIds = new ArrayList<>();
         for (CartItem cartItem : cartItems) {
             shownProductIds.add(cartItem.getProductId());
