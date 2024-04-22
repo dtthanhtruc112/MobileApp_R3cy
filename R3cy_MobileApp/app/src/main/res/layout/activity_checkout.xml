@@ -213,6 +213,7 @@
                     android:layout_height="1dp"
                     android:background="@android:color/darker_gray"/>
                 <LinearLayout
+                    android:id="@+id/paymentMethodLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -452,6 +453,7 @@
 
 
                     <Button
+                        android:id="@+id/btnMakeOrder"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
