@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -13,10 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.adapter.CouponAdapter;
+import com.example.adapter.VoucherAdapter;
 import com.example.databases.R3cyDB;
 import com.example.models.Coupon;
 import com.example.models.Customer;
+import com.example.models.Voucher;
 import com.example.r3cy_mobileapp.Product.Product_List;
 import com.example.r3cy_mobileapp.databinding.ActivityUserAccountVoucherBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -31,12 +31,14 @@ public class User_account_voucher extends AppCompatActivity {
     ActivityUserAccountVoucherBinding binding;
     Coupon coupon;
     R3cyDB db;
-    CouponAdapter adapter;
+    VoucherAdapter adapter;
     Customer customer;
     ArrayList<Coupon> coupons;
     String email;
     BottomNavigationView navigationView;
+    VoucherAdapter voucherAdapter;
 
+    ArrayList<Voucher> vouchers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class User_account_voucher extends AppCompatActivity {
 
         Log.d("SharedPreferences", "Email ở voucher acc: " + email);
 //        }
-//        createDb();
+        createDb();
 //        getDataCustomer();
         loadData();
         addEvents();
@@ -65,7 +67,7 @@ public class User_account_voucher extends AppCompatActivity {
     private void getDataCustomer() {
         db = new R3cyDB(this);
         int customerId = customer.getCustomerId();
-        Cursor c1 = db.getData("SELECT * FROM " + R3cyDB.TBL_CUSTOMER + " WHERE " + R3cyDB.CUSTOMER_IDS + " LIKE '%" + customerId + "%'");
+        Cursor c1 = db.getData("SELECT * FROM " + R3cyDB.TBL_CUSTOMER + " WHERE " + R3cyDB.CUSTOMER_ID + " LIKE '%" + customerId + "%'");
         if (c1.moveToFirst()) {
             customer = new Customer(c1.getInt(0),
                     c1.getString(1),
@@ -121,14 +123,14 @@ private boolean isCustomerEligibleForCoupon(int customerId) {
 
 
     private void loadData() {
-        if (customer != null) {
+//        if (customer != null) {
              // Lấy email từ đăng nhập hiện tại
             db = new R3cyDB(this);
             int customerId = db.getCustomerIdFromCustomer(email);
         if (customerId != -1) {
 //            boolean isCustomerEligible = isCustomerEligibleForCoupon(customerId);
 //            if (isCustomerEligible) {
-                ArrayList<Coupon> coupons = new ArrayList<>();
+                ArrayList<Voucher> vouchers = new ArrayList<>();
                 Cursor c = db.getData("SELECT * FROM " + R3cyDB.TBl_COUPON + " WHERE " + R3cyDB.CUSTOMER_IDS + " LIKE '%" + customerId + "%'");
 
                 while (c.moveToNext()) {
@@ -146,7 +148,7 @@ private boolean isCustomerEligibleForCoupon(int customerId) {
                             }
                         }
 
-                        coupons.add(new Coupon(
+                        vouchers.add(new Voucher(
                                 c.getInt(0),
                                 c.getString(1),
                                 c.getString(2),
@@ -167,16 +169,16 @@ private boolean isCustomerEligibleForCoupon(int customerId) {
                 }
                 c.close();
 
-                adapter = new CouponAdapter(this, R.layout.item_voucher, coupons, email);
+                adapter = new VoucherAdapter(this, R.layout.item_voucher, vouchers, email);
                 binding.lvVoucher.setAdapter(adapter);
             } else {
                 Toast.makeText(User_account_voucher.this, "Không tìm thấy phiếu giảm giá cho khách hàng này", Toast.LENGTH_SHORT).show();
             Log.e("Error", "Customer object is null");
 
         }
-        } else {
-            Toast.makeText(User_account_voucher.this, "Không lấy được dữ liệu", Toast.LENGTH_SHORT).show();
-        }
+//        } else {
+//            Toast.makeText(User_account_voucher.this, "Không lấy được dữ liệu", Toast.LENGTH_SHORT).show();
+//        }
     }
 
 

@@ -1,9 +1,10 @@
 package com.example.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Voucher {
+public class Voucher implements Serializable {
     int COUPON_ID;
     String COUPON_CODE;
     String COUPON_TITLE;
@@ -16,7 +17,31 @@ public class Voucher {
     double MAXIMUM_DISCOUNT;
     double COUPON_VALUE;
     int MAXIMUM_USERS;
-    ArrayList<Integer> customerIds;
+    ArrayList<Integer> customerIds; // Thêm biến customerIds dạng mảng ArrayList
+
+    public Voucher(int COUPON_ID, String COUPON_CODE, String COUPON_TITLE, int SCORE_MIN, String COUPON_TYPE, String COUPON_CATEGORY, Date VALID_DATE, Date EXPIRE_DATE, double MIN_ORDER_VALUE, double MAXIMUM_DISCOUNT, double COUPON_VALUE, int MAXIMUM_USERS, ArrayList<Integer> customerIds) {
+        this.COUPON_ID = COUPON_ID;
+        this.COUPON_CODE = COUPON_CODE;
+        this.COUPON_TITLE = COUPON_TITLE;
+        this.SCORE_MIN = SCORE_MIN;
+        this.COUPON_TYPE = COUPON_TYPE;
+        this.COUPON_CATEGORY = COUPON_CATEGORY;
+        this.VALID_DATE = VALID_DATE;
+        this.EXPIRE_DATE = EXPIRE_DATE;
+        this.MIN_ORDER_VALUE = MIN_ORDER_VALUE;
+        this.MAXIMUM_DISCOUNT = MAXIMUM_DISCOUNT;
+        this.COUPON_VALUE = COUPON_VALUE;
+        this.MAXIMUM_USERS = MAXIMUM_USERS;
+        this.customerIds = customerIds;
+    }
+
+    public String getCOUPON_CATEGORY() {
+        return COUPON_CATEGORY;
+    }
+
+    public void setCOUPON_CATEGORY(String COUPON_CATEGORY) {
+        this.COUPON_CATEGORY = COUPON_CATEGORY;
+    }
 
     public int getCOUPON_ID() {
         return COUPON_ID;
@@ -56,14 +81,6 @@ public class Voucher {
 
     public void setCOUPON_TYPE(String COUPON_TYPE) {
         this.COUPON_TYPE = COUPON_TYPE;
-    }
-
-    public String getCOUPON_CATEGORY() {
-        return COUPON_CATEGORY;
-    }
-
-    public void setCOUPON_CATEGORY(String COUPON_CATEGORY) {
-        this.COUPON_CATEGORY = COUPON_CATEGORY;
     }
 
     public Date getVALID_DATE() {

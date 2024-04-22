@@ -17,18 +17,22 @@ import com.example.r3cy_mobileapp.DoiDiem_ChiTiet;
 import com.example.r3cy_mobileapp.R;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class VoucherAdapter extends BaseAdapter {
     Activity activity;
     int item_voucher;
     List<Voucher> vouchers;
+    String email;
 
 
-    public VoucherAdapter(Activity activity, int item_layout, List<Voucher> vouchers) {
+    public VoucherAdapter(Activity activity, int item_layout, List<Voucher> vouchers, String email) {
         this.activity = activity;
         this.item_voucher = item_layout;
         this.vouchers = vouchers;
+        this.email = email;
     }
 
     @Override
@@ -67,7 +71,9 @@ public class VoucherAdapter extends BaseAdapter {
         Voucher c = vouchers.get(position);
         holder.txtCode.setText(c.getCOUPON_CODE());
         holder.txtTitle.setText(c.getCOUPON_TITLE());
-        holder.txtHSD.setText((CharSequence) c.getVALID_DATE());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String formattedDate = dateFormat.format(c.getEXPIRE_DATE());
+        holder.txtHSD.setText(formattedDate);
         // Đặt vị trí vào tag của nút đổi điểm
         holder.btnDoiDiem.setTag(position);
 
@@ -83,7 +89,6 @@ public class VoucherAdapter extends BaseAdapter {
 
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("COUPON", (Serializable) clickedCoupon);
-
 
 
                 // Tạo một Intent để chuyển đến trang chi tiết và chuyển dữ liệu coupon

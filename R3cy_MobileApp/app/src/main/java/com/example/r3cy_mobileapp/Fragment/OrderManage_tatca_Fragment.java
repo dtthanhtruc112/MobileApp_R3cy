@@ -15,11 +15,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.adapter.CartAdapter;
 import com.example.adapter.OrderAdapter;
 import com.example.databases.R3cyDB;
+import com.example.models.CartItem;
+import com.example.models.Customer;
 import com.example.models.Order;
 import com.example.r3cy_mobileapp.R;
+import com.example.r3cy_mobileapp.User_account_manageOrder;
 import com.example.r3cy_mobileapp.databinding.FragmentOrderManageTatcaBinding;
 
 import java.lang.reflect.Field;
@@ -46,6 +51,8 @@ public class OrderManage_tatca_Fragment extends Fragment {
 
     R3cyDB dbR3cy;
     OrderAdapter adapter;
+    String email;
+    Customer customer;
 
 
 
@@ -103,34 +110,41 @@ public class OrderManage_tatca_Fragment extends Fragment {
     }
     public List<Order> getOrder() {
 
-        String orderStatus = dbR3cy.getOrderStatus("Đang giao");
+        String orderStatus = dbR3cy.getOrderStatus("Chờ xử lý");
+         customer = dbR3cy.getCustomerByEmail1(email);
+         int customerId = customer.getCustomerId();
+//        Cursor c1 = db.getData("SELECT * FROM " + R3cyDB.TBL_CUSTOMER + " WHERE " + R3cyDB.CUSTOMER_IDS + " LIKE '%" + customerId + "%'");
         List<Order> orders = new ArrayList<>();
         SQLiteDatabase db = dbR3cy.getReadableDatabase();
         Cursor cursor = null;
 //
 
         try {
-            String query = "SELECT " +
-                    "o." + R3cyDB.ORDER_ID + ", " +
-                    "ol." + R3cyDB.ORDER_LINE_ID + ", " +
-                    "ol." + R3cyDB.ORDER_LINE_ORDER_ID + ", " +
-                    "ol." + R3cyDB.ORDER_LINE_PRODUCT_ID + ", " +
-                    "ol." + R3cyDB.ORDER_SALE_PRICE + ", " +
-                    "ol." + R3cyDB.QUANTITY + ", " +
-                    "o." + R3cyDB.ORDER_CUSTOMER_ID + ", " +
-                    "o." + R3cyDB.TOTAL_ORDER_VALUE + ", " +
-                    "o." + R3cyDB.ORDER_STATUS + ", " +
-                    "o." + R3cyDB.TOTAL_AMOUNT + ", " +
-                    "p." + R3cyDB.PRODUCT_THUMB + ", " +
-                    "p." + R3cyDB.PRODUCT_NAME + ", " +
-                    "p." + R3cyDB.PRODUCT_PRICE + ", " +
-                    "p." + R3cyDB.PRODUCT_ID +
-                    " FROM " + R3cyDB.TBl_ORDER + " o " + " " +
-                    " INNER JOIN " + R3cyDB.TBl_ORDER_LINE + " ol" +
-                    " ON o." + R3cyDB.ORDER_ID + " = ol." + R3cyDB.ORDER_LINE_ORDER_ID + " " +
-                    " INNER JOIN " + R3cyDB.TBl_PRODUCT + " p" +
-                    " ON ol." + R3cyDB.ORDER_LINE_PRODUCT_ID + " = p." + R3cyDB.PRODUCT_ID +
-                    " WHERE o. " + R3cyDB.ORDER_STATUS + " LIKE '%" + orderStatus + "%'";
+
+
+                String query = "SELECT " +
+                        "o." + R3cyDB.ORDER_ID + ", " +
+                        "ol." + R3cyDB.ORDER_LINE_ID + ", " +
+                        "ol." + R3cyDB.ORDER_LINE_ORDER_ID + ", " +
+                        "ol." + R3cyDB.ORDER_LINE_PRODUCT_ID + ", " +
+                        "ol." + R3cyDB.ORDER_SALE_PRICE + ", " +
+                        "ol." + R3cyDB.QUANTITY + ", " +
+                        "o." + R3cyDB.ORDER_CUSTOMER_ID + ", " +
+                        "o." + R3cyDB.TOTAL_ORDER_VALUE + ", " +
+                        "o." + R3cyDB.ORDER_STATUS + ", " +
+                        "o." + R3cyDB.TOTAL_AMOUNT + ", " +
+                        "p." + R3cyDB.PRODUCT_THUMB + ", " +
+                        "p." + R3cyDB.PRODUCT_NAME + ", " +
+                        "p." + R3cyDB.PRODUCT_PRICE + ", " +
+                        "p." + R3cyDB.PRODUCT_ID +
+                        " FROM " + R3cyDB.TBl_ORDER + " o " + " " +
+                        " INNER JOIN " + R3cyDB.TBl_ORDER_LINE + " ol" +
+                        " ON o." + R3cyDB.ORDER_ID + " = ol." + R3cyDB.ORDER_LINE_ORDER_ID + " " +
+                        " INNER JOIN " + R3cyDB.TBl_PRODUCT + " p" +
+                        " ON ol." + R3cyDB.ORDER_LINE_PRODUCT_ID + " = p." + R3cyDB.PRODUCT_ID +
+                        " WHERE o. " + R3cyDB.ORDER_STATUS + " LIKE '%" + orderStatus + "%' AND " +
+                        "o." + R3cyDB.ORDER_CUSTOMER_ID + " LIKE '%" + customerId + "%'";
+
 
             cursor = db.rawQuery(query, null);
 
@@ -165,6 +179,7 @@ public class OrderManage_tatca_Fragment extends Fragment {
         }
 
         return orders;
+
     }
 
     private void loadData() {
