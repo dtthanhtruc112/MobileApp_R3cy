@@ -125,7 +125,7 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
                     "o." + R3cyDB.TOTAL_ORDER_VALUE + ", " +
                     "o." + R3cyDB.ORDER_STATUS + ", " +
                     "o." + R3cyDB.TOTAL_AMOUNT + ", " +
-                    "p." + R3cyDB.PRODUCT_IMG1 + ", " +
+                    "p." + R3cyDB.PRODUCT_THUMB + ", " +
                     "p." + R3cyDB.PRODUCT_NAME + ", " +
                     "p." + R3cyDB.PRODUCT_PRICE + ", " +
                     "p." + R3cyDB.PRODUCT_ID +
@@ -150,7 +150,7 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
                     @SuppressLint("Range") double TotalOrderValue = cursor.getDouble(cursor.getColumnIndex(R3cyDB.TOTAL_ORDER_VALUE));
                     @SuppressLint("Range") String OrderStatus = cursor.getString(cursor.getColumnIndex(R3cyDB.ORDER_STATUS));
                     @SuppressLint("Range") double TotalAmount = cursor.getDouble(cursor.getColumnIndex(R3cyDB.TOTAL_AMOUNT));
-                    @SuppressLint("Range") byte[] ProductImg = cursor.getBlob(cursor.getColumnIndex(R3cyDB.PRODUCT_IMG1));
+                    @SuppressLint("Range") byte[] ProductImg = cursor.getBlob(cursor.getColumnIndex(R3cyDB.PRODUCT_THUMB));
                     @SuppressLint("Range") String ProductName = cursor.getString(cursor.getColumnIndex(R3cyDB.PRODUCT_NAME));
 
                     Order order = new Order(OrderId, OrderLineID, OrderLineProductID, OrderSalePrice, Quantity, OrderCustomerID, ProductPrice, TotalOrderValue, OrderStatus, TotalAmount, ProductImg, ProductName);

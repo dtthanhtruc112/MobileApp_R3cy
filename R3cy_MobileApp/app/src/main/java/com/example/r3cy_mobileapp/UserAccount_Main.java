@@ -208,7 +208,7 @@ public class UserAccount_Main extends AppCompatActivity {
         binding.usAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Checkout_AddressList.class);
+                Intent intent = new Intent(getApplicationContext(), UserAccount_Address.class);
                 intent.putExtra("key_email", email);
                 startActivity(intent);
             }

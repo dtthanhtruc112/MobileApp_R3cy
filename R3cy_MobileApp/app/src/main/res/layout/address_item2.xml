@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/blog_border"
+        android:weightSum="10">
+
+
+        <LinearLayout
+            android:layout_width="298dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtReceiverName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Trần Tuyết Nhi"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="10dp" />
+
+                <TextView
+                    android:id="@+id/txtReceiverPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Số điện thoại"
+                    android:textStyle="bold" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/txtDetailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Địa chỉ cụ thể"/>
+            <TextView
+                android:id="@+id/txtGeneralAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Xã, Huyện, Thành phố"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginHorizontal="10dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="10">
+                <LinearLayout
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5">
+                    <TextView
+                        android:id="@+id/txtDefaultAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Mặc định"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:background="@drawable/blog_border"
+                        android:padding="8dp" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_weight="5"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:gravity="end|center_vertical"
+                    android:layout_marginEnd="20dp">
+                    <TextView
+                        android:id="@+id/txtDeleteAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Xóa"
+                        android:textColor="@color/blue"
+                        android:layout_marginEnd="10dp"/>
+                    <TextView
+                        android:id="@+id/txtEditAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chỉnh sửa"
+                        android:textColor="@color/blue"/>
+
+                </LinearLayout>
+
+
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

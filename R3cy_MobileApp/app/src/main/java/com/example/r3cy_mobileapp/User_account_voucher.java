@@ -121,7 +121,7 @@ private boolean isCustomerEligibleForCoupon(int customerId) {
 
 
     private void loadData() {
-//        if (customer != null) {
+        if (customer != null) {
              // Lấy email từ đăng nhập hiện tại
             db = new R3cyDB(this);
             int customerId = db.getCustomerIdFromCustomer(email);
@@ -171,10 +171,12 @@ private boolean isCustomerEligibleForCoupon(int customerId) {
                 binding.lvVoucher.setAdapter(adapter);
             } else {
                 Toast.makeText(User_account_voucher.this, "Không tìm thấy phiếu giảm giá cho khách hàng này", Toast.LENGTH_SHORT).show();
-            }
-//        } else {
-//            Toast.makeText(User_account_voucher.this, "Không lấy được dữ liệu", Toast.LENGTH_SHORT).show();
-//        }
+            Log.e("Error", "Customer object is null");
+
+        }
+        } else {
+            Toast.makeText(User_account_voucher.this, "Không lấy được dữ liệu", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

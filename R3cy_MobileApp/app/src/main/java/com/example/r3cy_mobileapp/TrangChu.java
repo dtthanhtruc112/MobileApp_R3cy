@@ -9,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.CursorWindow;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -32,6 +33,7 @@ import com.example.r3cy_mobileapp.Signin.Signin_Main;
 import com.example.r3cy_mobileapp.databinding.ActivityTrangChuBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -85,6 +87,13 @@ public class TrangChu extends AppCompatActivity {
 //        email = preferences.getString("string", "");
 
         Log.d("SharedPreferences", "Email: " + email);
+        try {
+            Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
+            field.setAccessible(true);
+            field.set(null, 100 * 1024 * 1024); //the 100MB is the new size
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         autoSlide();
         addEvents();

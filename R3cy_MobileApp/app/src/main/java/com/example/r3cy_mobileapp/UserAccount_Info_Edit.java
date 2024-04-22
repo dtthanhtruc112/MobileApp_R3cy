@@ -46,14 +46,14 @@ public class UserAccount_Info_Edit extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(true);
 
         email = getIntent().getStringExtra("key_email");
-
-        Log.d("SharedPreferences", "Email ở accinfoedit: " + email);
+//
+//        Log.d("SharedPreferences", "Email ở accinfoedit: " + email);
 
         name = binding.editname;
         username = binding.editusername;
         phone = binding.editphonenumber;
         useremail = binding.editemail;
-//        gender = binding.editgioitinh;
+        gender = binding.editgioitinh;
         birthday = binding.ngaysinh;
         btnedit =binding.btnSave;
 //        btnCancel =binding.btnCancle;
@@ -65,9 +65,9 @@ public class UserAccount_Info_Edit extends AppCompatActivity {
         useremail.setText(userInfos.getEmail());
         birthday.setText(userInfos.getBirthday());
         gender.setText(userInfos.getGender());
-        String[] gender1 = {"Nam", "Nữ", "Khác"};
-        ArrayAdapter<String> adapterAddress = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, gender1);
-        binding.editgioitinh.setAdapter(adapterAddress);
+//        String[] gender1 = {"Nam", "Nữ", "Khác"};
+//        ArrayAdapter<String> adapterAddress = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, gender1);
+//        binding.editgioitinh.setAdapter(adapterAddress);
 
         addEvents();
         // Gọi phương thức để tải thông tin người dùng
@@ -147,22 +147,22 @@ public class UserAccount_Info_Edit extends AppCompatActivity {
 //    }
 
     public  void  upateUserProfile(View view){
-        String gender1 = (String) binding.editgioitinh.getSelectedItem();
+//        String gender1 = (String) binding.editgioitinh.getSelectedItem();
 
         String name1 = name.getText().toString();
         String username1 = username.getText().toString();
         String phone1 = phone.getText().toString();
         String email = useremail.getText().toString();
-//        String gender1 = gender.getText().toString();
+        String gender1 = gender.getText().toString();
         String birthday1 = birthday.getText().toString();
 
         db = new R3cyDB(this);
         boolean b = db.upDateUserProfile(userInfos.getEmail(), name1, username1, phone1, gender1, birthday1);
         if (b){
             Toast.makeText(this, "Lưu dữ liệu thành công", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(UserAccount_Info_Edit.this, UserAccount_Info.class);
-            intent.putExtra("key_email", email);
-            startActivity(intent);
+            Intent intent7 = new Intent(UserAccount_Info_Edit.this, UserAccount_Info.class);
+            intent7.putExtra("key_email", email);
+            startActivity(intent7);
         }
         else {
             Toast.makeText(this, "Lưu dữ liệu thất bại", Toast.LENGTH_SHORT).show();

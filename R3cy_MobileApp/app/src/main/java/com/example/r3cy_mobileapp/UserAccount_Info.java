@@ -178,6 +178,7 @@ public class UserAccount_Info extends AppCompatActivity {
         Intent intent = new Intent(UserAccount_Info.this, UserAccount_Info_Edit.class);
         intent.putExtra("key_userinfo", userInfos);
         startActivity(intent);
+
     }
 
 }
