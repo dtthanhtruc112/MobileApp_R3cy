@@ -320,6 +320,9 @@ public class Checkout extends AppCompatActivity {
 
             Toast.makeText(Checkout.this, "Đặt hàng thành công!", Toast.LENGTH_SHORT).show();
             // Đặt các thao tác hoặc chuyển hướng sau khi đặt hàng thành công
+            Intent intent = new Intent(Checkout.this, TrangChu.class);
+            startActivity(intent);
+            
         } else {
             Toast.makeText(Checkout.this, "Đặt hàng thất bại! Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
         }
