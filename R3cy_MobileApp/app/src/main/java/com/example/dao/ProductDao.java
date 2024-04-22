@@ -1,5 +1,8 @@
 package com.example.dao;
 
+import static com.example.databases.R3cyDB.CART_CUSTOMER_ID;
+import static com.example.databases.R3cyDB.CART_PRODUCT_ID;
+import static com.example.databases.R3cyDB.CART_QUANTITY;
 import static com.example.databases.R3cyDB.CUSTOMER_ID;
 import static com.example.databases.R3cyDB.INVENTORY;
 import static com.example.databases.R3cyDB.MEMBERSHIP_SCORE;
@@ -10,6 +13,7 @@ import static com.example.databases.R3cyDB.PRODUCT_ID;
 import static com.example.databases.R3cyDB.QUANTITY;
 import static com.example.databases.R3cyDB.SOLD_QUANTITY;
 import static com.example.databases.R3cyDB.TBL_CUSTOMER;
+import static com.example.databases.R3cyDB.TBl_CART;
 import static com.example.databases.R3cyDB.TBl_ORDER_LINE;
 import static com.example.databases.R3cyDB.TBl_PRODUCT;
 
@@ -50,11 +54,11 @@ public class ProductDao {
                     "p." + PRODUCT_ID + ", " +
                     "p." + R3cyDB.PRODUCT_NAME + ", " +
                     "p." + R3cyDB.CATEGORY + ", " +
-                    "p." + R3cyDB.PRODUCT_PRICE + ", " +
+                    "p." + R3cyDB.SALE_PRICE + ", " +
                     "c." + R3cyDB.CART_QUANTITY + ", " +
                     "p." + R3cyDB.PRODUCT_THUMB +
                     " FROM " + TBl_PRODUCT + " p" +
-                    " INNER JOIN " + R3cyDB.TBl_CART + " c" +
+                    " INNER JOIN " + TBl_CART + " c" +
                     " ON p." + PRODUCT_ID + " = c." + R3cyDB.CART_PRODUCT_ID +
                     " WHERE c." + R3cyDB.CART_CUSTOMER_ID + " = " + customerId;
 
@@ -66,7 +70,7 @@ public class ProductDao {
                     int columnIndexProductId = cursor.getColumnIndex(PRODUCT_ID);
                     int columnIndexProductName = cursor.getColumnIndex(R3cyDB.PRODUCT_NAME);
                     int columnIndexCategory = cursor.getColumnIndex(R3cyDB.CATEGORY);
-                    int columnIndexProductPrice = cursor.getColumnIndex(R3cyDB.PRODUCT_PRICE);
+                    int columnIndexProductPrice = cursor.getColumnIndex(R3cyDB.SALE_PRICE);
                     int columnIndexCartQuantity = cursor.getColumnIndex(R3cyDB.CART_QUANTITY);
                     int columnIndexProductThumb = cursor.getColumnIndex(R3cyDB.PRODUCT_THUMB);
 
@@ -97,6 +101,63 @@ public class ProductDao {
         return cartItems;
     }
 
+    public boolean insertOrUpdateCartItem(int customerId, int productId, int quantity) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // Kiểm tra xem hàng đã tồn tại trong giỏ hàng hay chưa
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TBl_CART + " WHERE " + CART_CUSTOMER_ID + " = ? AND " + CART_PRODUCT_ID + " = ?", new String[]{String.valueOf(customerId), String.valueOf(productId)});
+        if (cursor != null && cursor.getCount() > 0) {
+            // Hàng đã tồn tại, cập nhật số lượng
+            cursor.moveToFirst();
+            int existingQuantity = cursor.getInt(cursor.getColumnIndexOrThrow(CART_QUANTITY));
+            int newQuantity = existingQuantity + quantity;
+
+            ContentValues updateValues = new ContentValues();
+            updateValues.put(CART_QUANTITY, newQuantity);
+
+            try {
+                int rowsAffected = db.update(TBl_CART, updateValues, CART_CUSTOMER_ID + " = ? AND " + CART_PRODUCT_ID + " = ?", new String[]{String.valueOf(customerId), String.valueOf(productId)});
+                if (rowsAffected > 0) {
+                    Log.d("ProductDao", "Item quantity updated successfully");
+                    return true;
+                } else {
+                    Log.e("ProductDao", "Failed to update item quantity");
+                    return false;
+                }
+            } catch (SQLException e) {
+                Log.e("ProductDao", "Error updating item quantity: " + e.getMessage());
+                return false;
+            } finally {
+                cursor.close();
+                db.close();
+            }
+        } else {
+            // Hàng chưa tồn tại, thêm hàng mới vào giỏ hàng
+            ContentValues values = new ContentValues();
+            values.put(CART_CUSTOMER_ID, customerId);
+            values.put(CART_PRODUCT_ID, productId);
+            values.put(CART_QUANTITY, quantity);
+
+            try {
+                long newRowId = db.insert(TBl_CART, null, values);
+                if (newRowId != -1) {
+                    Log.d("ProductDao", "Item added to cart successfully with ID: " + newRowId);
+                    return true;
+                } else {
+                    Log.e("ProductDao", "Failed to add item to cart");
+                    return false;
+                }
+            } catch (SQLException e) {
+                Log.e("ProductDao", "Error adding item to cart: " + e.getMessage());
+                return false;
+            } finally {
+                db.close();
+            }
+        }
+    }
+
+
+
 
 
 
@@ -111,7 +172,7 @@ public class ProductDao {
         String[] whereArgs = { String.valueOf(lineId) };
 
         try {
-            int rowsUpdated = db.update(R3cyDB.TBl_CART, values, whereClause, whereArgs);
+            int rowsUpdated = db.update(TBl_CART, values, whereClause, whereArgs);
             if (rowsUpdated > 0) {
                 Log.d("ProductDao", "Quantity updated successfully for lineId " + lineId);
                 return true;
@@ -132,7 +193,7 @@ public class ProductDao {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
         try {
-            int rowsDeleted = db.delete(R3cyDB.TBl_CART, R3cyDB.CART_LINE_ID + "=?", new String[]{String.valueOf(lineId)});
+            int rowsDeleted = db.delete(TBl_CART, R3cyDB.CART_LINE_ID + "=?", new String[]{String.valueOf(lineId)});
             if (rowsDeleted > 0) {
                 Log.d("ProductDao", "Item deleted successfully for lineId " + lineId);
                 db.setTransactionSuccessful();

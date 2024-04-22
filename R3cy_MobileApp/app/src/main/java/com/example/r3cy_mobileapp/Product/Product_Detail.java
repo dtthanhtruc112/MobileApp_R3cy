@@ -2,8 +2,12 @@ package com.example.r3cy_mobileapp.Product;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -19,12 +23,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.adapter.ProductAdapter;
+import com.example.dao.ProductDao;
 import com.example.databases.R3cyDB;
 //import com.example.models.Discuss;
+import com.example.models.Customer;
 import com.example.models.Product;
 import com.example.r3cy_mobileapp.AboutUs;
 import com.example.r3cy_mobileapp.BlogDetail;
+import com.example.r3cy_mobileapp.Checkout_AddressList;
 import com.example.r3cy_mobileapp.R;
+import com.example.r3cy_mobileapp.Signin.Signin_Main;
+import com.example.r3cy_mobileapp.Signup;
 import com.example.r3cy_mobileapp.TrangChu;
 import com.example.r3cy_mobileapp.UserAccount_Main;
 import com.example.r3cy_mobileapp.databinding.ActivityProductDetailBinding;
@@ -36,6 +45,9 @@ import java.util.Locale;
 
 public class Product_Detail extends AppCompatActivity {
     ActivityProductDetailBinding binding;
+    private ProductDao productDao;
+    Customer customer;
+    int customerId = -1 ;
 
     TextView txtQuantity, txtProductName,txtDiscuss, txtSalePrice, txtProductDescription, txtProductRate, txtDiscussContent, txtRespondContent;
     ImageView btnIncreaseQuantity;
@@ -49,7 +61,8 @@ public class Product_Detail extends AppCompatActivity {
     private int quantity = 1; //Giá trị mặc định số lượng là 1
 
     private SQLiteDatabase database;
-    int ProductID = -1;
+    int productID;
+
     R3cyDB db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +81,7 @@ public class Product_Detail extends AppCompatActivity {
         email = getIntent().getStringExtra("key_email");
 
         Log.d("SharedPreferences", "Email ở product detail: " + email);
+
 
 
         txtProductName = findViewById(R.id.txtProductName);
@@ -89,10 +103,12 @@ public class Product_Detail extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("ProductID")) {
-            int productID = intent.getIntExtra("ProductID", -1);
+            productID = intent.getIntExtra("ProductID", -1);
             if (productID != -1) {
                 db = new R3cyDB(this);
+                productDao = new ProductDao(db);
                 Product product = db.getProductByID(productID);
+
 
                 if (product != null) {
                     showProductDetail(product);
@@ -152,6 +168,61 @@ public class Product_Detail extends AppCompatActivity {
                     txtQuantity.setText(String.valueOf(quantity));
                 }
             }
+        });
+        binding.btnAddToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Thêm vào giỏ hàng
+                if (email == null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Product_Detail.this);
+                    builder.setMessage("Bạn chưa đăng nhập, vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
+                        builder.setPositiveButton("Đăng nhập", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Chuyển đến trang đăng nhập khi nhấn nút Đăng nhập
+                                startActivity(new Intent(Product_Detail.this, Signin_Main.class));
+                            }
+                        });
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Không thực hiện gì nếu nhấn Cancel
+                                dialog.dismiss();
+                            }
+                        });
+                    Dialog dialog = builder.create();
+                    dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                        @Override
+                        public void onShow(DialogInterface dialogInterface) {
+                            Button positiveButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+                            Button negativeButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE);
+
+                            // Set text color for "Ok" button
+                            positiveButton.setTextColor(ContextCompat.getColor(Product_Detail.this, R.color.blue));
+
+                            // Set text color for "Cancel" button
+                            negativeButton.setTextColor(ContextCompat.getColor(Product_Detail.this, R.color.blue));
+                        }
+                    });
+
+                    dialog.show();
+                }else{
+                    // Lấy thông tin của khách hàng dựa trên email từ SharedPreferences
+                    customer = db.getCustomerByEmail1(email);
+                    Log.d("customer", "customer ở checkout: " + customer.getFullName());
+
+                    customerId = customer.getCustomerId();
+                    // Gọi phương thức insertCartItem để thêm thông tin sản phẩm vào bảng cart
+                    boolean itemAddedToCart = productDao.insertOrUpdateCartItem(customerId, productID, quantity);
+
+                    if (itemAddedToCart) {
+                        Toast.makeText(Product_Detail.this, "Sản phẩm đã được thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(Product_Detail.this, "Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
         });
 
         Button btnGui = findViewById(R.id.btnGui);
