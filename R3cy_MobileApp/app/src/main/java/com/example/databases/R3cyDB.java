@@ -374,8 +374,9 @@ public class R3cyDB extends SQLiteOpenHelper {
             MEMBERSHIP_SCORE + " INTEGER NOT NULL DEFAULT 0," +
             BIRTHDAY + " DATE," +
             CUSTOMER_THUMB + " BLOB," +
-            CUSTOMER_TYPE + " TEXT" +
+            CUSTOMER_TYPE + " TEXT NOT NULL DEFAULT 'Thường'" +
             ")";
+
 
     // Câu lệnh tạo bảng VoucherShip
 
