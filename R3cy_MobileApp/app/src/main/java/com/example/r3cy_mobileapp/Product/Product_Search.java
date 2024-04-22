@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.adapter.ProductAdapter;
 import com.example.databases.R3cyDB;
@@ -45,6 +48,7 @@ public class Product_Search extends AppCompatActivity {
     ProductAdapter adapter;
     ArrayList<Product> products;
     ArrayList<ProductAtb> productAtbs;
+    SearchView searchView;
     R3cyDB db;
     Dialog filterDialog;
     String email;
@@ -53,7 +57,8 @@ public class Product_Search extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityProductSearchBinding.inflate(getLayoutInflater());
-        setContentView(R.layout.activity_product_search);
+        setContentView(binding.getRoot());
+
 
         //Custom action bar
         ActionBar actionBar = getSupportActionBar();
@@ -68,6 +73,11 @@ public class Product_Search extends AppCompatActivity {
         Log.d("SharedPreferences", "Email ở search: " + email);
 
         adapter = new ProductAdapter(this, R.layout.viewholder_category_list, new ArrayList<Product>(), email);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+
+
         createDb();
         loadData();
         setupSearchView();
@@ -76,62 +86,7 @@ public class Product_Search extends AppCompatActivity {
         addEvents();
     }
 
-    private void addEvents() {
-        navigationView = findViewById(R.id.mn_home);
-        navigationView.setSelectedItemId(R.id.item_product);
 
-
-        navigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.item_product){
-                    Intent intent1 = new Intent(getApplicationContext(),Product_List.class);
-                    intent1.putExtra("key_email", email);
-                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent1);
-                    overridePendingTransition(0,0);
-                    return true;
-                } else if (item.getItemId() == R.id.item_blog) {
-                    Intent intent2 =new Intent(getApplicationContext(), BlogDetail.class);
-                    intent2.putExtra("key_email", email);
-                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent2);
-                    overridePendingTransition(0,0);
-                    return true;
-                } else if (item.getItemId() == R.id.item_store) {
-                    Intent intent3 =new Intent(getApplicationContext(), AboutUs.class);
-                    intent3.putExtra("key_email", email);
-                    intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent3);
-                    overridePendingTransition(0,0);
-                    return true;
-                } else if (item.getItemId() == R.id.item_account) {
-                    Intent intent4 =new Intent(getApplicationContext(), UserAccount_Main.class);
-                    intent4.putExtra("key_email", email);
-                    intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent4);
-                    overridePendingTransition(0,0);
-                    return true;
-                } else if (item.getItemId() == R.id.item_home) {
-                    Intent intent5 =new Intent(getApplicationContext(), TrangChu.class);
-                    intent5.putExtra("key_email", email);
-                    intent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent5);
-                    overridePendingTransition(0,0);
-                    return true;
-                }
-                return false;}
-
-
-        });
-
-        binding.btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    }
 
     private void createDb() {
         db = new R3cyDB(this);
@@ -180,11 +135,12 @@ public class Product_Search extends AppCompatActivity {
     }
 
     private void setupSearchView() {
-        SearchView searchView = findViewById(R.id.search_view);
-        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView = binding.searchView;
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // Thực hiện tìm kiếm khi người dùng gửi truy vấn
+                Log.d("SearchView", "onQueryTextSubmit: " + query);
                 performSearch(query);
                 return true;
             }
@@ -201,10 +157,13 @@ public class Product_Search extends AppCompatActivity {
                 List<Product> filteredProducts = new ArrayList<>();
                 for (Product product : products) {
                     if (product.getProductName().toLowerCase().contains(query.toLowerCase()) ||
-                            product.getCategory().toLowerCase().contains(query.toLowerCase())) {
+                            product.getCategory().toLowerCase().contains(query.toLowerCase()) ||
+                            product.getProductDescription().toLowerCase().contains(query.toLowerCase())) {
                         filteredProducts.add(product);
                     }
                 }
+                Log.d("SearchView", "Filtered products size: " + filteredProducts.size());
+
                 return filteredProducts;
             }
 
@@ -217,6 +176,7 @@ public class Product_Search extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newQuery) {
                 // Thực hiện tìm kiếm từng phần khi người dùng nhập
+                Log.d("SearchView", "onQueryTextChange: " + newQuery);
                 performSearch(newQuery);
                 return false;
             }
@@ -224,6 +184,7 @@ public class Product_Search extends AppCompatActivity {
         });
     }
 
+//    BỘ LỌC
 
     private void setupFilterDialog() {
         // Khởi tạo dialog
@@ -252,6 +213,12 @@ public class Product_Search extends AppCompatActivity {
             public void onClick(View v) {
                 List<Product> filteredProducts = filterProductsByHot(1);
                 displayFilteredProducts(filteredProducts);
+
+                filterDialog.dismiss(); // Đóng dialog
+
+                // Hiển thị Toast
+                currentToast = Toast.makeText(getApplicationContext(), "Đã áp dụng bộ lọc: Phổ biến", Toast.LENGTH_SHORT);
+                currentToast.show();
             }
         });
 
@@ -260,6 +227,12 @@ public class Product_Search extends AppCompatActivity {
             public void onClick(View v) {
                 List<Product> filteredProducts = filterNewestProducts();
                 displayFilteredProducts(filteredProducts);
+
+                filterDialog.dismiss(); // Đóng dialog
+
+                // Hiển thị Toast
+                currentToast = Toast.makeText(getApplicationContext(), "Đã áp dụng bộ lọc: Mới nhất", Toast.LENGTH_SHORT);
+                currentToast.show();
             }
         });
 
@@ -268,6 +241,12 @@ public class Product_Search extends AppCompatActivity {
             public void onClick(View v) {
                 List<Product> filteredProducts = filterProductsByPriceDesc();
                 displayFilteredProducts(filteredProducts);
+
+                filterDialog.dismiss(); // Đóng dialog
+
+                // Hiển thị Toast
+                currentToast = Toast.makeText(getApplicationContext(), "Đã áp dụng bộ lọc Giá từ cao đến thấp ", Toast.LENGTH_SHORT);
+                currentToast.show();
             }
         });
 
@@ -276,9 +255,18 @@ public class Product_Search extends AppCompatActivity {
             public void onClick(View v) {
                 List<Product> filteredProducts = filterProductsByPriceAsc();
                 displayFilteredProducts(filteredProducts);
+
+                filterDialog.dismiss(); // Đóng dialog
+
+                // Hiển thị Toast
+                currentToast = Toast.makeText(getApplicationContext(), "Đã áp dụng bộ lọc Giá từ thấp đến cao ", Toast.LENGTH_SHORT);
+                currentToast.show();
             }
         });
     }
+
+
+    private Toast currentToast;
 
     private void showFilterDialog() {
         Window window = filterDialog.getWindow();
@@ -286,6 +274,9 @@ public class Product_Search extends AppCompatActivity {
             window.setBackgroundDrawableResource(R.drawable.rounded_dialog);
             window.setGravity(Gravity.BOTTOM);
             window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        }
+        if (currentToast != null) {
+            currentToast.cancel();
         }
         filterDialog.show();
     }
@@ -396,5 +387,62 @@ public class Product_Search extends AppCompatActivity {
             }
         }
         return 0.0;
+    }
+
+    private void addEvents() {
+        navigationView = findViewById(R.id.mn_home);
+        navigationView.setSelectedItemId(R.id.item_product);
+
+
+        navigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.item_product){
+                    Intent intent1 = new Intent(getApplicationContext(),Product_List.class);
+                    intent1.putExtra("key_email", email);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent1);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_blog) {
+                    Intent intent2 =new Intent(getApplicationContext(), BlogDetail.class);
+                    intent2.putExtra("key_email", email);
+                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent2);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_store) {
+                    Intent intent3 =new Intent(getApplicationContext(), AboutUs.class);
+                    intent3.putExtra("key_email", email);
+                    intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent3);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_account) {
+                    Intent intent4 =new Intent(getApplicationContext(), UserAccount_Main.class);
+                    intent4.putExtra("key_email", email);
+                    intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent4);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_home) {
+                    Intent intent5 =new Intent(getApplicationContext(), TrangChu.class);
+                    intent5.putExtra("key_email", email);
+                    intent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent5);
+                    overridePendingTransition(0,0);
+                    return true;
+                }
+                return false;}
+
+
+        });
+
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }

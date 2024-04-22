@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,10 +29,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> implements Filterable {
     private Context context;
     int viewholder_category_list;
     private List<Product> products;
+    private List<Product> productsOld;
     String email;
 
 
@@ -38,6 +41,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         this.context = context;
         this.viewholder_category_list = viewholder_category_list;
         this.products = products;
+        this.productsOld = products;
         this.email = email;
     }
 
@@ -81,9 +85,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     Intent intent = new Intent(v.getContext(), Product_Detail.class);
                     // Chuyển dữ liệu của sản phẩm qua Intent
                     intent.putExtra("ProductID", product.getProductID());
-                    Log.d("SharedPreferences", "Email productadapter: " + email);
-                    intent.putExtra("key_email", email);
-
+//                    Log.d("SharedPreferences", "Email productadapter: " + email);
+//                    intent.putExtra("key_email", email);
 
                     // Khởi chạy Activity mới
                     v.getContext().startActivity(intent);
@@ -110,9 +113,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
 
+
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView imvProductThumb;
-        TextView txtProductName, txtSalePrice, txtProductDescription, txtCategory, txtProductRate;
+        TextView txtProductName, txtSalePrice, txtCategory, txtProductRate;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -121,13 +125,44 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             imvProductThumb = itemView.findViewById(R.id.imvProductThumb);
             txtProductName = itemView.findViewById(R.id.txtProductName);
             txtSalePrice = itemView.findViewById(R.id.txtSalePrice);
-//            txtProductDescription = itemView.findViewById(R.id.txtProductDescription);
             txtCategory = itemView.findViewById(R.id.txtCategory);
             txtProductRate = itemView.findViewById(R.id.txtProductRate);
 
         }
-    }}
+    }
 
+    //    Tim kiem san pham
+    @Override
+    public Filter getFilter() {
 
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String strSearch = constraint.toString();
+                if (strSearch.isEmpty()) {
+                    products = productsOld;
+                }else {
+                    List<Product> list = new ArrayList<>();
+                    for (Product product: productsOld) {
+                        if (product.getProductName().toLowerCase().contains(strSearch.toLowerCase())) {
+                            list.add(product);
+                        }
+                    }
+                    products = list;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = products;
 
+                return filterResults;
+            }
 
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                products = (List<Product>) results.values;
+                notifyDataSetChanged();
+
+            }
+        };
+    }
+
+}
