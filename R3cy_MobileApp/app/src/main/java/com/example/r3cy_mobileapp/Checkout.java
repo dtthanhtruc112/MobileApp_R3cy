@@ -298,6 +298,29 @@ public class Checkout extends AppCompatActivity {
 //        Cập nhật số lượng sản phẩm tồn kho + số lượng bán ra
 //        Cập nhật đểm số khách hàng
 //        Xóa khỏi Lineid ở Cart
+        // Tạo đơn hàng và cập nhật cơ sở dữ liệu
+        // Tạo đơn hàng và cập nhật cơ sở dữ liệu
+        boolean orderCreated = productDao.createOrder(customerId, totalOrderValue, selectedItems, selectedPaymentMethod, "Chờ xử lí");
+        if (orderCreated) {
+            // Xóa các mục đã chọn khỏi giỏ hàng sau khi đặt hàng thành công
+            for (CartItem item : selectedItems) {
+                productDao.deleteCartItem(item.getLineId());
+            }
+
+            // Cập nhật số lượng sản phẩm tồn kho và số lượng đã bán
+            for (CartItem item : selectedItems) {
+                productDao.updateProductQuantity(item.getProductId(), item.getProductQuantity());
+            }
+
+            // Tích lũy điểm cho khách hàng
+            productDao.accumulateMembershipScore(customerId, totalOrderValue);
+
+            Toast.makeText(Checkout.this, "Đặt hàng thành công!", Toast.LENGTH_SHORT).show();
+            // Đặt các thao tác hoặc chuyển hướng sau khi đặt hàng thành công
+        } else {
+            Toast.makeText(Checkout.this, "Đặt hàng thất bại! Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 
