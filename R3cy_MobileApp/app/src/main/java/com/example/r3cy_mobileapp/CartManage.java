@@ -1,10 +1,13 @@
 package com.example.r3cy_mobileapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Base64;
@@ -17,10 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.adapter.CartAdapter;
+import com.example.adapter.ProductAdapter;
 import com.example.dao.ProductDao;
 import com.example.databases.R3cyDB;
 import com.example.models.CartItem;
 import com.example.models.Customer;
+import com.example.models.Product;
+import com.example.models.ProductAtb;
 import com.example.r3cy_mobileapp.databinding.ActivityCartManageBinding;
 
 import java.io.ByteArrayOutputStream;
@@ -32,6 +38,10 @@ import java.util.List;
 public class CartManage extends AppCompatActivity {
 
     ActivityCartManageBinding binding;
+    Product product;
+    ProductAdapter adapter1;
+    ArrayList<ProductAtb> productAtbs;
+    private List<Product> products;
 
     R3cyDB db;
     ProductDao productDao;
@@ -86,6 +96,7 @@ public class CartManage extends AppCompatActivity {
         super.onResume();
         Log.i("test", "onResume");
         loadData();
+        loadDataSuggest();
     }
 
     private void loadData() {
@@ -128,6 +139,106 @@ public class CartManage extends AppCompatActivity {
             }
         });
 
+
+
+    }
+    private void loadDataSuggest() {
+        GridLayoutManager layoutManagerProducts = new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false);
+        binding.rcvProducts.setLayoutManager(layoutManagerProducts);
+
+        products = new ArrayList<>();
+        productAtbs = new ArrayList<>();
+
+        Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT);
+
+        try {
+            while (cursor.moveToNext()) {
+                try {
+                    products.add(new Product(
+                            cursor.getInt(0), // ProductID
+                            cursor.getBlob(4), // ProductThumb
+                            cursor.getString(1), // ProductName
+                            cursor.getDouble(9), // SalePrice
+
+                            cursor.getString(6), // Category
+                            cursor.getString(3),
+                            cursor.getDouble(8) // ProductRate
+
+                    ));
+
+                    productAtbs.add(new ProductAtb(
+                            cursor.getInt(0), // ProductID
+                            cursor.getDouble(2), // ProductPrice
+                            cursor.getInt(5), // Hot
+                            cursor.getInt(7), // Inventory
+                            cursor.getInt(10), // SoldQuantity
+                            cursor.getString(11), // CreatedDate
+                            cursor.getInt(12) // Status
+                    ));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+        } finally {
+            cursor.close(); // Close the cursor to avoid memory leaks
+        }
+
+        List<Product> filteredProducts = filterProductsByHot(1);
+        List<Product> filteredProducts1 = filterProductsByHot(0);
+
+        // Kiểm tra nếu danh sách products hoặc cartItems là null
+        if (products == null) {
+            Log.e("CartManage", "Danh sách sản phẩm là null");
+            return;
+        }
+
+        if (cartItems == null) {
+            Log.e("CartManage", "Danh sách các mục giỏ hàng là null");
+            return;
+        }
+
+        // Lọc ra các sản phẩm đã hiển thị từ danh sách products
+        List<Integer> shownProductIds = new ArrayList<>();
+        for (CartItem cartItem : cartItems) {
+            shownProductIds.add(cartItem.getProductId());
+        }
+
+        // Lọc ra các sản phẩm gợi ý không nằm trong danh sách các sản phẩm đã hiển thị
+        List<Product> filteredSuggestedProducts = new ArrayList<>();
+        for (Product product : filteredProducts) {
+            if (!shownProductIds.contains(product.getProductID())) {
+                filteredSuggestedProducts.add(product);
+            }
+        }
+        // Hiển thị danh sách sản phẩm gợi ý đã lọc
+        adapter1 = new ProductAdapter(this, R.layout.viewholder_category_list, filteredSuggestedProducts, email);
+        binding.rcvProducts.setAdapter(adapter1);
+
+        Log.d("ProductInfo", "Number of products retrieved: " + products.size());
+
+
+
+    }
+    private List<Product> filterProductsByHot(int hotValue) {
+        List<Product> filteredProducts = new ArrayList<>();
+        for (Product product : products) {
+            int productId = product.getProductID();
+            ProductAtb productAtb = getProductAtbById(productId);
+
+            if (productAtb != null && productAtb.getHot() == hotValue) {
+                filteredProducts.add(product);
+            }
+        }
+        return filteredProducts;
+    }
+
+    private ProductAtb getProductAtbById(int productId) {
+        for (ProductAtb productAtb : productAtbs) {
+            if (productAtb.getProductID() == productId) {
+                return productAtb;
+            }
+        }
+        return null;
     }
 
 
