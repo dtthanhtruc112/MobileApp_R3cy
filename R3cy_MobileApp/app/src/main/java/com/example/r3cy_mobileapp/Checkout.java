@@ -36,19 +36,28 @@ public class Checkout extends AppCompatActivity {
     ActivityCheckoutBinding binding;
 
     R3cyDB db;
-    ProductDao productDao;
+    private ProductDao productDao;
     PaymentItemAdapter adapter;
 
     ArrayList<CartItem> selectedItems;
 
     Address address;
     private int addressIdFromIntent;
+    private int selectedAddress;
+    private String selectedPaymentMethod = "COD";
 //    address khi đổi địa chỉ nhận hàng
     private static final int ADDRESS_SELECTION_REQUEST_CODE = 1;
+    private static final int PAYMENT_METHOD_REQUEST_CODE = 2;
 
     int customerId;
 
     String email;
+    double totalOrderValue;
+    // Tính tổng số tiền từ danh sách các mục đã chọn
+    double totalAmount;
+    double shippingFee;
+    double couponShipping;
+    double couponOrder;
     Customer customer;
 //    Thay customer lấy sau khi login ra
 
@@ -59,6 +68,7 @@ public class Checkout extends AppCompatActivity {
         binding = ActivityCheckoutBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
         email = getIntent().getStringExtra("key_email");
 
         Log.d("SharedPreferences", "Email ở checkout: " + email);
@@ -67,6 +77,7 @@ public class Checkout extends AppCompatActivity {
 
         createDb();
         addEvents();
+
     }
     @Override
     protected void onResume() {
@@ -77,8 +88,7 @@ public class Checkout extends AppCompatActivity {
         // Lấy ID của địa chỉ từ Intent
         addressIdFromIntent = getIntent().getIntExtra("ADDRESS_ID", -1);
         if (addressIdFromIntent == -1) {
-            // Xử lí lỗi nếu không có ID
-            Toast.makeText(this, "Không lấy được addressId từ intent", Toast.LENGTH_SHORT).show();
+            Log.d("addressIdFromIntent", "Không lấy được addressId từ intent");
             displayAddress();
         } else {
             displayAddress();
@@ -96,6 +106,7 @@ public class Checkout extends AppCompatActivity {
         } else {
             Log.e("AddressListDB", "Failed to create database");
         }
+        productDao = new ProductDao(db);
     }
 
     private void loadDataCart() {
@@ -122,11 +133,11 @@ public class Checkout extends AppCompatActivity {
         }
 
         // Tính tổng số tiền từ danh sách các mục đã chọn
-        double totalAmount = calculateTotalAmount(selectedItems);
-        double shippingFee = 25000; //        cố định bằng 25000
-        double couponShipping = 0;//        Hoặc bằng 1 hàm nào đó tính couponshipping
-        double couponOrder = 0; //        Hoặc bằng 1 hàm nào đó tính couponorder
-        double totalOrderValue = totalAmount + shippingFee -couponOrder - couponShipping;
+        totalAmount = calculateTotalAmount(selectedItems);
+        shippingFee = 25000; //        cố định bằng 25000
+        couponShipping = 0;//        Hoặc bằng 1 hàm nào đó tính couponshipping
+        couponOrder = 0; //        Hoặc bằng 1 hàm nào đó tính couponorder
+        totalOrderValue = totalAmount + shippingFee -couponOrder - couponShipping;
 
         // Định dạng số
         NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
@@ -145,25 +156,6 @@ public class Checkout extends AppCompatActivity {
 
     }
 
-    private void addEvents() {
-        binding.addressLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = new Intent(Checkout.this, Checkout_AddressList.class);
-//                startActivity(intent);
-                Intent intent = new Intent(Checkout.this, Checkout_AddressList.class);
-                intent.putExtra("key_email", email);
-                startActivityForResult(intent, ADDRESS_SELECTION_REQUEST_CODE);
-            }
-        });
-
-        binding.imvBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    }
     private double calculateTotalAmount(ArrayList<CartItem> selectedItems) {
         double totalAmount = 0.0;
         for (CartItem item : selectedItems) {
@@ -171,20 +163,6 @@ public class Checkout extends AppCompatActivity {
         }
         return totalAmount;
     }
-    // Kiểm tra và hiển thị địa chỉ mặc định hoặc địa chỉ có addressId lớn nhất
-//    private void displayAddress() {
-//        Address defaultAddress = db.getDefaultAddress(customerId);
-//        Address maxAddress = db.getMaxAddress(customerId);
-//
-//        if (defaultAddress != null) {
-//            displayAddressOnUI(defaultAddress);
-//        } else if (maxAddress != null) {
-//            displayAddressOnUI(maxAddress);
-//        } else {
-//            // Không có địa chỉ nào, hiển thị nút "Thêm địa chỉ nhận hàng"
-//            displayAddAddressButton();
-//        }
-//    }
     private void displayAddress() {
         // Nếu không có email từ SharedPreferences, không thực hiện gì cả
         if (email == null) {
@@ -202,31 +180,35 @@ public class Checkout extends AppCompatActivity {
 
             if (defaultAddress != null) {
                 displayAddressOnUI(defaultAddress);
+                selectedAddress = defaultAddress.getAddressId();
             } else if (maxAddress != null) {
                 displayAddressOnUI(maxAddress);
+                selectedAddress = maxAddress.getAddressId();
             } else {
                 // Không có địa chỉ nào, hiển thị nút "Thêm địa chỉ nhận hàng"
                 displayAddAddressButton();
             }
         } else {
             // Nếu đã có addressIdFromIntent, hiển thị địa chỉ tương ứng
-            Address selectedAddress = db.getAddressById(addressIdFromIntent);
-            if (selectedAddress != null) {
-                displayAddressOnUI(selectedAddress);
+            Address selectedAddressFromIntent = db.getAddressById(addressIdFromIntent);
+            if (selectedAddressFromIntent != null) {
+                displayAddressOnUI(selectedAddressFromIntent);
+                selectedAddress = selectedAddressFromIntent.getAddressId();
             }
         }
     }
 
 
     // Hiển thị địa chỉ lên giao diện
+
     private void displayAddressOnUI(Address address) {
         binding.txtAddAddress.setVisibility(View.GONE);
         // Cập nhật TextViews với thông tin địa chỉ
         binding.txtReceiver.setText(address.getReceiverName() + " | " + address.getReceiverPhone());
         binding.txtAddress.setText(address.getAddressDetails() + ", " + address.getWard() + ", " + address.getDistrict() + ", " + address.getProvince());
     }
-
     // Hiển thị nút "Thêm địa chỉ nhận hàng" trên giao diện
+
     private void displayAddAddressButton() {
         // Ẩn các TextView hiển thị địa chỉ
         binding.addressLayout.setVisibility(View.GONE);
@@ -256,8 +238,68 @@ public class Checkout extends AppCompatActivity {
                 }
             }
         }
+        if (requestCode == PAYMENT_METHOD_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                String paymentMethodFromIntent = data.getStringExtra("PAYMENT_METHOD");
+                if(paymentMethodFromIntent != null){
+                    selectedPaymentMethod = paymentMethodFromIntent;
+                    // Gán giá trị phương thức thanh toán vào TextView
+                    binding.txtPaymentMethod.setText(paymentMethodFromIntent);
+                }
+
+            }
+        }
+    }
+    private void addEvents() {
+        binding.addressLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = new Intent(Checkout.this, Checkout_AddressList.class);
+//                startActivity(intent);
+                Intent intent = new Intent(Checkout.this, Checkout_AddressList.class);
+                intent.putExtra("key_email", email);
+                startActivityForResult(intent, ADDRESS_SELECTION_REQUEST_CODE);
+            }
+        });
+
+        binding.imvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        binding.paymentMethodLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Checkout.this, PaymentMethod.class);
+                startActivityForResult(intent, PAYMENT_METHOD_REQUEST_CODE);
+            }
+        });
+        binding.btnMakeOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Tạo đơn hàng, lưu xuống DB
+                makeOrder();
+            }
+        });
     }
 
+    private void makeOrder() {
+        // Kiểm tra xem đã chọn địa chỉ và phương thức thanh toán chưa
+        if (selectedAddress == -1) {
+            Toast.makeText(Checkout.this, "Vui lòng chọn địa chỉ nhận hàng", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (selectedPaymentMethod == null) {
+            Toast.makeText(Checkout.this, "Vui lòng chọn phương thức thanh toán", Toast.LENGTH_SHORT).show();
+            return;
+        }
+//        Xử lí tạo đơn hàng, lưu xuống DB bảng order + orderline
+//        Cập nhật số lượng sản phẩm tồn kho + số lượng bán ra
+//        Cập nhật đểm số khách hàng
+//        Xóa khỏi Lineid ở Cart
+
+    }
 
 
 

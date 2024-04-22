@@ -995,6 +995,7 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
     db.close();
 }
 
+    @SuppressLint("Range")
     public int getMembershipScore(int customerId) {
         SQLiteDatabase db = this.getReadableDatabase();
         int membershipScore = 0;
