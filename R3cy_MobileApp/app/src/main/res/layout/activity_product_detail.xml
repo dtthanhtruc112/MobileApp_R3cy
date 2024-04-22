@@ -175,20 +175,22 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
 
                 <Button
                     android:id="@+id/btnAddToCart"
-                    android:layout_width="wrap_content"
+                    android:layout_width="147dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="70dp"
+                    android:layout_weight="1"
                     android:text="Thêm vào giỏ"
                     android:backgroundTint="@color/blue"
-                    android:layout_weight="1"
-                    android:textSize="13sp"
-                    android:layout_marginEnd="30dp"/>
+                    android:textAllCaps="false"
+                    android:textSize="13sp" />
 
                 <Button
                     android:id="@+id/btnBuyNow"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/blue"
                     android:text="Mua ngay"
+                    android:backgroundTint="@color/blue"
+                    android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:layout_weight="1"
                     android:textSize="13sp" />

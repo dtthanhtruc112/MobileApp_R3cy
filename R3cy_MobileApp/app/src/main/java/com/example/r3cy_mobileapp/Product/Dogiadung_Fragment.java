@@ -134,6 +134,7 @@ public class Dogiadung_Fragment extends Fragment {
                     // Tạo Intent và gửi thông tin sản phẩm sang Product_Detail Activity
                     Intent intent = new Intent(requireContext(), Product_Detail.class);
                     intent.putExtra("ProductID", selectedProduct.getProductID());
+                    intent.putExtra("key_email", email);
                     startActivity(intent);
                 }
                 return false;
