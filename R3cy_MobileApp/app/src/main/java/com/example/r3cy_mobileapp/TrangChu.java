@@ -341,37 +341,19 @@ public class TrangChu extends AppCompatActivity {
             }
         });
 
-        binding.btnCSbaomat.setOnClickListener(new View.OnClickListener() {
+        binding.btnTichdiem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TrangChu.this, UserAccount_Policy.class);
+                Intent intent = new Intent(TrangChu.this, TichDiem.class);
                 intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
 
-        binding.btnCSbanhang.setOnClickListener(new View.OnClickListener() {
+        binding.btnTracuu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TrangChu.this, UserAccount_Policy.class);
-                intent.putExtra("key_email", email);
-                startActivity(intent);
-            }
-        });
-
-        binding.btnCSdoitra.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TrangChu.this, UserAccount_Policy.class);
-                intent.putExtra("key_email", email);
-                startActivity(intent);
-            }
-        });
-
-        binding.btnCSdichvu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TrangChu.this, UserAccount_Policy.class);
+                Intent intent = new Intent(TrangChu.this, User_account_manageOrder.class);
                 intent.putExtra("key_email", email);
                 startActivity(intent);
             }
