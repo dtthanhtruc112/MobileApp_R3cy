@@ -158,14 +158,21 @@ public class ProductDao {
         // Chuyển đổi thành chuỗi theo định dạng đã xác định
         return dateFormat.format(currentDate);
     }
-    public boolean createOrder(int customerId, double totalOrderValue, ArrayList<CartItem> cartItems, String selectedPaymentMethod, String orderStatus ) {
+    public boolean createOrder(int customerId, double totalOrderValue, double shippingFee, double discount, double totalAmount, int couponId, String notes, ArrayList<CartItem> cartItems, String selectedPaymentMethod, String orderStatus, int addressId ) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues orderValues = new ContentValues();
         orderValues.put(R3cyDB.ORDER_CUSTOMER_ID, customerId);
         orderValues.put(R3cyDB.TOTAL_ORDER_VALUE, totalOrderValue);
+        orderValues.put(R3cyDB.SHIPPING_FEE, shippingFee);
+        orderValues.put(R3cyDB.DISCOUNT, discount);
+        orderValues.put(R3cyDB.TOTAL_AMOUNT, totalAmount);
+        orderValues.put(R3cyDB.COUPON_ID,  couponId);
+        orderValues.put(R3cyDB.ORDER_NOTE, notes);
         orderValues.put(R3cyDB.ORDER_DATE, getCurrentDate());
         orderValues.put(R3cyDB.PAYMENT_METHOD, selectedPaymentMethod);
         orderValues.put(R3cyDB.ORDER_STATUS, orderStatus);
+        orderValues.put(R3cyDB.ADDRESS_ID, addressId);
+
 
         long orderId = db.insert(R3cyDB.TBl_ORDER, null, orderValues);
         if (orderId == -1) {
