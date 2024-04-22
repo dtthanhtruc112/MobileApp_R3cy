@@ -1,77 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Product.Product_Search"
-    android:background="@color/white"
-    android:orientation="vertical"
-    android:padding="15dp">
+    android:background="@color/white">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/icon_arrow_back"/>
-
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/search_view"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            app:searchIcon="@drawable/search_ic"
-            android:hint="Tìm kiếm sản phẩm..."
-            android:background="@drawable/btn_grey_stroke"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/btn_filter"
-        android:layout_width="wrap_content"
-        android:layout_height="22dp"
-        android:orientation="horizontal"
-        android:layout_gravity="end"
-        android:gravity="center_vertical"
-        android:background="@drawable/btn_blue_stroke">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="  Bộ lọc"
-            android:textColor="@color/black"
-            android:textSize="12sp" />
-
-        <ImageView
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:src="@drawable/icon_drop_down"
-            android:gravity="center_vertical"/>
-
-
-    </LinearLayout>
-    <LinearLayout
+        android:id="@+id/linearLayout10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="15dp">
+        android:orientation="vertical"
+        android:padding="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvProducts"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/icon_arrow_back" />
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_view"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/btn_grey_stroke"
+                android:hint="Tìm kiếm sản phẩm..."
+                app:searchIcon="@drawable/search_ic" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btn_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:layout_gravity="end"
+            android:background="@drawable/btn_blue_stroke"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  Bộ lọc"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:gravity="center_vertical"
+                android:src="@drawable/icon_drop_down" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:spanCount="2"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager">
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
 
-        </androidx.recyclerview.widget.RecyclerView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvProducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
 
     </LinearLayout>
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/mn_home"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="end|bottom"
+        app:itemIconTint="@color/bottom_navigation_style"
+        app:itemTextColor="@color/bottom_navigation_style"
+        app:labelVisibilityMode="unlabeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
 
 
-</LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

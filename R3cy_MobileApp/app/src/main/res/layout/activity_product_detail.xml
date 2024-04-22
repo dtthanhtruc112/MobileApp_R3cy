@@ -6,14 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".Product.Product_Detail"
     android:orientation="vertical"
-    android:padding="20dp"
-    android:background="@color/white">
+
+    android:background="@color/white"
+    android:weightSum="10">
 
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:layout_weight="9"
+        android:padding="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -415,5 +418,17 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
         </LinearLayout>
 
     </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/mn_home"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        app:menu="@menu/bottom_nav_menu"
+        android:layout_gravity="end|bottom"
+        app:itemTextColor="@color/bottom_navigation_style"
+        app:itemIconTint="@color/bottom_navigation_style"
+        app:labelVisibilityMode="unlabeled"
+        android:layout_weight="1"/>
+
 
 </LinearLayout>

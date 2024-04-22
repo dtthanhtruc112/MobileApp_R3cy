@@ -48,6 +48,7 @@ public class AboutUs extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AboutUs.this, TrangChu.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
                 finish();
             }
@@ -68,6 +69,7 @@ public class AboutUs extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent= new Intent(AboutUs.this, Product_List.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
             }
         });
@@ -81,12 +83,14 @@ public class AboutUs extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.item_product){
                     Intent intent1 = new Intent(getApplicationContext(),Product_List.class);
+                    intent1.putExtra("key_email", email);
                     intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent1);
                     overridePendingTransition(0,0);
                     return true;
                 } else if (item.getItemId() == R.id.item_blog) {
                     Intent intent2 =new Intent(getApplicationContext(),BlogDetail.class);
+                    intent2.putExtra("key_email", email);
                     intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent2);
                     overridePendingTransition(0,0);

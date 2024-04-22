@@ -18,6 +18,8 @@ import static com.example.databases.R3cyDB.SOLD_QUANTITY;
 import static com.example.databases.R3cyDB.STATUS;
 import static com.example.databases.R3cyDB.TBl_PRODUCT;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -31,6 +33,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -39,8 +42,13 @@ import com.example.adapter.ViewPagerAdapter;
 import com.example.databases.R3cyDB;
 import com.example.interfaces.ProductInterface;
 import com.example.models.Product;
+import com.example.r3cy_mobileapp.AboutUs;
+import com.example.r3cy_mobileapp.BlogDetail;
 import com.example.r3cy_mobileapp.R;
+import com.example.r3cy_mobileapp.TrangChu;
+import com.example.r3cy_mobileapp.UserAccount_Main;
 import com.example.r3cy_mobileapp.databinding.ActivityProductListBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.text.ParseException;
@@ -56,12 +64,26 @@ public class Product_List extends AppCompatActivity implements ProductInterface 
     private ArrayList<Product> products;
     ActivityProductListBinding binding;
     R3cyDB dbHelper;
+    String email;
+    BottomNavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityProductListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        //Custom action bar
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.custom_action_bar);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
+        email = getIntent().getStringExtra("key_email");
+
+        Log.d("SharedPreferences", "Email ở productlist: " + email);
 
 
 // khởi tạo ViewPager và TabLayout
@@ -81,10 +103,13 @@ public class Product_List extends AppCompatActivity implements ProductInterface 
         mTabLayout.getTabAt(1).setText("Đồ trang trí");
         mTabLayout.getTabAt(2).setText("Phụ kiện");
 
+        addEvents();
+
 
 
     }
-        private void createDb() {
+
+    private void createDb() {
         dbHelper = new R3cyDB(this);
         dbHelper.createSampleProduct();
     }
@@ -150,7 +175,65 @@ public class Product_List extends AppCompatActivity implements ProductInterface 
 //        chuyển sang product_detail và truyền dữ liệu sản phẩm
         Intent intent = new Intent(Product_List.this, Product_Detail.class);
         intent.putExtra("productID", p.getProductID());
+        intent.putExtra("key_email", email);
         startActivity(intent);
+    }
+
+    private void addEvents() {
+        navigationView = findViewById(R.id.mn_home);
+        navigationView.setSelectedItemId(R.id.item_home);
+
+
+        navigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.item_product){
+                    Intent intent1 = new Intent(getApplicationContext(),Product_List.class);
+                    intent1.putExtra("key_email", email);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent1);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_blog) {
+                    Intent intent2 =new Intent(getApplicationContext(), BlogDetail.class);
+                    intent2.putExtra("key_email", email);
+                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent2);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_store) {
+                    Intent intent3 =new Intent(getApplicationContext(), AboutUs.class);
+                    intent3.putExtra("key_email", email);
+                    intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent3);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_account) {
+                    Intent intent4 =new Intent(getApplicationContext(), UserAccount_Main.class);
+                    intent4.putExtra("key_email", email);
+                    intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent4);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_home) {
+                    Intent intent5 =new Intent(getApplicationContext(), TrangChu.class);
+                    intent5.putExtra("key_email", email);
+                    intent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent5);
+                    overridePendingTransition(0,0);
+                    return true;
+                }
+                return false;}
+
+
+        });
+
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 

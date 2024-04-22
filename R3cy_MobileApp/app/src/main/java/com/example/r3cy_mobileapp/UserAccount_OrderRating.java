@@ -59,17 +59,18 @@ public class UserAccount_OrderRating extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.item_product){
-                    Intent intent1 = new Intent(getApplicationContext(), Product_List.class);
+                    Intent intent1 = new Intent(getApplicationContext(),Product_List.class);
+                    intent1.putExtra("key_email", email);
                     intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent1);
                     overridePendingTransition(0,0);
                     return true;
                 } else if (item.getItemId() == R.id.item_blog) {
                     Intent intent2 =new Intent(getApplicationContext(),BlogDetail.class);
+                    intent2.putExtra("key_email", email);
                     intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent2);
                     overridePendingTransition(0,0);
-                    return true;
                 } else if (item.getItemId() == R.id.item_store) {
                     Intent intent3 =new Intent(getApplicationContext(),AboutUs.class);
                     intent3.putExtra("key_email", email);

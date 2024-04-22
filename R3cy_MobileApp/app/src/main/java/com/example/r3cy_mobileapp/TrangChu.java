@@ -277,7 +277,7 @@ public class TrangChu extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_search){
             Intent intentSearch = new Intent(TrangChu.this, Product_Search.class);
-
+            intentSearch.putExtra("key_email", email);
             startActivity(intentSearch);
         } else if (item.getItemId() == R.id.action_cart) {
             Intent intentCart = new Intent(TrangChu.this, CartManage.class);
@@ -417,12 +417,14 @@ public class TrangChu extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.item_product){
                     Intent intent1 = new Intent(getApplicationContext(),Product_List.class);
+                    intent1.putExtra("key_email", email);
                     intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent1);
                     overridePendingTransition(0,0);
                     return true;
                 } else if (item.getItemId() == R.id.item_blog) {
                     Intent intent2 =new Intent(getApplicationContext(),BlogDetail.class);
+                    intent2.putExtra("key_email", email);
                     intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent2);
                     overridePendingTransition(0,0);

@@ -1,14 +1,19 @@
 package com.example.r3cy_mobileapp.Product;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -18,8 +23,13 @@ import com.example.adapter.ProductAdapter;
 import com.example.databases.R3cyDB;
 import com.example.models.Product;
 import com.example.models.ProductAtb;
+import com.example.r3cy_mobileapp.AboutUs;
+import com.example.r3cy_mobileapp.BlogDetail;
 import com.example.r3cy_mobileapp.R;
+import com.example.r3cy_mobileapp.TrangChu;
+import com.example.r3cy_mobileapp.UserAccount_Main;
 import com.example.r3cy_mobileapp.databinding.ActivityProductSearchBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,16 +47,90 @@ public class Product_Search extends AppCompatActivity {
     ArrayList<ProductAtb> productAtbs;
     R3cyDB db;
     Dialog filterDialog;
+    String email;
+    BottomNavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityProductSearchBinding.inflate(getLayoutInflater());
         setContentView(R.layout.activity_product_search);
+
+        //Custom action bar
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.custom_action_bar);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
+        email = getIntent().getStringExtra("key_email");
+
+        Log.d("SharedPreferences", "Email ở search: " + email);
+
         adapter = new ProductAdapter(this, R.layout.viewholder_category_list, new ArrayList<Product>());
         createDb();
         loadData();
         setupSearchView();
         setupFilterDialog();
+
+        addEvents();
+    }
+
+    private void addEvents() {
+        navigationView = findViewById(R.id.mn_home);
+        navigationView.setSelectedItemId(R.id.item_home);
+
+
+        navigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.item_product){
+                    Intent intent1 = new Intent(getApplicationContext(),Product_List.class);
+                    intent1.putExtra("key_email", email);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent1);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_blog) {
+                    Intent intent2 =new Intent(getApplicationContext(), BlogDetail.class);
+                    intent2.putExtra("key_email", email);
+                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent2);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_store) {
+                    Intent intent3 =new Intent(getApplicationContext(), AboutUs.class);
+                    intent3.putExtra("key_email", email);
+                    intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent3);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_account) {
+                    Intent intent4 =new Intent(getApplicationContext(), UserAccount_Main.class);
+                    intent4.putExtra("key_email", email);
+                    intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent4);
+                    overridePendingTransition(0,0);
+                    return true;
+                } else if (item.getItemId() == R.id.item_home) {
+                    Intent intent5 =new Intent(getApplicationContext(), TrangChu.class);
+                    intent5.putExtra("key_email", email);
+                    intent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent5);
+                    overridePendingTransition(0,0);
+                    return true;
+                }
+                return false;}
+
+
+        });
+
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void createDb() {
