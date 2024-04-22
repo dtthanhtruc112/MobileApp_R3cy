@@ -64,8 +64,6 @@ public class CustomProduct extends AppCompatActivity {
         imvTrangChu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CustomProduct.this, TrangChu.class);
-                startActivity(intent);
                 finish();
             }
         });
