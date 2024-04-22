@@ -133,6 +133,8 @@ public class R3cyDB extends SQLiteOpenHelper {
     public static final String ORDER_NOTE = "Note";
     public static final String DELIVERY_DATE = "DeliveryDate";
     public static final String DISCOUNT = "Discount";
+    public static final String COUPON_ORDER ="couponOrder";
+    public static final String  COUPON_SHIPPING="couponShipping";
     public static final String SHIPPING_FEE = "Shippingfee";
     public static final String TOTAL_AMOUNT = "TotalAmount";
     public static final String PAYMENT_STATUS = "Paymentstatus";
@@ -305,7 +307,8 @@ public class R3cyDB extends SQLiteOpenHelper {
             ORDER_STATUS + " TEXT NOT NULL," +
             ORDER_NOTE + " TEXT," +
             DELIVERY_DATE + " DATE," +
-            DISCOUNT + " REAL," +
+            COUPON_ORDER + " REAL," +
+            COUPON_SHIPPING + " REAL," +
             SHIPPING_FEE + " REAL," +
             TOTAL_AMOUNT + " REAL," +
             PAYMENT_STATUS + " INTEGER DEFAULT 0," +
@@ -592,11 +595,11 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
 //        return success;
 //    }
     public void createSampleDataOrder(){
-        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 1, '14-04-2024', 'COD', null, null, 236000, 'Đang giao', 'Che tên sản phẩm', '15-04-2024', '0', 35000, 200000, 0, null)");
-        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 2, '15-04-2024', 'COD', null, null, 232000, 'Chờ xử lý', 'Che tên sản phẩm', '16-04-2024', '0', 30000, 220000, 0, null)");
-        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 3, '16-04-2024', 'COD', null, null, 205000, 'Chờ lấy hàng', 'Che tên sản phẩm', '17-04-2024', '0', 25000, 210000, 0, null)");
-        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 4, '17-04-2024', 'COD', null, null, 135000, 'Hoàn thành', 'Che tên sản phẩm', '18-04-2024', '0', 15000, 250000, 0, null)");
-        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 5, '18-04-2024', 'COD', null, null, 165000, 'Đang giao', 'Che tên sản phẩm', '19-04-2024', '0', 35000, 260000, 0, null)");
+        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 1, '14-04-2024', 'COD', null, null, 236000, 'Đang giao', 'Che tên sản phẩm', '15-04-2024', '0', 35000, 20000, 200000, 0, null)");
+        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 2, '15-04-2024', 'COD', null, null, 232000, 'Chờ xử lý', 'Che tên sản phẩm', '16-04-2024', '0', 20000,20000, 220000, 0, null)");
+        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 3, '16-04-2024', 'COD', null, null, 205000, 'Chờ lấy hàng', 'Che tên sản phẩm', '17-04-2024', '0', 25000,20000, 210000, 0, null)");
+        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 4, '17-04-2024', 'COD', null, null, 135000, 'Hoàn thành', 'Che tên sản phẩm', '18-04-2024', '0', 15000,20000, 250000, 0, null)");
+        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 5, '18-04-2024', 'COD', null, null, 165000, 'Đang giao', 'Che tên sản phẩm', '19-04-2024', '0', 35000,20000, 260000, 0, null)");
     }
 
     public int numbOfRowsOrderLine(){

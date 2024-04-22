@@ -219,13 +219,14 @@ public class ProductDao {
         // Chuyển đổi thành chuỗi theo định dạng đã xác định
         return dateFormat.format(currentDate);
     }
-    public boolean createOrder(int customerId, double totalOrderValue, double shippingFee, double discount, double totalAmount, int couponId, String notes, ArrayList<CartItem> cartItems, String selectedPaymentMethod, String orderStatus, int addressId ) {
+    public boolean createOrder(int customerId, double totalOrderValue, double shippingFee, double  couponOrder, double couponShipping, double totalAmount, int couponId, String notes, ArrayList<CartItem> cartItems, String selectedPaymentMethod, String orderStatus, int addressId ) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues orderValues = new ContentValues();
         orderValues.put(R3cyDB.ORDER_CUSTOMER_ID, customerId);
         orderValues.put(R3cyDB.TOTAL_ORDER_VALUE, totalOrderValue);
         orderValues.put(R3cyDB.SHIPPING_FEE, shippingFee);
-        orderValues.put(R3cyDB.DISCOUNT, discount);
+        orderValues.put(R3cyDB.COUPON_ORDER,  couponOrder);
+        orderValues.put(R3cyDB.COUPON_SHIPPING, couponShipping);
         orderValues.put(R3cyDB.TOTAL_AMOUNT, totalAmount);
         orderValues.put(R3cyDB.COUPON_ID,  couponId);
         orderValues.put(R3cyDB.ORDER_NOTE, notes);
