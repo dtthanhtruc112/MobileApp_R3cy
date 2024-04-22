@@ -592,11 +592,11 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
 //        return success;
 //    }
     public void createSampleDataOrder(){
-        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 1, '14-04-2024', 'COD', 1, null, 236000, 'Đang giao', 'Che tên sản phẩm', '15-04-2024', '0', 35000, 200000, 0, null)");
-        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 2, '15-04-2024', 'COD', 2, null, 232000, 'Chờ xử lý', 'Che tên sản phẩm', '16-04-2024', '0', 30000, 220000, 0, null)");
-        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 3, '16-04-2024', 'COD', 3, null, 205000, 'Chờ xác nhận', 'Che tên sản phẩm', '17-04-2024', '0', 25000, 210000, 0, null)");
-        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 4, '17-04-2024', 'COD', 4, null, 135000, 'Hoàn thành', 'Che tên sản phẩm', '18-04-2024', '0', 15000, 250000, 0, null)");
-        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 5, '18-04-2024', 'COD', 5, null, 165000, 'Đang giao', 'Che tên sản phẩm', '19-04-2024', '0', 35000, 260000, 0, null)");
+        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 1, '14-04-2024', 'COD', null, null, 236000, 'Đang giao', 'Che tên sản phẩm', '15-04-2024', '0', 35000, 200000, 0, null)");
+        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 2, '15-04-2024', 'COD', null, null, 232000, 'Chờ xử lý', 'Che tên sản phẩm', '16-04-2024', '0', 30000, 220000, 0, null)");
+        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 3, '16-04-2024', 'COD', null, null, 205000, 'Chờ lấy hàng', 'Che tên sản phẩm', '17-04-2024', '0', 25000, 210000, 0, null)");
+        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 4, '17-04-2024', 'COD', null, null, 135000, 'Hoàn thành', 'Che tên sản phẩm', '18-04-2024', '0', 15000, 250000, 0, null)");
+        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 5, '18-04-2024', 'COD', null, null, 165000, 'Đang giao', 'Che tên sản phẩm', '19-04-2024', '0', 35000, 260000, 0, null)");
     }
 
     public int numbOfRowsOrderLine(){
