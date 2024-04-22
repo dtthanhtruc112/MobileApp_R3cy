@@ -78,7 +78,7 @@
                     android:layout_weight="3"/>
 
                 <Button
-                    android:id="@+id/btnDoiDiem"
+                    android:id="@+id/btnDieukien"
                     android:layout_width="80dp"
                     android:layout_height="35dp"
                     android:layout_marginStart="20dp"

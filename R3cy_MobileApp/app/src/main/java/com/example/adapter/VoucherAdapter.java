@@ -15,6 +15,7 @@ import com.example.models.Coupon;
 import com.example.models.Voucher;
 import com.example.r3cy_mobileapp.DoiDiem_ChiTiet;
 import com.example.r3cy_mobileapp.R;
+import com.example.r3cy_mobileapp.User_account_voucher_detail;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -61,7 +62,7 @@ public class VoucherAdapter extends BaseAdapter {
             holder.txtCode = view.findViewById(R.id.txtCode);
             holder.txtTitle = view.findViewById(R.id.txtTitle);
             holder.txtHSD = view.findViewById(R.id.txtHSD);
-            holder.btnDoiDiem = view.findViewById(R.id.btnDoiDiem);
+            holder.btnDieukien = view.findViewById(R.id.btnDieukien);
 
             view.setTag(holder);
         } else {
@@ -75,13 +76,13 @@ public class VoucherAdapter extends BaseAdapter {
         String formattedDate = dateFormat.format(c.getEXPIRE_DATE());
         holder.txtHSD.setText(formattedDate);
         // Đặt vị trí vào tag của nút đổi điểm
-        holder.btnDoiDiem.setTag(position);
+        holder.btnDieukien.setTag(position);
 
         // Xử lý sự kiện khi click vào nút đổi điểm
-        holder.btnDoiDiem.setOnClickListener(new View.OnClickListener() {
+        holder.btnDieukien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Lấy vị trí từ tag của nút đổi điểm
+                // Lấy vị trí từ tag của nút điều kiện
                 int clickedPosition = (int) v.getTag();
 
                 // Lấy coupon tương ứng với vị trí
@@ -92,7 +93,7 @@ public class VoucherAdapter extends BaseAdapter {
 
 
                 // Tạo một Intent để chuyển đến trang chi tiết và chuyển dữ liệu coupon
-                Intent intent = new Intent(activity, DoiDiem_ChiTiet.class);
+                Intent intent = new Intent(activity, User_account_voucher_detail.class);
                 intent.putExtra("Package", bundle);
                 activity.startActivity(intent);
             }
@@ -107,6 +108,6 @@ public class VoucherAdapter extends BaseAdapter {
 
     public static class ViewHolder{
         TextView txtCode, txtTitle, txtScore, txtHSD;
-        Button btnDoiDiem;
+        Button btnDieukien;
     }
 }
