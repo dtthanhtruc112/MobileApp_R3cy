@@ -51,28 +51,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="370dp"
                 android:layout_gravity="center"
-                android:src="@drawable/dgd_dia2"/>
-
-<!--            <androidx.viewpager2.widget.ViewPager2-->
-<!--                android:id="@+id/view_pager_2"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="370dp"-->
-<!--                android:layout_gravity="center"/>-->
-
-<!--            <me.relex.circleindicator.CircleIndicator3-->
-<!--                android:id="@+id/circle_indicator3"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="15dp"-->
-<!--                android:layout_gravity="center_horizontal"-->
-<!--                app:ci_drawable="@drawable/bg_indicator3"/>-->
+                android:src="@drawable/dgd_dia2"
+                android:layout_marginTop="-15dp"/>
 
 
-            <!--########################3-->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="-5dp">
 
                 <TextView
                     android:id="@+id/txtProductName"
@@ -82,7 +69,8 @@
                     android:textColor="@color/blue"
                     android:textSize="15sp"
                     android:textStyle="bold"
-                    android:layout_gravity="start"/>
+                    android:layout_gravity="start"
+                    android:layout_marginBottom="5dp"/>
 
                 <TextView
                     android:id="@+id/txtSalePrice"
@@ -92,7 +80,8 @@
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textStyle="bold"
-                    android:layout_gravity="start"/>
+                    android:layout_gravity="start"
+                    android:layout_marginBottom="5dp"/>
 
                 <TextView
                     android:id="@+id/txtProductDescription"
@@ -168,29 +157,27 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:orientation="horizontal"
                 android:weightSum="2"
                 android:layout_gravity="center">
 
                 <Button
                     android:id="@+id/btnAddToCart"
-                    android:layout_width="147dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="70dp"
-                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
                     android:text="Thêm vào giỏ"
                     android:backgroundTint="@color/blue"
-                    android:textAllCaps="false"
-                    android:textSize="13sp" />
+                    android:layout_weight="1"
+                    android:textSize="13sp"
+                    android:layout_marginEnd="30dp"/>
 
                 <Button
                     android:id="@+id/btnBuyNow"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:text="Mua ngay"
                     android:backgroundTint="@color/blue"
-                    android:textAllCaps="false"
+                    android:text="Mua ngay"
                     android:textColor="@color/white"
                     android:layout_weight="1"
                     android:textSize="13sp" />
@@ -249,9 +236,10 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Phuoc Nguyen"
+                        android:text=" Khách hàng"
                         android:layout_gravity="center_vertical"/>
                     <TextView
+                        android:id="@+id/txtFeedbackRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="15dp"
@@ -269,6 +257,7 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/txtFeedbackContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="...Sản phẩm bền chắc, thân thiện với môi trường. Tôi sẽ trải nghiệm thêm nhiều sản phẩm ở shop nữa"/>
@@ -309,7 +298,7 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
                         android:id="@+id/txtDiscussContent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sản phẩm này có thể được custom lại theo ý tôi không, tôi muốn đổi màu sản phẩm."
+                        android:text="...Sản phẩm này có thể được custom lại theo ý tôi không, tôi muốn đổi màu sản phẩm."
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"/>
 
@@ -324,10 +313,10 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
                         android:layout_height="30dp"
                         android:src="@drawable/icon_answer"/>
                     <TextView
-                        android:id="@+id/txtRespondContent"
+                        android:id="@+id/txtDiscussRespond"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Được ạ. Bạn có thể truy cập mục Sản phẩm Custom ở trang chủ để gửi yêu cầu custom nh!"
+                        android:text="...Được ạ. Bạn có thể truy cập mục Sản phẩm Custom ở trang chủ để gửi yêu cầu custom nh!"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"/>
                 </LinearLayout>
@@ -391,12 +380,13 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
 
                 <Button
                     android:id="@+id/btnGui"
-                    android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:text="Gửi"
-                    android:background="@drawable/btn_blue"
-                    android:textColor="@color/white"/>
+                    android:backgroundTint="@color/blue"
+                    android:layout_weight="1"
+                    android:textSize="13sp"
+                    android:layout_marginEnd="30dp"/>
 
             </LinearLayout>
 
