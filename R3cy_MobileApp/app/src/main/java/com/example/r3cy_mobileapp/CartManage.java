@@ -215,7 +215,7 @@ public class CartManage extends AppCompatActivity {
                 // Duyệt qua danh sách sản phẩm và kiểm tra xem sản phẩm nào được chọn
                 for (CartItem item : cartItems) {
                     if (item.isSelected()) {
-                        selectedItems.add(item); // Thêm sản phẩm đã được chọn vào danh sách
+                        selectedItems.add(item);
                     }
                 }
 

@@ -274,6 +274,7 @@ public class Checkout extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Checkout.this, PaymentMethod.class);
+                intent.putExtra("key_email", email);
                 startActivityForResult(intent, PAYMENT_METHOD_REQUEST_CODE);
             }
         });
@@ -321,6 +322,7 @@ public class Checkout extends AppCompatActivity {
             Toast.makeText(Checkout.this, "Đặt hàng thành công!", Toast.LENGTH_SHORT).show();
             // Đặt các thao tác hoặc chuyển hướng sau khi đặt hàng thành công
             Intent intent = new Intent(Checkout.this, TrangChu.class);
+            intent.putExtra("key_email", email);
             startActivity(intent);
             
         } else {
