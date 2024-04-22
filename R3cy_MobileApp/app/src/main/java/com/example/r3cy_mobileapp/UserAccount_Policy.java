@@ -98,7 +98,7 @@ public class UserAccount_Policy extends AppCompatActivity {
 
     private void addEvents() {
         navigationView = findViewById(R.id.mn_home);
-        navigationView.setSelectedItemId(R.id.item_home);
+        navigationView.setSelectedItemId(R.id.item_account);
 
 
         navigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

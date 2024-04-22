@@ -98,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="658"
+                    android:text="00"
                     android:textColor="@color/blue"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -117,7 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:text="1000 "
+                    android:text="00"
                     android:textColor="@color/blue"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -141,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
-                android:text="BẠC"
+                android:text="THƯỜNG"
                 android:textColor="@color/blue"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -167,7 +167,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
-                    android:text="342 "
+                    android:text="00 "
                     android:textColor="@color/dark_blue"
                     android:textSize="11sp"
                     android:textStyle="bold" />
@@ -188,7 +188,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
-                    android:text="VÀNG"
+                    android:text="ĐỒNG"
                     android:textColor="@color/dark_blue"
                     android:textSize="13sp"
                     android:textStyle="bold"

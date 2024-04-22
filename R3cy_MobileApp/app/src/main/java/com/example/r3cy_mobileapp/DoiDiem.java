@@ -49,6 +49,7 @@ public class DoiDiem extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(true);
 
         email = getIntent().getStringExtra("key_email");
+        Log.d("SharedPreferences", "Email ở đổi điểm: " + email);
 
         createDb();
 
@@ -111,7 +112,7 @@ public class DoiDiem extends AppCompatActivity {
         c.close();
 
 
-        adapter = new CouponAdapter(this, R.layout.item_doidiem, coupons);
+        adapter = new CouponAdapter(this, R.layout.item_doidiem, coupons, email);
         binding.lvCoupon.setAdapter(adapter);
 
     }
@@ -130,21 +131,22 @@ public class DoiDiem extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Lấy coupon tại vị trí đó
                 Coupon clickedCoupon = coupons.get(position);
+                // Tạo Intent để chuyển đến trang mới và đính kèm Bundle
+                Intent intent = new Intent(DoiDiem.this, DoiDiem_ChiTiet.class);
 
                 // Tạo một Bundle và đưa thông tin của coupon vào
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("COUPON", clickedCoupon);
                 bundle.putString("key_email", email);
-
-                // Tạo Intent để chuyển đến trang mới và đính kèm Bundle
-                Intent intent = new Intent(DoiDiem.this, DoiDiem_ChiTiet.class);
                 intent.putExtra("Package", bundle);
+                Log.d("DoiDiem", "Email trước khi gửi đi: " + email);
+
                 startActivity(intent);
             }
         });
 
         navigationView = findViewById(R.id.mn_home);
-        navigationView.setSelectedItemId(R.id.item_home);
+        navigationView.setSelectedItemId(R.id.item_account);
 
 
         navigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
