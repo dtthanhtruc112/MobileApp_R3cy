@@ -59,8 +59,23 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
 //        email = getIntent().getStringExtra("key_email");
         Intent intent =  getIntent();
         Bundle bundle = intent.getBundleExtra("Package");
-        email = bundle.getString("key_email");
-        Log.d("SharedPreferences", "Email ở đổi điểm chi tiết: " + email);
+        if (bundle != null) {
+            email = bundle.getString("key_email");
+            Log.d("SharedPreferences", "Email ở đổi điểm chi tiết: " + email);
+            if (email != null) {
+                Log.d("SharedPreferences", "Email ở đổi điểm chi tiết: " + email);
+                // Tiếp tục xử lý với email đã lấy được
+            } else {
+                // Nếu email là null, hiển thị thông báo yêu cầu đăng nhập trước
+                Toast.makeText(getApplicationContext(), "Bạn cần đăng nhập trước", Toast.LENGTH_SHORT).show();
+                // Tiếp tục xử lý theo nhu cầu của bạn, có thể chuyển người dùng đến màn hình đăng nhập
+            }
+        } else {
+            // Nếu bundle là null, cũng hiển thị thông báo yêu cầu đăng nhập trước
+            Toast.makeText(getApplicationContext(), "Bạn cần đăng nhập trước", Toast.LENGTH_SHORT).show();
+            // Tiếp tục xử lý theo nhu cầu của bạn, có thể chuyển người dùng đến màn hình đăng nhập
+        }
+
 
         addEvents();
 
@@ -124,7 +139,7 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
         });
 
         navigationView = findViewById(R.id.mn_home);
-        navigationView.setSelectedItemId(R.id.item_home);
+        navigationView.setSelectedItemId(R.id.item_account);
 
 
         navigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -209,7 +224,7 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(DoiDiem_ChiTiet.this);
             builder.setTitle("Lỗi đổi điểm nhận Coupon!");
             builder.setIcon(android.R.drawable.ic_dialog_info);
-            builder.setMessage("Bạn đã đổi điểm Coupon '" + coupon.getCOUPON_CODE() + "' này rồi nhé!");
+            builder.setMessage("Bạn đã từng đổi điểm Coupon '" + coupon.getCOUPON_CODE() + "' trước đó rồi. Hãy chọn Coupon khác bạn nhé!");
 
             builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
@@ -245,7 +260,7 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
         if (updated){
             AlertDialog.Builder builder = new AlertDialog.Builder(DoiDiem_ChiTiet.this);
             builder.setTitle("Đổi điểm thành công!");
-            builder.setIcon(android.R.drawable.ic_dialog_info);
+            builder.setIcon(android.R.drawable.checkbox_on_background);
             builder.setMessage("Bạn đã đổi điểm Coupon " + coupon.getCOUPON_CODE() + " thành công. Hãy kiểm tra trong trang tài khoản nhé!");
 
             Intent intent = new Intent("com.example.r3cy_mobileapp.ACTION_POINTS_ACCUMULATED");

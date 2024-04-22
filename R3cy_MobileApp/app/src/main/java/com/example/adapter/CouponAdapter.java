@@ -25,12 +25,14 @@ public class CouponAdapter extends BaseAdapter {
     Activity activity;
     int item_layout;
     List<Coupon> coupons;
+    String email;
 
 
-    public CouponAdapter(Activity activity, int item_layout, List<Coupon> coupons) {
+    public CouponAdapter(Activity activity, int item_layout, List<Coupon> coupons, String email) {
         this.activity = activity;
         this.item_layout = item_layout;
         this.coupons = coupons;
+        this.email = email;
     }
 
     @Override
@@ -83,8 +85,10 @@ public class CouponAdapter extends BaseAdapter {
                 // Lấy coupon tương ứng với vị trí
                 Coupon clickedCoupon = coupons.get(clickedPosition);
 
+                // Tạo một Bundle và đưa thông tin của coupon vào
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("COUPON", clickedCoupon);
+                bundle.putString("key_email", email);
 
 
 

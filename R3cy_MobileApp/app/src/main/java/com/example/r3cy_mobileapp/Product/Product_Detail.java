@@ -321,7 +321,7 @@ public class Product_Detail extends AppCompatActivity {
         });
 
         navigationView = findViewById(R.id.mn_home);
-        navigationView.setSelectedItemId(R.id.item_home);
+        navigationView.setSelectedItemId(R.id.item_product);
 
 
         navigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

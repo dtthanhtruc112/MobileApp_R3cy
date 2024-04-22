@@ -75,7 +75,7 @@ public class AboutUs extends AppCompatActivity {
         });
 
         navigationView = findViewById(R.id.mn_home);
-        navigationView.setSelectedItemId(R.id.item_home);
+        navigationView.setSelectedItemId(R.id.item_store);
 
 
         navigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -96,11 +96,6 @@ public class AboutUs extends AppCompatActivity {
                     overridePendingTransition(0,0);
                     return true;
                 } else if (item.getItemId() == R.id.item_store) {
-                    Intent intent3 =new Intent(getApplicationContext(),AboutUs.class);
-                    intent3.putExtra("key_email", email);
-                    intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent3);
-                    overridePendingTransition(0,0);
                     return true;
                 } else if (item.getItemId() == R.id.item_account) {
                     Intent intent4 =new Intent(getApplicationContext(),UserAccount_Main.class);
