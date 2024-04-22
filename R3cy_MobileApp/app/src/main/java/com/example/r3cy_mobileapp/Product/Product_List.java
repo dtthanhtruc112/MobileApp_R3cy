@@ -165,16 +165,18 @@ public class Product_List extends AppCompatActivity implements ProductInterface 
 
     private List<Fragment> getFragments() {
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new Dogiadung_Fragment());
-        fragments.add(new Dotrangtri_Fragment());
-        fragments.add(new Phukien_Fragment());
+        fragments.add(new Dogiadung_Fragment().newInstance(email)); // Khởi tạo fragment và truyền email
+        fragments.add(new Dotrangtri_Fragment().newInstance(email)); // Khởi tạo fragment và truyền email
+        fragments.add(new Phukien_Fragment().newInstance(email)); // Khởi tạo fragment và truyền email
         return fragments;
     }
+
 
     public void replaceFragment(Product p) {
 //        chuyển sang product_detail và truyền dữ liệu sản phẩm
         Intent intent = new Intent(Product_List.this, Product_Detail.class);
         intent.putExtra("productID", p.getProductID());
+        Log.d("SharedPreferences", "Email productlist2: " + email);
         intent.putExtra("key_email", email);
         startActivity(intent);
     }

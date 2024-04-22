@@ -153,11 +153,11 @@ public class TrangChu extends AppCompatActivity {
 
         Log.d("ProductInfo", "Number of products retrieved: " + products.size());
 
-        adapter = new ProductAdapter(this, R.layout.viewholder_category_list,filteredProducts);
+        adapter = new ProductAdapter(this, R.layout.viewholder_category_list,filteredProducts, email);
 
         binding.rcvProducts.setAdapter(adapter);
 
-        adapter = new ProductAdapter(this, R.layout.viewholder_category_list,filteredProducts1);
+        adapter = new ProductAdapter(this, R.layout.viewholder_category_list,filteredProducts1, email);
         binding.rcvProduct.setAdapter(adapter);
 //        binding.rcvProduct.setAdapter(adapter);
     }

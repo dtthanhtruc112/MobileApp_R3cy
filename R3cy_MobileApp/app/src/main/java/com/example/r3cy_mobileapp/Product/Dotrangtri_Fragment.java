@@ -70,13 +70,27 @@ public class Dotrangtri_Fragment extends Fragment {
     Product product;
     R3cyDB db;
     ProductAdapter adapter;
+    String email;
     RecyclerView rvProducts;
     Intent intent;
+
+    public static Dotrangtri_Fragment newInstance(String email) {
+        Dotrangtri_Fragment fragment = new Dotrangtri_Fragment();
+        Bundle args = new Bundle();
+        args.putString("key_email", email);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentDotrangtriBinding.inflate(inflater, container, false);
+        if (getArguments() != null) {
+            email = getArguments().getString("key_email");
+            Log.d("SharedPreferences", "Email trang tri: " + email);
+        }
         return binding.getRoot();
 
 
@@ -85,6 +99,8 @@ public class Dotrangtri_Fragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
 
 //            getCategory();
         createDb();
@@ -121,6 +137,7 @@ public class Dotrangtri_Fragment extends Fragment {
 
 
 
+
     private void loadData() {
         products = new ArrayList<>();
 
@@ -145,7 +162,8 @@ public class Dotrangtri_Fragment extends Fragment {
 
         // Khởi tạo adapter và thiết lập cho ListView
         binding.rvProducts.setLayoutManager(new GridLayoutManager(getContext(),2));
-        adapter = new ProductAdapter(getContext(), R.layout.viewholder_category_list, products);
+        Log.d("SharedPreferences", "Email ttri2: " + email);
+        adapter = new ProductAdapter(getContext(), R.layout.viewholder_category_list, products, email);
         binding.rvProducts.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 

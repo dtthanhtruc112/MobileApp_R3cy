@@ -36,11 +36,24 @@ public class Dogiadung_Fragment extends Fragment {
         RecyclerView rvProducts;
         Intent intent;
         SQLiteDatabase database;
+    String email;
+
+    public static Dogiadung_Fragment newInstance(String email) {
+        Dogiadung_Fragment fragment = new Dogiadung_Fragment();
+        Bundle args = new Bundle();
+        args.putString("key_email", email);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             binding = FragmentDogiadungBinding.inflate(inflater, container, false);
+            if (getArguments() != null) {
+                email = getArguments().getString("key_email");
+                Log.d("SharedPreferences", "Email dogiadung: " + email);
+            }
             return binding.getRoot();
 
 
@@ -72,7 +85,10 @@ public class Dogiadung_Fragment extends Fragment {
 
 
 
-        private void loadData() {
+
+
+
+    private void loadData() {
             products = new ArrayList<>();
 
             Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT  + " WHERE Category = 'Đồ gia dụng' ");
@@ -96,7 +112,8 @@ public class Dogiadung_Fragment extends Fragment {
 
             // Khởi tạo adapter và thiết lập cho ListView
             binding.rvProducts.setLayoutManager(new GridLayoutManager(getContext(),2));
-            adapter = new ProductAdapter(getContext(), R.layout.viewholder_category_list, products);
+        Log.d("SharedPreferences", "Email giadung2: " + email);
+            adapter = new ProductAdapter(getContext(), R.layout.viewholder_category_list, products, email);
             binding.rvProducts.setAdapter(adapter);
             adapter.notifyDataSetChanged();
 

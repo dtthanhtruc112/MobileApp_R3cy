@@ -71,12 +71,26 @@ public class Phukien_Fragment extends Fragment {
     R3cyDB db;
     ProductAdapter adapter;
     RecyclerView rvProducts;
+    String email;
     Intent intent;
+
+    public static Phukien_Fragment newInstance(String email) {
+        Phukien_Fragment fragment = new Phukien_Fragment();
+        Bundle args = new Bundle();
+        args.putString("key_email", email);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentPhukienBinding.inflate(inflater, container, false);
+        if (getArguments() != null) {
+            email = getArguments().getString("key_email");
+            Log.d("SharedPreferences", "Email phukien: " + email);
+        }
         return binding.getRoot();
 
 
@@ -121,6 +135,7 @@ public class Phukien_Fragment extends Fragment {
 
 
 
+
     private void loadData() {
         products = new ArrayList<>();
 
@@ -145,7 +160,8 @@ public class Phukien_Fragment extends Fragment {
 
         // Khởi tạo adapter và thiết lập cho ListView
         binding.rvProducts.setLayoutManager(new GridLayoutManager(getContext(),2));
-        adapter = new ProductAdapter(getContext(), R.layout.viewholder_category_list, products);
+        Log.d("SharedPreferences", "Email phukien2: " + email);
+        adapter = new ProductAdapter(getContext(), R.layout.viewholder_category_list, products, email);
         binding.rvProducts.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 

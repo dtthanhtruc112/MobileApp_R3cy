@@ -67,7 +67,7 @@ public class Product_Search extends AppCompatActivity {
 
         Log.d("SharedPreferences", "Email ở search: " + email);
 
-        adapter = new ProductAdapter(this, R.layout.viewholder_category_list, new ArrayList<Product>());
+        adapter = new ProductAdapter(this, R.layout.viewholder_category_list, new ArrayList<Product>(), email);
         createDb();
         loadData();
         setupSearchView();
@@ -175,7 +175,7 @@ public class Product_Search extends AppCompatActivity {
     private void setupRecyclerView(ArrayList<Product> products) {
         rvProducts = findViewById(R.id.rvProducts);
         rvProducts.setLayoutManager(new GridLayoutManager(this, 2));
-        adapter = new ProductAdapter(this, R.layout.viewholder_category_list, products);
+        adapter = new ProductAdapter(this, R.layout.viewholder_category_list, products, email);
         rvProducts.setAdapter(adapter);
     }
 

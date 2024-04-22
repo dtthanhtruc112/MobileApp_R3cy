@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,12 +31,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private Context context;
     int viewholder_category_list;
     private List<Product> products;
+    String email;
 
-    public ProductAdapter(Context context, int viewholder_category_list, List<Product> products) {
+
+    public ProductAdapter(Context context, int viewholder_category_list, List<Product> products, String email) {
         this.context = context;
         this.viewholder_category_list = viewholder_category_list;
         this.products = products;
+        this.email = email;
     }
+
 
     public void setProducts(List<Product> products) {
         this.products = products;
@@ -76,6 +81,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     Intent intent = new Intent(v.getContext(), Product_Detail.class);
                     // Chuyển dữ liệu của sản phẩm qua Intent
                     intent.putExtra("ProductID", product.getProductID());
+                    Log.d("SharedPreferences", "Email productadapter: " + email);
+                    intent.putExtra("key_email", email);
+
 
                     // Khởi chạy Activity mới
                     v.getContext().startActivity(intent);
