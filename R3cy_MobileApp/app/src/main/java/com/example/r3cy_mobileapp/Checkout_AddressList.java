@@ -68,7 +68,15 @@ public class Checkout_AddressList extends AppCompatActivity {
             public void onClick(View v) {
 //                Mở trang thêm địa chỉ mới, thêm địa chỉ mới và lưu xuống DB bảng Address
                 Intent intent = new Intent(Checkout_AddressList.this, Checkout_Address.class);
+                intent.putExtra("key_email", email);
                 startActivity(intent);
+            }
+        });
+
+        binding.imvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -151,12 +159,14 @@ public class Checkout_AddressList extends AppCompatActivity {
     public void openEditAddressActivity(Address a){
 //        Intent intent = new Intent(this, EditAddress.class);
 //        intent.putExtra("ADDRESS_ID", a.getAddressId());
+//        intent.putExtra("key_email", email);
 //        startActivity(intent);
 
     }
     public void openCheckoutActivity(Address a){
         Intent intent = new Intent(this, Checkout.class);
         intent.putExtra("ADDRESS_ID", a.getAddressId());
+        intent.putExtra("key_email", email);
         startActivity(intent);
 
     }

@@ -967,6 +967,51 @@ public void updateCustomerMembership(int customerId, int newMembershipScore) {
     db.close();
 }
 
+//Hàm tích lũy điểm
+public void accumulateMembershipScore(int customerId, double orderValue) {
+    // Quy đổi 3k cho 1 điểm
+    int scoreToAdd = (int) (orderValue / 3000);
+
+    SQLiteDatabase db = this.getWritableDatabase();
+
+    // Lấy số điểm tích lũy hiện tại của khách hàng
+    int currentScore = getMembershipScore(customerId);
+
+    // Tính toán số điểm mới
+    int newScore = currentScore + scoreToAdd;
+
+    ContentValues values = new ContentValues();
+    values.put(MEMBERSHIP_SCORE, newScore);
+
+    // Cập nhật số điểm mới vào cơ sở dữ liệu
+    db.update(TBL_CUSTOMER, values, CUSTOMER_ID + " = ?", new String[]{String.valueOf(customerId)});
+
+    // Cập nhật loại khách hàng mới dựa trên số điểm mới
+    String newCustomerType = calculateCustomerType(newScore);
+    values.put(CUSTOMER_TYPE, newCustomerType);
+
+    db.update(TBL_CUSTOMER, values, CUSTOMER_ID + " = ?", new String[]{String.valueOf(customerId)});
+
+    db.close();
+}
+
+    public int getMembershipScore(int customerId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int membershipScore = 0;
+
+        Cursor cursor = db.query(TBL_CUSTOMER, new String[]{MEMBERSHIP_SCORE}, CUSTOMER_ID + " = ?",
+                new String[]{String.valueOf(customerId)}, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            membershipScore = cursor.getInt(cursor.getColumnIndex(MEMBERSHIP_SCORE));
+            cursor.close();
+        }
+
+        return membershipScore;
+    }
+
+
+
     public String calculateCustomerType(int membershipScore) {
         if (membershipScore >= 0 && membershipScore < 1000) {
             return "Thường";

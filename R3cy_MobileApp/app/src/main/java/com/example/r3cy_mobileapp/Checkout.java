@@ -156,6 +156,13 @@ public class Checkout extends AppCompatActivity {
                 startActivityForResult(intent, ADDRESS_SELECTION_REQUEST_CODE);
             }
         });
+
+        binding.imvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
     private double calculateTotalAmount(ArrayList<CartItem> selectedItems) {
         double totalAmount = 0.0;

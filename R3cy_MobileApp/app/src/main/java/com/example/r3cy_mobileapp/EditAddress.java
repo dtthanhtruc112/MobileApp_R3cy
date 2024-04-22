@@ -16,17 +16,34 @@ import android.widget.Toast;
 
 import com.example.databases.R3cyDB;
 import com.example.models.Address;
+import com.example.models.Customer;
 import com.example.r3cy_mobileapp.databinding.ActivityEditAddressBinding;
 
 public class EditAddress extends AppCompatActivity {
     ActivityEditAddressBinding binding;
     R3cyDB db;
     private int addressId;
+    String email;
+    Customer customer;
+    // Lấy CUSTOMER_ID từ SharedPreferences hoặc bất kỳ nguồn dữ liệu nào khác
+    int customerId ; // Thay bằng cách lấy CUSTOMER_ID thích hợp
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityEditAddressBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        email = getIntent().getStringExtra("key_email");
+        Log.d("SharedPreferences", "Email ở editaddress: " + email);
+
+        // Nếu không có email từ SharedPreferences, không thực hiện gì cả
+        if (email == null) {
+            return;
+        }
+
+        // Lấy thông tin của khách hàng dựa trên email từ SharedPreferences
+        customer = db.getCustomerByEmail1(email);
+        customerId = customer.getCustomerId();
 
         createDb();
 
@@ -55,6 +72,13 @@ public class EditAddress extends AppCompatActivity {
                 btnSaveAddressClicked();
             }
         });
+
+        binding.imvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
     private void btnSaveAddressClicked() {
         // Lấy giá trị từ Spinner
@@ -70,7 +94,7 @@ public class EditAddress extends AppCompatActivity {
         int DefaultAddress = binding.switchDefaultAddress.isChecked() ? 1 : 0;
 
         // Lấy CUSTOMER_ID từ SharedPreferences hoặc bất kỳ nguồn dữ liệu nào khác=> thêm vào sau
-        int customerId = 1; // Thay bằng cách lấy CUSTOMER_ID thích hợp
+//        int customerId = 1; // Thay bằng cách lấy CUSTOMER_ID thích hợp
 
         // Lấy dữ liệu ban đầu của địa chỉ từ cơ sở dữ liệu
         Address initialAddress = db.getAddressById(addressId);
@@ -114,6 +138,7 @@ public class EditAddress extends AppCompatActivity {
 
                     // Chuyển đến màn hình khác (ví dụ: Danh sách địa chỉ)
                     Intent intent = new Intent(EditAddress.this, Checkout_AddressList.class);
+                    intent.putExtra("key_email", email);
                     startActivity(intent);
                 } else {
                     // Hiển thị thông báo cập nhật thất bại

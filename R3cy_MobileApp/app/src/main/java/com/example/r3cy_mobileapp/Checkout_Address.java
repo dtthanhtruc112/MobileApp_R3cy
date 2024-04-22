@@ -35,7 +35,7 @@ public class Checkout_Address extends AppCompatActivity {
 
         email = getIntent().getStringExtra("key_email");
 
-        Log.d("SharedPreferences", "Email ở checkout: " + email);
+        Log.d("SharedPreferences", "Email ở checkout address: " + email);
 
 
 
@@ -78,6 +78,13 @@ public class Checkout_Address extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 btnSaveAddressClicked();
+            }
+        });
+
+        binding.imvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
