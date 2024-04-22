@@ -132,7 +132,7 @@ public class R3cyDB extends SQLiteOpenHelper {
     public static final String ORDER_STATUS = "Orderstatus"; // Đổi tên cột Orderstatus thành Orderstatus để tránh trùng với từ khóa SQL
     public static final String ORDER_NOTE = "Note";
     public static final String DELIVERY_DATE = "DeliveryDate";
-    public static final String DISCOUNT = "Discount";
+//    public static final String DISCOUNT = "Discount";
     public static final String COUPON_ORDER ="couponOrder";
     public static final String  COUPON_SHIPPING="couponShipping";
     public static final String SHIPPING_FEE = "Shippingfee";
@@ -1474,10 +1474,12 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
         if (cursor.moveToFirst()) {
             // Lấy thông tin từ cursor
             @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
+            @SuppressLint("Range") byte[] thumb = cursor.getBlob(cursor.getColumnIndex(CUSTOMER_THUMB));
 
             UserInfo userInfo = new UserInfo();
 //            customer.getFullName(), customer.getUsername(), customer.getPhone(), String.valueOf(customer.getGender()), customer.getBirthday(), customer.getEmail(), customer.getCustomerId();
             userInfo.setFullName(name);
+            userInfo.setThumb(thumb);
 
             customers.add(userInfo);
         }
@@ -1505,6 +1507,8 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
             @SuppressLint("Range") String phone = cursor.getString(cursor.getColumnIndex(PHONE));
             @SuppressLint("Range") String gender = cursor.getString(cursor.getColumnIndex(GENDER));
             @SuppressLint("Range") String birthday = cursor.getString(cursor.getColumnIndex(BIRTHDAY));
+            @SuppressLint("Range") byte[] thumb = cursor.getBlob(cursor.getColumnIndex(CUSTOMER_THUMB));
+
 
 
             UserInfo userInfo = new UserInfo();
@@ -1514,6 +1518,7 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
             userInfo.setEmail(emails);
             userInfo.setGender(gender);
             userInfo.setBirthday(birthday);
+            userInfo.setThumb(thumb);
 
             customers.add(userInfo);
         }
@@ -1567,6 +1572,7 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
         values.put(EMAIL, email);
         values.put(GENDER, gender1);
         values.put(BIRTHDAY, birthday1);
+
         int i =sqLiteDatabase.update(TBL_CUSTOMER, values, "EMAIL=?", new String[] {email});
         if (i>0){
             return true;
@@ -1574,6 +1580,20 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
             return false;
         }
     }
+    public boolean upDateUserImg(byte [] imgview, String email){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(CUSTOMER_THUMB, imgview);
+
+        int i =sqLiteDatabase.update(TBL_CUSTOMER, values, "EMAIL=?", new String[] {email});
+        if (i>0){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+
 
 //    @SuppressLint("Range")
 //    public String getOrderStatus(String orderstatus) {

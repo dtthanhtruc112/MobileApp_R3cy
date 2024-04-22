@@ -7,6 +7,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +46,7 @@ public class UserAccount_Info extends AppCompatActivity {
     ConstraintLayout editinfo;
     UserInfo userInfos;
     BottomNavigationView navigationView;
+    ImageView thumb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,7 @@ public class UserAccount_Info extends AppCompatActivity {
         gender = binding.editgioitinh;
         birthday = binding.ngaysinh;
         btnedit =binding.btnchinhsua;
+        thumb = binding.imvUservatar;
 
         // Nhận giá trị email từ Intent
         email = getIntent().getStringExtra("key_email");
@@ -152,6 +157,9 @@ public class UserAccount_Info extends AppCompatActivity {
                 useremail.setText(userInfos.getEmail());
                 gender.setText(userInfos.getGender());
                 birthday.setText(userInfos.getBirthday());
+                Bitmap bitmap = BitmapFactory.decodeByteArray(userInfos.getThumb(), 0, userInfos.getThumb().length);
+                thumb.setImageBitmap(bitmap);
+//                imv_useravar.setImageBitmap(userInfo.get);
             } else {
                 // Xử lý trường hợp không tìm thấy thông tin người dùng
                 Toast.makeText(this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();

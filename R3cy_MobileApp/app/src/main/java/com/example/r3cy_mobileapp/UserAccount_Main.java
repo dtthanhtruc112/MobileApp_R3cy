@@ -1,10 +1,16 @@
 package com.example.r3cy_mobileapp;
 
+
 import static android.app.PendingIntent.getActivity;
+
+import static com.example.databases.R3cyDB.CUSTOMER_ID;
+import static com.example.databases.R3cyDB.DATABASE_NAME;
+import static com.example.databases.R3cyDB.TBL_CUSTOMER;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -13,16 +19,21 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +43,8 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,21 +61,40 @@ import com.example.r3cy_mobileapp.Signin.Signin_Main;
 import com.example.r3cy_mobileapp.databinding.ActivityUserAccountMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import static android.content.Context.MODE_PRIVATE;
+
+import android.app.Activity;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class UserAccount_Main extends AppCompatActivity {
     ActivityUserAccountMainBinding binding;
     ActivityResultLauncher<Intent> activityResultLauncher;
+    final int REQUEST_TAKE_PHOTO = 123;
+    final int REQUEST_CHOOSE_PHOTO = 321;
+    final String DATABASE_NAME = "R3cyDB.db";
 
     boolean openCam;
     TextView name;
+    ImageView thumb;
     String email;
     R3cyDB db;
     ViewPager2 viewPager2;
     User_account_manageOrder activity;
     String email1;
     BottomNavigationView navigationView;
+
+    Button btnChonhinh, btnChuphinh, btnSave;
+    ImageView editavar;
 
 
     @Override
@@ -79,22 +111,23 @@ public class UserAccount_Main extends AppCompatActivity {
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
 
-        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result ->{
-            if(result.getResultCode() == RESULT_OK && result.getData() != null) {
-                if(openCam) {
-
-                    Bitmap photo = (Bitmap) result.getData().getExtras().get("data");
+//        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result ->{
+//            if(result.getResultCode() == RESULT_OK && result.getData() != null) {
+//                if(openCam) {
 //
-                    binding.imvUservatar.setImageBitmap(photo);
-                }else{
+//                    Bitmap photo = (Bitmap) result.getData().getExtras().get("data");
+////
+//                    binding.imvUservatar.setImageBitmap(photo);
+//                }else{
+////
+//                    Uri selectedPhotoUri = result.getData().getData();
+//                    binding.imvUservatar.setImageURI(selectedPhotoUri);
+//                    }
+//                }
 //
-                    Uri selectedPhotoUri = result.getData().getData();
-                    binding.imvUservatar.setImageURI(selectedPhotoUri);
-                    }
-                }
-
-        });
+//        });
         name = binding.txtTen;
+        thumb = binding.imvUservatar;
         viewPager2 = findViewById(R.id.view_pager);
 
 //        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
@@ -110,6 +143,186 @@ public class UserAccount_Main extends AppCompatActivity {
         // Gọi phương thức để tải thông tin người dùng
         getUserDetails();
         addEvents();
+        addControls();
+        addEvent();
+        initUI();
+        getUserDetails();
+    }
+
+    private void initUI() {
+        editavar = findViewById(R.id.imv_uservatar);
+//        Intent intent = getIntent();
+        int customerId = db.getCustomerIdFromCustomer(email);
+//        SQLiteDatabase database = initDatabase(this, DATABASE_NAME);
+        try {
+            Cursor cursor = db.getData("SELECT * FROM " + TBL_CUSTOMER + " WHERE " + CUSTOMER_ID + " LIKE '%" + customerId + "%'");
+
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+
+                byte[] BookImage = cursor.getBlob(1);
+
+                Bitmap bitmap = BitmapFactory.decodeByteArray(BookImage, 0, BookImage.length);
+                editavar.setImageBitmap(bitmap);
+
+            } else {
+                Toast.makeText(this, "Không tìm thấy dữ liệu", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        } catch (Exception e) {
+            Log.e("EditBook", "Lỗi truy vấn database: " + e.getMessage());
+            Toast.makeText(this, "Lỗi xảy ra, vui lòng thử lại", Toast.LENGTH_SHORT).show();
+        } finally {
+            db.close(); // Đóng database
+        }
+    }
+    public static SQLiteDatabase initDatabase(Activity activity, String databaseName){
+        try{
+            String outFileName = activity.getApplicationInfo().dataDir + "/databases/" + databaseName;
+            File f = new File(outFileName);
+            if(!f.exists()) {
+                InputStream e = activity.getAssets().open(databaseName);
+                File folder = new File(activity.getApplicationInfo().dataDir + "/databases/");
+                if(!folder.exists()) {
+                    folder.mkdir();
+                }
+                FileOutputStream myOutput = new FileOutputStream(outFileName);
+                byte[] buffer = new byte[1024];
+
+                int length;
+                while ((length = e.read(buffer)) > 0) {
+                    myOutput.write(buffer, 0, length);
+                }
+                myOutput.flush();
+                myOutput.close();
+                e.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return activity.openOrCreateDatabase(databaseName, Context.MODE_PRIVATE, null);
+
+    }
+
+    private void addEvent() {
+        binding.btnChonhinh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choosePhoto();
+
+            }
+        });
+
+        binding.btnChuphinh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takePicture();
+            }
+        });
+
+        binding.btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                update();
+            }
+        });
+
+
+
+    }
+    public void takePicture(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+    }
+
+    private void choosePhoto(){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, REQUEST_CHOOSE_PHOTO);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode == RESULT_OK){
+            if(requestCode == REQUEST_CHOOSE_PHOTO){
+                try {
+                    Uri imageUri = data.getData();
+                    InputStream is = getContentResolver().openInputStream(imageUri);
+
+                    byte[] imageBytes = getBytes(is);
+
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                    editavar.setImageBitmap(bitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }else if(requestCode == REQUEST_TAKE_PHOTO){
+                Bitmap bitmap = (Bitmap) data.getExtras() .get("data");
+                editavar.setImageBitmap(bitmap);
+
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private byte[] getBytes(InputStream is) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = is.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+
+        return byteBuffer.toByteArray();
+    }
+    private void update() {
+        try {
+            byte[] imageview = getByArrayFromImageView(editavar);
+
+//            SQLiteDatabase database = initDatabase(this, DATABASE_NAME);
+//            ContentValues contentValues = new ContentValues();
+//            contentValues.put("ImvAvar", imageView);
+            db = new R3cyDB(this);
+
+            boolean bo = db.upDateUserImg(imageview, email);
+            db.close();
+
+            if (bo) {
+                Toast.makeText(this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, UserAccount_Main.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Log.e("EditBook", "Lỗi cập nhật dữ liệu: " + e.getMessage());
+            Toast.makeText(this, "Lỗi cập nhật, vui lòng thử lại", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void cancle(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+
+    }
+
+    private byte[] getByArrayFromImageView(ImageView imv){
+        BitmapDrawable drawable = (BitmapDrawable) imv.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
+    }
+
+    private void addControls() {
+
     }
 
     private void getUserDetails() {
@@ -131,6 +344,8 @@ public class UserAccount_Main extends AppCompatActivity {
             if (customer != null && customer.size() > 0) {
                 UserInfo userInfo = customer.get(0);
                 name.setText(userInfo.getFullName());
+                Bitmap bitmap = BitmapFactory.decodeByteArray(userInfo.getThumb(), 0, userInfo.getThumb().length);
+                thumb.setImageBitmap(bitmap);
             } else {
                 // Xử lý trường hợp không tìm thấy thông tin người dùng
                 Toast.makeText(this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
@@ -145,12 +360,12 @@ public class UserAccount_Main extends AppCompatActivity {
 
     private void addEvents() {
 
-        binding.iconpen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showBottomSheet();
-            }
-        });
+//        binding.iconpen.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showBottomSheet();
+//            }
+//        });
         binding.usInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -353,6 +568,8 @@ public class UserAccount_Main extends AppCompatActivity {
                 openCam = true;
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 activityResultLauncher.launch(intent);
+                intent.putExtra("key_email", email);
+
                 dialog.dismiss();
             }
         });
@@ -364,6 +581,8 @@ public class UserAccount_Main extends AppCompatActivity {
                 openCam = false;
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 activityResultLauncher.launch(intent);
+                intent.putExtra("key_email", email);
+
                 dialog.dismiss();
             }
         });

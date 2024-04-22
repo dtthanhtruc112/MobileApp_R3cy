@@ -54,23 +54,54 @@
         app:layout_constraintTop_toBottomOf="@id/txttieude"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/iconpen"
         android:scaleType="centerCrop"/>
 
 
-        <ImageView
-            android:id="@+id/iconpen"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/pencilline"
-            android:background="@drawable/useraccount_background_icon_ava"
-            app:layout_constraintTop_toTopOf="parent"
+        <Button
+
+            android:id="@+id/btnChonhinh"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:textColor="@color/white"
+            android:text="Chọn hình"
+            android:layout_marginLeft="30dp"
+            android:textSize="13sp"
+            android:backgroundTint="@color/blue"
+            android:textAllCaps="false"
+            app:layout_constraintTop_toBottomOf="@id/imv_uservatar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+             />
+        <Button
+            android:id="@+id/btnChuphinh"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/white"
+            android:text="Chụp hình"
+            android:textSize="13sp"
+            android:textAllCaps="false"
+
+            app:layout_constraintTop_toBottomOf="@id/imv_uservatar"
+            app:layout_constraintStart_toEndOf="@id/btnChonhinh"
+            app:layout_constraintVertical_bias="0.20"
+            android:layout_marginLeft="20sp"
+            app:layout_constraintHorizontal_bias="0.69"
+            />
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:src="@drawable/pencilline"
+            android:text="Lưu"
+            android:textSize="13sp"
+            android:backgroundTint="@color/blue"
+            android:textAllCaps="false"
+            app:layout_constraintTop_toBottomOf="@id/imv_uservatar"
+            app:layout_constraintStart_toEndOf="@id/btnChuphinh"
+            android:layout_marginLeft="20sp"
             app:layout_constraintVertical_bias="0.20"
             app:layout_constraintHorizontal_bias="0.59"
-             />
+            />
 
     <TextView
         android:id="@+id/txtTen"
@@ -82,7 +113,7 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iconpen"
+        app:layout_constraintTop_toBottomOf="@id/btnChonhinh"
         />
 
 

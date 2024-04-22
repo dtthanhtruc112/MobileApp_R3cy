@@ -111,8 +111,8 @@ public class OrderManage_tatca_Fragment extends Fragment {
     public List<Order> getOrder() {
 
         String orderStatus = dbR3cy.getOrderStatus("Chờ xử lý");
-         customer = dbR3cy.getCustomerByEmail1(email);
-         int customerId = customer.getCustomerId();
+//         customer = dbR3cy.getCustomerByEmail1(email);
+         int customerId = dbR3cy.getCustomerIdFromCustomer(email);
 //        Cursor c1 = db.getData("SELECT * FROM " + R3cyDB.TBL_CUSTOMER + " WHERE " + R3cyDB.CUSTOMER_IDS + " LIKE '%" + customerId + "%'");
         List<Order> orders = new ArrayList<>();
         SQLiteDatabase db = dbR3cy.getReadableDatabase();
@@ -142,7 +142,7 @@ public class OrderManage_tatca_Fragment extends Fragment {
                         " ON o." + R3cyDB.ORDER_ID + " = ol." + R3cyDB.ORDER_LINE_ORDER_ID + " " +
                         " INNER JOIN " + R3cyDB.TBl_PRODUCT + " p" +
                         " ON ol." + R3cyDB.ORDER_LINE_PRODUCT_ID + " = p." + R3cyDB.PRODUCT_ID +
-                        " WHERE o. " + R3cyDB.ORDER_STATUS + " LIKE '%" + orderStatus + "%' AND " +
+                        " WHERE o. " + R3cyDB.ORDER_STATUS + " LIKE '%" + orderStatus + "%'AND " +
                         "o." + R3cyDB.ORDER_CUSTOMER_ID + " LIKE '%" + customerId + "%'";
 
 
