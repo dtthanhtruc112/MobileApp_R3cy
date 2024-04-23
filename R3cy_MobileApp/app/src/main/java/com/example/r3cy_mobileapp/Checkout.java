@@ -43,11 +43,13 @@ public class Checkout extends AppCompatActivity {
 
     Address address;
     private int addressIdFromIntent;
+    private  int voucherIdFromIntent;
     private int selectedAddress;
     private String selectedPaymentMethod = "COD";
 //    address khi đổi địa chỉ nhận hàng
     private static final int ADDRESS_SELECTION_REQUEST_CODE = 1;
     private static final int PAYMENT_METHOD_REQUEST_CODE = 2;
+    public static final  int CHECKOUT_VOUCHER_REQUEST_CODE = 3;
 
     int customerId;
 
@@ -61,7 +63,7 @@ public class Checkout extends AppCompatActivity {
     int couponid;
     String notes;
     Customer customer;
-//    Thay customer lấy sau khi login ra
+    int voucherId;
 
 
     @Override
@@ -94,6 +96,12 @@ public class Checkout extends AppCompatActivity {
             displayAddress();
         } else {
             displayAddress();
+        }
+        voucherIdFromIntent = getIntent().getIntExtra("COUPON_ID", -1);
+        if (voucherIdFromIntent == -1) {
+            Log.d("voucherIdFromIntent", "Không lấy được addressId từ intent");
+        } else {
+            Log.d("voucherIdFromIntent", "voucherIdFromIntent: " + voucherIdFromIntent);
         }
 
 
@@ -249,6 +257,18 @@ public class Checkout extends AppCompatActivity {
 
             }
         }
+        if (requestCode == CHECKOUT_VOUCHER_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                voucherId = data.getIntExtra("COUPON_ID", -1);
+                Log.d("VoucherCheckout", "COUPON_ID: "+ voucherId);
+
+            }
+            if (voucherId != -1) {
+                voucherIdFromIntent = voucherId;
+//                Lấy ra được voucherid từ trang checkout_voucher rồi => cần xử lí khoaảng discount
+            }
+
+        }
     }
     private void addEvents() {
         binding.addressLayout.setOnClickListener(new View.OnClickListener() {
@@ -281,6 +301,14 @@ public class Checkout extends AppCompatActivity {
             public void onClick(View v) {
 //                Tạo đơn hàng, lưu xuống DB
                 makeOrder();
+            }
+        });
+        binding.voucherLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Checkout.this, Checkout_Voucher.class);
+                intent.putExtra("key_email", email);
+                startActivityForResult(intent, CHECKOUT_VOUCHER_REQUEST_CODE);
             }
         });
     }
@@ -327,6 +355,7 @@ public class Checkout extends AppCompatActivity {
 
 
     }
+
 
 
 
