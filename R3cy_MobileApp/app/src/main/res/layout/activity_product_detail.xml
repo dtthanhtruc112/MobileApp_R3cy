@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Product.Product_Detail"
     android:orientation="vertical"
-
     android:background="@color/white"
     android:weightSum="10">
 
@@ -243,7 +242,7 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="15dp"
-                        android:text="4.0 "
+                        android:text="4.5 "
                         android:textColor="@color/black"
                         android:textSize="13sp"
                         android:layout_gravity="center_vertical"/>
@@ -260,7 +259,7 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
                     android:id="@+id/txtFeedbackContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="...Sản phẩm bền chắc, thân thiện với môi trường. Tôi sẽ trải nghiệm thêm nhiều sản phẩm ở shop nữa"/>
+                    android:text="Sản phẩm bền chắc, thân thiện với môi trường. Tôi sẽ trải nghiệm thêm nhiều sản phẩm ở shop nữa"/>
 
 
             </LinearLayout>
@@ -298,7 +297,7 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
                         android:id="@+id/txtDiscussContent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="...Sản phẩm này có thể được custom lại theo ý tôi không, tôi muốn đổi màu sản phẩm."
+                        android:text="Sản phẩm này có thể được custom lại theo ý tôi không, tôi muốn đổi màu sản phẩm."
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"/>
 
@@ -307,7 +306,8 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
@@ -316,14 +316,15 @@ Sự linh hoạt trong việc sử dụng đồ lưu trữ nhỏ gọn này khô
                         android:id="@+id/txtDiscussRespond"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="...Được ạ. Bạn có thể truy cập mục Sản phẩm Custom ở trang chủ để gửi yêu cầu custom nh!"
+                        android:text="Được ạ. Bạn có thể truy cập mục Sản phẩm Custom ở trang chủ để gửi yêu cầu custom nh!"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
