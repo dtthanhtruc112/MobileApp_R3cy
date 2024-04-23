@@ -5,6 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="10dp">
 
+
+
     <TextView
         android:id="@+id/txtproductname"
         android:layout_width="wrap_content"
@@ -16,26 +18,43 @@
 
     <ImageView
         android:id="@+id/productimg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:src="@drawable/ic_launcher_background"
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/txtproductname"/>
 
     <TextView
+        android:id="@+id/txtproductprice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Giá: "
+        android:textSize="11sp"
+        app:layout_constraintTop_toBottomOf="@id/productimg"/>
+    <TextView
         android:id="@+id/productprice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Giá: 90.000đ"
+        android:text=" 90.000đ"
         android:textSize="11sp"
-        app:layout_constraintTop_toBottomOf="@id/productimg"/>
+        app:layout_constraintTop_toBottomOf="@id/productimg"
+        app:layout_constraintStart_toEndOf="@id/txtproductprice"/>
+    <TextView
+        android:id="@+id/txt_productcount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Số lượng: "
+        android:textSize="11sp"
+        app:layout_constraintTop_toBottomOf="@id/productprice"/>
+
     <TextView
         android:id="@+id/productcount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Số lượng: 1"
+        android:text=" 1"
         android:textSize="11sp"
-        app:layout_constraintTop_toBottomOf="@id/productprice"/>
+        app:layout_constraintTop_toBottomOf="@id/productprice"
+        app:layout_constraintStart_toEndOf="@id/txt_productcount"/>
 
     <TextView
         android:id="@+id/txtdanhgiasp"
@@ -46,6 +65,8 @@
         android:layout_marginTop="10dp"
         android:textColor="#31B9F4"
         app:layout_constraintTop_toBottomOf="@id/productcount"/>
+
+
 
     <LinearLayout
         android:id="@+id/danhgia_order"
@@ -97,6 +118,7 @@
         android:backgroundTint="#31B9F4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+       />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

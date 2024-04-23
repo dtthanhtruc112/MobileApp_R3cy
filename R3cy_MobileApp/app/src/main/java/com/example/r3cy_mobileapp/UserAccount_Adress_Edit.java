@@ -1,14 +1,10 @@
 package com.example.r3cy_mobileapp;
 
-import static com.example.databases.R3cyDB.ADDRESS_ID;
-import static com.example.databases.R3cyDB.TBl_ADDRESS;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,9 +14,11 @@ import com.example.databases.R3cyDB;
 import com.example.models.Address;
 import com.example.models.Customer;
 import com.example.r3cy_mobileapp.databinding.ActivityEditAddressBinding;
+import com.example.r3cy_mobileapp.databinding.ActivityUserAccountAdressEditBinding;
 
-public class EditAddress extends AppCompatActivity {
-    ActivityEditAddressBinding binding;
+public class UserAccount_Adress_Edit extends AppCompatActivity {
+
+    ActivityUserAccountAdressEditBinding binding;
     R3cyDB db;
     private int addressId;
     String email;
@@ -30,7 +28,7 @@ public class EditAddress extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityEditAddressBinding.inflate(getLayoutInflater());
+        binding = ActivityUserAccountAdressEditBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         createDb();
@@ -102,7 +100,7 @@ public class EditAddress extends AppCompatActivity {
 
         // Kiểm tra và xử lý dữ liệu
         if (receiverName.isEmpty() || receiverPhone.isEmpty() || province.isEmpty() || district.isEmpty() || ward.isEmpty() || detailAddress.isEmpty()) {
-            Toast.makeText(EditAddress.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            Toast.makeText(UserAccount_Adress_Edit.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
         } else if (initialAddress != null) {
             // So sánh dữ liệu mới với dữ liệu ban đầu
             boolean dataChanged = !receiverName.equals(initialAddress.getReceiverName()) ||
@@ -131,29 +129,28 @@ public class EditAddress extends AppCompatActivity {
 
                 if (updateSuccess) {
                     // Hiển thị thông báo cập nhật thành công
-                    Toast.makeText(EditAddress.this, "Đã cập nhật địa chỉ thành công", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserAccount_Adress_Edit.this, "Đã cập nhật địa chỉ thành công", Toast.LENGTH_SHORT).show();
                     // Đặt địa chỉ mới làm địa chỉ mặc định nếu được chọn
                     if (DefaultAddress == 1) {
                         setDefaultAddress(customerId, addressId);
                     }
 
                     // Chuyển đến màn hình khác (ví dụ: Danh sách địa chỉ)
-                    Intent intent = new Intent(EditAddress.this, Checkout_AddressList.class);
+                    Intent intent = new Intent(UserAccount_Adress_Edit.this, UserAccount_Address.class);
                     intent.putExtra("key_email", email);
                     startActivity(intent);
-
                 } else {
                     // Hiển thị thông báo cập nhật thất bại
-                    Toast.makeText(EditAddress.this, "Cập nhật địa chỉ thất bại", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserAccount_Adress_Edit.this, "Cập nhật địa chỉ thất bại", Toast.LENGTH_SHORT).show();
                     Log.e("Lỗi", "Cập nhật địa chỉ thất bại: " + updateQuery);
                 }
             } else {
                 // Nếu không có sự thay đổi, thông báo cho người dùng biết
-                Toast.makeText(EditAddress.this, "Bạn chưa thay đổi gì so với dữ liệu ban đầu", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserAccount_Adress_Edit.this, "Bạn chưa thay đổi gì so với dữ liệu ban đầu", Toast.LENGTH_SHORT).show();
             }
         } else {
             // Xử lý khi không lấy được dữ liệu ban đầu
-            Toast.makeText(EditAddress.this, "Không thể lấy được dữ liệu ban đầu", Toast.LENGTH_SHORT).show();
+            Toast.makeText(UserAccount_Adress_Edit.this, "Không thể lấy được dữ liệu ban đầu", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -242,7 +239,4 @@ public class EditAddress extends AppCompatActivity {
             finish(); // Đóng trang chỉnh sửa nếu không tìm thấy địa chỉ
         }
     }
-
-
-
 }

@@ -4,6 +4,7 @@ package com.example.databases;
 
 import static java.sql.DriverManager.getConnection;
 
+
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 
@@ -1473,7 +1475,12 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
             UserInfo userInfo = new UserInfo();
 //            customer.getFullName(), customer.getUsername(), customer.getPhone(), String.valueOf(customer.getGender()), customer.getBirthday(), customer.getEmail(), customer.getCustomerId();
             userInfo.setFullName(name);
-            userInfo.setThumb(thumb);
+            if (thumb != null) {
+                userInfo.setThumb(thumb);
+            } else {
+                userInfo.setThumb(convertPhoto(context, R.drawable.dgd_dia3));
+
+            }
 
             customers.add(userInfo);
         }
@@ -1484,6 +1491,8 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
 
         return customers;
     }
+
+
     public ArrayList<UserInfo> getLoggedinUserDetails(String email){
         ArrayList<UserInfo> customers = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
@@ -1512,7 +1521,12 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
             userInfo.setEmail(emails);
             userInfo.setGender(gender);
             userInfo.setBirthday(birthday);
-            userInfo.setThumb(thumb);
+            if (thumb != null) {
+                userInfo.setThumb(thumb);
+            } else {
+                userInfo.setThumb(convertPhoto(context, R.drawable.dgd_dia3));
+
+            }
 
             customers.add(userInfo);
         }

@@ -128,6 +128,7 @@ public class UserAccount_Main extends AppCompatActivity {
         addEvents();
         addControls();
         addEvent();
+        loadData();
 //        getUserDetails();
     }
 
@@ -142,12 +143,12 @@ public class UserAccount_Main extends AppCompatActivity {
         db.createSampleDataCustomer();
     }
 
-    protected void onResume() {
-        super.onResume();
-        Log.i("test", "onResume");
-        loadData();
-//        initUI();
-    }
+//    protected void onResume() {
+//        super.onResume();
+//        Log.i("test", "onResume");
+//        loadData();
+////        initUI();
+//    }
 
     private void initUI() {
         editavar = findViewById(R.id.imv_uservatar);
@@ -264,13 +265,13 @@ public class UserAccount_Main extends AppCompatActivity {
 
             if (bo) {
                 Toast.makeText(this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, UserAccount_Main.class);
-                startActivity(intent);
+//                Intent intent = new Intent(this, UserAccount_Main.class);
+//                startActivity(intent);
             } else {
                 Toast.makeText(this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
-            Log.e("EditBook", "Lỗi cập nhật dữ liệu: " + e.getMessage());
+            Log.e("Chinh anh", "Lỗi cập nhật dữ liệu: " + e.getMessage());
             Toast.makeText(this, "Lỗi cập nhật, vui lòng thử lại", Toast.LENGTH_SHORT).show();
         }
     }
@@ -329,6 +330,7 @@ public class UserAccount_Main extends AppCompatActivity {
         }else{
             getUserDetails();
             initUI();
+            getUserDetails();
 
         }
 
@@ -345,8 +347,8 @@ public class UserAccount_Main extends AppCompatActivity {
             if (customer != null && customer.size() > 0) {
                 UserInfo userInfo = customer.get(0);
                 name.setText(userInfo.getFullName());
-//                Bitmap bitmap = BitmapFactory.decodeByteArray(userInfo.getThumb(), 0, userInfo.getThumb().length);
-//                thumb.setImageBitmap(bitmap);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(userInfo.getThumb(), 0, userInfo.getThumb().length);
+                thumb.setImageBitmap(bitmap);
             } else {
                 // Xử lý trường hợp không tìm thấy thông tin người dùng
                 Toast.makeText(this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
