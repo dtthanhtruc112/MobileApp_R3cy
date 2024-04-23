@@ -222,9 +222,8 @@ public class CartManage extends AppCompatActivity {
         } finally {
             cursor.close();
         }
-
-//        List<Product> filteredProducts = filterProductsByHot(1);
-        List<Product> filteredProducts = filterProductsByHot(0);
+        List<Product> filteredProducts = filterProductsByHot(1);
+//        List<Product> filteredProducts = filterProductsByHot(0);
 
         // Kiểm tra nếu danh sách products hoặc cartItems là null
         if (products == null) {
@@ -236,13 +235,11 @@ public class CartManage extends AppCompatActivity {
             Log.e("CartManage", "Danh sách các mục giỏ hàng là null");
             return;
         }
-
         // Lọc ra các sản phẩm đã hiển thị từ danh sách cartitem
         List<Integer> shownProductIds = new ArrayList<>();
         for (CartItem cartItem : cartItems) {
             shownProductIds.add(cartItem.getProductId());
         }
-
         // Lọc ra các sản phẩm gợi ý không nằm trong danh sách các sản phẩm đã hiển thị
         List<Product> filteredSuggestedProducts = new ArrayList<>();
         for (Product product : filteredProducts) {

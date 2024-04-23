@@ -14,12 +14,9 @@ public class CartItem implements Serializable {
     String productCategory;
     double productPrice;
     int productQuantity;
-
     byte[] productThumb;
-
     private boolean isSelected;
     int lineId;
-
     public CartItem(int productId, String productName, String productCategory, double productPrice, int productQuantity, byte[] productThumb, boolean isSelected, int lineId) {
         ProductId = productId;
         this.productName = productName;

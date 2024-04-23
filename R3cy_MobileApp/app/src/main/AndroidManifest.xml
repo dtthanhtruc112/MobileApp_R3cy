@@ -17,6 +17,9 @@
         android:theme="@style/Theme.R3cy_MobileApp"
         tools:targetApi="31">
         <activity
+            android:name=".BlogList"
+            android:exported="false" />
+        <activity
             android:name=".User_account_voucher_detail"
             android:exported="false" />
         <activity

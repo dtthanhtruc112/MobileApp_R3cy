@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thêm địa chỉ"
+            android:text="Chỉnh sửa địa chỉ"
             android:textColor="#31B9F4"
             android:textSize="16sp"
             android:textStyle="bold">

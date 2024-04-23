@@ -33,6 +33,8 @@ public class EditAddress extends AppCompatActivity {
         binding = ActivityEditAddressBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        createDb();
+
         email = getIntent().getStringExtra("key_email");
         Log.d("SharedPreferences", "Email ở editaddress: " + email);
 
@@ -45,7 +47,6 @@ public class EditAddress extends AppCompatActivity {
         customer = db.getCustomerByEmail1(email);
         customerId = customer.getCustomerId();
 
-        createDb();
 
         // Lấy ID của địa chỉ cần chỉnh sửa từ Intent
         addressId = getIntent().getIntExtra("ADDRESS_ID", -1);

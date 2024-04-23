@@ -17,6 +17,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.example.models.Address;
+import com.example.models.Blog;
 import com.example.models.Customer;
 import com.example.models.Product;
 import com.example.models.ProductAtb;
@@ -27,6 +28,7 @@ import java.io.ByteArrayOutputStream;
 
 import java.util.ArrayList;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -454,6 +456,7 @@ public void createSampleDataCoupon() {
         execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'FREESHIP', 'MIỄN PHÍ VẬN CHUYỂN', 20000, 'value', 'ship', '2024-04-15', '2024-05-20', 500000, 60000, 1, 30, '[28, 29, 30]')");
     }
 }
+
 
     //Cập nhật coupon khi có người đổi điểm lấy quà
 // Method to add a new customer_id to the existing array in customer_ids field based on coupon_id
@@ -1661,6 +1664,76 @@ public Customer getCustomerByEmail3(String email) {
 
         return customers;
     }
+
+    public int numbOfRowsBlog(){
+        Cursor c = getData("SELECT * FROM " + TBL_BLOG);
+        int numberOfRows = c.getCount();
+        c.close();
+        return numberOfRows;
+    }
+
+    public void createSampleDataBlog() {
+        ContentValues values = new ContentValues();
+        SQLiteDatabase db = getWritableDatabase();
+
+        if (numbOfRowsBlog() ==0){
+            // Ví dụ 1
+            values.put(BLOG_TITLE, "R3cy: Vấn nạn rác thải nhựa và giải pháp tái chế");
+            values.put(BLOG_THUMB, convertPhoto(context, R.drawable.dtt_giangsinh1));
+            values.put(BLOG_CREATE_DATE, "2024-03-22");
+            values.put(BLOG_AUTHOR, "Hồ Lê Thanh Trúc");
+            values.put(BLOG_CONTENT, "Nội dung bài viết 1");
+            db.insert(TBL_BLOG, null, values);
+
+            // Ví dụ 2
+            values.clear(); // Xóa các giá trị trước đó để chèn giá trị mới
+            values.put(BLOG_TITLE, "Tiêu đề bài viết 2");
+            values.put(BLOG_THUMB, convertPhoto(context, R.drawable.dtt_giangsinh3));
+            values.put(BLOG_CREATE_DATE, "2024-04-10");
+            values.put(BLOG_AUTHOR, "Người viết bài 2");
+            values.put(BLOG_CONTENT, "Nội dung bài viết 2");
+            db.insert(TBL_BLOG, null, values);
+        }
+
+    }
+    // Phương thức để lấy tất cả các blog từ cơ sở dữ liệu
+    public List<Blog> getAllBlogs() {
+        List<Blog> blogList = new ArrayList<>();
+        Cursor cursor = null;
+
+        try {
+            String query = "SELECT * FROM " + TBL_BLOG;
+            cursor = getData(query);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    // Lấy dữ liệu từ các cột tương ứng trong Cursor
+                    @SuppressLint("Range") int blogId = cursor.getInt(cursor.getColumnIndex(BLOG_ID));
+                    @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex(BLOG_TITLE));
+                    @SuppressLint("Range") byte[] thumb = cursor.getBlob(cursor.getColumnIndex(BLOG_THUMB));
+                    @SuppressLint("Range") long createDateMillis = cursor.getLong(cursor.getColumnIndex(BLOG_CREATE_DATE));
+                    Date createBlogDate = new Date(createDateMillis);
+                    @SuppressLint("Range") String author = cursor.getString(cursor.getColumnIndex(BLOG_AUTHOR));
+                    @SuppressLint("Range") String content = cursor.getString(cursor.getColumnIndex(BLOG_CONTENT));
+
+                    // Tạo đối tượng Blog từ dữ liệu lấy được
+                    Blog blog = new Blog(blogId, title, author, createBlogDate,thumb, content);
+                    blogList.add(blog);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Xử lý ngoại lệ nếu có
+        } finally {
+            // Đóng Cursor
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return blogList;
+    }
+
 
 
 

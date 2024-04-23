@@ -18,6 +18,7 @@ import com.example.dao.ProductDao;
 import com.example.models.CartItem;
 import com.example.models.Coupon;
 //import com.example.r3cy_mobileapp.CartManage;
+import com.example.r3cy_mobileapp.CartManage;
 import com.example.r3cy_mobileapp.R;
 
 import java.text.NumberFormat;
@@ -121,7 +122,7 @@ public class CartAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 int lineId = cartItem.getLineId(); // Lấy lineId của mục cần xóa
-//                ((CartManage) v.getContext()).deleteCartItem(lineId);
+                ((CartManage) v.getContext()).deleteCartItem(lineId);
             }
         });
 

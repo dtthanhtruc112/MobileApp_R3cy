@@ -1,9 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BlogDetail">
+    tools:context=".BlogDetail"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:weightSum="10">
+    <LinearLayout
+        android:id="@+id/layoutTop"
+        android:padding="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/imvBack"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/icon_arrow_back">
+        </ImageView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tin tức"
+            android:textColor="#31B9F4"
+            android:textSize="16sp"
+            android:textStyle="bold">
+        </TextView>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/txtblogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tái Chế Nhựa: Hành Động Nhỏ, Ý Nghĩa Lớn Cho Hành Tinh Của Chúng Ta"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/txtblogDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="11sp"
+        android:text="17/03/2024"
+        android:gravity="end"/>
+    <View
+        android:layout_marginVertical="10dp"
+        android:layout_width="380dp"
+        android:layout_height="1dp"
+        android:background="@color/blue" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_weight="7">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/txtblogContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nội dung bài viết"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CÓ THỂ BẠN QUAN TÂM"
+                android:textStyle="bold"/>
+            <com.example.customs.NonScrollListView
+                android:id="@+id/lvSuggestBlogList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+
+</LinearLayout>

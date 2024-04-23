@@ -157,10 +157,10 @@ public class Checkout_AddressList extends AppCompatActivity {
 
     }
     public void openEditAddressActivity(Address a){
-//        Intent intent = new Intent(this, EditAddress.class);
-//        intent.putExtra("ADDRESS_ID", a.getAddressId());
-//        intent.putExtra("key_email", email);
-//        startActivity(intent);
+        Intent intent = new Intent(this, EditAddress.class);
+        intent.putExtra("ADDRESS_ID", a.getAddressId());
+        intent.putExtra("key_email", email);
+        startActivity(intent);
 
     }
     public void openCheckoutActivity(Address a){

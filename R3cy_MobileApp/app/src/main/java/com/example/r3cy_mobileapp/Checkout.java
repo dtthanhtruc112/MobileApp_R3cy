@@ -116,7 +116,6 @@ public class Checkout extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("selected_items", Context.MODE_PRIVATE);
         String serializedList = sharedPreferences.getString("selected_items_list", null);
         selectedItems = new ArrayList<>();
-
         if (serializedList != null) {
             try {
                 byte[] bytes = Base64.decode(serializedList, Base64.DEFAULT);
@@ -133,7 +132,6 @@ public class Checkout extends AppCompatActivity {
         }else {
             Log.d("SharedPreferences", "Không có dữ liệu được lưu trong SharedPreferences.");
         }
-
         // Tính tổng số tiền từ danh sách các mục đã chọn
         totalAmount = calculateTotalAmount(selectedItems);
         shippingFee = 25000; //        cố định bằng 25000
@@ -297,12 +295,6 @@ public class Checkout extends AppCompatActivity {
             Toast.makeText(Checkout.this, "Vui lòng chọn phương thức thanh toán", Toast.LENGTH_SHORT).show();
             return;
         }
-//        Xử lí tạo đơn hàng, lưu xuống DB bảng order + orderline
-//        Cập nhật số lượng sản phẩm tồn kho + số lượng bán ra
-//        Cập nhật đểm số khách hàng
-//        Xóa khỏi Lineid ở Cart
-        // Tạo đơn hàng và cập nhật cơ sở dữ liệu
-        // Tạo đơn hàng và cập nhật cơ sở dữ liệu
         notes = binding.edtNotes.getText().toString();
         boolean orderCreated = productDao.createOrder(customerId, totalOrderValue, shippingFee, couponOrder, couponShipping, totalAmount, couponid, notes,  selectedItems, selectedPaymentMethod, "Chờ xử lý", selectedAddress);
         if (orderCreated) {
