@@ -121,7 +121,7 @@ public class BlogDetail extends AppCompatActivity {
             binding.txtblogContent.setText(blog.getBlogContent());
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             String formattedDate = dateFormat.format(blog.getBlogDate());
-            binding.txtblogDate.setText(formattedDate);
+            binding.txtblogDate.setText(  "Ngày đăng: "+ formattedDate);
             // Tiếp tục xử lý dữ liệu
         } else {
             Log.i("LoadBlogDetail", "Blog " + blog);
