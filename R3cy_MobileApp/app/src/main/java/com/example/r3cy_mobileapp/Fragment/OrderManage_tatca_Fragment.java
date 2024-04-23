@@ -3,7 +3,10 @@ package com.example.r3cy_mobileapp.Fragment;
 import static android.content.Intent.getIntent;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorWindow;
@@ -12,6 +15,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +24,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.adapter.CartAdapter;
@@ -29,6 +35,9 @@ import com.example.models.Customer;
 import com.example.models.Order;
 import com.example.r3cy_mobileapp.Product.Dogiadung_Fragment;
 import com.example.r3cy_mobileapp.R;
+import com.example.r3cy_mobileapp.Signin.Signin_Main;
+import com.example.r3cy_mobileapp.TrangChu;
+import com.example.r3cy_mobileapp.UserAccount_Main;
 import com.example.r3cy_mobileapp.User_account_manageOrder;
 import com.example.r3cy_mobileapp.databinding.FragmentOrderManageTatcaBinding;
 

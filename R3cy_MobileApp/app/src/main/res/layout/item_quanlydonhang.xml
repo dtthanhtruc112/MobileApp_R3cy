@@ -76,12 +76,23 @@
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <TextView
+                    android:id="@+id/txt_productcount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:text="Số lượng: "
+                    app:layout_constraintStart_toEndOf="@id/order_productimg"
+                    app:layout_constraintTop_toBottomOf="@id/order_productname"
+                    app:layout_constraintVertical_bias="0.15"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <TextView
                     android:id="@+id/order_productcount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
                     android:text="x1"
-                    app:layout_constraintStart_toEndOf="@id/order_productimg"
+                    app:layout_constraintStart_toEndOf="@id/txt_productcount"
                     app:layout_constraintTop_toBottomOf="@id/order_productname"
                     app:layout_constraintVertical_bias="0.15"
                     app:layout_constraintBottom_toBottomOf="parent"/>

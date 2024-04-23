@@ -1,32 +1,27 @@
 package com.example.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.models.Address;
-import com.example.models.Coupon;
-//import com.example.r3cy_mobileapp.CartManage;
 import com.example.r3cy_mobileapp.Checkout_AddressList;
 import com.example.r3cy_mobileapp.R;
-import com.example.r3cy_mobileapp.UserAccount_Address;
 
 import java.util.List;
 
-public class AddressAdapter extends BaseAdapter {
+public class AddressAdapter2 extends BaseAdapter {
     Activity activity;
     int item_layout;
     List<Address> addresses;
 
 
 
-    public AddressAdapter(Activity activity, int item_layout, List<Address> addresses) {
+    public AddressAdapter2(Activity activity, int item_layout, List<Address> addresses) {
         this.activity = activity;
         this.item_layout = item_layout;
         this.addresses = addresses;
@@ -49,13 +44,13 @@ public class AddressAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolderAddress holder;
+        AddressAdapter.ViewHolderAddress holder;
 
         if (convertView == null) {
             LayoutInflater inflater = activity.getLayoutInflater();
             convertView = inflater.inflate(item_layout, parent, false);
 
-            holder = new ViewHolderAddress();
+            holder = new AddressAdapter.ViewHolderAddress();
             // Ánh xạ các thành phần của layout item vào ViewHolder
             holder.txtReceiverName = convertView.findViewById(R.id.txtReceiverName);
             holder.txtReceiverPhone = convertView.findViewById(R.id.txtReceiverPhone);
@@ -64,11 +59,10 @@ public class AddressAdapter extends BaseAdapter {
             holder.txtDefaultAddress = convertView.findViewById(R.id.txtDefaultAddress);
             holder.txtDeleteAddress = convertView.findViewById(R.id.txtDeleteAddress);
             holder.txtEditAddress = convertView.findViewById(R.id.txtEditAddress);
-            holder.rdbSelected = convertView.findViewById(R.id.rdbSelected);
 
             convertView.setTag(holder);
         } else {
-            holder = (ViewHolderAddress) convertView.getTag();
+            holder = (AddressAdapter.ViewHolderAddress) convertView.getTag();
         }
 
         // Lấy đối tượng Address tương ứng với vị trí hiện tại
@@ -92,23 +86,23 @@ public class AddressAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 int AddressId = address.getAddressId();
-                ((UserAccount_Address) v.getContext()).openDialogDeleteAddress(address);
-                }
-            });
+                ((Checkout_AddressList) v.getContext()).openDialogDeleteAddress(address);
+            }
+        });
         holder.txtEditAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int AddressId = address.getAddressId();
-                ((UserAccount_Address) v.getContext()).openEditAddressActivity(address);
+                ((Checkout_AddressList) v.getContext()).openEditAddressActivity(address);
             }
         });
-        holder.rdbSelected.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int AddressId = address.getAddressId();
-                ((UserAccount_Address) v.getContext()).openCheckoutActivity(address);
-            }
-        });
+//        holder.rdbSelected.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                int AddressId = address.getAddressId();
+//                ((Checkout_AddressList) v.getContext()).openCheckoutActivity(address);
+//            }
+//        });
 
 
 

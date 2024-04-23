@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.adapter.AddressAdapter;
+import com.example.adapter.AddressAdapter2;
 import com.example.databases.R3cyDB;
 import com.example.models.Address;
 import com.example.models.Customer;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 public class UserAccount_Address extends AppCompatActivity {
     ActivityUserAccountAddressBinding binding;
     R3cyDB db;
-    AddressAdapter adapter;
+    AddressAdapter2 adapter;
     ArrayList<Address> addresses;
     String email;
     Customer customer;
@@ -102,7 +103,7 @@ public class UserAccount_Address extends AppCompatActivity {
         Log.i("Address size", "Number of items retrieved: " + addresses.size());
 
         // Khởi tạo adapter và thiết lập cho ListView
-        adapter = new AddressAdapter(this, R.layout.address_item2, addresses);
+        adapter = new AddressAdapter2(this, R.layout.address_item2, addresses);
         binding.lvAddressList.setAdapter(adapter);
 
     }

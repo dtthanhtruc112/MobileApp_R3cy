@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.CursorWindow;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import com.example.models.Order;
 import com.example.r3cy_mobileapp.Product.Product_List;
 import com.example.r3cy_mobileapp.databinding.ActivityUserAccountOrderRatingBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.lang.reflect.Field;
 
 public class UserAccount_OrderRating extends AppCompatActivity {
     ActivityUserAccountOrderRatingBinding binding;
@@ -105,6 +108,13 @@ public class UserAccount_OrderRating extends AppCompatActivity {
     }
 
     private void getData() {
+        try {
+            Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
+            field.setAccessible(true);
+            field.set(null, 100 * 1024 * 1024); //the 100MB is the new size
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("Package");
         if (bundle != null && bundle.containsKey("ORDER")) {
@@ -114,9 +124,44 @@ public class UserAccount_OrderRating extends AppCompatActivity {
                 binding.productcount.setText(String.valueOf(order.getQuantity()));
                 binding.productprice.setText(String.valueOf(order.getProductPrice()));
                 byte[] imageData = order.getProductImg();
-                Bitmap bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+                Bitmap bitmap = decodeSampledBitmapFromByteArray(imageData, 200, 200);
                 binding.productimg.setImageBitmap(bitmap);
             }
         }
+    }
+    public static Bitmap decodeSampledBitmapFromByteArray(byte[] byteArray, int reqWidth, int reqHeight) {
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length, options);
+    }
+
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
     }
 }
