@@ -5,15 +5,15 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <TextView
-        android:id="@+id/notification_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tích điểm - Đổi điểm"
-        android:textColor="@color/blue"
-        android:textSize="11sp"
-        android:textStyle="bold"
-        android:paddingBottom="5dp"/>
+<!--    <TextView-->
+<!--        android:id="@+id/notification_title"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Tích điểm - Đổi điểm"-->
+<!--        android:textColor="@color/blue"-->
+<!--        android:textSize="11sp"-->
+<!--        android:textStyle="bold"-->
+<!--        android:paddingBottom="5dp"/>-->
 
     <LinearLayout
         android:layout_width="match_parent"
