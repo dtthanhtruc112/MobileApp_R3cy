@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.models.Address;
 import com.example.r3cy_mobileapp.Checkout_AddressList;
 import com.example.r3cy_mobileapp.R;
+import com.example.r3cy_mobileapp.UserAccount_Address;
 
 import java.util.List;
 
@@ -86,14 +87,14 @@ public class AddressAdapter2 extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 int AddressId = address.getAddressId();
-                ((Checkout_AddressList) v.getContext()).openDialogDeleteAddress(address);
+                ((UserAccount_Address) v.getContext()).openDialogDeleteAddress(address);
             }
         });
         holder.txtEditAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int AddressId = address.getAddressId();
-                ((Checkout_AddressList) v.getContext()).openEditAddressActivity(address);
+                ((UserAccount_Address) v.getContext()).openEditAddressActivity(address);
             }
         });
 //        holder.rdbSelected.setOnClickListener(new View.OnClickListener() {

@@ -157,6 +157,7 @@ public class OrderManage_tatca_Fragment extends Fragment {
         List<Order> orders = new ArrayList<>();
         SQLiteDatabase db = dbR3cy.getReadableDatabase();
         Cursor cursor = null;
+
 //
 
         try {

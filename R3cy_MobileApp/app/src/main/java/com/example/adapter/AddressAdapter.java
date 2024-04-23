@@ -15,7 +15,6 @@ import com.example.models.Coupon;
 //import com.example.r3cy_mobileapp.CartManage;
 import com.example.r3cy_mobileapp.Checkout_AddressList;
 import com.example.r3cy_mobileapp.R;
-import com.example.r3cy_mobileapp.UserAccount_Address;
 
 import java.util.List;
 
@@ -92,21 +91,21 @@ public class AddressAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 int AddressId = address.getAddressId();
-                ((UserAccount_Address) v.getContext()).openDialogDeleteAddress(address);
+                ((Checkout_AddressList) v.getContext()).openDialogDeleteAddress(address);
                 }
             });
         holder.txtEditAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int AddressId = address.getAddressId();
-                ((UserAccount_Address) v.getContext()).openEditAddressActivity(address);
+                ((Checkout_AddressList) v.getContext()).openEditAddressActivity(address);
             }
         });
         holder.rdbSelected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int AddressId = address.getAddressId();
-                ((UserAccount_Address) v.getContext()).openCheckoutActivity(address);
+                ((Checkout_AddressList) v.getContext()).openCheckoutActivity(address);
             }
         });
 

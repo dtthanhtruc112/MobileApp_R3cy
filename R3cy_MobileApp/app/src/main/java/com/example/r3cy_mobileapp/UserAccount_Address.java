@@ -155,18 +155,18 @@ public class UserAccount_Address extends AppCompatActivity {
 
     }
     public void openEditAddressActivity(Address a){
-//        Intent intent = new Intent(this, EditAddress.class);
-//        intent.putExtra("ADDRESS_ID", a.getAddressId());
-//        intent.putExtra("key_email", email);
-//        startActivity(intent);
-
-    }
-    public void openCheckoutActivity(Address a){
-        Intent intent = new Intent(this, Checkout.class);
+        Intent intent = new Intent(this, UserAccount_Adress_Edit.class);
         intent.putExtra("ADDRESS_ID", a.getAddressId());
         intent.putExtra("key_email", email);
         startActivity(intent);
 
     }
+//    public void openCheckoutActivity(Address a){
+//        Intent intent = new Intent(this, Checkout.class);
+//        intent.putExtra("ADDRESS_ID", a.getAddressId());
+//        intent.putExtra("key_email", email);
+//        startActivity(intent);
+//
+//    }
 
     }
