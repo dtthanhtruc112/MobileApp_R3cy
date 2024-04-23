@@ -15,6 +15,7 @@ import com.example.databases.R3cyDB;
 import com.example.models.Customer;
 import com.example.r3cy_mobileapp.databinding.ActivityCheckoutAddressBinding;
 import com.example.r3cy_mobileapp.databinding.ActivityUserAccountAdressAddBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class UserAccount_Adress_Add extends AppCompatActivity {
 
@@ -22,8 +23,8 @@ public class UserAccount_Adress_Add extends AppCompatActivity {
     R3cyDB db;
     String email;
     Customer customer;
-    // Lấy CUSTOMER_ID từ SharedPreferences hoặc bất kỳ nguồn dữ liệu nào khác
-    int customerId ; // Thay bằng cách lấy CUSTOMER_ID thích hợp
+    int customerId ;
+    BottomNavigationView navigationView;
 
 
     @Override

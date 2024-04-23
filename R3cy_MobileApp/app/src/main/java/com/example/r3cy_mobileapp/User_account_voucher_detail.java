@@ -62,14 +62,10 @@ public class User_account_voucher_detail extends AppCompatActivity {
                 Log.d("SharedPreferences", "Email ở đổi điểm chi tiết: " + email);
                 // Tiếp tục xử lý với email đã lấy được
             } else {
-                // Nếu email là null, hiển thị thông báo yêu cầu đăng nhập trước
-//                Toast.makeText(getApplicationContext(), "Bạn cần đăng nhập trước", Toast.LENGTH_SHORT).show();
-                // Tiếp tục xử lý theo nhu cầu của bạn, có thể chuyển người dùng đến màn hình đăng nhập
+                Log.d("SharedPreferences", "Lỗi get email: " + email);
             }
         } else {
-            // Nếu bundle là null, cũng hiển thị thông báo yêu cầu đăng nhập trước
-//            Toast.makeText(getApplicationContext(), "Bạn cần đăng nhập trước", Toast.LENGTH_SHORT).show();
-            // Tiếp tục xử lý theo nhu cầu của bạn, có thể chuyển người dùng đến màn hình đăng nhập
+
         }
 
 
@@ -92,7 +88,6 @@ public class User_account_voucher_detail extends AppCompatActivity {
             if (voucher != null) {
                 binding.txtCode.setText(voucher.getCOUPON_CODE());
                 binding.txtTitle.setText(voucher.getCOUPON_TITLE());
-//                binding.txtScore.setText(String.valueOf(coupon.getSCORE_MIN()));
 
                 // Lấy ngày hiện tại
                 Date currentDate = new Date();
@@ -127,31 +122,6 @@ public class User_account_voucher_detail extends AppCompatActivity {
             }
         });
     }
-
-        private void reloadData() {
-            // Load lại dữ liệu coupon
-            loadDataCoupon();
-
-            // Load lại dữ liệu customer
-            getDataCustomer();
-        }
-
-        private boolean isCustomerEligibleForCoupon(int customerId, int couponId) {
-            Cursor cursor = db.getData("SELECT " + R3cyDB.CUSTOMER_IDS + " FROM " + R3cyDB.TBl_COUPON + " WHERE " + R3cyDB.COUPON_ID + " = " + couponId);
-            if (cursor != null && cursor.moveToFirst()) {
-                String customerIdsString = cursor.getString(0);
-                cursor.close();
-                if (customerIdsString != null && !customerIdsString.isEmpty()) {
-                    ArrayList<Integer> customerIds = db.parseCustomerIdsFromString(customerIdsString);
-                    return customerIds.contains(customerId);
-                }
-            }
-            return false;
-        }
-
-
-
-
 
 
         private void getDataCustomer() {

@@ -1443,7 +1443,6 @@ public class R3cyDB extends SQLiteOpenHelper {
         ArrayList<UserInfo> customers = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
-
         Cursor cursor = sqLiteDatabase.rawQuery(query, new String[]{email});
         Customer customer = null;
 
@@ -1454,7 +1453,6 @@ public class R3cyDB extends SQLiteOpenHelper {
             @SuppressLint("Range") byte[] thumb = cursor.getBlob(cursor.getColumnIndex(CUSTOMER_THUMB));
 
             UserInfo userInfo = new UserInfo();
-//            customer.getFullName(), customer.getUsername(), customer.getPhone(), String.valueOf(customer.getGender()), customer.getBirthday(), customer.getEmail(), customer.getCustomerId();
             userInfo.setFullName(name);
             if (thumb != null) {
                 userInfo.setThumb(thumb);
@@ -1465,7 +1463,6 @@ public class R3cyDB extends SQLiteOpenHelper {
 
             customers.add(userInfo);
         }
-
         // Đóng con trỏ và database
         cursor.close();
         sqLiteDatabase.close();
@@ -1526,15 +1523,10 @@ public class R3cyDB extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, new String[]{email});
         if (cursor != null && cursor.moveToFirst()) {
             customerId = cursor.getInt(cursor.getColumnIndex(CUSTOMER_ID));
-//            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
             cursor.close();
         }
 
         // Đóng con trỏ và database
-//        cursor.close();
-//        sqLiteDatabase.close();
-//
-//        return customers;
         db.close();
         return customerId;
     }
@@ -1553,7 +1545,9 @@ public class R3cyDB extends SQLiteOpenHelper {
         return newRowId;
     }
 
-    public boolean upDateUserProfile(String email, String fullname1, String username1, String phone1, String gender1, String birthday1) {
+    public boolean upDateUserProfile(String email, String fullname1,
+                                     String username1, String phone1,
+                                     String gender1, String birthday1) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(FULLNAME, fullname1);
