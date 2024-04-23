@@ -510,7 +510,7 @@ public class UserAccount_Main extends AppCompatActivity {
                     overridePendingTransition(0,0);
                     return true;
                 } else if (item.getItemId() == R.id.item_blog) {
-                    Intent intent2 =new Intent(getApplicationContext(),BlogDetail.class);
+                    Intent intent2 =new Intent(getApplicationContext(),BlogList.class);
                     intent2.putExtra("key_email", email);
                     intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent2);

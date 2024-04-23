@@ -17,6 +17,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.core.text.HtmlCompat;
 
 import com.example.models.Address;
 import com.example.models.Blog;
@@ -28,6 +29,7 @@ import com.example.r3cy_mobileapp.R;
 
 import java.io.ByteArrayOutputStream;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import java.util.Date;
@@ -127,9 +129,9 @@ public class R3cyDB extends SQLiteOpenHelper {
     public static final String ORDER_STATUS = "Orderstatus"; // Đổi tên cột Orderstatus thành Orderstatus để tránh trùng với từ khóa SQL
     public static final String ORDER_NOTE = "Note";
     public static final String DELIVERY_DATE = "DeliveryDate";
-//    public static final String DISCOUNT = "Discount";
-    public static final String COUPON_ORDER ="couponOrder";
-    public static final String  COUPON_SHIPPING="couponShipping";
+    //    public static final String DISCOUNT = "Discount";
+    public static final String COUPON_ORDER = "couponOrder";
+    public static final String COUPON_SHIPPING = "couponShipping";
     public static final String SHIPPING_FEE = "Shippingfee";
     public static final String TOTAL_AMOUNT = "TotalAmount";
     public static final String PAYMENT_STATUS = "Paymentstatus";
@@ -163,7 +165,7 @@ public class R3cyDB extends SQLiteOpenHelper {
     public static final String MAXIMUM_DISCOUNT = "MaximumDiscount";
     public static final String COUPON_VALUE = "CouponValue";
     public static final String MAXIMUM_USERS = "MaximumUsers";
-    public static final String CUSTOMER_IDS  = "Customer_IDs";
+    public static final String CUSTOMER_IDS = "Customer_IDs";
 
     // Các cột của bảng VoucherShip
     public static final String VOUCHER_SHIP_ID = "VoucherShipID";
@@ -390,74 +392,73 @@ public class R3cyDB extends SQLiteOpenHelper {
             ")";
 
     //SELECT...
-    public Cursor getData(String sql){
+    public Cursor getData(String sql) {
         try {
             SQLiteDatabase db = getReadableDatabase();
             return db.rawQuery(sql, null);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
 
-//    INSERT. UPDATE, DELETE
-public boolean execSql(String sql){
-    SQLiteDatabase db = getWritableDatabase();
-    try{
-        db.execSQL(sql);
-        return true;
-    }catch (Exception e){
-        Log.e("Error: ", e.toString());
-        return false;
-    }
+    //    INSERT. UPDATE, DELETE
+    public boolean execSql(String sql) {
+        SQLiteDatabase db = getWritableDatabase();
+        try {
+            db.execSQL(sql);
+            return true;
+        } catch (Exception e) {
+            Log.e("Error: ", e.toString());
+            return false;
+        }
 
-}
+    }
 //    Ktra table có dữ liệu không
 
-//    Kiểm tra bảng Coupon
-public int numbOfRowsCoupon(){
-    Cursor c = getData("SELECT * FROM " + TBl_COUPON);
-    int numberOfRows = c.getCount();
-    c.close();
-    return numberOfRows;
-}
-
-
-
-
-//    Thêm dữ liệu mẫu
-public void createSampleDataCart() {
-    if (numbOfRowsCart() == 0) {
-        execSql("INSERT INTO " + TBl_CART + " VALUES(null, 2, 2, 1)");
-        execSql("INSERT INTO " + TBl_CART + " VALUES(null, 3, 3, 2)");
-        execSql("INSERT INTO " + TBl_CART + " VALUES(null, 4, 4, 1)");
-        execSql("INSERT INTO " + TBl_CART + " VALUES(null, 1, 4, 1)");
-        execSql("INSERT INTO " + TBl_CART + " VALUES(null, 1, 5, 1)");
-        execSql("INSERT INTO " + TBl_CART + " VALUES(null, 1, 6, 1)");
+    //    Kiểm tra bảng Coupon
+    public int numbOfRowsCoupon() {
+        Cursor c = getData("SELECT * FROM " + TBl_COUPON);
+        int numberOfRows = c.getCount();
+        c.close();
+        return numberOfRows;
     }
 
-}
-    public int numbOfRowsCart(){
+
+    //    Thêm dữ liệu mẫu
+    public void createSampleDataCart() {
+        if (numbOfRowsCart() == 0) {
+            execSql("INSERT INTO " + TBl_CART + " VALUES(null, 2, 2, 1)");
+            execSql("INSERT INTO " + TBl_CART + " VALUES(null, 3, 3, 2)");
+            execSql("INSERT INTO " + TBl_CART + " VALUES(null, 4, 4, 1)");
+            execSql("INSERT INTO " + TBl_CART + " VALUES(null, 1, 4, 1)");
+            execSql("INSERT INTO " + TBl_CART + " VALUES(null, 1, 5, 1)");
+            execSql("INSERT INTO " + TBl_CART + " VALUES(null, 1, 6, 1)");
+        }
+
+    }
+
+    public int numbOfRowsCart() {
         Cursor c = getData("SELECT * FROM " + TBl_CART);
         int numberOfRows = c.getCount();
         c.close();
         return numberOfRows;
     }
-// Dữ liệu mẫu Coupon
-public void createSampleDataCoupon() {
-    if (numbOfRowsCoupon() == 0) {
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM10%', 'GIẢM 10% ĐƠN HÀNG CHO THÀNH VIÊN MỚI, GIẢM TỐI ĐA 30K', 100, 'percent', 'order', '2024-04-15', '2024-05-20', 100000, 30000, 0.10, 10, '[1, 2, 3]')");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% ĐƠN HÀNG CHÀO MỪNG THÁNG 4, GIẢM TỐI ĐA 60K', 1000, 'percent', 'order', '2024-04-15', '2024-05-20', 200000, 60000, 0.20, 10, '[4, 5, 6]')");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM30%', 'GIẢM 30% ĐƠN HÀNG TRI ÂN THÀNH VIÊN BẠC, GIẢM TỐI ĐA 90K', 5000, 'percent', 'order', '2024-04-15', '2024-05-20', 300000, 90000, 0.30, 10, '[7, 8, 9]')");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM120K', 'GIẢM 120K ĐƠN HÀNG CHÀO MỪNG THÁNG 5', 10000, 'value', 'order', '2024-04-15', '2024-05-20', 400000, 120000, 120000, 10, '[10, 11, 12]')");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM150K', 'GIẢM 150K ĐƠN HÀNG TRI ÂN THÀNH VIÊN KIM CƯƠNG', 20000, 'value', 'order', '2024-04-15', '2024-05-20', 500000, 150000, 150000, 10, '[13, 14, 15]')");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 100000', 100, 'percent', 'ship', '2024-04-15', '2024-05-20', 100000, 30000, 0.20, 30, '[16, 17, 18]')");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40%', 'GIẢM 40% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 200000', 1000, 'percent', 'ship', '2024-04-15', '2024-05-20', 200000, 30000, 0.40, 30, '[19, 20, 21]')");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM60%', 'GIẢM 60% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 300000', 5000, 'percent', 'ship', '2024-04-15', '2024-05-20', 300000, 30000, 0.6, 30, '[22, 23, 24]')");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40K', 'GIẢM 40K PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 400000 ', 10000, 'value', 'ship', '2024-04-15', '2024-05-20', 400000, 40000, 400000, 30, '[25, 26, 27]')");
-        execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'FREESHIP', 'MIỄN PHÍ VẬN CHUYỂN', 20000, 'value', 'ship', '2024-04-15', '2024-05-20', 500000, 60000, 1, 30, '[28, 29, 30]')");
+
+    // Dữ liệu mẫu Coupon
+    public void createSampleDataCoupon() {
+        if (numbOfRowsCoupon() == 0) {
+            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM10%', 'GIẢM 10% ĐƠN HÀNG CHO THÀNH VIÊN MỚI, GIẢM TỐI ĐA 30K', 100, 'percent', 'order', '2024-04-15', '2024-05-20', 100000, 30000, 0.10, 10, '[1, 2, 3]')");
+            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% ĐƠN HÀNG CHÀO MỪNG THÁNG 4, GIẢM TỐI ĐA 60K', 1000, 'percent', 'order', '2024-04-15', '2024-05-20', 200000, 60000, 0.20, 10, '[4, 5, 6]')");
+            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM30%', 'GIẢM 30% ĐƠN HÀNG TRI ÂN THÀNH VIÊN BẠC, GIẢM TỐI ĐA 90K', 5000, 'percent', 'order', '2024-04-15', '2024-05-20', 300000, 90000, 0.30, 10, '[7, 8, 9]')");
+            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM120K', 'GIẢM 120K ĐƠN HÀNG CHÀO MỪNG THÁNG 5', 10000, 'value', 'order', '2024-04-15', '2024-05-20', 400000, 120000, 120000, 10, '[10, 11, 12]')");
+            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM150K', 'GIẢM 150K ĐƠN HÀNG TRI ÂN THÀNH VIÊN KIM CƯƠNG', 20000, 'value', 'order', '2024-04-15', '2024-05-20', 500000, 150000, 150000, 10, '[13, 14, 15]')");
+            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM20%', 'GIẢM 20% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 100000', 100, 'percent', 'ship', '2024-04-15', '2024-05-20', 100000, 30000, 0.20, 30, '[16, 17, 18]')");
+            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40%', 'GIẢM 40% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 200000', 1000, 'percent', 'ship', '2024-04-15', '2024-05-20', 200000, 30000, 0.40, 30, '[19, 20, 21]')");
+            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM60%', 'GIẢM 60% PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 300000', 5000, 'percent', 'ship', '2024-04-15', '2024-05-20', 300000, 30000, 0.6, 30, '[22, 23, 24]')");
+            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'GIAM40K', 'GIẢM 40K PHÍ VẬN CHUYỂN CHO ĐƠN HÀNG TRÊN 400000 ', 10000, 'value', 'ship', '2024-04-15', '2024-05-20', 400000, 40000, 400000, 30, '[25, 26, 27]')");
+            execSql("INSERT INTO " + TBl_COUPON + " VALUES(null, 'FREESHIP', 'MIỄN PHÍ VẬN CHUYỂN', 20000, 'value', 'ship', '2024-04-15', '2024-05-20', 500000, 60000, 1, 30, '[28, 29, 30]')");
+        }
     }
-}
 
 
     //Cập nhật coupon khi có người đổi điểm lấy quà
@@ -491,38 +492,30 @@ public void createSampleDataCoupon() {
         execSql(sql);
     }
 
-//   Hàm lấy mảng customerid
-public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
-    ArrayList<Integer> customerIds = new ArrayList<>();
-    if (customerIdsString != null && !customerIdsString.isEmpty()) {
-        String[] ids = customerIdsString.replaceAll("\\[|\\]", "").split(",\\s*");
-        for (String id : ids) {
-            customerIds.add(Integer.parseInt(id.trim()));
+    //   Hàm lấy mảng customerid
+    public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
+        ArrayList<Integer> customerIds = new ArrayList<>();
+        if (customerIdsString != null && !customerIdsString.isEmpty()) {
+            String[] ids = customerIdsString.replaceAll("\\[|\\]", "").split(",\\s*");
+            for (String id : ids) {
+                customerIds.add(Integer.parseInt(id.trim()));
+            }
         }
+        return customerIds;
     }
-    return customerIds;
-}
 
     // Phương thức để lấy danh sách customerIds từ cơ sở dữ liệu cho couponId cụ thể
     // Phương thức để lấy danh sách customerIds từ cơ sở dữ liệu cho couponId cụ thể
 
 
-
-
-
-
-
-
-
-
-
-    public int numbOfRowsOrder(){
+    public int numbOfRowsOrder() {
         Cursor c = getData("SELECT * FROM " + TBl_ORDER);
         int numberOfRows = c.getCount();
         c.close();
         return numberOfRows;
     }
-//    public boolean insertDataOrder(String ORDER_ID, String ORDER_CUSTOMER_ID, String ORDER_DATE, String PAYMENT_METHOD, String PAYMENT_ID, String COUPON_ID, double TOTAL_ORDER_VALUE, String ORDER_STATUS, String ORDER_NOTE, String DELIVERY_DATE, String DISCOUNT, double SHIPPING_FEE, double TOTAL_AMOUNT, String PAYMENT_STATUS, String ADDRESS_ID) {
+
+    //    public boolean insertDataOrder(String ORDER_ID, String ORDER_CUSTOMER_ID, String ORDER_DATE, String PAYMENT_METHOD, String PAYMENT_ID, String COUPON_ID, double TOTAL_ORDER_VALUE, String ORDER_STATUS, String ORDER_NOTE, String DELIVERY_DATE, String DISCOUNT, double SHIPPING_FEE, double TOTAL_AMOUNT, String PAYMENT_STATUS, String ADDRESS_ID) {
 //        SQLiteDatabase database = getWritableDatabase();
 //        String sql = "INSERT INTO " + TBl_ORDER + "(" +
 //                ORDER_ID + ", " +
@@ -575,7 +568,7 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
 //        Log.d("DatabaseHelper", "Insert data result: " + success);
 //        return success;
 //    }
-    public void createSampleDataOrder(){
+    public void createSampleDataOrder() {
         execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 1, '14-04-2024', 'COD', null, null, 236000, 'Đang giao', 'Che tên sản phẩm', '15-04-2024', '0', 35000, 20000, 200000, 0, null)");
         execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 2, '15-04-2024', 'COD', null, null, 232000, 'Chờ xử lý', 'Che tên sản phẩm', '16-04-2024', '0', 20000,20000, 220000, 0, null)");
         execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 3, '16-04-2024', 'COD', null, null, 205000, 'Chờ lấy hàng', 'Che tên sản phẩm', '17-04-2024', '0', 25000,20000, 210000, 0, null)");
@@ -583,14 +576,14 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
         execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 5, '18-04-2024', 'COD', null, null, 165000, 'Đang giao', 'Che tên sản phẩm', '19-04-2024', '0', 35000,20000, 260000, 0, null)");
     }
 
-    public int numbOfRowsOrderLine(){
+    public int numbOfRowsOrderLine() {
         Cursor c = getData("SELECT * FROM " + TBl_ORDER_LINE);
         int numberOfRows = c.getCount();
         c.close();
         return numberOfRows;
     }
 
-//    public boolean insertDataOrderLine(String ORDER_LINE_ID, String ORDER_LINE_ORDER_ID, String ORDER_LINE_PRODUCT_ID, double ORDER_SALE_PRICE, String QUANTITY) {
+    //    public boolean insertDataOrderLine(String ORDER_LINE_ID, String ORDER_LINE_ORDER_ID, String ORDER_LINE_PRODUCT_ID, double ORDER_SALE_PRICE, String QUANTITY) {
 //        SQLiteDatabase database = getWritableDatabase();
 //        String sql = "INSERT INTO " + TBl_ORDER_LINE + "(" +
 //                ORDER_LINE_ID + ", " +
@@ -615,13 +608,14 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
 //        Log.d("DatabaseHelper", "Insert data result: " + success);
 //        return success;
 //    }
-    public void createSampleDataOrderLine(){
+    public void createSampleDataOrderLine() {
         execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, 1, 1, 160000, 4)");
         execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, 2, 2, 150000, 3)");
         execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, 3, 3, 140000, 3)");
         execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, 4, 4, 150000, 2)");
         execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, 5, 5, 170000, 1)");
     }
+
     @SuppressLint("Range")
     public String getOrderStatus(String orderstatus) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -644,15 +638,16 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
 
         return orderstatus;
     }
-    public int numbOfRowsAddress(){
+
+    public int numbOfRowsAddress() {
         Cursor c = getData("SELECT * FROM " + TBl_ADDRESS);
         int numberOfRows = c.getCount();
         c.close();
         return numberOfRows;
     }
 
-    public void createSampleDataAddress(){
-        if (numbOfRowsAddress() == 0){
+    public void createSampleDataAddress() {
+        if (numbOfRowsAddress() == 0) {
             execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, 1, 'Lê Thị Tuyết Anh', '0911235896', 'TP HCM', 'Thủ Đức', 'Phường 2', '14 Nguyễn Tri Phương', 1, 'nhà riêng')");
             execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, 1, 'Lê Thị Tuyết Anh', '0911235896', 'TP HCM', 'Tân Phú', 'Sơn Kỳ', '14 Tân Thắng', 0, 'nhà riêng')");
             execSql("INSERT INTO " + TBl_ADDRESS + " VALUES(null, 2, 'Đặng Thị Thanh Trúc', '0910587896', 'Huế', 'Phong Điền', 'Phường 4', '35/8 Trần Hưng Đạo', 1, 'nhà riêng')");
@@ -712,13 +707,14 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
         }
         return lastInsertedId;
     }
+
     public List<Address> getAddressesForCustomer(int customerId) {
         List<Address> addresses = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = null;
         try {
             String selection = ADDRESS_CUSTOMER_ID + " = ?";
-            String[] selectionArgs = { String.valueOf(customerId) };
+            String[] selectionArgs = {String.valueOf(customerId)};
             cursor = db.query(TBl_ADDRESS, null, selection, selectionArgs, null, null, null);
             if (cursor != null && cursor.moveToFirst()) {
                 do {
@@ -769,6 +765,7 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
         }
         return addresses;
     }
+
     @SuppressLint("Range")
     public Address getAddressById(int addressId) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -809,6 +806,7 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
         }
         return address;
     }
+
     public Address getDefaultAddress(int customerId) {
         // Lấy danh sách tất cả các địa chỉ của khách hàng
         List<Address> addresses = getAddressesForCustomer(customerId);
@@ -843,142 +841,130 @@ public ArrayList<Integer> parseCustomerIdsFromString(String customerIdsString) {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     // Kiểm tra bảng Customer
-public int numbOfRowsCustomer(){
+    public int numbOfRowsCustomer() {
         Cursor c = getData("SELECT * FROM " + TBL_CUSTOMER);
         int numberOfRows = c.getCount();
         c.close();
         return numberOfRows;
-}
-
-public boolean insertCustomer(String fullName, String email, String password) {
-    SQLiteDatabase db = this.getWritableDatabase();
-    ContentValues values = new ContentValues();
-    values.put(FULLNAME, fullName);
-    values.put(EMAIL, email);
-    values.put(PASSWORD, password);
-    long result = db.insert(TBL_CUSTOMER, null, values);
-    db.close();
-    return result != -1;
-}
-public Customer getCustomerByEmail(String email) {
-    // Đọc cơ sở dữ liệu
-    SQLiteDatabase db = this.getReadableDatabase();
-
-    // Câu truy vấn SQL
-    String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
-
-    // Thực thi câu truy vấn
-    Cursor cursor = db.rawQuery(query, new String[]{email});
-
-    Customer customer = null;
-
-    // Nếu có kết quả từ câu truy vấn
-    if (cursor.moveToFirst()) {
-        // Lấy thông tin từ cursor
-        @SuppressLint("Range") int customerId = cursor.getInt(cursor.getColumnIndex(CUSTOMER_ID));
-        @SuppressLint("Range") String username = cursor.getString(cursor.getColumnIndex(USERNAME));
-        @SuppressLint("Range") String password = cursor.getString(cursor.getColumnIndex(PASSWORD));
-        // Tạo đối tượng Customer
-        customer = new Customer(customerId, username, email, password);
     }
 
-    // Đóng cursor và đóng cơ sở dữ liệu
-    cursor.close();
-    db.close();
-
-    // Trả về đối tượng Customer
-    return customer;
-}
-
-public boolean updatePasswordByEmail(String email, String newPassword) {
-    SQLiteDatabase db = this.getWritableDatabase();
-    ContentValues values = new ContentValues();
-    values.put(PASSWORD, newPassword);
-
-    int rowsAffected = db.update(TBL_CUSTOMER, values, EMAIL + " = ?", new String[]{email});
-    db.close();
-
-    return rowsAffected > 0;
-}
-
-
-public boolean checkEmailExists(String email) {
-    SQLiteDatabase db = this.getReadableDatabase();
-    Cursor cursor = db.query(TBL_CUSTOMER,
-            new String[]{CUSTOMER_ID},
-            EMAIL + "=?",
-            new String[]{email},
-            null, null, null);
-    int count = cursor.getCount();
-    cursor.close();
-    return count > 0;
-}
-
-public void createSampleDataCustomer(){
-    if (numbOfRowsCustomer() == 0){
-        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'anhltt', 'Lê Thị Tuyết Anh', 'Nữ', 'anhltt21411@gmail.com', '0911235896', 'anhltt21411@', 25500, '01/02/2003', null, 'Kim cương')");
-        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'trucdtt', 'Đặng Thị Thanh Trúc', 'Nữ', 'trucdtt21411@gmail.com', '0910587896', 'trucdtt21411@', 2000, '01/10/2003', null, 'Đồng')");
-        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'quynhdln', 'Đặng Lê Như Quỳnh', 'Nữ', 'quynhdln21411@gmail.com', '0923535896', 'quynhdln21411@', 7000, '15/02/2003', null, 'Bạc')");
-        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'truchlt', 'Hồ Lê Thanh Trúc', 'Nữ', 'truchlt21411@gmail.com', '0971237410', 'truchlt21411@', 1500, '21/08/2003', null, 'Vàng')");
-        execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'nguyennt', 'Nguyễn Thảo Nguyên', 'Nữ', 'nguyennt21411@gmail.com', '0956335872', 'nguyennt21411@', 22000, '11/12/2003', null, 'Kim Cương' )");
+    public boolean insertCustomer(String fullName, String email, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(FULLNAME, fullName);
+        values.put(EMAIL, email);
+        values.put(PASSWORD, password);
+        long result = db.insert(TBL_CUSTOMER, null, values);
+        db.close();
+        return result != -1;
     }
-}
 
-// Ràng buộc Hạng tvien với Score
+    public Customer getCustomerByEmail(String email) {
+        // Đọc cơ sở dữ liệu
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Câu truy vấn SQL
+        String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
+
+        // Thực thi câu truy vấn
+        Cursor cursor = db.rawQuery(query, new String[]{email});
+
+        Customer customer = null;
+
+        // Nếu có kết quả từ câu truy vấn
+        if (cursor.moveToFirst()) {
+            // Lấy thông tin từ cursor
+            @SuppressLint("Range") int customerId = cursor.getInt(cursor.getColumnIndex(CUSTOMER_ID));
+            @SuppressLint("Range") String username = cursor.getString(cursor.getColumnIndex(USERNAME));
+            @SuppressLint("Range") String password = cursor.getString(cursor.getColumnIndex(PASSWORD));
+            // Tạo đối tượng Customer
+            customer = new Customer(customerId, username, email, password);
+        }
+
+        // Đóng cursor và đóng cơ sở dữ liệu
+        cursor.close();
+        db.close();
+
+        // Trả về đối tượng Customer
+        return customer;
+    }
+
+    public boolean updatePasswordByEmail(String email, String newPassword) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PASSWORD, newPassword);
+
+        int rowsAffected = db.update(TBL_CUSTOMER, values, EMAIL + " = ?", new String[]{email});
+        db.close();
+
+        return rowsAffected > 0;
+    }
+
+
+    public boolean checkEmailExists(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TBL_CUSTOMER,
+                new String[]{CUSTOMER_ID},
+                EMAIL + "=?",
+                new String[]{email},
+                null, null, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count > 0;
+    }
+
+    public void createSampleDataCustomer() {
+        if (numbOfRowsCustomer() == 0) {
+            execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'anhltt', 'Lê Thị Tuyết Anh', 'Nữ', 'anhltt21411@gmail.com', '0911235896', 'anhltt21411@', 25500, '01/02/2003', null, 'Kim cương')");
+            execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'trucdtt', 'Đặng Thị Thanh Trúc', 'Nữ', 'trucdtt21411@gmail.com', '0910587896', 'trucdtt21411@', 2000, '01/10/2003', null, 'Đồng')");
+            execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'quynhdln', 'Đặng Lê Như Quỳnh', 'Nữ', 'quynhdln21411@gmail.com', '0923535896', 'quynhdln21411@', 7000, '15/02/2003', null, 'Bạc')");
+            execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'truchlt', 'Hồ Lê Thanh Trúc', 'Nữ', 'truchlt21411@gmail.com', '0971237410', 'truchlt21411@', 1500, '21/08/2003', null, 'Vàng')");
+            execSql("INSERT INTO " + TBL_CUSTOMER + " VALUES(null, 'nguyennt', 'Nguyễn Thảo Nguyên', 'Nữ', 'nguyennt21411@gmail.com', '0956335872', 'nguyennt21411@', 22000, '11/12/2003', null, 'Kim Cương' )");
+        }
+    }
+
+    // Ràng buộc Hạng tvien với Score
 // Update điểm và hạng thành viên
-public void updateCustomerMembership(int customerId, int newMembershipScore) {
-    SQLiteDatabase db = this.getWritableDatabase();
-    ContentValues values = new ContentValues();
-    values.put(MEMBERSHIP_SCORE, newMembershipScore);
+    public void updateCustomerMembership(int customerId, int newMembershipScore) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(MEMBERSHIP_SCORE, newMembershipScore);
 
-    String newCustomerType = calculateCustomerType(newMembershipScore); // Tính toán loại khách hàng mới dựa trên điểm thành viên mới
-    values.put(CUSTOMER_TYPE, newCustomerType);
+        String newCustomerType = calculateCustomerType(newMembershipScore); // Tính toán loại khách hàng mới dựa trên điểm thành viên mới
+        values.put(CUSTOMER_TYPE, newCustomerType);
 
-    db.update(TBL_CUSTOMER, values, CUSTOMER_ID + " = ?", new String[]{String.valueOf(customerId)});
-    db.close();
-}
+        db.update(TBL_CUSTOMER, values, CUSTOMER_ID + " = ?", new String[]{String.valueOf(customerId)});
+        db.close();
+    }
 
-//Hàm tích lũy điểm
-public void accumulateMembershipScore(int customerId, double orderValue) {
-    // Quy đổi 3k cho 1 điểm
-    int scoreToAdd = (int) (orderValue / 3000);
+    //Hàm tích lũy điểm
+    public void accumulateMembershipScore(int customerId, double orderValue) {
+        // Quy đổi 3k cho 1 điểm
+        int scoreToAdd = (int) (orderValue / 3000);
 
-    SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
 
-    // Lấy số điểm tích lũy hiện tại của khách hàng
-    int currentScore = getMembershipScore(customerId);
+        // Lấy số điểm tích lũy hiện tại của khách hàng
+        int currentScore = getMembershipScore(customerId);
 
-    // Tính toán số điểm mới
-    int newScore = currentScore + scoreToAdd;
+        // Tính toán số điểm mới
+        int newScore = currentScore + scoreToAdd;
 
-    ContentValues values = new ContentValues();
-    values.put(MEMBERSHIP_SCORE, newScore);
+        ContentValues values = new ContentValues();
+        values.put(MEMBERSHIP_SCORE, newScore);
 
-    // Cập nhật số điểm mới vào cơ sở dữ liệu
-    db.update(TBL_CUSTOMER, values, CUSTOMER_ID + " = ?", new String[]{String.valueOf(customerId)});
+        // Cập nhật số điểm mới vào cơ sở dữ liệu
+        db.update(TBL_CUSTOMER, values, CUSTOMER_ID + " = ?", new String[]{String.valueOf(customerId)});
 
-    // Cập nhật loại khách hàng mới dựa trên số điểm mới
-    String newCustomerType = calculateCustomerType(newScore);
-    values.put(CUSTOMER_TYPE, newCustomerType);
+        // Cập nhật loại khách hàng mới dựa trên số điểm mới
+        String newCustomerType = calculateCustomerType(newScore);
+        values.put(CUSTOMER_TYPE, newCustomerType);
 
-    db.update(TBL_CUSTOMER, values, CUSTOMER_ID + " = ?", new String[]{String.valueOf(customerId)});
+        db.update(TBL_CUSTOMER, values, CUSTOMER_ID + " = ?", new String[]{String.valueOf(customerId)});
 
-    db.close();
-}
+        db.close();
+    }
 
     @SuppressLint("Range")
     public int getMembershipScore(int customerId) {
@@ -995,7 +981,6 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
 
         return membershipScore;
     }
-
 
 
     public String calculateCustomerType(int membershipScore) {
@@ -1058,11 +1043,8 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
     }
 
 
-
-
-
     //    Kiểm tra bảng Product
-    public int numbOfRowsProduct(){
+    public int numbOfRowsProduct() {
         Cursor c = getData("SELECT * FROM " + TBl_PRODUCT);
         int numberOfRows = c.getCount();
         c.close();
@@ -1093,7 +1075,7 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
         return result != -1;
     }
 
-    public  void createSampleProduct(){
+    public void createSampleProduct() {
         if (numbOfRowsProduct() == 0) {
             SQLiteDatabase db = getReadableDatabase();
 
@@ -1369,16 +1351,16 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
     }
 
 
-//    Kiểm tra bảng Discuss
-    public int numbOfRowsDiscuss(){
+    //    Kiểm tra bảng Discuss
+    public int numbOfRowsDiscuss() {
         Cursor c = getData("SELECT * FROM " + TBl_DISCUSS);
         int numberOfRows = c.getCount();
         c.close();
         return numberOfRows;
     }
 
-    public void createSampleDataDiscuss(){
-        if (numbOfRowsCustomer() == 0){
+    public void createSampleDataDiscuss() {
+        if (numbOfRowsCustomer() == 0) {
             execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '1', 'leha@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn.', 1)");
             execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '2', 'anhlethi@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn.', 1)");
             execSql("INSERT INTO " + TBl_DISCUSS + " VALUES(null, '3', 'danghoangmai23@gmail.com', 'Sản phẩm này dùng có bền không?', 'Tôi đã mua sản phẩm này được 2 tháng, đến hiện tại dùng vẫn ổn.', 1)");
@@ -1397,15 +1379,15 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
 
 
     //    Kiểm tra bảng Feedback
-    public int numbOfRowsFeedback(){
+    public int numbOfRowsFeedback() {
         Cursor c = getData("SELECT * FROM " + TBl_FEEDBACK);
         int numberOfRows = c.getCount();
         c.close();
         return numberOfRows;
     }
 
-    public void createSampleDataFeedback(){
-        if (numbOfRowsCustomer() == 0){
+    public void createSampleDataFeedback() {
+        if (numbOfRowsCustomer() == 0) {
             execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '1', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
             execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '2', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.0, '2024-04-14')");
             execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '3', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 5.0, '2024-04-14')");
@@ -1420,11 +1402,10 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
             execSql("INSERT INTO " + TBl_FEEDBACK + " VALUES(null, '12', '1', '1', 'Sản phẩm có chất lượng tốt, giá cả hợp lí', 4.5, '2024-04-14')");
 
 
-
         }
     }
 
-//    public List<Product> getProductsByCategory(String category) {
+    //    public List<Product> getProductsByCategory(String category) {
 //        List<Product> products = new ArrayList<>();
 //        SQLiteDatabase db = this.getReadableDatabase();
 //
@@ -1493,7 +1474,7 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
     }
 
 
-    public ArrayList<UserInfo> getLoggedinUserDetails(String email){
+    public ArrayList<UserInfo> getLoggedinUserDetails(String email) {
         ArrayList<UserInfo> customers = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
@@ -1511,7 +1492,6 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
             @SuppressLint("Range") String gender = cursor.getString(cursor.getColumnIndex(GENDER));
             @SuppressLint("Range") String birthday = cursor.getString(cursor.getColumnIndex(BIRTHDAY));
             @SuppressLint("Range") byte[] thumb = cursor.getBlob(cursor.getColumnIndex(CUSTOMER_THUMB));
-
 
 
             UserInfo userInfo = new UserInfo();
@@ -1537,6 +1517,7 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
 
         return customers;
     }
+
     @SuppressLint("Range")
     public int getCustomerIdFromCustomer(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -1546,7 +1527,8 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
         if (cursor != null && cursor.moveToFirst()) {
             customerId = cursor.getInt(cursor.getColumnIndex(CUSTOMER_ID));
 //            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
-            cursor.close();        }
+            cursor.close();
+        }
 
         // Đóng con trỏ và database
 //        cursor.close();
@@ -1570,7 +1552,8 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
         db.close();
         return newRowId;
     }
-    public boolean upDateUserProfile(String email, String fullname1, String username1, String phone1, String gender1, String birthday1){
+
+    public boolean upDateUserProfile(String email, String fullname1, String username1, String phone1, String gender1, String birthday1) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(FULLNAME, fullname1);
@@ -1580,29 +1563,29 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
         values.put(GENDER, gender1);
         values.put(BIRTHDAY, birthday1);
 
-        int i =sqLiteDatabase.update(TBL_CUSTOMER, values, "EMAIL=?", new String[] {email});
-        if (i>0){
+        int i = sqLiteDatabase.update(TBL_CUSTOMER, values, "EMAIL=?", new String[]{email});
+        if (i > 0) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
-    public boolean upDateUserImg(byte [] imgview, String email){
+
+    public boolean upDateUserImg(byte[] imgview, String email) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(CUSTOMER_THUMB, imgview);
 
-        int i =sqLiteDatabase.update(TBL_CUSTOMER, values, "EMAIL=?", new String[] {email});
-        if (i>0){
+        int i = sqLiteDatabase.update(TBL_CUSTOMER, values, "EMAIL=?", new String[]{email});
+        if (i > 0) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
 
-
-//    @SuppressLint("Range")
+    //    @SuppressLint("Range")
 //    public String getOrderStatus(String orderstatus) {
 //        SQLiteDatabase db = this.getReadableDatabase();
 ////        String customerId = -1; // Giá trị mặc định nếu không tìm thấy customerId
@@ -1624,34 +1607,35 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
 //
 //        return orderstatus;
 //    }
-public Customer getCustomerByEmail3(String email) {
-    // Đọc cơ sở dữ liệu
-    SQLiteDatabase db = this.getReadableDatabase();
+    public Customer getCustomerByEmail3(String email) {
+        // Đọc cơ sở dữ liệu
+        SQLiteDatabase db = this.getReadableDatabase();
 
-    // Câu truy vấn SQL
-    String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
+        // Câu truy vấn SQL
+        String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
 
-    // Thực thi câu truy vấn
-    Cursor cursor = db.rawQuery(query, new String[]{email});
+        // Thực thi câu truy vấn
+        Cursor cursor = db.rawQuery(query, new String[]{email});
 
-    Customer customer = null;
+        Customer customer = null;
 
-    // Nếu có kết quả từ câu truy vấn
-    if (cursor.moveToFirst()) {
-        // Lấy thông tin từ cursor
-        @SuppressLint("Range") String email1 = cursor.getString(cursor.getColumnIndex(EMAIL));
-        // Tạo đối tượng Customer
-        customer = new Customer();
+        // Nếu có kết quả từ câu truy vấn
+        if (cursor.moveToFirst()) {
+            // Lấy thông tin từ cursor
+            @SuppressLint("Range") String email1 = cursor.getString(cursor.getColumnIndex(EMAIL));
+            // Tạo đối tượng Customer
+            customer = new Customer();
+        }
+
+        // Đóng cursor và đóng cơ sở dữ liệu
+        cursor.close();
+        db.close();
+
+        // Trả về đối tượng Customer
+        return customer;
     }
 
-    // Đóng cursor và đóng cơ sở dữ liệu
-    cursor.close();
-    db.close();
-
-    // Trả về đối tượng Customer
-    return customer;
-}
-    public ArrayList<Customer> getLoggedinUserOrder(String email){
+    public ArrayList<Customer> getLoggedinUserOrder(String email) {
         ArrayList<Customer> customers = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
@@ -1679,7 +1663,7 @@ public Customer getCustomerByEmail3(String email) {
         return customers;
     }
 
-    public int numbOfRowsBlog(){
+    public int numbOfRowsBlog() {
         Cursor c = getData("SELECT * FROM " + TBL_BLOG);
         int numberOfRows = c.getCount();
         c.close();
@@ -1690,26 +1674,123 @@ public Customer getCustomerByEmail3(String email) {
         ContentValues values = new ContentValues();
         SQLiteDatabase db = getWritableDatabase();
 
-        if (numbOfRowsBlog() ==0){
+        if (numbOfRowsBlog() == 0) {
             // Ví dụ 1
-            values.put(BLOG_TITLE, "R3cy: Vấn nạn rác thải nhựa và giải pháp tái chế");
-            values.put(BLOG_THUMB, convertPhoto(context, R.drawable.dtt_giangsinh1));
+            values.put(BLOG_TITLE, "Xu Hướng Mới: Sử Dụng Sản Phẩm Nhựa Tái Chế - Điểm Nhấn Cho Tương Lai Bền Vững \uD83C\uDF0E♻\uFE0F");
+            values.put(BLOG_THUMB, convertPhoto(context, R.drawable.dtt_dongho2));
             values.put(BLOG_CREATE_DATE, "2024-03-22");
             values.put(BLOG_AUTHOR, "Hồ Lê Thanh Trúc");
-            values.put(BLOG_CONTENT, "Nội dung bài viết 1");
+            values.put(BLOG_CONTENT, "Chào các bạn thân yêu của R3cy! Hôm nay, chúng ta sẽ cùng nhau khám phá ý nghĩa sâu sắc đằng sau việc tái chế nhựa - một hành động nhỏ có thể tạo nên sự thay đổi lớn đối với hành tinh mà chúng ta đang sống. \uD83C\uDF31♻\uFE0F\n" +
+                    "\n" +
+                    "1. Bảo Vệ Môi Trường: Mỗi tấm vật liệu nhựa tái chế không chỉ là việc giảm lượng rác thải mà còn là cơ hội để giữ cho đại dương trong xanh, rừng già xanh mướt và không khí sạch sẽ. Chúng ta đang góp phần vào việc giữ gìn vẻ đẹp tự nhiên của hành tinh chúng ta.\n" +
+                    "2. Tiết Kiệm Năng Lượng và Tài Nguyên: Tái chế nhựa giúp tiết kiệm năng lượng và tài nguyên so với việc sản xuất nhựa mới. Bằng cách này, chúng ta đang hỗ trợ sự bền vững và giúp giảm lượng khí thải và ô nhiễm.\n" +
+                    "3. Khuyến Khích Sự Sáng Tạo: Tái chế nhựa không chỉ giúp giữ gìn môi trường mà còn khuyến khích sự sáng tạo. Những sản phẩm nhựa tái chế có thể trở thành nguồn cảm hứng cho các nhà thiết kế và nghệ nhân, giúp họ tạo ra những tác phẩm độc đáo và thú vị.\n" +
+                    "4. Đào Tạo Cộng Đồng và Tạo Ra Cơ Hội Việc Làm: Việc tái chế nhựa tạo ra cơ hội việc làm cho các cộng đồng địa phương. Đồng thời, nó còn giúp tăng cường nhận thức về vấn đề môi trường và khuyến khích hành động tích cực từ cộng đồng.\n" +
+                    "5. Điều Chỉnh Thái Độ và Thay Đổi Lối Sống: Việc tham gia vào quá trình tái chế giúp chúng ta thay đổi lối sống và điều chỉnh thái độ của mình đối với việc sử dụng nhựa. Nó là bước đầu tiên để trở thành người tiêu dùng thông thái, chúng ta không chỉ tôn trọng môi trường mà còn giúp giữ cho hành tinh chúng ta xanh sạch và tươi mới.\n" +
+                    "\n" +
+                    "Hãy cùng nhau lan tỏa thông điệp về ý nghĩa của việc tái chế nhựa. Mỗi hành động nhỏ từ bạn đều có ý nghĩa lớn đối với tương lai của chúng ta. Hãy hợp tác và chia sẻ để tạo nên một môi trường sống bền vững cho tất cả mọi người!\n" +
+                    "#TáiChếNhựa #BảoVệMôiTrường #R3cyChămSócHànhTinh \uD83C\uDF3F♻\uFE0F\n" +
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "Xu Hướng Mới: Sử Dụng Sản Phẩm Nhựa Tái Chế - Điểm Nhấn Cho Tương Lai Bền Vững \uD83C\uDF0E♻\uFE0F\n" +
+                    "\n" +
+                    "Xin chào cả nhà, hôm nay R3cy xin được chia sẻ với bạn về một xu hướng quan trọng đang được lan tỏa trên toàn cầu và cả tại Việt Nam - sử dụng sản phẩm từ nhựa tái chế. Đây là một xu hướng đáng kể trong việc bảo vệ môi trường và xây dựng một tương lai bền vững.\n" +
+                    "\uD83C\uDF3F\uD83D\uDC9A Trên toàn cầu, nhận thức về vấn đề ô nhiễm nhựa và tác động tiêu cực của nó đến môi trường đang gia tăng. Vì vậy, người tiêu dùng ngày càng quan tâm và chọn lựa sử dụng sản phẩm từ nhựa tái chế. Điều này không chỉ giúp giảm thiểu lượng rác thải nhựa và ô nhiễm môi trường, mà còn tạo ra một chuỗi cung ứng tái chế nhựa mạnh mẽ.\n" +
+                    "\uD83C\uDF0D Ở Việt Nam, xu hướng này cũng đang phát triển mạnh mẽ. Ngày càng có nhiều công ty và thương hiệu nhận thức về tầm quan trọng của việc sử dụng lại nhựa đã qua sử dụng và tạo ra các sản phẩm tái chế. Chúng ta có thể thấy sự xuất hiện của các sản phẩm từ nhựa tái chế trong nhiều lĩnh vực, từ đồ dùng gia đình, đồ chơi, túi xách, đến sản phẩm nội thất và xây dựng. Điều này làm cho việc sử dụng sản phẩm từ nhựa tái chế trở thành một phong cách sống mới, giúp mọi người thể hiện sự quan tâm và đóng góp vào việc bảo vệ môi trường.\n" +
+                    "✨\uD83D\uDCA1 Lợi ích của việc sử dụng sản phẩm từ nhựa tái chế rất đa dạng. Đầu tiên, nó giúp giảm lượng rác thải nhựa và ngăn chặn ô nhiễm môi trường. Thay vì chế tạo nhựa mới, sử dụng lại nhựa đã qua sử dụng giúp tiết kiệm tài nguyên và năng lượng. Ngoài ra, sản phẩm từ nhựa tái chế thường có chất lượng tương đương và giá cả phải chăng. Điều này không chỉ giúp người tiêu dùng tiết kiệm chi phí mà còn khuyến khích sự phát triển của ngành công nghiệp tái chế.\n" +
+                    "\uD83C\uDF3F\uD83C\uDF0D R3cy cam kết đóng góp vào xu hướng sử dụng sản phẩm từ nhựa tái chế. Chúng tôi không chỉ tạo ra những sản phẩm chất lượng cao từ nhựa tái chế, mà còn khuyến khích mọi người tham gia vào cuộc sống bền vững thông qua việc sử dụng các sản phẩm thân thiện với môi trường.\n" +
+                    "\uD83C\uDF31 Hãy cùng nhau tham gia vào xu hướng sử dụng sản phẩm từ nhựa tái chế để bảo vệ môi trường và xây dựng một tương lai bền vững. Hãy là những người tiêu dùng thông minh và lựa chọn sản phẩmtừ nhựa tái chế để tạo ra sự thay đổi tích cực cho hành tinh của chúng ta.\n" +
+                    "Hãy ghé thăm trang web của R3cy ngay hôm nay để khám phá các sản phẩm từ nhựa tái chế và tham gia vào cuộc sống bền vững! Cùng nhau, chúng ta có thể tạo ra sự khác biệt và bảo vệ môi trường cho thế hệ tương lai.\n" +
+                    "#R3cy #NhựaTáiChế #BảoVệMôiTrường #SốngBềnVững\n");
             db.insert(TBL_BLOG, null, values);
 
             // Ví dụ 2
             values.clear(); // Xóa các giá trị trước đó để chèn giá trị mới
-            values.put(BLOG_TITLE, "Tiêu đề bài viết 2");
+            values.put(BLOG_TITLE, "Tất tần tật thứ từ nhựa tái chế với R3cy - Giải pháp bảo vệ môi trường");
             values.put(BLOG_THUMB, convertPhoto(context, R.drawable.dtt_giangsinh3));
             values.put(BLOG_CREATE_DATE, "2024-04-10");
-            values.put(BLOG_AUTHOR, "Người viết bài 2");
-            values.put(BLOG_CONTENT, "Nội dung bài viết 2");
+            values.put(BLOG_AUTHOR, "Lê Thị Tuyết Anh");
+            values.put(BLOG_CONTENT, "Với sứ mệnh góp phần giảm thiểu rác thải nhựa và bảo vệ môi trường.R3cy là thương hiệu phụ kiện, sản phẩm gia dụng, trang trí nhà cửa, góc học tập, làm việc, tiệm cafe, cửa hàng quần áo,... từ nhựa tái chế. Các sản phẩm của R3cy được làm từ những nguyên liệu nhựa tái chế, mang đến vẻ đẹp độc đáo và tinh tế, đồng thời góp phần bảo vệ môi trường.\n" +
+                    "Nạn rác thải nhựa đang ngày càng nghiêm trọng\n" +
+                    "Rác thải nhựa là một vấn đề nghiêm trọng đang đe dọa môi trường và sức khỏe con người. Theo thống kê của Tổ chức Bảo vệ Môi trường (EPA), mỗi năm có khoảng 8,3 triệu tấn rác thải nhựa đổ ra đại dương. Rác thải nhựa có thể tồn tại trong môi trường hàng trăm năm, gây ô nhiễm môi trường đất, nước, không khí, và đe dọa đến hệ sinh thái.\n" +
+                    "Phụ kiện, sản phẩm decor từ nhựa tái chế - Giải pháp bảo vệ môi trường\n" +
+                    "Phụ kiện, đồ decor từ nhựa tái chế là những sản phẩm được làm từ những nguyên liệu nhựa tái chế, mang đến vẻ đẹp độc đáo và tinh tế, đồng thời góp phần giảm thiểu rác thải nhựa và bảo vệ môi trường. \n" +
+                    "Ưu điểm của phụ kiện, đồ decor từ nhựa tái chế\n" +
+                    "Thân thiện với môi trường: Phụ kiện, đồ decor từ nhựa tái chế được làm từ những nguyên liệu nhựa tái chế, góp phần giảm thiểu rác thải nhựa.\n" +
+                    "Độc đáo và tinh tế: Phụ kiện, đồ decor từ nhựa tái chế được thiết kế với nhiều kiểu dáng, mẫu mã đa dạng, mang đến vẻ đẹp độc đáo và tinh tế.\n" +
+                    "Giá thành hợp lý: Phụ kiện, đồ decor từ nhựa tái chế có giá thành hợp lý, phù hợp với túi tiền của nhiều người.\n" +
+                    "Các sản phẩm phụ kiện, đồ decor từ nhựa tái chế của R3cy\n" +
+                    "R3cy là thương hiệu phụ kiện, đồ decor từ nhựa tái chế, với sứ mệnh góp phần giảm thiểu rác thải nhựa và bảo vệ môi trường. Các sản phẩm của R3cy được làm từ những nguyên liệu nhựa tái chế, mang đến vẻ đẹp độc đáo và tinh tế, đồng thời góp phần bảo vệ môi trường.\n" +
+                    "\n" +
+                    "\n" +
+                    "Phụ kiện thời trang: R3cy cung cấp các sản phẩm phụ kiện thời trang từ nhựa tái chế, bao gồm vòng tay, bông tai, móc khóa,...\n" +
+                    "Đồ decor: R3cy cung cấp các sản phẩm đồ decor từ nhựa tái chế, bao gồm khung ảnh, đồng hồ treo tường, bảng hiệu cửa hàng,...\n" +
+                    "\n" +
+                    "Sản phẩm phụ kiện, đồng hồ từ nhựa tái chế của R3cy\n" +
+                    "\n" +
+                    "Sản phẩm bông tai, giá đỡ điện thoại từ nhựa tái chế của R3cy\n" +
+                    "Phụ kiện, đồ decor từ nhựa tái chế là một giải pháp bảo vệ môi trường hiệu quả. Với vẻ đẹp độc đáo và tinh tế, các sản phẩm của R3cy là lựa chọn phù hợp cho những ai yêu thích thời trang và muốn góp phần bảo vệ môi trường.\n" +
+                    "\n" +
+                    "Từ khóa:phụ kiện nhựa tái chế, R3cy, tái chế nhựa, bảo vệ môi trường\n");
             db.insert(TBL_BLOG, null, values);
+
+            // Ví dụ 3
+            values.clear();
+            values.put(BLOG_TITLE, "Sứ mệnh R3cy");
+            values.put(BLOG_THUMB, convertPhoto(context, R.drawable.dtt_giangsinh1));
+            values.put(BLOG_CREATE_DATE, "2024-03-22");
+            values.put(BLOG_AUTHOR, "Hồ Lê Thanh Trúc");
+            values.put(BLOG_CONTENT, "R3cy theo đuổi giá trị cốt lõi là phụng sự môi trường và cộng đồng, với tôn chỉ hạn chế tối đa tổn hại đến môi trường và hạn chế tối đa dấu chân carbon trong quá trình sản xuất.\n" +
+                    "\n" +
+                    "Theo số liệu thống kê từ Bộ Tài nguyên và Môi trường (TN&MT), mỗi năm tại Việt Nam có khoảng 1,8 triệu tấn rác thải nhựa thải ra môi trường, 0,28 triệu đến 0,73 triệu tấn trong số đó bị thải ra biển – nhưng chỉ 27% trong số đó được tái chế, tận dụng bởi các cơ sở, doanh nghiệp. Điều đáng nói là việc xử lý và tái chế rác thải nhựa ở Việt Nam còn nhiều hạn chế. Theo thống kê, có đến 90% rác thải nhựa được xử lý theo cách chôn, lấp, đốt. Phương pháp này không chỉ gây ô nhiễm môi trường mà còn làm lãng phí tài nguyên thiên nhiên. Tại TP.Hồ Chí Minh số lượng rác thải nhựa mỗi ngày đưa ra môi trường lên đến 80 tấn. hành phố đã có nhiều giải pháp để giảm thiểu rác thải nhựa, chẳng hạn như thu gom rác thải nhựa tái chế, khuyến khích người dân sử dụng túi vải, ống hút giấy,... Tuy nhiên, những giải pháp này vẫn chưa mang lại hiệu quả cao.\n" +
+                    "\n" +
+                    "\n" +
+                    "R3cy bắt đầu hành trình mang sản phẩm từ nhựa tái chế đến khách hàng với mong muốn góp phần bảo vệ môi trường. Chúng tôi nhìn thấy môi trường sống xung quanh đang bị tổn hại trầm trọng bởi rác thải nhựa, và chúng tôi muốn làm điều gì đó để thay đổi. Tái chế nhựa là một cách hiệu quả để giảm thiểu lượng rác thải nhựa ra môi trường. Bằng tái chế, R3cy đã mang đến cho những loại nhựa cũ, đã qua sử dụng tới một cuộc sống mới, thay vì để chúng vùi lấp dưới những hố sâu hàng chục, trăm năm.\n" +
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "Với sứ mệnh đưa đến người tiêu dùng sản phẩm chất lượng, gia tăng giá trị tái chế của nhựa, nguyên liệu thân thiện môi trường và sản xuất tại Việt Nam. Bên cạnh đó, khuyến khích mọi người sử dụng sản phẩm tái chế, tham gia tái chế nhựa và các hoạt động về môi trường.\n");
+            db.insert(TBL_BLOG, null, values);
+
+            // Ví dụ 4
+            values.clear(); // Xóa các giá trị trước đó để chèn giá trị mới
+            values.put(BLOG_TITLE, "Đồ thủ công từ nhựa tái chế: Tại sao không?");
+            values.put(BLOG_THUMB, convertPhoto(context, R.drawable.dtt_giangsinh2));
+            values.put(BLOG_CREATE_DATE, "2024-04-10");
+            values.put(BLOG_AUTHOR, "Lê Thị Tuyết Anh");
+            values.put(BLOG_CONTENT, "Tác động mạnh mẽ của việc sử dụng nhựa đối với môi trường đã trở thành một vấn đề quan trọng trong thời gian gần đây. Chúng ta đã chứng kiến sự gia tăng về ý thức bảo vệ môi trường và nỗ lực tái chế nhựa để giảm thiểu tác động tiêu cực lên hành tinh.\n" +
+                    "Việc sử dụng các sản phẩm thủ công tái chế nhựa không chỉ mang lại sự độc đáo và cá nhân hóa cho người sử dụng, mà còn có tác động tích cực đến môi trường. Bằng cách ủng hộ và mua sắm các sản phẩm tái chế từ nhựa, bạn đang góp phần vào việc giảm thiểu lượng rác thải nhựa và hỗ trợ cho một cộng đồng thân thiện với môi trường. Bạn cũng có cơ hội chia sẻ thông điệp về sự quan tâm đến bảo vệ môi trường với mọi người xung quanh.\n" +
+                    "\n" +
+                    "\n" +
+                    "Đồ thủ công từ việc tái chế nhựa không chỉ là một xu hướng mới mà còn là một nỗ lực quan trọng trong việc xây dựng một tương lai bền vững. Trong tương lai, chúng ta hy vọng sẽ có nhiều doanh nghiệp với mô hình kinh doanh như chúng tôi, tạo ra cơ hội cho những người yêu thích đồ thủ công và đồ handmade để thể hiện sự sáng tạo của mình và đồng thời giúp bảo vệ môi trường. Việc tái chế nhựa không chỉ giúp giảm thiểu lượng rác thải mà còn khuyến khích sự tận dụng lại tài nguyên và giúp chúng ta xây dựng một thế giới bền vững hơn.\n" +
+                    "Hãy tham gia vào các kênh cộng đồng của R3cy và khám phá thế giới đồ thủ công từ việc tái chế nhựa. Bạn sẽ không chỉ có được những sản phẩm độc đáo và sáng tạo mà còn góp phần vào việc bảo vệ môi trường và xây dựng một tương lai tươi sáng hơn cho thế hệ mai sau. \uD83D\uDC9A\uD83D\uDCF1\n" +
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "Những bước đầu trong việc tái chế nhựa tại nhà: Đóng góp của mỗi cá nhân vào bảo vệ môi trường\n" +
+                    "\n" +
+                    "\n" +
+                    "Trong thời đại hiện nay, việc bảo vệ môi trường trở thành một vấn đề cấp bách. Một trong những cách đơn giản và hiệu quả để đóng góp cho môi trường là tái chế nhựa. Trong bài viết này, chúng ta sẽ khám phá những bước đầu trong việc tái chế nhựa tại nhà và cách mỗi cá nhân có thể đóng góp vào bảo vệ môi trường.\n" +
+                    "\n" +
+                    "Tìm hiểu về các loại nhựa tái chế: Đầu tiên, hãy tìm hiểu về các loại nhựa có thể tái chế và cách phân loại chúng. Mỗi loại nhựa có một mã số đặc trưng, ví dụ như mã số PET (Polyethylene terephthalate) cho chai nước và mã số HDPE (High-Density Polyethylene) cho bình chứa. Hiểu rõ về các loại nhựa này sẽ giúp bạn phân loại và tái chế chúng một cách hiệu quả.\n" +
+                    "\n" +
+                    "Phân loại và thu thập nhựa: Bắt đầu bằng việc phân loại và thu thập nhựa tại nhà. Hãy có các thùng chứa riêng biệt cho từng loại nhựa, và đảm bảo rằng nhựa đã được rửa sạch và làm khô trước khi đặt vào thùng chứa. Điều này giúp tiết kiệm công sức cho quá trình tái chế sau này.\n" +
+                    "\n" +
+                    "Sử dụng lại và tái chế nhựa: Có nhiều cách để sử dụng lại và tái chế nhựa tại nhà. Bạn có thể tạo ra các đồ thủ công như bình hoa, hộp đựng, khay, vòng cổ, hoặc thậm chí là đồ trang trí nhà cửa từ những vật liệu nhựa tái chế. Sáng tạo và tìm kiếm những ý tưởng trên Internet có thể giúp bạn biến đồ thải nhựa thành những sản phẩm có giá trị.\n" +
+                    "\n" +
+                    "Khám phá cộng đồng tái chế: Tham gia cộng đồng tái chế địa phương để chia sẻ ý tưởng và kinh nghiệm với những người khác. Có thể có những nhóm hoặc tổ chức trong khu vực của bạn đã tổ chức các hoạt động tái chế nhựa hoặc dự án cộng đồng. Tham gia vào những hoạt động này sẽ giúp bạn học hỏi và tạo ra sự lan tỏa ý thức bảo vệ môi trường lớn hơn.\n" +
+                    "\n" +
+                    "Lan tỏa thông điệp: Hãy lan tỏa thông điệp về tái chế nhựa và ý thức bảo vệ môi trường cho bạn bè, gia đình và cộng đồng của bạn. Chia sẻ những bước đơn giản để tái chế nhựa và lợi ích của việc làm này đối với môi trường. Một hành động nhỏ có thể truyền cảm hứng cho người khác và tạo ra tác động lớn hơn đến sự bảo vệ môi trường.\n" +
+                    "\n" +
+                    "Tái chế nhựa tại nhà không chỉ giúp giảm ô nhiễm môi trường mà còn mang lại lợi ích kinh tế và sáng tạo cho mỗi cá nhân. Bằng cách thực hiện những bước đơn giản này, chúng ta có thể đóng góp vào việc bảo vệ môi trường và hướng tới một tương lai bền vững hơn. Bắt đầu ngay hôm nay và hãy trở thành một phần của cuộc cách mạng tái chế nhựa!\n");
+            db.insert(TBL_BLOG, null, values);
+
         }
 
     }
+
     // Phương thức để lấy tất cả các blog từ cơ sở dữ liệu
     public List<Blog> getAllBlogs() {
         List<Blog> blogList = new ArrayList<>();
@@ -1725,13 +1806,14 @@ public Customer getCustomerByEmail3(String email) {
                     @SuppressLint("Range") int blogId = cursor.getInt(cursor.getColumnIndex(BLOG_ID));
                     @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex(BLOG_TITLE));
                     @SuppressLint("Range") byte[] thumb = cursor.getBlob(cursor.getColumnIndex(BLOG_THUMB));
-                    @SuppressLint("Range") long createDateMillis = cursor.getLong(cursor.getColumnIndex(BLOG_CREATE_DATE));
-                    Date createBlogDate = new Date(createDateMillis);
+                    @SuppressLint("Range") String createDateStr = cursor.getString(cursor.getColumnIndex(BLOG_CREATE_DATE));
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date createBlogDate = dateFormat.parse(createDateStr);
                     @SuppressLint("Range") String author = cursor.getString(cursor.getColumnIndex(BLOG_AUTHOR));
                     @SuppressLint("Range") String content = cursor.getString(cursor.getColumnIndex(BLOG_CONTENT));
 
                     // Tạo đối tượng Blog từ dữ liệu lấy được
-                    Blog blog = new Blog(blogId, title, author, createBlogDate,thumb, content);
+                    Blog blog = new Blog(blogId, title, author, createBlogDate, thumb, content);
                     blogList.add(blog);
                 } while (cursor.moveToNext());
             }
@@ -1748,12 +1830,38 @@ public Customer getCustomerByEmail3(String email) {
         return blogList;
     }
 
+    public Blog getBlogById(int blogId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Blog blog = null;
+        Cursor cursor = null;
 
+        try {
+            String query = "SELECT * FROM " + TBL_BLOG + " WHERE " + BLOG_ID + " = ?";
+            cursor = db.rawQuery(query, new String[]{String.valueOf(blogId)});
 
+            if (cursor != null && cursor.moveToFirst()) {
+                // Lấy dữ liệu từ các cột tương ứng trong Cursor
+                @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex(BLOG_TITLE));
+                @SuppressLint("Range") byte[] thumb = cursor.getBlob(cursor.getColumnIndex(BLOG_THUMB));
+                @SuppressLint("Range") String createDateStr = cursor.getString(cursor.getColumnIndex(BLOG_CREATE_DATE));
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date createBlogDate = dateFormat.parse(createDateStr);
+                @SuppressLint("Range") String author = cursor.getString(cursor.getColumnIndex(BLOG_AUTHOR));
+                @SuppressLint("Range") String content = cursor.getString(cursor.getColumnIndex(BLOG_CONTENT));
 
+                // Tạo đối tượng Blog từ dữ liệu lấy được
+                blog = new Blog(blogId, title, author, createBlogDate, thumb, content);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Xử lý ngoại lệ nếu có
+        } finally {
+            // Đóng Cursor
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return blog;
+    }
 }
-
-
-
-
-

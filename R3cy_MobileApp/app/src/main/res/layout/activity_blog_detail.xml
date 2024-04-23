@@ -52,8 +52,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_weight="7">
+        android:layout_height="match_parent"
+        android:layout_weight="9">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -62,6 +62,9 @@
                 android:id="@+id/txtblogContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:textStyle="normal"
+                android:textSize="12sp"
                 android:text="Nội dung bài viết"/>
             <TextView
                 android:layout_width="match_parent"
@@ -75,6 +78,17 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/mn_home"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        app:menu="@menu/bottom_nav_menu"
+        android:layout_gravity="end|bottom"
+        app:itemTextColor="@color/bottom_navigation_style"
+        app:itemIconTint="@color/bottom_navigation_style"
+        app:labelVisibilityMode="unlabeled"
+        android:layout_weight="1"/>
 
 
 

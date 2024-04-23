@@ -7,7 +7,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:padding="10dp"
         android:background="@drawable/blog_border">
 
@@ -24,7 +24,7 @@
             android:id="@+id/txtblogTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
+            android:textSize="16sp"
             android:padding="10dp"
             android:textStyle="bold"
             android:text="Xu Hướng Mới: Sử Dụng Sản Phẩm Nhựa Tái Chế - Điểm Nhấn Cho Tương Lai Bền Vững"
@@ -33,7 +33,7 @@
         <TextView
             android:id="@+id/txtblogShortContent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:textSize="11sp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"

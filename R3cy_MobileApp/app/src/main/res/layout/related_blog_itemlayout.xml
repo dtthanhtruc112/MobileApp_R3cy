@@ -1,62 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:padding="10dp"
-    android:gravity="start"
-    android:background="@drawable/blog_border">
-
-    <ImageView
-        android:id="@+id/imvblogThumb"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/dtt_giangsinh2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/txtblogTitle"
-        android:layout_width="297dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="11dp"
-        android:text="Xu Hướng Mới: Sử Dụng Sản Phẩm Nhựa Tái Chế - Điểm Nhấn Cho Tương Lai Bền Vững"
-        android:textColor="@color/black"
-        android:textSize="13sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/imvblogThumb"
-        app:layout_constraintTop_toTopOf="@+id/imvblogThumb" />
-
+    android:padding="20dp">
     <LinearLayout
-        android:layout_width="294dp"
-        android:layout_height="18dp"
-        android:layout_marginTop="8dp"
-        android:gravity="end"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/txtblogTitle"
-        app:layout_constraintTop_toBottomOf="@+id/txtblogTitle">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:weightSum="10"
+        android:background="@drawable/blog_border">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ngày đăng: "
-            android:textColor="@color/black"
-            android:textSize="11sp" />
+        <ImageView
+            android:layout_weight="3"
+            android:id="@+id/imvblogThumb"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:padding="10dp"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerCrop"
+            android:src="@drawable/dtt_giangsinh1"/>
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:orientation="vertical"
+            android:layout_weight="7">
+            <TextView
+                android:id="@+id/txtblogTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:text="Xu Hướng Mới: Sử Dụng Sản Phẩm Nhựa Tái Chế - Điểm Nhấn Cho Tương Lai Bền Vững"
+                android:textColor="@color/black" />
 
-        <TextView
-            android:id="@+id/txtblogDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="11/04/2024"
-            android:textColor="@color/black"
-            android:textSize="11sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày đăng: "
+                    android:textSize="11sp"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txtblogDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="11sp"
+                    android:text="11/04/2024"
+                    android:textColor="@color/black" />
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
 
     </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
