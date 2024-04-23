@@ -130,8 +130,8 @@ public class ForgotPass_Email extends AppCompatActivity {
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
 
             // Setting email subject and content
-            message.setSubject("Forgot Password OTP");
-            message.setText("Your OTP for resetting password is: " + otp);
+            message.setSubject("R3cy | Mã OTP");
+            message.setText("Mã OTP của bạn để đổi mật khẩu tại R3cy là: " + otp);
             Log.v("ForgotPass_Email", "trước hàm sendMessage đã được kích hoạt");
 
             // Sending the email

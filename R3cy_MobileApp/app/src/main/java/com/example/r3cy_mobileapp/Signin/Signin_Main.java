@@ -68,7 +68,7 @@ public class Signin_Main extends AppCompatActivity {
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        // Xử lý sự kiện khi nhấn vào nút đăng ký với Google
+        // Xử lý sự kiện khi nhấn vào nút đăng nhập với Google
         textViewGoogleSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,13 +105,13 @@ public class Signin_Main extends AppCompatActivity {
         });
     }
 
-    // Phương thức xử lý đăng ký với Google
+    // Phương thức xử lý đăng nhập với Google
     private void signInWithGoogle() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    // Xử lý kết quả trả về từ việc đăng ký với Google
+    // Xử lý kết quả trả về từ việc đăng nhập với Google
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
