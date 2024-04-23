@@ -121,6 +121,7 @@ public class Product_Detail extends AppCompatActivity {
             if (productID != -1) {
                 db = new R3cyDB(this);
                 productDao = new ProductDao(db);
+
                 product = db.getProductByID(productID);
 
                 if (product != null) {

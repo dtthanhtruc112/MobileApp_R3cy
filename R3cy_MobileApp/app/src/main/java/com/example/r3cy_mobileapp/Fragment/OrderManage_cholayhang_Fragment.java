@@ -47,6 +47,7 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
 
     R3cyDB dbR3cy;
     OrderAdapter adapter;
+    String email;
 
 
 
@@ -58,16 +59,23 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment OrderManage_cholayhang_Fragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static OrderManage_cholayhang_Fragment newInstance(String param1, String param2) {
+//     * @param param1 Parameter 1.
+//     * @param param2 Parameter 2.
+//     * @return A new instance of fragment OrderManage_cholayhang_Fragment.
+//     */
+//    // TODO: Rename and change types and number of parameters
+//    public static OrderManage_cholayhang_Fragment newInstance(String param1, String param2) {
+//        OrderManage_cholayhang_Fragment fragment = new OrderManage_cholayhang_Fragment();
+//        Bundle args = new Bundle();
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
+    public static OrderManage_cholayhang_Fragment newInstance(String email) {
         OrderManage_cholayhang_Fragment fragment = new OrderManage_cholayhang_Fragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString("key_email", email);
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,6 +93,8 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentOrderManageCholayhangBinding.inflate(inflater, container, false);
+        email = getArguments().getString("key_email");
+        Log.d("SharedPreferences", "Email : " + email);
         return binding.getRoot();
     }
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -106,6 +116,8 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
         dbR3cy.createSampleProduct();
     }
     public List<Order> getOrder() {
+        int customerId = dbR3cy.getCustomerIdFromCustomer(email);
+        Log.d("SharedPreferences", "Email ở Fragment: " + email);
 
         String orderStatus = dbR3cy.getOrderStatus("Chờ lấy hàng");
         List<Order> orders = new ArrayList<>();
@@ -134,7 +146,8 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
                     " ON o." + R3cyDB.ORDER_ID + " = ol." + R3cyDB.ORDER_LINE_ORDER_ID + " " +
                     " INNER JOIN " + R3cyDB.TBl_PRODUCT + " p" +
                     " ON ol." + R3cyDB.ORDER_LINE_PRODUCT_ID + " = p." + R3cyDB.PRODUCT_ID +
-                    " WHERE o. " + R3cyDB.ORDER_STATUS + " LIKE '%" + orderStatus + "%'";
+                    " WHERE o. " + R3cyDB.ORDER_CUSTOMER_ID + " = " + customerId + " AND o."
+                    + R3cyDB.ORDER_STATUS + " LIKE '%" + orderStatus + "%'";
 
             cursor = db.rawQuery(query, null);
 

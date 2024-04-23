@@ -114,9 +114,11 @@ public class User_account_manageOrder extends AppCompatActivity {
     }
     private List<Fragment> getFragments() {
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new Dogiadung_Fragment().newInstance(email)); // Khởi tạo fragment và truyền email
-        fragments.add(new Dotrangtri_Fragment().newInstance(email)); // Khởi tạo fragment và truyền email
-        fragments.add(new Phukien_Fragment().newInstance(email)); // Khởi tạo fragment và truyền email
+        fragments.add(new OrderManage_tatca_Fragment().newInstance(email)); // Khởi tạo fragment và truyền email
+        fragments.add(new OrderManage_hoanthanh_Fragment().newInstance(email)); // Khởi tạo fragment và truyền email
+        fragments.add(new OrderManage_danggiao_Fragment().newInstance(email)); // Khởi tạo fragment và truyền email
+        fragments.add(new OrderManage_cholayhang_Fragment().newInstance(email)); // Khởi tạo fragment và truyền email
+        fragments.add(new OrderManage_choxuly_Fragment().newInstance(email)); // Khởi tạo fragment và truyền email
         return fragments;
     }
 
@@ -199,15 +201,15 @@ public class User_account_manageOrder extends AppCompatActivity {
         public Fragment createFragment(int position) {
             switch (position){
                 case 0:
-                    return new OrderManage_tatca_Fragment();
+                    return new OrderManage_tatca_Fragment().newInstance(email);
                 case 1:
-                    return new OrderManage_choxuly_Fragment();
+                    return new OrderManage_choxuly_Fragment().newInstance(email);
                 case 2:
-                    return new OrderManage_cholayhang_Fragment();
+                    return new OrderManage_cholayhang_Fragment().newInstance(email);
                 case 3:
-                    return new OrderManage_danggiao_Fragment();
+                    return new OrderManage_danggiao_Fragment().newInstance(email);
                 default:
-                    return new OrderManage_hoanthanh_Fragment();
+                    return new OrderManage_hoanthanh_Fragment().newInstance(email);
 
             }
         }

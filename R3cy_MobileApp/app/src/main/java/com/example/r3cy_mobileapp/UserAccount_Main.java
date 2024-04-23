@@ -12,7 +12,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
@@ -21,6 +23,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -111,49 +114,45 @@ public class UserAccount_Main extends AppCompatActivity {
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
 
-//        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result ->{
-//            if(result.getResultCode() == RESULT_OK && result.getData() != null) {
-//                if(openCam) {
-//
-//                    Bitmap photo = (Bitmap) result.getData().getExtras().get("data");
-////
-//                    binding.imvUservatar.setImageBitmap(photo);
-//                }else{
-////
-//                    Uri selectedPhotoUri = result.getData().getData();
-//                    binding.imvUservatar.setImageURI(selectedPhotoUri);
-//                    }
-//                }
-//
-//        });
         name = binding.txtTen;
         thumb = binding.imvUservatar;
         viewPager2 = findViewById(R.id.view_pager);
 
-//        SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
-//        email1 = preferences.getString("string", "");
-//
-//        Log.d("SharedPreferences", "Email ở useracc: " + email1);
-
-
         // Nhận giá trị email từ Intent
         email = getIntent().getStringExtra("key_email");
-        Log.d("Intent", "Email ở useracc: " + email);
+        Log.d("SharedPreferences", "Email ở useracc: " + email);
 
         // Gọi phương thức để tải thông tin người dùng
-        getUserDetails();
+//        getUserDetails();
+        createDb();
         addEvents();
         addControls();
         addEvent();
-        initUI();
-        getUserDetails();
+//        getUserDetails();
+    }
+
+    private void createDb() {
+        db = new R3cyDB(this);
+
+        if (db != null) {
+            Log.d("Customer", "Database created successfully");
+        } else {
+            Log.e("Customer", "Failed to create database");
+        }
+        db.createSampleDataCustomer();
+    }
+
+    protected void onResume() {
+        super.onResume();
+        Log.i("test", "onResume");
+        loadData();
+//        initUI();
     }
 
     private void initUI() {
         editavar = findViewById(R.id.imv_uservatar);
 //        Intent intent = getIntent();
         int customerId = db.getCustomerIdFromCustomer(email);
-//        SQLiteDatabase database = initDatabase(this, DATABASE_NAME);
         try {
             Cursor cursor = db.getData("SELECT * FROM " + TBL_CUSTOMER + " WHERE " + CUSTOMER_ID + " LIKE '%" + customerId + "%'");
 
@@ -176,33 +175,7 @@ public class UserAccount_Main extends AppCompatActivity {
             db.close(); // Đóng database
         }
     }
-    public static SQLiteDatabase initDatabase(Activity activity, String databaseName){
-        try{
-            String outFileName = activity.getApplicationInfo().dataDir + "/databases/" + databaseName;
-            File f = new File(outFileName);
-            if(!f.exists()) {
-                InputStream e = activity.getAssets().open(databaseName);
-                File folder = new File(activity.getApplicationInfo().dataDir + "/databases/");
-                if(!folder.exists()) {
-                    folder.mkdir();
-                }
-                FileOutputStream myOutput = new FileOutputStream(outFileName);
-                byte[] buffer = new byte[1024];
 
-                int length;
-                while ((length = e.read(buffer)) > 0) {
-                    myOutput.write(buffer, 0, length);
-                }
-                myOutput.flush();
-                myOutput.close();
-                e.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return activity.openOrCreateDatabase(databaseName, Context.MODE_PRIVATE, null);
-
-    }
 
     private void addEvent() {
         binding.btnChonhinh.setOnClickListener(new View.OnClickListener() {
@@ -284,9 +257,6 @@ public class UserAccount_Main extends AppCompatActivity {
         try {
             byte[] imageview = getByArrayFromImageView(editavar);
 
-//            SQLiteDatabase database = initDatabase(this, DATABASE_NAME);
-//            ContentValues contentValues = new ContentValues();
-//            contentValues.put("ImvAvar", imageView);
             db = new R3cyDB(this);
 
             boolean bo = db.upDateUserImg(imageview, email);
@@ -305,11 +275,7 @@ public class UserAccount_Main extends AppCompatActivity {
         }
     }
 
-    private void cancle(){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
 
-    }
 
     private byte[] getByArrayFromImageView(ImageView imv){
         BitmapDrawable drawable = (BitmapDrawable) imv.getDrawable();
@@ -324,19 +290,54 @@ public class UserAccount_Main extends AppCompatActivity {
     private void addControls() {
 
     }
+    public void loadData(){
+        if (email == null || email.isEmpty()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(UserAccount_Main.this);
+            builder.setMessage("Bạn chưa đăng nhập, vui lòng đăng nhập truy cập vào trang tài khoản");
+            builder.setPositiveButton("Đăng nhập", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Chuyển đến trang đăng nhập khi nhấn nút Đăng nhập
+                    startActivity(new Intent(UserAccount_Main.this, Signin_Main.class));
+                }
+            });
+            builder.setNegativeButton("Về trang chủ", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startActivity(new Intent(UserAccount_Main.this, TrangChu.class));
+
+                    // Chuyển về trang chủ khi nhấn cancel
+//                    dialog.dismiss();
+                }
+            });
+            Dialog dialog = builder.create();
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialogInterface) {
+                    Button positiveButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+                    Button negativeButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE);
+
+                    // Set text color for "Ok" button
+                    positiveButton.setTextColor(ContextCompat.getColor(UserAccount_Main.this, R.color.blue));
+
+                    // Set text color for "Cancel" button
+                    negativeButton.setTextColor(ContextCompat.getColor(UserAccount_Main.this, R.color.blue));
+                }
+            });
+
+            dialog.show();
+        }else{
+            getUserDetails();
+            initUI();
+
+        }
+
+    }
 
     private void getUserDetails() {
-        db = new R3cyDB(this);
-        // Lấy email từ SharedPreferences
+            db = new R3cyDB(this);
 
-
-//        // Nếu không có email từ SharedPreferences, không thực hiện gì cả
-//        if (email.isEmpty()) {
-//            return;
-//        }
-//        ArrayList<UserInfo> customer = db.getLoggedinUserDetailsMain(email);
-//        // Kiểm tra xem email có null không
-        if (email != null) {
+        {
             // Lấy thông tin người dùng từ cơ sở dữ liệu
             ArrayList<UserInfo> customer = db.getLoggedinUserDetailsMain(email);
 
@@ -350,9 +351,9 @@ public class UserAccount_Main extends AppCompatActivity {
                 // Xử lý trường hợp không tìm thấy thông tin người dùng
                 Toast.makeText(this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
             }
-        } else {
-            // Xử lý trường hợp không nhận được email từ Intent
-            Toast.makeText(this, "Không nhận được thông tin email", Toast.LENGTH_SHORT).show();
+//        } else {
+//            // Xử lý trường hợp không nhận được email từ Intent
+//            Toast.makeText(this, "Không nhận được thông tin email", Toast.LENGTH_SHORT).show();
         }
 
     }
