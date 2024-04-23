@@ -2,10 +2,13 @@ package com.example.r3cy_mobileapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -14,6 +17,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import com.example.adapter.CouponAdapter;
 import com.example.adapter.CouponAdapterRecycler;
@@ -21,6 +25,7 @@ import com.example.databases.R3cyDB;
 import com.example.models.Coupon;
 import com.example.models.Customer;
 import com.example.r3cy_mobileapp.Product.Product_List;
+import com.example.r3cy_mobileapp.Signin.Signin_Main;
 import com.example.r3cy_mobileapp.databinding.ActivityTichDiemBinding;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -69,6 +74,42 @@ public class TichDiem extends AppCompatActivity {
         pieChart = findViewById(R.id.pie_chart);
 
         email = getIntent().getStringExtra("key_email");
+        if (email == null || email.isEmpty()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(TichDiem.this);
+            builder.setMessage("Bạn chưa đăng nhập, vui lòng đăng nhập truy cập vào trang tích điểm");
+            builder.setPositiveButton("Đăng nhập", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Chuyển đến trang đăng nhập khi nhấn nút Đăng nhập
+                    startActivity(new Intent(TichDiem.this, Signin_Main.class));
+                }
+            });
+            builder.setNegativeButton("Về trang chủ", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startActivity(new Intent(TichDiem.this, TrangChu.class));
+
+                    // Chuyển về trang chủ khi nhấn cancel
+//                    dialog.dismiss();
+                }
+            });
+            Dialog dialog = builder.create();
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialogInterface) {
+                    Button positiveButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+                    Button negativeButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE);
+
+                    // Set text color for "Ok" button
+                    positiveButton.setTextColor(ContextCompat.getColor(TichDiem.this, R.color.blue));
+
+                    // Set text color for "Cancel" button
+                    negativeButton.setTextColor(ContextCompat.getColor(TichDiem.this, R.color.blue));
+                }
+            });
+
+            dialog.show();
+        }
 
         addEvents();
     }

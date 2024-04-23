@@ -2,10 +2,14 @@ package com.example.r3cy_mobileapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -17,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.adapter.BannerAdapter;
@@ -364,9 +369,46 @@ public class TrangChu extends AppCompatActivity {
         binding.btnTracuu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TrangChu.this, User_account_manageOrder.class);
-                intent.putExtra("key_email", email);
-                startActivity(intent);
+                if (email == null || email.isEmpty()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(TrangChu.this);
+                    builder.setMessage("Bạn chưa đăng nhập, vui lòng đăng nhập truy cập vào trang tài khoản");
+                    builder.setPositiveButton("Đăng nhập", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Chuyển đến trang đăng nhập khi nhấn nút Đăng nhập
+                            startActivity(new Intent(TrangChu.this, Signin_Main.class));
+                        }
+                    });
+                    builder.setNegativeButton("Thoát", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+
+                            // Chuyển về trang chủ khi nhấn cancel
+//                    dialog.dismiss();
+                        }
+                    });
+                    Dialog dialog = builder.create();
+                    dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                        @Override
+                        public void onShow(DialogInterface dialogInterface) {
+                            Button positiveButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+                            Button negativeButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE);
+
+                            // Set text color for "Ok" button
+                            positiveButton.setTextColor(ContextCompat.getColor(TrangChu.this, R.color.blue));
+
+                            // Set text color for "Cancel" button
+                            negativeButton.setTextColor(ContextCompat.getColor(TrangChu.this, R.color.blue));
+                        }
+                    });
+
+                    dialog.show(); } else {
+                    Intent intent = new Intent(TrangChu.this, User_account_manageOrder.class);
+                    intent.putExtra("key_email", email);
+                    startActivity(intent);
+                }
+
             }
         });
 
