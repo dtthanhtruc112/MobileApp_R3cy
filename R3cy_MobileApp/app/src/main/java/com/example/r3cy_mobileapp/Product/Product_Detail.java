@@ -3,14 +3,21 @@ package com.example.r3cy_mobileapp.Product;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,20 +28,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.adapter.ProductAdapter;
+import com.example.dao.ProductDao;
 import com.example.databases.R3cyDB;
 //import com.example.models.Discuss;
+import com.example.models.CartItem;
+import com.example.models.Customer;
 import com.example.models.Discuss;
 import com.example.models.Feedback;
 import com.example.models.Product;
 import com.example.models.ProductAtb;
 import com.example.r3cy_mobileapp.AboutUs;
 import com.example.r3cy_mobileapp.BlogDetail;
+import com.example.r3cy_mobileapp.Checkout;
 import com.example.r3cy_mobileapp.R;
+import com.example.r3cy_mobileapp.Signin.Signin_Main;
 import com.example.r3cy_mobileapp.TrangChu;
 import com.example.r3cy_mobileapp.UserAccount_Main;
 import com.example.r3cy_mobileapp.databinding.ActivityProductDetailBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +58,7 @@ import java.util.Random;
 
 public class Product_Detail extends AppCompatActivity {
     ActivityProductDetailBinding binding;
-
+    Product product;
     TextView txtQuantity, txtProductName,txtDiscuss, txtSalePrice, txtProductDescription, txtProductRate, txtDiscussContent, txtDiscussRespond;
     ImageView btnIncreaseQuantity;
     ImageView btnDecreaseQuantity, imvProductThumb;
@@ -53,7 +68,10 @@ public class Product_Detail extends AppCompatActivity {
     private List<ProductAtb> productAtbs;
     private List<Feedback> feedbackList;
     private List<Discuss> discussList;
-    Product product;
+    private ProductDao productDao;
+    Customer customer;
+    int customerId = -1 ;
+    int productID;
     String email;
     BottomNavigationView navigationView;
     private int quantity = 1; //Giá trị mặc định số lượng là 1
@@ -102,7 +120,7 @@ public class Product_Detail extends AppCompatActivity {
             int productID = intent.getIntExtra("ProductID", -1);
             if (productID != -1) {
                 db = new R3cyDB(this);
-                Product product = db.getProductByID(productID);
+                product = db.getProductByID(productID);
 
                 if (product != null) {
                     showProductDetail(product);
@@ -235,7 +253,7 @@ public class Product_Detail extends AppCompatActivity {
                             cursor.getString(3),
                             cursor.getDouble(8) // ProductRate
 
-                            ));
+                    ));
                     productAtbs.add(new ProductAtb(
                             cursor.getInt(0), // ProductID
                             cursor.getDouble(2), // ProductPrice
@@ -328,6 +346,136 @@ public class Product_Detail extends AppCompatActivity {
                     quantity--;
                     txtQuantity.setText(String.valueOf(quantity));
                 }
+            }
+        });
+
+        binding.btnAddToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Thêm vào giỏ hàng
+                if (email == null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Product_Detail.this);
+                    builder.setMessage("Bạn chưa đăng nhập, vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
+                    builder.setPositiveButton("Đăng nhập", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Chuyển đến trang đăng nhập khi nhấn nút Đăng nhập
+                            startActivity(new Intent(Product_Detail.this, Signin_Main.class));
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Không thực hiện gì nếu nhấn Cancel
+                            dialog.dismiss();
+                        }
+                    });
+                    Dialog dialog = builder.create();
+                    dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                        @Override
+                        public void onShow(DialogInterface dialogInterface) {
+                            Button positiveButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+                            Button negativeButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE);
+
+                            // Set text color for "Ok" button
+                            positiveButton.setTextColor(ContextCompat.getColor(Product_Detail.this, R.color.blue));
+
+                            // Set text color for "Cancel" button
+                            negativeButton.setTextColor(ContextCompat.getColor(Product_Detail.this, R.color.blue));
+                        }
+                    });
+
+                    dialog.show();
+                }else{
+                    // Lấy thông tin của khách hàng dựa trên email từ SharedPreferences
+                    customer = db.getCustomerByEmail1(email);
+                    Log.d("customer", "customer ở checkout: " + customer.getFullName());
+
+                    customerId = customer.getCustomerId();
+                    // Gọi phương thức insertCartItem để thêm thông tin sản phẩm vào bảng cart
+                    boolean itemAddedToCart = productDao.insertOrUpdateCartItem(customerId, productID, quantity);
+
+                    if (itemAddedToCart) {
+                        Toast.makeText(Product_Detail.this, "Sản phẩm đã được thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(Product_Detail.this, "Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+        });
+        binding.btnBuyNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Mở trang BuyNow và load dữ liệu của productid + quantity trên trang Buynow
+                if (email == null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Product_Detail.this);
+                    builder.setMessage("Bạn chưa đăng nhập, vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
+                    builder.setPositiveButton("Đăng nhập", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Chuyển đến trang đăng nhập khi nhấn nút Đăng nhập
+                            startActivity(new Intent(Product_Detail.this, Signin_Main.class));
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Không thực hiện gì nếu nhấn Cancel
+                            dialog.dismiss();
+                        }
+                    });
+                    Dialog dialog = builder.create();
+                    dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                        @Override
+                        public void onShow(DialogInterface dialogInterface) {
+                            Button positiveButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+                            Button negativeButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE);
+
+                            // Set text color for "Ok" button
+                            positiveButton.setTextColor(ContextCompat.getColor(Product_Detail.this, R.color.blue));
+
+                            // Set text color for "Cancel" button
+                            negativeButton.setTextColor(ContextCompat.getColor(Product_Detail.this, R.color.blue));
+                        }
+                    });
+
+                    dialog.show();
+                }else{
+                    // Lấy thông tin của khách hàng dựa trên email từ SharedPreferences
+                    customer = db.getCustomerByEmail1(email);
+                    Log.d("customer", "customer ở checkout: " + customer.getFullName());
+
+                    customerId = customer.getCustomerId();
+
+                    ArrayList<CartItem> selectedItems = new ArrayList<>();
+                    // Tạo một đối tượng CartItem mới với các tham số tương ứng
+                    CartItem newItem = new CartItem(productID, product.getProductName(), product.getCategory(), product.getSalePrice(), quantity, product.getProductThumb(), true, 9900);
+
+                    selectedItems.add(newItem);
+                    SharedPreferences sharedPreferences = getSharedPreferences("selected_items", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    try {
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+                        objectOutputStream.writeObject(selectedItems);
+                        String serializedList = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
+                        editor.putString("selected_items_list", serializedList);
+                        editor.apply();
+
+                        // Log để kiểm tra dữ liệu đã được lưu xuống SharedPreferences
+                        Log.d("SharedPreferences", "Dữ liệu đã được lưu xuống SharedPreferences.");
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    // Chuyển sang trang Checkout
+                    Intent intent = new Intent(Product_Detail.this, Checkout.class);
+                    intent.putExtra("key_email", email);
+                    startActivity(intent);
+                }
+
             }
         });
 
