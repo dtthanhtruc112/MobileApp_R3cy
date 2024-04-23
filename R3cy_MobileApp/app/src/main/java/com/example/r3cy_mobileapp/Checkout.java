@@ -304,7 +304,7 @@ public class Checkout extends AppCompatActivity {
         // Tạo đơn hàng và cập nhật cơ sở dữ liệu
         // Tạo đơn hàng và cập nhật cơ sở dữ liệu
         notes = binding.edtNotes.getText().toString();
-        boolean orderCreated = productDao.createOrder(customerId, totalOrderValue, shippingFee, couponOrder, couponShipping, totalAmount, couponid, notes,  selectedItems, selectedPaymentMethod, "Chờ xử lí", selectedAddress);
+        boolean orderCreated = productDao.createOrder(customerId, totalOrderValue, shippingFee, couponOrder, couponShipping, totalAmount, couponid, notes,  selectedItems, selectedPaymentMethod, "Chờ xử lý", selectedAddress);
         if (orderCreated) {
             // Sau khi đặt hàng thành công trong phương thức makeOrder()
             Intent successIntent = new Intent("com.example.r3cy_mobileapp.ACTION_ORDER_SUCCESS");

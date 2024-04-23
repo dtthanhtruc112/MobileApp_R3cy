@@ -117,7 +117,7 @@ public class Product_Detail extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("ProductID")) {
-            int productID = intent.getIntExtra("ProductID", -1);
+            productID = intent.getIntExtra("ProductID", -1);
             if (productID != -1) {
                 db = new R3cyDB(this);
                 productDao = new ProductDao(db);
