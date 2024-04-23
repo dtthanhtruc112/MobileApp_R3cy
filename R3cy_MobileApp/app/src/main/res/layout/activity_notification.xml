@@ -10,12 +10,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="34dp"
         android:layout_margin="15dp"
         android:layout_marginLeft="15dp"
-        android:orientation="horizontal"
         android:layout_weight="1"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
 
         <ImageView
@@ -33,6 +33,90 @@
             android:textStyle="bold"></TextView>
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Khuyến mãi"
+        android:textColor="@color/blue"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:layout_gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/discount"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center_vertical"/>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Có mã Freeship cho đơn 0Đ đang chờ bạn!"
+                android:textStyle="bold"
+                android:textSize="11sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mã sẽ hết hạn vào 15/06-2024. Đặt đơn là freeship."
+                android:textSize="11sp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/discount"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center_vertical"/>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nắng hè chói chang, deal vui ngập tràn!"
+                android:textStyle="bold"
+                android:textSize="11sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Voucher hè giảm đến 20K cho đơn hàng từ 99K. Mã sẽ hết hạn vào 15/06/2024. Xài ngay nha!"
+                android:textSize="11sp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+    </LinearLayout>
+
 
     <ListView
         android:id="@+id/lvnotification"
