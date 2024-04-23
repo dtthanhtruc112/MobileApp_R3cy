@@ -1,5 +1,7 @@
 package com.example.r3cy_mobileapp.Fragment;
 
+import static android.content.Intent.getIntent;
+
 import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.database.CursorWindow;
@@ -23,6 +25,7 @@ import com.example.databases.R3cyDB;
 import com.example.models.CartItem;
 import com.example.models.Customer;
 import com.example.models.Order;
+import com.example.r3cy_mobileapp.Product.Dogiadung_Fragment;
 import com.example.r3cy_mobileapp.R;
 import com.example.r3cy_mobileapp.User_account_manageOrder;
 import com.example.r3cy_mobileapp.databinding.FragmentOrderManageTatcaBinding;
@@ -64,16 +67,23 @@ public class OrderManage_tatca_Fragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+//     * @param param1 Parameter 1.
+//     * @param param2 Parameter 2.
      * @return A new instance of fragment OrderManage_tatca_Fragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static OrderManage_tatca_Fragment newInstance(String param1, String param2) {
+//    public static OrderManage_tatca_Fragment newInstance(String param1, String param2) {
+//        OrderManage_tatca_Fragment fragment = new OrderManage_tatca_Fragment();
+//        Bundle args = new Bundle();
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
+    public static OrderManage_tatca_Fragment newInstance(String email) {
         OrderManage_tatca_Fragment fragment = new OrderManage_tatca_Fragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString("key_email", email);
         fragment.setArguments(args);
         return fragment;
     }
@@ -81,6 +91,7 @@ public class OrderManage_tatca_Fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
     }
 
@@ -90,11 +101,15 @@ public class OrderManage_tatca_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentOrderManageTatcaBinding.inflate(inflater, container, false);
 
-
+        if (getArguments() != null) {
+            email = getArguments().getString("key_email");
+            Log.d("SharedPreferences", "Email : " + email);
+        }
     return binding.getRoot();
     }
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
 
         createDb();
         loadData();
@@ -108,11 +123,16 @@ public class OrderManage_tatca_Fragment extends Fragment {
         dbR3cy.createSampleDataOrderLine();
         dbR3cy.createSampleProduct();
     }
+
     public List<Order> getOrder() {
 
-        String orderStatus = dbR3cy.getOrderStatus("Chờ xử lý");
+//        String orderStatus = dbR3cy.getOrderStatus("Chờ xử lý");
 //         customer = dbR3cy.getCustomerByEmail1(email);
-         int customerId = dbR3cy.getCustomerIdFromCustomer(email);
+         ArrayList<Customer> email3 = dbR3cy.getLoggedinUserOrder(email);
+//        customer = dbR3cy.getCustomerByEmail1(email);
+//        Log.d("customer", "customer ở checkout: " + customer.getFullName());
+//        int customerId = customer.getCustomerId();
+        String orderStatus = dbR3cy.getOrderStatus("Chờ xử lý");
 //        Cursor c1 = db.getData("SELECT * FROM " + R3cyDB.TBL_CUSTOMER + " WHERE " + R3cyDB.CUSTOMER_IDS + " LIKE '%" + customerId + "%'");
         List<Order> orders = new ArrayList<>();
         SQLiteDatabase db = dbR3cy.getReadableDatabase();
@@ -120,9 +140,20 @@ public class OrderManage_tatca_Fragment extends Fragment {
 //
 
         try {
+//            customer = dbR3cy.getCustomerIdFromCustomer(email);
+//            int customerId = (customer != null) ? dbR3cy.getCustomerIdFromCustomer(email) : 2;
+//            customer = dbR3cy.getCustomerByEmail1(email);
+//                     int customerId = dbR3cy.getCustomerIdFromCustomer(email);
 
+//            int customerId;
+//            if (customer != null) {
+//                customerId = dbR3cy.getCustomerIdFromCustomer(email);
+//            } else {
+//                // Provide a default customer ID if customer is null
+//                customerId = 2; // Or any other default value you want
+//            }
 
-                String query = "SELECT " +
+            String query = "SELECT " +
                         "o." + R3cyDB.ORDER_ID + ", " +
                         "ol." + R3cyDB.ORDER_LINE_ID + ", " +
                         "ol." + R3cyDB.ORDER_LINE_ORDER_ID + ", " +
@@ -136,14 +167,16 @@ public class OrderManage_tatca_Fragment extends Fragment {
                         "p." + R3cyDB.PRODUCT_THUMB + ", " +
                         "p." + R3cyDB.PRODUCT_NAME + ", " +
                         "p." + R3cyDB.PRODUCT_PRICE + ", " +
+                        "c." + R3cyDB.CUSTOMER_ID + ", " +
                         "p." + R3cyDB.PRODUCT_ID +
                         " FROM " + R3cyDB.TBl_ORDER + " o " + " " +
                         " INNER JOIN " + R3cyDB.TBl_ORDER_LINE + " ol" +
                         " ON o." + R3cyDB.ORDER_ID + " = ol." + R3cyDB.ORDER_LINE_ORDER_ID + " " +
                         " INNER JOIN " + R3cyDB.TBl_PRODUCT + " p" +
                         " ON ol." + R3cyDB.ORDER_LINE_PRODUCT_ID + " = p." + R3cyDB.PRODUCT_ID +
-                        " WHERE o. " + R3cyDB.ORDER_STATUS + " LIKE '%" + orderStatus + "%'AND " +
-                        "o." + R3cyDB.ORDER_CUSTOMER_ID + " LIKE '%" + customerId + "%'";
+                        " INNER JOIN " + R3cyDB.TBL_CUSTOMER + " c" +
+                        " ON o." + R3cyDB.ORDER_CUSTOMER_ID + " = c." + R3cyDB.CUSTOMER_ID +
+                        " WHERE c. " + R3cyDB.EMAIL + " LIKE '%" + orderStatus + "%'";
 
 
             cursor = db.rawQuery(query, null);

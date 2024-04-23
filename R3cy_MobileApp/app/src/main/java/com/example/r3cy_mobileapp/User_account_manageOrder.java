@@ -29,6 +29,9 @@ import com.example.r3cy_mobileapp.Fragment.Policy_Fragment;
 import com.example.r3cy_mobileapp.Fragment.Policy_baomat_Fragment;
 import com.example.r3cy_mobileapp.Fragment.Policy_dichvu_Fragment;
 import com.example.r3cy_mobileapp.Fragment.Policy_doitra_Fragment;
+import com.example.r3cy_mobileapp.Product.Dogiadung_Fragment;
+import com.example.r3cy_mobileapp.Product.Dotrangtri_Fragment;
+import com.example.r3cy_mobileapp.Product.Phukien_Fragment;
 import com.example.r3cy_mobileapp.Product.Product_List;
 import com.example.r3cy_mobileapp.databinding.ActivityUserAccountManageOrderBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -36,6 +39,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User_account_manageOrder extends AppCompatActivity {
     ActivityUserAccountManageOrderBinding binding;
@@ -106,6 +111,13 @@ public class User_account_manageOrder extends AppCompatActivity {
 
         addEvents();
 
+    }
+    private List<Fragment> getFragments() {
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(new Dogiadung_Fragment().newInstance(email)); // Khởi tạo fragment và truyền email
+        fragments.add(new Dotrangtri_Fragment().newInstance(email)); // Khởi tạo fragment và truyền email
+        fragments.add(new Phukien_Fragment().newInstance(email)); // Khởi tạo fragment và truyền email
+        return fragments;
     }
 
     private void addEvents() {

@@ -10,16 +10,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import com.example.models.Address;
-import com.example.models.CartItem;
 import com.example.models.Customer;
 import com.example.models.Product;
 import com.example.models.ProductAtb;
@@ -28,14 +25,8 @@ import com.example.r3cy_mobileapp.R;
 
 import java.io.ByteArrayOutputStream;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 
 
@@ -1538,8 +1529,7 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
         if (cursor != null && cursor.moveToFirst()) {
             customerId = cursor.getInt(cursor.getColumnIndex(CUSTOMER_ID));
 //            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
-            cursor.close();
-        }
+            cursor.close();        }
 
         // Đóng con trỏ và database
 //        cursor.close();
@@ -1617,6 +1607,60 @@ public void accumulateMembershipScore(int customerId, double orderValue) {
 //
 //        return orderstatus;
 //    }
+public Customer getCustomerByEmail3(String email) {
+    // Đọc cơ sở dữ liệu
+    SQLiteDatabase db = this.getReadableDatabase();
+
+    // Câu truy vấn SQL
+    String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
+
+    // Thực thi câu truy vấn
+    Cursor cursor = db.rawQuery(query, new String[]{email});
+
+    Customer customer = null;
+
+    // Nếu có kết quả từ câu truy vấn
+    if (cursor.moveToFirst()) {
+        // Lấy thông tin từ cursor
+        @SuppressLint("Range") String email1 = cursor.getString(cursor.getColumnIndex(EMAIL));
+        // Tạo đối tượng Customer
+        customer = new Customer();
+    }
+
+    // Đóng cursor và đóng cơ sở dữ liệu
+    cursor.close();
+    db.close();
+
+    // Trả về đối tượng Customer
+    return customer;
+}
+    public ArrayList<Customer> getLoggedinUserOrder(String email){
+        ArrayList<Customer> customers = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
+
+        Cursor cursor = sqLiteDatabase.rawQuery(query, new String[]{email});
+        Customer customer = null;
+
+        // Nếu có kết quả từ câu truy vấn
+        if (cursor.moveToFirst()) {
+            // Lấy thông tin từ cursor
+            @SuppressLint("Range") String emails = cursor.getString(cursor.getColumnIndex(EMAIL));
+
+
+            Customer userInfo = new Customer();
+
+            userInfo.setEmail(emails);
+
+            customers.add(userInfo);
+        }
+
+        // Đóng con trỏ và database
+        cursor.close();
+        sqLiteDatabase.close();
+
+        return customers;
+    }
 
 
 

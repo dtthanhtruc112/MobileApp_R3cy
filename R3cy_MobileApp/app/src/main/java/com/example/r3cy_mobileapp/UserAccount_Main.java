@@ -81,7 +81,7 @@ public class UserAccount_Main extends AppCompatActivity {
     ActivityResultLauncher<Intent> activityResultLauncher;
     final int REQUEST_TAKE_PHOTO = 123;
     final int REQUEST_CHOOSE_PHOTO = 321;
-    final String DATABASE_NAME = "R3cyDB.db";
+//    final String DATABASE_NAME = "R3cyDB.db";
 
     boolean openCam;
     TextView name;
@@ -344,8 +344,8 @@ public class UserAccount_Main extends AppCompatActivity {
             if (customer != null && customer.size() > 0) {
                 UserInfo userInfo = customer.get(0);
                 name.setText(userInfo.getFullName());
-                Bitmap bitmap = BitmapFactory.decodeByteArray(userInfo.getThumb(), 0, userInfo.getThumb().length);
-                thumb.setImageBitmap(bitmap);
+//                Bitmap bitmap = BitmapFactory.decodeByteArray(userInfo.getThumb(), 0, userInfo.getThumb().length);
+//                thumb.setImageBitmap(bitmap);
             } else {
                 // Xử lý trường hợp không tìm thấy thông tin người dùng
                 Toast.makeText(this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();

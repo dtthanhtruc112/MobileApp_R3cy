@@ -39,6 +39,11 @@ public class Customer {
         this.email = email;
         this.password = password;
     }
+    public Customer() {
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+    }
 
     public int getCustomerId() {
         return customerId;

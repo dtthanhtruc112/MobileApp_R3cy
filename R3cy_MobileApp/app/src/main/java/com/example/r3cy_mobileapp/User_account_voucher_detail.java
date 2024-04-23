@@ -63,12 +63,12 @@ public class User_account_voucher_detail extends AppCompatActivity {
                 // Tiếp tục xử lý với email đã lấy được
             } else {
                 // Nếu email là null, hiển thị thông báo yêu cầu đăng nhập trước
-                Toast.makeText(getApplicationContext(), "Bạn cần đăng nhập trước", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "Bạn cần đăng nhập trước", Toast.LENGTH_SHORT).show();
                 // Tiếp tục xử lý theo nhu cầu của bạn, có thể chuyển người dùng đến màn hình đăng nhập
             }
         } else {
             // Nếu bundle là null, cũng hiển thị thông báo yêu cầu đăng nhập trước
-            Toast.makeText(getApplicationContext(), "Bạn cần đăng nhập trước", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "Bạn cần đăng nhập trước", Toast.LENGTH_SHORT).show();
             // Tiếp tục xử lý theo nhu cầu của bạn, có thể chuyển người dùng đến màn hình đăng nhập
         }
 

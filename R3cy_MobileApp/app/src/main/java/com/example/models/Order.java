@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Order implements Serializable {
     int OrderID;
     int OrderLineID;
+
     int OrderLineProductID;
     double OrderSalePrice;
     String Quantity;
