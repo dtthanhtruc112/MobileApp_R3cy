@@ -3,6 +3,8 @@ package com.example.r3cy_mobileapp.Fragment;
 import static android.content.Intent.getIntent;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorWindow;
 import android.database.sqlite.SQLiteDatabase;
@@ -56,6 +58,7 @@ public class OrderManage_tatca_Fragment extends Fragment {
     OrderAdapter adapter;
     String email;
     Customer customer;
+    Context context;
 
 
 
@@ -101,10 +104,10 @@ public class OrderManage_tatca_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentOrderManageTatcaBinding.inflate(inflater, container, false);
 
-        if (getArguments() != null) {
+//        if (getArguments() != null) {
             email = getArguments().getString("key_email");
             Log.d("SharedPreferences", "Email : " + email);
-        }
+
     return binding.getRoot();
     }
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -123,15 +126,23 @@ public class OrderManage_tatca_Fragment extends Fragment {
         dbR3cy.createSampleDataOrderLine();
         dbR3cy.createSampleProduct();
     }
+    public String getEmailFromSharedPreferences() {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("YOUR_SHARED_PREF_NAME", Context.MODE_PRIVATE);
+        return sharedPreferences.getString("key_email", "");
+    }
 
     public List<Order> getOrder() {
 
 //        String orderStatus = dbR3cy.getOrderStatus("Chờ xử lý");
 //         customer = dbR3cy.getCustomerByEmail1(email);
-         ArrayList<Customer> email3 = dbR3cy.getLoggedinUserOrder(email);
+//         ArrayList<Customer> email3 = dbR3cy.getLoggedinUserOrder(email);
 //        customer = dbR3cy.getCustomerByEmail1(email);
 //        Log.d("customer", "customer ở checkout: " + customer.getFullName());
 //        int customerId = customer.getCustomerId();
+//        String email = getEmailFromSharedPreferences();
+//        Log.d("SharedPreferences", "Email ở Fragment: " + email);
+        int customerId = dbR3cy.getCustomerIdFromCustomer(email);
+        Log.d("SharedPreferences", "Email ở Fragment: " + email);
         String orderStatus = dbR3cy.getOrderStatus("Chờ xử lý");
 //        Cursor c1 = db.getData("SELECT * FROM " + R3cyDB.TBL_CUSTOMER + " WHERE " + R3cyDB.CUSTOMER_IDS + " LIKE '%" + customerId + "%'");
         List<Order> orders = new ArrayList<>();
@@ -170,18 +181,20 @@ public class OrderManage_tatca_Fragment extends Fragment {
                         "c." + R3cyDB.CUSTOMER_ID + ", " +
                         "p." + R3cyDB.PRODUCT_ID +
                         " FROM " + R3cyDB.TBl_ORDER + " o " + " " +
-                        " INNER JOIN " + R3cyDB.TBl_ORDER_LINE + " ol" +
+                        " INNER JOIN " + R3cyDB.TBl_ORDER_LINE + " ol " +
                         " ON o." + R3cyDB.ORDER_ID + " = ol." + R3cyDB.ORDER_LINE_ORDER_ID + " " +
-                        " INNER JOIN " + R3cyDB.TBl_PRODUCT + " p" +
+                        " INNER JOIN " + R3cyDB.TBl_PRODUCT + " p " +
                         " ON ol." + R3cyDB.ORDER_LINE_PRODUCT_ID + " = p." + R3cyDB.PRODUCT_ID +
-                        " INNER JOIN " + R3cyDB.TBL_CUSTOMER + " c" +
+                        " INNER JOIN " + R3cyDB.TBL_CUSTOMER + " c " +
                         " ON o." + R3cyDB.ORDER_CUSTOMER_ID + " = c." + R3cyDB.CUSTOMER_ID +
-                        " WHERE c. " + R3cyDB.EMAIL + " LIKE '%" + orderStatus + "%'";
+                        " WHERE o. " + R3cyDB.ORDER_CUSTOMER_ID + " = " + customerId ;
 
 
             cursor = db.rawQuery(query, null);
 
-            if (cursor != null && cursor.moveToFirst()) {
+            if (cursor != null && cursor.moveToFirst())
+            {
+
                 do {
                     @SuppressLint("Range") int OrderId = cursor.getInt(cursor.getColumnIndex(R3cyDB.ORDER_ID));
                     @SuppressLint("Range") int OrderLineID = cursor.getInt(cursor.getColumnIndex(R3cyDB.ORDER_LINE_ID));
