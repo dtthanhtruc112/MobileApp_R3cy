@@ -85,8 +85,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     Intent intent = new Intent(v.getContext(), Product_Detail.class);
                     // Chuyển dữ liệu của sản phẩm qua Intent
                     intent.putExtra("ProductID", product.getProductID());
-//                    Log.d("SharedPreferences", "Email productadapter: " + email);
-//                    intent.putExtra("key_email", email);
+                    Log.d("SharedPreferences", "Email productadapter: " + email);
+                    intent.putExtra("key_email", email);
 
                     // Khởi chạy Activity mới
                     v.getContext().startActivity(intent);

@@ -105,6 +105,7 @@ public class TrangChu extends AppCompatActivity {
 
 
     private void createDb() {
+
         db = new R3cyDB(this);
         db.createSampleProduct();
         db.createSampleDataCustomer();
@@ -124,7 +125,6 @@ public class TrangChu extends AppCompatActivity {
 
         Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT);
 
-        // Chỉ lấy 3 sản phẩm đầu tiên
         try {
             while (cursor.moveToNext()) {
                 try {
@@ -163,10 +163,12 @@ public class TrangChu extends AppCompatActivity {
         Log.d("ProductInfo", "Number of products retrieved: " + products.size());
 
         adapter = new ProductAdapter(this, R.layout.viewholder_category_list,filteredProducts, email);
+        Log.d("SharedPreferences", "Email load data: " + email);
 
         binding.rcvProducts.setAdapter(adapter);
 
         adapter = new ProductAdapter(this, R.layout.viewholder_category_list,filteredProducts1, email);
+        Log.d("SharedPreferences", "Email load data: " + email);
         binding.rcvProduct.setAdapter(adapter);
 //        binding.rcvProduct.setAdapter(adapter);
     }
@@ -176,8 +178,8 @@ public class TrangChu extends AppCompatActivity {
         binding.rcvpromotionbanners.setLayoutManager(layoutManagerProducts);
 
         promotionBanners = new ArrayList<>();
-        promotionBanners.add(new PromotionBanner(R.drawable.ctkm, "Tri ân khách hàng"));
-        promotionBanners.add(new PromotionBanner(R.drawable.ctkm2, "Ngày lễ Black Friday"));
+        promotionBanners.add(new PromotionBanner(R.drawable.ctkm3, "Tri ân khách hàng"));
+        promotionBanners.add(new PromotionBanner(R.drawable.ctkm1, "Ngày lễ Black Friday"));
 
         adapterpromotion = new PromotionBannerAdapter(this, promotionBanners);
         binding.rcvpromotionbanners.setAdapter(adapterpromotion);

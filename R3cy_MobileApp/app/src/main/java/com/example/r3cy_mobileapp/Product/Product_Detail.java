@@ -221,7 +221,7 @@ public class Product_Detail extends AppCompatActivity {
 
         Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_PRODUCT);
 
-        // Chỉ lấy 3 sản phẩm đầu tiên
+
         try {
             while (cursor.moveToNext()) {
                 try {
@@ -343,7 +343,7 @@ public class Product_Detail extends AppCompatActivity {
         });
 
         navigationView = findViewById(R.id.mn_home);
-        navigationView.setSelectedItemId(R.id.item_home);
+        navigationView.setSelectedItemId(R.id.item_product);
 
 
         navigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

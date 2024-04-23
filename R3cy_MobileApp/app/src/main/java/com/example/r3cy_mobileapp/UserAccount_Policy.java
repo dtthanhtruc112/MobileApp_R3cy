@@ -144,7 +144,7 @@ public class UserAccount_Policy extends AppCompatActivity {
 
         });
 
-        binding.btnback.setOnClickListener(new View.OnClickListener() {
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
