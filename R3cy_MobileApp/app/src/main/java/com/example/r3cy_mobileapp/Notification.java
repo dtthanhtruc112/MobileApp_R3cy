@@ -46,6 +46,15 @@ public class Notification extends AppCompatActivity {
         }
     };
 
+    private BroadcastReceiver orderSuccessReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = "Đơn hàng đã tạo thành công";
+            notifications.add(message);
+            adapter.notifyDataSetChanged();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +102,9 @@ public class Notification extends AppCompatActivity {
 
         // Đăng ký BroadcastReceiver
         registerReceiver(receiver, new IntentFilter("com.example.r3cy_mobileapp.ACTION_POINTS_ACCUMULATED"));
+
+        // Đăng ký BroadcastReceiver để nhận thông điệp từ Checkout khi đặt hàng thành công
+        registerReceiver(orderSuccessReceiver, new IntentFilter("com.example.r3cy_mobileapp.ACTION_ORDER_SUCCESS"));
 
         addEvents();
     }
@@ -148,10 +160,11 @@ public class Notification extends AppCompatActivity {
         });
     }
 
-////    @Override
-////    protected void onDestroy() {
-//        super.onDestroy();
-////        // Hủy đăng ký BroadcastReceiver
-////        unregisterReceiver(receiver);
-////    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        // Hủy đăng ký BroadcastReceiver
+        unregisterReceiver(receiver);
+        unregisterReceiver(orderSuccessReceiver);
+    }
 }

@@ -306,6 +306,10 @@ public class Checkout extends AppCompatActivity {
         notes = binding.edtNotes.getText().toString();
         boolean orderCreated = productDao.createOrder(customerId, totalOrderValue, shippingFee, couponOrder, couponShipping, totalAmount, couponid, notes,  selectedItems, selectedPaymentMethod, "Chờ xử lí", selectedAddress);
         if (orderCreated) {
+            // Sau khi đặt hàng thành công trong phương thức makeOrder()
+            Intent successIntent = new Intent("com.example.r3cy_mobileapp.ACTION_ORDER_SUCCESS");
+            sendBroadcast(successIntent);
+
             // Xóa các mục đã chọn khỏi giỏ hàng sau khi đặt hàng thành công
             for (CartItem item : selectedItems) {
                 productDao.deleteCartItem(item.getLineId());
