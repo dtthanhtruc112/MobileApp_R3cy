@@ -32,6 +32,8 @@ import com.example.models.CartItem;
 import com.example.models.Customer;
 import com.example.models.Product;
 import com.example.models.ProductAtb;
+import com.example.models.SelectedItemsManager;
+import com.example.models.VoucherCheckout;
 import com.example.r3cy_mobileapp.Product.Product_Detail;
 import com.example.r3cy_mobileapp.Signin.Signin_Main;
 import com.example.r3cy_mobileapp.databinding.ActivityCartManageBinding;
@@ -39,8 +41,10 @@ import com.example.r3cy_mobileapp.databinding.ActivityCartManageBinding;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CartManage extends AppCompatActivity {
 
@@ -55,8 +59,23 @@ public class CartManage extends AppCompatActivity {
     CartAdapter adapter;
     String email;
     Customer customer;
+    double shippingFee = 25000;
+    double couponShipping = 0 ;
+    double couponOrder = 0 ;
+    double couponDiscount = 0;
+    double totalAmount;
+    double totalOrderValue;
+    int couponid;
 
     ArrayList<CartItem> cartItems;
+    public static final int CART_VOUCHER_REQUEST_CODE = 1;
+    int voucherId;
+    VoucherCheckout voucherCheckout;
+    private  int voucherIdFromIntent = -1;
+    ArrayList<CartItem> selectedItems;
+    NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +88,7 @@ public class CartManage extends AppCompatActivity {
         Log.d("SharedPreferences", "Email ở cartmanage: " + email);
 
         createDb();
+        loadData();
         addEvents();
     }
 
@@ -102,9 +122,64 @@ public class CartManage extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.i("test", "onResume");
-        loadData();
         loadDataSuggest();
+
+        if (voucherIdFromIntent == -1) {
+            Log.d("voucherIdFromIntent", "Không lấy được từ intent");
+        } else {
+            Log.d("voucherIdFromIntent", "voucherIdFromIntent: " + voucherIdFromIntent);
+            processVoucher();
+        }
     }
+
+    private void processVoucher() {
+        // Kiểm tra nếu voucherIdFromIntent không phải là giá trị mặc định (-1)
+        if (voucherIdFromIntent != -1) {
+            voucherCheckout = db.getCouponById(voucherIdFromIntent);
+            Log.d("voucherCheckout", "voucherCheckout" + voucherCheckout);
+            if("percent".equals(voucherCheckout.getCOUPON_TYPE())) {
+                if("order".equals(voucherCheckout.getCOUPON_CATEGORY())) {
+                    couponOrder = voucherCheckout.getCOUPON_VALUE()*totalAmount;
+                    if(couponOrder > voucherCheckout.getMAXIMUM_DISCOUNT()){
+                        couponOrder = voucherCheckout.getMAXIMUM_DISCOUNT();
+                    }
+                    couponDiscount = couponOrder;
+                }else
+                {
+                    couponShipping = voucherCheckout.getCOUPON_VALUE()*shippingFee;
+                    if(couponShipping > voucherCheckout.getMAXIMUM_DISCOUNT()){
+                        couponShipping = voucherCheckout.getMAXIMUM_DISCOUNT();
+                        if (couponShipping > shippingFee) {
+                            couponShipping = shippingFee;
+                        }
+                    }
+                    couponDiscount = couponShipping;
+                }
+            } else {
+                if("order".equals(voucherCheckout.getCOUPON_CATEGORY())){
+                    couponOrder = voucherCheckout.getCOUPON_VALUE();
+                    couponDiscount = couponOrder;
+                }else
+                {
+                    couponShipping = voucherCheckout.getCOUPON_VALUE();
+                    if (couponShipping > shippingFee) {
+                        couponShipping = shippingFee;
+                    }
+                    couponDiscount = couponShipping;
+                }
+
+            }
+            binding.txtDiscount.setText(numberFormat.format(couponDiscount));
+            totalOrderValue = totalAmount + shippingFee -couponOrder - couponShipping;
+            if(totalOrderValue < 0){
+                totalOrderValue = 0;
+            }
+
+        }else {
+            Log.d("processVoucher", "Không lấy được voucherId từ intent");
+        }
+    }
+
 
     private void loadData() {
         // Nếu không có email từ SharedPreferences, không thực hiện gì cả
@@ -358,7 +433,7 @@ public class CartManage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Tạo một danh sách mới để chứa các sản phẩm được chọn
-                ArrayList<CartItem> selectedItems = new ArrayList<>();
+                selectedItems = new ArrayList<>();
 
                 // Duyệt qua danh sách sản phẩm và kiểm tra xem sản phẩm nào được chọn
                 for (CartItem item : cartItems) {
@@ -366,6 +441,7 @@ public class CartManage extends AppCompatActivity {
                         selectedItems.add(item);
                     }
                 }
+                totalAmount = calculateTotalAmount(selectedItems);
 
                 // Kiểm tra xem có sản phẩm được chọn không
                 if (selectedItems.isEmpty()) {
@@ -393,10 +469,58 @@ public class CartManage extends AppCompatActivity {
                     // Chuyển sang trang Checkout
                     Intent intent = new Intent(CartManage.this, Checkout.class);
                     intent.putExtra("key_email", email);
+                    intent.putExtra("totalAmount", totalAmount);
                     startActivity(intent);
                 }
             }
         });
 
+        binding.voucherLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedItems = new ArrayList<>();
+
+                // Duyệt qua danh sách sản phẩm và kiểm tra xem sản phẩm nào được chọn
+                for (CartItem item : cartItems) {
+                    if (item.isSelected()) {
+                        selectedItems.add(item);
+                    }
+                }
+                // Kiểm tra xem selectedItems đã được khởi tạo và có dữ liệu không
+                if (selectedItems != null && !selectedItems.isEmpty()) {
+                    // Nếu có sản phẩm được chọn, tính toán totalAmount và chuyển sang Cart_Voucher
+                    totalAmount = calculateTotalAmount(selectedItems);
+                    Intent intent = new Intent(CartManage.this, Cart_Voucher.class);
+                    intent.putExtra("key_email", email);
+                    intent.putExtra("totalAmount", totalAmount);
+                    startActivityForResult(intent, CART_VOUCHER_REQUEST_CODE);
+                } else {
+                    // Nếu không có sản phẩm được chọn, hiển thị thông báo
+                    Toast.makeText(CartManage.this, "Vui lòng chọn sản phẩm trước khi sử dụng voucher", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CART_VOUCHER_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                voucherId = data.getIntExtra("COUPON_ID", -1);
+                Log.d("VoucherCheckout", "COUPON_ID: "+ voucherId);
+
+            }
+            if (voucherId != -1) {
+                voucherIdFromIntent = voucherId;
+            }
+
+        }
+    }
+    private double calculateTotalAmount(ArrayList<CartItem> selectedItems) {
+        double totalAmount = 0.0;
+        for (CartItem item : selectedItems) {
+            totalAmount += item.getProductPrice() * item.getProductQuantity();
+        }
+        return totalAmount;
     }
 }

@@ -8,14 +8,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.adapter.VoucherAdapter;
 import com.example.adapter.VoucherCheckoutAdapter;
+import com.example.adapter.VoucherCheckoutAdapter2;
 import com.example.databases.R3cyDB;
-import com.example.models.Coupon;
 import com.example.models.Customer;
-import com.example.models.Voucher;
 import com.example.models.VoucherCheckout;
-import com.example.r3cy_mobileapp.databinding.ActivityCheckoutVoucherBinding;
+import com.example.r3cy_mobileapp.databinding.ActivityCartVoucherBinding;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,22 +21,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class Checkout_Voucher extends AppCompatActivity {
-
-    ActivityCheckoutVoucherBinding binding;
+public class Cart_Voucher extends AppCompatActivity {
+    ActivityCartVoucherBinding binding;
     R3cyDB db;
-    VoucherCheckoutAdapter adapter;
+    VoucherCheckoutAdapter2 adapter;
     Customer customer;
     String email;
     ArrayList<VoucherCheckout> vouchers;
     double totalAmount;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityCheckoutVoucherBinding.inflate(getLayoutInflater());
+        binding = ActivityCartVoucherBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
 
         email = getIntent().getStringExtra("key_email");
         totalAmount = getIntent().getDoubleExtra("totalAmount",totalAmount);
@@ -47,8 +44,6 @@ public class Checkout_Voucher extends AppCompatActivity {
 
         createDb();
         addEvents();
-
-
     }
     @Override
     protected void onResume() {
@@ -119,73 +114,14 @@ public class Checkout_Voucher extends AppCompatActivity {
             c.close();
 
             // Khởi tạo và thiết lập adapter cho ListView
-            adapter = new VoucherCheckoutAdapter(Checkout_Voucher.this, R.layout.item_voucher_checkout, vouchers, email);
+            adapter = new VoucherCheckoutAdapter2(Cart_Voucher.this, R.layout.item_voucher_checkout, vouchers, email);
             binding.lvVoucher.setAdapter(adapter);
         } else {
-            Toast.makeText(Checkout_Voucher.this, "Không tìm thấy phiếu giảm giá cho khách hàng này", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Cart_Voucher.this, "Không tìm thấy phiếu giảm giá cho khách hàng này", Toast.LENGTH_SHORT).show();
             Log.e("Error", "Customer object is null");
         }
     }
 
-
-//    private void loadData() {
-//        int customerId = db.getCustomerIdFromCustomer(email);
-//        if (customerId != -1) {
-//            vouchers = new ArrayList<>();
-//            Cursor c = db.getData("SELECT * FROM " + R3cyDB.TBl_COUPON + " WHERE " + R3cyDB.CUSTOMER_IDS + " LIKE '%" + customerId + "%'");
-//
-//            while (c.moveToNext()) {
-//                try {
-//                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-//                    Date validDate = dateFormat.parse(c.getString(6));
-//                    Date expireDate = dateFormat.parse(c.getString(7));
-//
-//                    ArrayList<Integer> customerIds = new ArrayList<>();
-//                    String customerIdsString = c.getString(12);
-//                    if (customerIdsString != null && !customerIdsString.isEmpty()) {
-//                        String[] ids = customerIdsString.replaceAll("\\[|\\]", "").split(",\\s*");
-//                        for (String id : ids) {
-//                            customerIds.add(Integer.parseInt(id.trim()));
-//                        }
-//                    }
-//
-//                    vouchers.add(new VoucherCheckout(
-//                            c.getInt(0),
-//                            c.getString(1),
-//                            c.getString(2),
-//                            c.getInt(3),
-//                            c.getString(4),
-//                            c.getString(5),
-//                            validDate,
-//                            expireDate,
-//                            c.getDouble(8),
-//                            c.getDouble(9),
-//                            c.getDouble(10),
-//                            c.getInt(11),
-//                            customerIds, false
-//                    ));
-//                } catch (ParseException | NumberFormatException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            c.close();
-//
-//            adapter = new VoucherCheckoutAdapter(this, R.layout.item_voucher_checkout, vouchers, email);
-//            binding.lvVoucher.setAdapter(adapter);
-//        } else {
-//            Toast.makeText(Checkout_Voucher.this, "Không tìm thấy phiếu giảm giá cho khách hàng này", Toast.LENGTH_SHORT).show();
-//            Log.e("Error", "Customer object is null");
-//
-//        }
-//    }
-
-    public void openCheckoutActivity(VoucherCheckout c){
-        Intent intent = new Intent(this, Checkout.class);
-        intent.putExtra("COUPON_ID", c.getCOUPON_ID());
-        intent.putExtra("key_email", email);
-        startActivity(intent);
-
-    }
     public void openCartActivity(VoucherCheckout c){
         Intent intent = new Intent(this, CartManage.class);
         intent.putExtra("COUPON_ID", c.getCOUPON_ID());
