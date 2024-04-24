@@ -44,6 +44,7 @@ import com.example.interfaces.ProductInterface;
 import com.example.models.Product;
 import com.example.r3cy_mobileapp.AboutUs;
 import com.example.r3cy_mobileapp.BlogDetail;
+import com.example.r3cy_mobileapp.BlogList;
 import com.example.r3cy_mobileapp.R;
 import com.example.r3cy_mobileapp.TrangChu;
 import com.example.r3cy_mobileapp.UserAccount_Main;
@@ -192,7 +193,7 @@ public class Product_List extends AppCompatActivity implements ProductInterface 
                 if (item.getItemId() == R.id.item_product){
                     return true;
                 } else if (item.getItemId() == R.id.item_blog) {
-                    Intent intent2 =new Intent(getApplicationContext(), BlogDetail.class);
+                    Intent intent2 =new Intent(getApplicationContext(), BlogList.class);
                     intent2.putExtra("key_email", email);
                     intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent2);

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.models.Blog;
 import com.example.r3cy_mobileapp.R;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class BlogRelatedApdater extends BaseAdapter {
@@ -63,7 +64,11 @@ public class BlogRelatedApdater extends BaseAdapter {
         //        Binding data
         Blog blog = blogList.get(position);
         holder.txtblogTitle.setText(blog.getBlogTitle());
-        holder.txtblogDate.setText(blog.getBlogDate().toString());
+
+        // Chuyển đổi và hiển thị ngày tháng
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = dateFormat.format(blog.getBlogDate());
+        holder.txtblogDate.setText(formattedDate);
 
         // Hiển thị hình ảnh từ byte[]
         byte[] imageBytes = blog.getBlogThumb();

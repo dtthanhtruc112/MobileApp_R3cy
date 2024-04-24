@@ -25,8 +25,6 @@ public class PaymentMethod extends AppCompatActivity {
         binding.rdbSelectedBank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Lựa chọn thanh toán qua ngân hàng, xử lí và trả kết quả về cho Checkout
-                // Trả về phương thức thanh toán COD
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("PAYMENT_METHOD", "Bank");
                 setResult(RESULT_OK, resultIntent);
@@ -36,8 +34,6 @@ public class PaymentMethod extends AppCompatActivity {
         binding.rdbSelectedMomo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Lựa chọn momo, xử lí và trả kết quả về cho Checkout
-                // Trả về phương thức thanh toán COD
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("PAYMENT_METHOD", "Momo");
                 setResult(RESULT_OK, resultIntent);
@@ -47,7 +43,6 @@ public class PaymentMethod extends AppCompatActivity {
         binding.rdbSelectedCOD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Trả về phương thức thanh toán COD
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("PAYMENT_METHOD", "COD");
                 setResult(RESULT_OK, resultIntent);

@@ -404,14 +404,46 @@ public class UserAccount_Main extends AppCompatActivity {
         binding.usSignout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Intent intent = new Intent(getApplicationContext(), Signin_Main.class);
-                    startActivity(intent);
-                    Toast.makeText(UserAccount_Main.this, "Đăng xuất thành công !", Toast.LENGTH_SHORT).show();
-//                // Xóa SharedPreferences
-//                SharedPreferences preferences = getSharedPreferences("key_email", MODE_PRIVATE);
-//                SharedPreferences.Editor editor = preferences.edit();
-//                editor.remove("key_name");
-//                editor.apply();
+//
+                AlertDialog.Builder builder = new AlertDialog.Builder(UserAccount_Main.this);
+                builder.setTitle("Xác nhận đăng xuất");
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.setMessage("Bạn có chắc chắn muốn đăng xuất tài khoản?");
+
+                builder.setPositiveButton("Đăng xuất", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Đăng xuất tài khoản ở đây
+                        Intent intent = new Intent(getApplicationContext(), Signin_Main.class);
+                        startActivity(intent);
+                        Toast.makeText(UserAccount_Main.this, "Đăng xuất thành công !", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                Dialog dialog = builder.create();
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialogInterface) {
+                        Button positiveButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+                        Button negativeButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE);
+
+                        // Đặt màu cho nút "Đăng xuất"
+                        positiveButton.setTextColor(ContextCompat.getColor(UserAccount_Main.this, R.color.blue));
+
+                        // Đặt màu cho nút "Hủy"
+                        negativeButton.setTextColor(ContextCompat.getColor(UserAccount_Main.this, R.color.blue));
+                    }
+                });
+
+                dialog.show();
 
             }
         });
@@ -510,7 +542,7 @@ public class UserAccount_Main extends AppCompatActivity {
                     overridePendingTransition(0,0);
                     return true;
                 } else if (item.getItemId() == R.id.item_blog) {
-                    Intent intent2 =new Intent(getApplicationContext(),BlogDetail.class);
+                    Intent intent2 =new Intent(getApplicationContext(),BlogList.class);
                     intent2.putExtra("key_email", email);
                     intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent2);
@@ -537,24 +569,8 @@ public class UserAccount_Main extends AppCompatActivity {
 
         });
 
-//        binding.btncholayhang.setOnClickListener(new CholayhangOnClickListener(this));
 
     }
-//    public class CholayhangOnClickListener implements View.OnClickListener {
-//        private User_account_manageOrder activity;
-//
-//        public CholayhangOnClickListener(User_account_manageOrder activity) {
-//            this.activity = activity;
-//        }
-//
-//        @Override
-//        public void onClick(View v) {
-//            if (activity != null) {
-//                // Chuyển đến TabLayout và hiển thị Fragment tương ứng
-//                activity.showFragment(2); // Vị trí 2 là vị trí của Fragment OrderManage_cholayhang_Fragment()
-//            }
-//        }
-//    }
 
 
 

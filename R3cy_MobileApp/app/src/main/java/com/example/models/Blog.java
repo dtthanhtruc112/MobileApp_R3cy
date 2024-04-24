@@ -1,5 +1,7 @@
 package com.example.models;
 
+import android.text.Spanned;
+
 import java.util.Date;
 
 public class Blog {
@@ -9,6 +11,7 @@ public class Blog {
     Date blogDate;
     byte[] blogThumb;
     String blogContent;
+
 
     public Blog(int blogId, String blogTitle, String blogAuthor, Date blogDate, byte[] blogThumb, String blogContent) {
         this.blogId = blogId;

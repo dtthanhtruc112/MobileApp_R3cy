@@ -6,39 +6,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context=".BlogList"
-    android:weightSum="10">
-
-    <LinearLayout
-        android:id="@+id/layoutTop"
-        android:padding="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/imvBack"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/icon_arrow_back">
-        </ImageView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tin tức"
-            android:textColor="#31B9F4"
-            android:textSize="16sp"
-            android:textStyle="bold">
-        </TextView>
-    </LinearLayout>
+    android:weightSum="10"
+    tools:context=".BlogList">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="8">
+        android:layout_weight="10"
+        android:paddingBottom="20dp">
         <com.example.customs.NonScrollListView
             android:id="@+id/lvBlogList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"/>
     </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/mn_home"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        app:menu="@menu/bottom_nav_menu"
+        android:layout_gravity="end|bottom"
+        app:itemTextColor="@color/bottom_navigation_style"
+        app:itemIconTint="@color/bottom_navigation_style"
+        app:labelVisibilityMode="unlabeled"
+        android:layout_weight="0"/>
+
 
 
 

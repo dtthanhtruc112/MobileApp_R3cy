@@ -97,13 +97,7 @@ public class AddressAdapter2 extends BaseAdapter {
                 ((UserAccount_Address) v.getContext()).openEditAddressActivity(address);
             }
         });
-//        holder.rdbSelected.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int AddressId = address.getAddressId();
-//                ((Checkout_AddressList) v.getContext()).openCheckoutActivity(address);
-//            }
-//        });
+
 
 
 
@@ -112,7 +106,6 @@ public class AddressAdapter2 extends BaseAdapter {
     }
 
     public static class ViewHolderAddress{
-        RadioButton rdbSelected;
 
         TextView txtReceiverName, txtReceiverPhone, txtDetailAddress, txtGeneralAddress, txtDefaultAddress, txtDeleteAddress, txtEditAddress;
     }
