@@ -135,7 +135,7 @@ public class TichDiem extends AppCompatActivity {
 
         PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setColors(colors); // Đặt màu từ mảng màu
-        dataSet.setValueTextColor(Color.WHITE);
+        dataSet.setValueTextColor(Color.BLACK);
         dataSet.setDrawValues(false); // Ẩn số liệu trên biểu đồ
 
         PieData data = new PieData(dataSet);
