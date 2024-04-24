@@ -12,12 +12,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
-import androidx.core.text.HtmlCompat;
 
 import com.example.models.Address;
 import com.example.models.Blog;
@@ -1858,4 +1856,32 @@ public class R3cyDB extends SQLiteOpenHelper {
 
         return blog;
     }
+    public long insertDataFeedback(int productId, String content, String rating) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(FEEDBACK_PRODUCT_ID, productId);
+        values.put(FEEDBACK_CONTENT, content);
+        values.put(FEEDBACK_RATING, rating);
+//        values.put(FEEDBACK_CUSTOMER_ID, customerId);
+
+        long newRowId = db.insert(TBl_FEEDBACK, null, values);
+        db.close();
+        return newRowId;
+    }
+    @SuppressLint("Range")
+    public int getProductIdFromProductName(String productName) {
+        SQLiteDatabase db = getReadableDatabase();
+        int productId = -1;
+        String query = "SELECT " + R3cyDB.PRODUCT_ID + " FROM " + R3cyDB.TBl_PRODUCT + " WHERE " + R3cyDB.PRODUCT_NAME + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{productName});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            productId = cursor.getInt(cursor.getColumnIndex(R3cyDB.PRODUCT_ID));
+            cursor.close();
+        }
+        db.close();
+        return productId;// Close the database
+
+    }
+
 }

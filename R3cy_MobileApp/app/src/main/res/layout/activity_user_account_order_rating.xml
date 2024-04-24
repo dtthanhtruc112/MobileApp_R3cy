@@ -43,9 +43,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Đánh giá sản phẩm"
-        android:textSize="11sp"
+        android:textSize="13sp"
         android:layout_marginTop="10dp"
         android:textColor="#31B9F4"
+        app:layout_constraintTop_toBottomOf="@id/productcount"/>
+    <EditText
+        android:id="@+id/txtproductRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="4"
+        android:textSize="13sp"
+        android:background="@drawable/btn_blue_stroke"
+        android:padding="10dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toEndOf="@+id/txtdanhgiasp"
+        app:layout_constraintTop_toBottomOf="@id/productcount"/>
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/icon_rate"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/txtproductRating"
         app:layout_constraintTop_toBottomOf="@id/productcount"/>
 
     <LinearLayout
@@ -91,6 +110,7 @@
 
     </LinearLayout>
     <Button
+        android:id="@+id/btnSaveRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/danhgia_order"
