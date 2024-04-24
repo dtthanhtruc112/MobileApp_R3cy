@@ -25,6 +25,7 @@ import com.example.models.Customer;
 import com.example.models.Product;
 import com.example.models.ProductAtb;
 import com.example.models.UserInfo;
+import com.example.models.VoucherCheckout;
 import com.example.r3cy_mobileapp.R;
 
 import java.io.ByteArrayOutputStream;
@@ -1864,4 +1865,50 @@ public class R3cyDB extends SQLiteOpenHelper {
 
         return blog;
     }
+
+    public VoucherCheckout getCouponById(int couponId) {
+        SQLiteDatabase db = getReadableDatabase();
+        VoucherCheckout coupon = null;
+        Cursor cursor = null;
+
+        try{
+            String query = "SELECT * FROM " + TBl_COUPON + " WHERE " + COUPON_ID + " = ?";
+            cursor = db.rawQuery(query, new String[]{String.valueOf(couponId)});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                // Lấy dữ liệu từ cột trong Cursor và tạo đối tượng Coupon
+                @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex(COUPON_ID));
+                @SuppressLint("Range") String code = cursor.getString(cursor.getColumnIndex(COUPON_CODE));
+                @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex(COUPON_TITLE));
+                @SuppressLint("Range") int scoreMin = cursor.getInt(cursor.getColumnIndex(SCORE_MIN));
+                @SuppressLint("Range") String type = cursor.getString(cursor.getColumnIndex(COUPON_TYPE));
+                @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex(COUPON_CATEGORY));
+                @SuppressLint("Range") String validDateStr = cursor.getString(cursor.getColumnIndex(VALID_DATE));
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date validDate = dateFormat.parse(validDateStr);
+                @SuppressLint("Range") String expireDateStr = cursor.getString(cursor.getColumnIndex(EXPIRE_DATE));
+                Date expireDate = dateFormat.parse(expireDateStr);
+                @SuppressLint("Range") double minOrderValue = cursor.getDouble(cursor.getColumnIndex(MIN_ORDER_VALUE));
+                @SuppressLint("Range") double maxDiscount = cursor.getDouble(cursor.getColumnIndex(MAXIMUM_DISCOUNT));
+                @SuppressLint("Range") double value = cursor.getDouble(cursor.getColumnIndex(COUPON_VALUE));
+                @SuppressLint("Range") int maxUsers = cursor.getInt(cursor.getColumnIndex(MAXIMUM_USERS));
+                @SuppressLint("Range") String customerIdsStr = cursor.getString(cursor.getColumnIndex(CUSTOMER_IDS));
+                ArrayList<Integer> customerIds = parseCustomerIdsFromString(customerIdsStr);
+
+                // Khởi tạo đối tượng Coupon với dữ liệu từ cơ sở dữ liệu
+                coupon = new VoucherCheckout(id, code, title, scoreMin, type, category, validDate, expireDate, minOrderValue, maxDiscount,value, maxUsers, customerIds, true, true);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Xử lý ngoại lệ nếu có
+        } finally {
+            // Đóng Cursor
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return coupon;
+    }
+
 }

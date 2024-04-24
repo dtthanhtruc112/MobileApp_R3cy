@@ -176,7 +176,6 @@
                         android:src="@drawable/icon_voucher" />
 
                     <TextView
-                        android:id="@+id/txt_ChonCoupon"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"

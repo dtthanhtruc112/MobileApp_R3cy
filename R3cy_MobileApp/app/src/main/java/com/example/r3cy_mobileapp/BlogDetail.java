@@ -115,14 +115,12 @@ public class BlogDetail extends AppCompatActivity {
     private void loadDataDetail() {
         blog = db.getBlogById(selectedBlogId);
         if (blog != null) {
-            // Gọi phương thức trên blog
             String blogTitle = blog.getBlogTitle();
             binding.txtblogTitle.setText(blogTitle);
             binding.txtblogContent.setText(blog.getBlogContent());
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             String formattedDate = dateFormat.format(blog.getBlogDate());
             binding.txtblogDate.setText(  "Ngày đăng: "+ formattedDate);
-            // Tiếp tục xử lý dữ liệu
         } else {
             Log.i("LoadBlogDetail", "Blog " + blog);
         }
@@ -144,8 +142,7 @@ public class BlogDetail extends AppCompatActivity {
         blogList = db.getAllBlogs();
         Log.i("blogList", "Number of items retrieved: " + blogList.size());
 
-        // Loại bỏ phần tử có selectedBlogId (nếu có)
-        if (selectedBlogId != 0) { // Giả sử selectedBlogId không bao giờ là 0
+        if (selectedBlogId != 0) {
             Iterator<Blog> iterator = blogList.iterator();
             while (iterator.hasNext()) {
                 Blog blog = iterator.next();

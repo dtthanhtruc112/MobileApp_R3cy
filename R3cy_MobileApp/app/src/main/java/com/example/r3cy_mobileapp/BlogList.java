@@ -73,11 +73,11 @@ public class BlogList extends AppCompatActivity {
     }
 
     private void addEvents() {
+
         binding.lvBlogList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedBlogId = blogList.get(position).getBlogId();
-
                 Intent intent = new Intent(BlogList.this, BlogDetail.class);
                 intent.putExtra("blogId", selectedBlogId);
                 intent.putExtra("key_email", email);

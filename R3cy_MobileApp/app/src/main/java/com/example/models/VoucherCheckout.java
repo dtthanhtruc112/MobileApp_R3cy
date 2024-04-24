@@ -19,8 +19,10 @@ public class VoucherCheckout implements Serializable {
     int MAXIMUM_USERS;
     ArrayList<Integer> customerIds; // Thêm biến customerIds dạng mảng ArrayList
     private boolean isSelected;
+    private boolean isValidVoucher;
 
-    public VoucherCheckout(int COUPON_ID, String COUPON_CODE, String COUPON_TITLE, int SCORE_MIN, String COUPON_TYPE, String COUPON_CATEGORY, Date VALID_DATE, Date EXPIRE_DATE, double MIN_ORDER_VALUE, double MAXIMUM_DISCOUNT, double COUPON_VALUE, int MAXIMUM_USERS, ArrayList<Integer> customerIds, boolean isSelected) {
+
+    public VoucherCheckout(int COUPON_ID, String COUPON_CODE, String COUPON_TITLE, int SCORE_MIN, String COUPON_TYPE, String COUPON_CATEGORY, Date VALID_DATE, Date EXPIRE_DATE, double MIN_ORDER_VALUE, double MAXIMUM_DISCOUNT, double COUPON_VALUE, int MAXIMUM_USERS, ArrayList<Integer> customerIds, boolean isSelected, boolean isValidVoucher) {
         this.COUPON_ID = COUPON_ID;
         this.COUPON_CODE = COUPON_CODE;
         this.COUPON_TITLE = COUPON_TITLE;
@@ -35,6 +37,7 @@ public class VoucherCheckout implements Serializable {
         this.MAXIMUM_USERS = MAXIMUM_USERS;
         this.customerIds = customerIds;
         this.isSelected = isSelected;
+        this.isValidVoucher = isValidVoucher;
     }
 
     public int getCOUPON_ID() {
@@ -147,5 +150,13 @@ public class VoucherCheckout implements Serializable {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public boolean isValidVoucher() {
+        return isValidVoucher;
+    }
+
+    public void setValidVoucher(boolean validVoucher) {
+        isValidVoucher = validVoucher;
     }
 }

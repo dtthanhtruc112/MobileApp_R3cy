@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.models.Coupon;
 import com.example.models.Voucher;
+import com.example.r3cy_mobileapp.Checkout_Voucher_Detail;
 import com.example.r3cy_mobileapp.DoiDiem_ChiTiet;
 import com.example.r3cy_mobileapp.R;
 import com.example.r3cy_mobileapp.User_account_voucher_detail;
@@ -93,7 +94,7 @@ public class VoucherAdapter extends BaseAdapter {
 
 
                 // Tạo một Intent để chuyển đến trang chi tiết và chuyển dữ liệu coupon
-                Intent intent = new Intent(activity, User_account_voucher_detail.class);
+                Intent intent = new Intent(activity,User_account_voucher_detail.class);
                 intent.putExtra("Package", bundle);
                 activity.startActivity(intent);
             }

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.adapter.CartAdapter;
@@ -22,6 +23,7 @@ import com.example.databases.R3cyDB;
 import com.example.models.Address;
 import com.example.models.CartItem;
 import com.example.models.Customer;
+import com.example.models.VoucherCheckout;
 import com.example.r3cy_mobileapp.databinding.ActivityCheckoutBinding;
 
 import java.io.ByteArrayInputStream;
@@ -60,10 +62,15 @@ public class Checkout extends AppCompatActivity {
     double shippingFee;
     double couponShipping;
     double couponOrder;
+    double couponDiscount;
     int couponid;
     String notes;
     Customer customer;
     int voucherId;
+
+    VoucherCheckout voucherCheckout;
+    // Định dạng số
+    NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
 
 
     @Override
@@ -99,13 +106,67 @@ public class Checkout extends AppCompatActivity {
         }
         voucherIdFromIntent = getIntent().getIntExtra("COUPON_ID", -1);
         if (voucherIdFromIntent == -1) {
-            Log.d("voucherIdFromIntent", "Không lấy được addressId từ intent");
+            Log.d("voucherIdFromIntent", "Không lấy được từ intent");
         } else {
             Log.d("voucherIdFromIntent", "voucherIdFromIntent: " + voucherIdFromIntent);
+            processVoucher();
         }
 
-
     }
+    private void processVoucher() {
+        // Kiểm tra nếu voucherIdFromIntent không phải là giá trị mặc định (-1)
+        if (voucherIdFromIntent != -1) {
+            voucherCheckout = db.getCouponById(voucherIdFromIntent);
+            Log.d("voucherCheckout", "voucherCheckout" + voucherCheckout);
+            if("percent".equals(voucherCheckout.getCOUPON_TYPE())) {
+                if("order".equals(voucherCheckout.getCOUPON_CATEGORY())) {
+                    couponOrder = voucherCheckout.getCOUPON_VALUE()*totalAmount;
+                    if(couponOrder > voucherCheckout.getMAXIMUM_DISCOUNT()){
+                        couponOrder = voucherCheckout.getMAXIMUM_DISCOUNT();
+                    }
+                    couponDiscount = couponOrder;
+                }else
+                {
+                    couponShipping = voucherCheckout.getCOUPON_VALUE()*totalAmount;
+                    if(couponShipping > voucherCheckout.getMAXIMUM_DISCOUNT()){
+                        couponShipping = voucherCheckout.getMAXIMUM_DISCOUNT();
+                        if (couponShipping > shippingFee) {
+                            couponShipping = shippingFee;
+                        }
+                    }
+                    couponDiscount = couponShipping;
+                }
+            } else {
+                if("order".equals(voucherCheckout.getCOUPON_CATEGORY())){
+                    couponOrder = voucherCheckout.getCOUPON_VALUE();
+                    couponDiscount = couponOrder;
+                }else
+                {
+                    couponShipping = voucherCheckout.getCOUPON_VALUE();
+                    if (couponShipping > shippingFee) {
+                        couponShipping = shippingFee;
+                    }
+                    couponDiscount = couponShipping;
+                }
+
+            }
+            binding.txtDiscount.setText(numberFormat.format(couponDiscount));
+            totalOrderValue = totalAmount + shippingFee -couponOrder - couponShipping;
+            if(totalOrderValue < 0){
+                totalOrderValue = 0;
+            }
+
+            // Gán giá trị định dạng vào TextView
+            binding.txtTotalOrderValue.setText(numberFormat.format(totalOrderValue));
+            binding.txtCouponShipping.setText(numberFormat.format(couponShipping));
+            binding.txtDiscountOrder.setText(numberFormat.format(couponOrder));
+
+        } else {
+            Log.d("processVoucher", "Không lấy được voucherId từ intent");
+        }
+    }
+
+
     private void createDb() {
         db = new R3cyDB(this);
         db.createSampleDataAddress();
@@ -143,18 +204,7 @@ public class Checkout extends AppCompatActivity {
         // Tính tổng số tiền từ danh sách các mục đã chọn
         totalAmount = calculateTotalAmount(selectedItems);
         shippingFee = 25000; //        cố định bằng 25000
-        couponShipping = 0;//        Hoặc bằng 1 hàm nào đó tính couponshipping
-        couponOrder = 0; //        Hoặc bằng 1 hàm nào đó tính couponorder
-        totalOrderValue = totalAmount + shippingFee -couponOrder - couponShipping;
-
-        // Định dạng số
-        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
-
-        // Gán giá trị định dạng vào TextView
-        binding.txtTotalOrderValue.setText(numberFormat.format(totalOrderValue));
         binding.txtShippingfee.setText(numberFormat.format(shippingFee));
-        binding.txtCouponShipping.setText(numberFormat.format(couponShipping));
-        binding.txtDiscountOrder.setText(numberFormat.format(couponOrder));
         binding.txtTotalAmount.setText(numberFormat.format(totalAmount));
 
 
@@ -265,7 +315,6 @@ public class Checkout extends AppCompatActivity {
             }
             if (voucherId != -1) {
                 voucherIdFromIntent = voucherId;
-//                Lấy ra được voucherid từ trang checkout_voucher rồi => cần xử lí khoaảng discount
             }
 
         }
@@ -308,6 +357,7 @@ public class Checkout extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Checkout.this, Checkout_Voucher.class);
                 intent.putExtra("key_email", email);
+                intent.putExtra("totalAmount", totalAmount);
                 startActivityForResult(intent, CHECKOUT_VOUCHER_REQUEST_CODE);
             }
         });
