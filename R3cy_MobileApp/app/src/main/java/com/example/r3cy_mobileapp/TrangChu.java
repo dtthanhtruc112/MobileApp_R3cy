@@ -25,10 +25,13 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.adapter.BannerAdapter;
+import com.example.adapter.BlogAdapter;
+import com.example.adapter.BlogAdapterRecycler;
 import com.example.adapter.ProductAdapter;
 import com.example.adapter.PromotionBannerAdapter;
 import com.example.databases.R3cyDB;
 import com.example.models.Banners;
+import com.example.models.Blog;
 import com.example.models.Product;
 import com.example.models.ProductAtb;
 import com.example.models.PromotionBanner;
@@ -57,8 +60,10 @@ public class TrangChu extends AppCompatActivity {
     Product product;
     ProductAdapter adapter;
     PromotionBannerAdapter adapterpromotion;
+    BlogAdapterRecycler adapterblog;
     String email;
     ArrayList<ProductAtb> productAtbs;
+    List<Blog> blogList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +111,7 @@ public class TrangChu extends AppCompatActivity {
         createDb();
         loadData();
         loadpromotionbanner();
+        loadBlog();
     }
 
 
@@ -114,6 +120,7 @@ public class TrangChu extends AppCompatActivity {
         db = new R3cyDB(this);
         db.createSampleProduct();
         db.createSampleDataCustomer();
+        db.createSampleDataBlog();
     }
 
     private void loadData() {
@@ -188,6 +195,36 @@ public class TrangChu extends AppCompatActivity {
 
         adapterpromotion = new PromotionBannerAdapter(this, promotionBanners);
         binding.rcvpromotionbanners.setAdapter(adapterpromotion);
+
+    }
+
+    private void loadBlog() {
+        blogList = db.getAllBlogs();
+        Log.i("blogList", "Number of items retrieved: " + blogList.size());
+
+        LinearLayoutManager layoutManagerProducts = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        binding.rcvBlog.setLayoutManager(layoutManagerProducts);
+
+        adapterblog = new BlogAdapterRecycler(this, blogList, new BlogAdapterRecycler.OnItemClickListener() {
+            @Override
+            public void onImageClick(int blogId) {
+                // Chuyển người dùng đến màn hình chi tiết blog khi họ nhấp vào hình ảnh của blog
+                Intent intent = new Intent(TrangChu.this, BlogDetail.class);
+                intent.putExtra("blogId", blogId);
+                intent.putExtra("key_email", email);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onTitleClick(int blogId) {
+                Intent intent = new Intent(TrangChu.this, BlogDetail.class);
+                intent.putExtra("blogId", blogId);
+                intent.putExtra("key_email", email);
+                startActivity(intent);
+
+            }
+        });
+        binding.rcvBlog.setAdapter(adapterblog);
 
     }
 
