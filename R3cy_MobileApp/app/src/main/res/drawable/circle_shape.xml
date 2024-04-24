@@ -1,0 +1,6 @@
+<!-- rounded_shape.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="150dp" /> <!-- Điều chỉnh bán kính của góc cong -->
+    <solid android:color="@android:color/transparent" /> <!-- Màu nền trong suốt -->
+    <stroke android:width="2dp" android:color="@color/dark_blue" /> <!-- Viền -->
+</shape>
