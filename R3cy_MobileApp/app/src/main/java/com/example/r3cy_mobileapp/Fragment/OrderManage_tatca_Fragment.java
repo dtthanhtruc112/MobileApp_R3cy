@@ -135,44 +135,19 @@ public class OrderManage_tatca_Fragment extends Fragment {
         dbR3cy.createSampleDataOrderLine();
         dbR3cy.createSampleProduct();
     }
-    public String getEmailFromSharedPreferences() {
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("YOUR_SHARED_PREF_NAME", Context.MODE_PRIVATE);
-        return sharedPreferences.getString("key_email", "");
-    }
+
 
     public List<Order> getOrder() {
 
-//        String orderStatus = dbR3cy.getOrderStatus("Chờ xử lý");
-//         customer = dbR3cy.getCustomerByEmail1(email);
-//         ArrayList<Customer> email3 = dbR3cy.getLoggedinUserOrder(email);
-//        customer = dbR3cy.getCustomerByEmail1(email);
-//        Log.d("customer", "customer ở checkout: " + customer.getFullName());
-//        int customerId = customer.getCustomerId();
-//        String email = getEmailFromSharedPreferences();
-//        Log.d("SharedPreferences", "Email ở Fragment: " + email);
         int customerId = dbR3cy.getCustomerIdFromCustomer(email);
         Log.d("SharedPreferences", "Email ở Fragment: " + email);
         String orderStatus = dbR3cy.getOrderStatus("Chờ xử lý");
-//        Cursor c1 = db.getData("SELECT * FROM " + R3cyDB.TBL_CUSTOMER + " WHERE " + R3cyDB.CUSTOMER_IDS + " LIKE '%" + customerId + "%'");
         List<Order> orders = new ArrayList<>();
         SQLiteDatabase db = dbR3cy.getReadableDatabase();
         Cursor cursor = null;
 
-//
 
         try {
-//            customer = dbR3cy.getCustomerIdFromCustomer(email);
-//            int customerId = (customer != null) ? dbR3cy.getCustomerIdFromCustomer(email) : 2;
-//            customer = dbR3cy.getCustomerByEmail1(email);
-//                     int customerId = dbR3cy.getCustomerIdFromCustomer(email);
-
-//            int customerId;
-//            if (customer != null) {
-//                customerId = dbR3cy.getCustomerIdFromCustomer(email);
-//            } else {
-//                // Provide a default customer ID if customer is null
-//                customerId = 2; // Or any other default value you want
-//            }
 
             String query = "SELECT " +
                         "o." + R3cyDB.ORDER_ID + ", " +

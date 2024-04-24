@@ -45,7 +45,7 @@ public class BlogDetail extends AppCompatActivity {
         email = getIntent().getStringExtra("key_email");
         selectedBlogId = getIntent().getIntExtra("blogId", selectedBlogId);
 
-        Log.d("SharedPreferences", "Email ở Bloglist: " + email);
+        Log.d("SharedPreferences", "Email ở BlogDetails: " + email);
 
         createDb();
         loadDataDetail();
@@ -55,6 +55,13 @@ public class BlogDetail extends AppCompatActivity {
     }
 
     private void addEvents() {
+        binding.imvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         binding.lvSuggestBlogList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -69,7 +76,7 @@ public class BlogDetail extends AppCompatActivity {
 
 
         navigationView = findViewById(R.id.mn_home);
-        navigationView.setSelectedItemId(R.id.item_store);
+        navigationView.setSelectedItemId(R.id.item_blog);
 
 
         navigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -83,13 +90,13 @@ public class BlogDetail extends AppCompatActivity {
                     overridePendingTransition(0,0);
                     return true;
                 } else if (item.getItemId() == R.id.item_blog) {
-                    Intent intent2 =new Intent(getApplicationContext(),BlogList.class);
-                    intent2.putExtra("key_email", email);
-                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent2);
-                    overridePendingTransition(0,0);
                     return true;
                 } else if (item.getItemId() == R.id.item_store) {
+                    Intent intent3 =new Intent(getApplicationContext(),AboutUs.class);
+                    intent3.putExtra("key_email", email);
+                    intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent3);
+                    overridePendingTransition(0,0);
                     return true;
                 } else if (item.getItemId() == R.id.item_account) {
                     Intent intent4 =new Intent(getApplicationContext(),UserAccount_Main.class);

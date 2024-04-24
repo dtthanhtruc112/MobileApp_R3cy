@@ -5,14 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp"
+
     android:weightSum="10"
     tools:context=".BlogList">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="10"
-        android:paddingBottom="20dp">
+        android:paddingBottom="20dp"
+        android:padding="10dp">
         <com.example.customs.NonScrollListView
             android:id="@+id/lvBlogList"
             android:layout_width="match_parent"
@@ -23,7 +24,7 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/mn_home"
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="60dp"
         app:menu="@menu/bottom_nav_menu"
         android:layout_gravity="end|bottom"
         app:itemTextColor="@color/bottom_navigation_style"

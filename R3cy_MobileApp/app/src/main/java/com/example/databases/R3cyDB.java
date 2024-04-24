@@ -12,12 +12,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
-import androidx.core.text.HtmlCompat;
 
 import com.example.models.Address;
 import com.example.models.Blog;
@@ -1444,7 +1442,6 @@ public class R3cyDB extends SQLiteOpenHelper {
         ArrayList<UserInfo> customers = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         String query = "SELECT * FROM " + TBL_CUSTOMER + " WHERE " + EMAIL + " = ?";
-
         Cursor cursor = sqLiteDatabase.rawQuery(query, new String[]{email});
         Customer customer = null;
 
@@ -1455,7 +1452,6 @@ public class R3cyDB extends SQLiteOpenHelper {
             @SuppressLint("Range") byte[] thumb = cursor.getBlob(cursor.getColumnIndex(CUSTOMER_THUMB));
 
             UserInfo userInfo = new UserInfo();
-//            customer.getFullName(), customer.getUsername(), customer.getPhone(), String.valueOf(customer.getGender()), customer.getBirthday(), customer.getEmail(), customer.getCustomerId();
             userInfo.setFullName(name);
             if (thumb != null) {
                 userInfo.setThumb(thumb);
@@ -1466,7 +1462,6 @@ public class R3cyDB extends SQLiteOpenHelper {
 
             customers.add(userInfo);
         }
-
         // Đóng con trỏ và database
         cursor.close();
         sqLiteDatabase.close();
@@ -1527,15 +1522,10 @@ public class R3cyDB extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, new String[]{email});
         if (cursor != null && cursor.moveToFirst()) {
             customerId = cursor.getInt(cursor.getColumnIndex(CUSTOMER_ID));
-//            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(FULLNAME));
             cursor.close();
         }
 
         // Đóng con trỏ và database
-//        cursor.close();
-//        sqLiteDatabase.close();
-//
-//        return customers;
         db.close();
         return customerId;
     }
@@ -1554,7 +1544,9 @@ public class R3cyDB extends SQLiteOpenHelper {
         return newRowId;
     }
 
-    public boolean upDateUserProfile(String email, String fullname1, String username1, String phone1, String gender1, String birthday1) {
+    public boolean upDateUserProfile(String email, String fullname1,
+                                     String username1, String phone1,
+                                     String gender1, String birthday1) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(FULLNAME, fullname1);
@@ -1871,7 +1863,7 @@ public class R3cyDB extends SQLiteOpenHelper {
         VoucherCheckout coupon = null;
         Cursor cursor = null;
 
-        try{
+        try {
             String query = "SELECT * FROM " + TBl_COUPON + " WHERE " + COUPON_ID + " = ?";
             cursor = db.rawQuery(query, new String[]{String.valueOf(couponId)});
 
@@ -1896,7 +1888,7 @@ public class R3cyDB extends SQLiteOpenHelper {
                 ArrayList<Integer> customerIds = parseCustomerIdsFromString(customerIdsStr);
 
                 // Khởi tạo đối tượng Coupon với dữ liệu từ cơ sở dữ liệu
-                coupon = new VoucherCheckout(id, code, title, scoreMin, type, category, validDate, expireDate, minOrderValue, maxDiscount,value, maxUsers, customerIds, true, true);
+                coupon = new VoucherCheckout(id, code, title, scoreMin, type, category, validDate, expireDate, minOrderValue, maxDiscount, value, maxUsers, customerIds, true, true);
 
             }
         } catch (Exception e) {
@@ -1909,6 +1901,34 @@ public class R3cyDB extends SQLiteOpenHelper {
             }
         }
         return coupon;
+
+    }
+
+    public long insertDataFeedback(int productId, String content, String rating) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(FEEDBACK_PRODUCT_ID, productId);
+        values.put(FEEDBACK_CONTENT, content);
+        values.put(FEEDBACK_RATING, rating);
+//        values.put(FEEDBACK_CUSTOMER_ID, customerId);
+
+        long newRowId = db.insert(TBl_FEEDBACK, null, values);
+        db.close();
+        return newRowId;
+    }
+    @SuppressLint("Range")
+    public int getProductIdFromProductName(String productName) {
+        SQLiteDatabase db = getReadableDatabase();
+        int productId = -1;
+        String query = "SELECT " + R3cyDB.PRODUCT_ID + " FROM " + R3cyDB.TBl_PRODUCT + " WHERE " + R3cyDB.PRODUCT_NAME + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{productName});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            productId = cursor.getInt(cursor.getColumnIndex(R3cyDB.PRODUCT_ID));
+            cursor.close();
+        }
+        db.close();
+        return productId;// Close the database
     }
 
 }

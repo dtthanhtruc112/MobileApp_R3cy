@@ -21,7 +21,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chọn địa chỉ nhận hàng"
+            android:text="Thiết lập địa chỉ"
             android:textColor="#31B9F4"
             android:textSize="16sp"
             android:textStyle="bold">

@@ -220,7 +220,7 @@
                             android:layout_width="80dp"
                             android:layout_height="80dp"
                             android:background="@drawable/btn_blue_stroke"
-                            android:src="@drawable/phukien" />
+                            android:src="@drawable/rua_phukien" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -243,12 +243,12 @@
                             android:layout_width="80dp"
                             android:layout_height="80dp"
                             android:background="@drawable/btn_blue_stroke"
-                            android:src="@drawable/dotrangtri" />
+                            android:src="@drawable/nai_trangtri" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Phụ kiện"
+                            android:text="Đồ trang trí"
                             android:textColor="@color/black"
                             android:textSize="11sp" />
 
@@ -266,12 +266,12 @@
                             android:layout_width="80dp"
                             android:layout_height="80dp"
                             android:background="@drawable/btn_blue_stroke"
-                            android:src="@drawable/dogiadung" />
+                            android:src="@drawable/lotly_giadung" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Phụ kiện"
+                            android:text="Đồ gia dụng"
                             android:textColor="@color/black"
                             android:textSize="11sp" />
 
@@ -320,6 +320,13 @@
                     android:textColor="@color/blue"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvBlog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal" />
 
                 <TextView
                     android:layout_width="wrap_content"

@@ -85,13 +85,6 @@ public class User_account_voucher extends AppCompatActivity {
         c1.close();
     }
 
-//    @Override
-//    protected void onResume(){
-//        super.onResume();
-//        Log.i("test", "onResume");
-//
-//            loadData();
-//        }
 
 
 
@@ -101,15 +94,7 @@ public class User_account_voucher extends AppCompatActivity {
         db.createSampleDataCoupon();
     }
 
-private boolean isCustomerEligibleForCoupon(int customerId) {
-    Cursor cursor = db.getData("SELECT * FROM " + R3cyDB.TBl_COUPON + " WHERE " + R3cyDB.CUSTOMER_IDS + " LIKE '%" + customerId + "%'");
-    if (cursor != null && cursor.moveToFirst()) {
-        String customerIdsString = cursor.getString(0);
-        cursor.close();
-        return true; // Nếu có kết quả từ truy vấn, tức là khách hàng đủ điều kiện
-    }
-    return false;
-}
+
 //    private int getCustomerIdFromCoupon(int couponId) {
 //        int customerId = -1; // Giá trị mặc định nếu không tìm thấy customerId
 //        Cursor cursor = db.getData("SELECT " + R3cyDB.CUSTOMER_ID + " FROM " + R3cyDB.TBl_COUPON + " WHERE " + R3cyDB.COUPON_ID + " = " + couponId);
@@ -128,14 +113,15 @@ private boolean isCustomerEligibleForCoupon(int customerId) {
             db = new R3cyDB(this);
             int customerId = db.getCustomerIdFromCustomer(email);
         if (customerId != -1) {
-//            boolean isCustomerEligible = isCustomerEligibleForCoupon(customerId);
-//            if (isCustomerEligible) {
+
                 ArrayList<Voucher> vouchers = new ArrayList<>();
-                Cursor c = db.getData("SELECT * FROM " + R3cyDB.TBl_COUPON + " WHERE " + R3cyDB.CUSTOMER_IDS + " LIKE '%" + customerId + "%'");
+                Cursor c = db.getData("SELECT * FROM " + R3cyDB.TBl_COUPON +
+                        " WHERE " + R3cyDB.CUSTOMER_IDS + " LIKE '%" + customerId + "%'");
 
                 while (c.moveToNext()) {
                     try {
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd",
+                                Locale.getDefault());
                         Date validDate = dateFormat.parse(c.getString(6));
                         Date expireDate = dateFormat.parse(c.getString(7));
 

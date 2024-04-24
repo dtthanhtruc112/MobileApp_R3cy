@@ -54,6 +54,7 @@ public class FAQsPage extends AppCompatActivity {
         email = getIntent().getStringExtra("key_email");
 
         Log.d("SharedPreferences", "Email FAQ: " + email);
+        addEvents();
 
         tabLayout = findViewById(R.id.FaqsLayout);
         viewPager2 = findViewById(R.id.pagerfaq);
@@ -79,7 +80,7 @@ public class FAQsPage extends AppCompatActivity {
             }
         }).attach();
 
-        addEvents();
+
 
     }
 

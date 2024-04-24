@@ -56,13 +56,13 @@ public class Checkout extends AppCompatActivity {
     int customerId;
 
     String email;
-    double totalOrderValue;
     // Tính tổng số tiền từ danh sách các mục đã chọn
+    double shippingFee = 25000;
+    double couponShipping = 0 ;
+    double couponOrder = 0 ;
+    double couponDiscount = 0;
     double totalAmount;
-    double shippingFee;
-    double couponShipping;
-    double couponOrder;
-    double couponDiscount;
+    double totalOrderValue;
     int couponid;
     String notes;
     Customer customer;
@@ -206,7 +206,12 @@ public class Checkout extends AppCompatActivity {
         shippingFee = 25000; //        cố định bằng 25000
         binding.txtShippingfee.setText(numberFormat.format(shippingFee));
         binding.txtTotalAmount.setText(numberFormat.format(totalAmount));
-
+        // Gán giá trị định dạng vào TextView
+        totalOrderValue = totalAmount + shippingFee -couponOrder - couponShipping;
+        binding.txtTotalOrderValue.setText(numberFormat.format(totalOrderValue));
+        binding.txtCouponShipping.setText(numberFormat.format(couponShipping));
+        binding.txtDiscountOrder.setText(numberFormat.format(couponOrder));
+        binding.txtDiscount.setText(numberFormat.format(couponDiscount));
 
         // Khởi tạo adapter và thiết lập cho ListView
         adapter = new PaymentItemAdapter(this, R.layout.payment_item, selectedItems);

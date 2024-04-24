@@ -28,6 +28,7 @@ public class OrderAdapter extends BaseAdapter{
     Context context;
     int item_quanlydonhang;
     List<Order> orders;
+    String email;
 
     public OrderAdapter(Context context, int item_quanlydonhang, List<Order> orders) {
         this.context = context;
@@ -88,9 +89,12 @@ public class OrderAdapter extends BaseAdapter{
 
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("ORDER", (Serializable) clickedOrder);
+                bundle.putString("key_email", email);
+
 
                 Intent intent = new Intent(context, UserAccount_OrderRating.class);
                 intent.putExtra("Package", bundle);
+//                intent.putExtra("key_email", email);
                 context.startActivity(intent);
             }
         });

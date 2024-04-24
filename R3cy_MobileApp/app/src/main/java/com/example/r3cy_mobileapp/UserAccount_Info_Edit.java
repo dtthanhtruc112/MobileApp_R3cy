@@ -84,7 +84,6 @@ public class UserAccount_Info_Edit extends AppCompatActivity {
         birthday = binding.ngaysinh;
         btnedit =binding.btnSave;
         thumb = binding.imvUservatar;
-//        btnCancel =binding.btnCancle;
 
         userInfos = (UserInfo) getIntent().getSerializableExtra("key_userinfo");
         name.setText(userInfos.getFullName());
@@ -110,65 +109,8 @@ public class UserAccount_Info_Edit extends AppCompatActivity {
 
 
     }
-//    private byte[] getByArrayFromImageView(ImageView imv){
-//        BitmapDrawable drawable = (BitmapDrawable) imv.getDrawable();
-//        Bitmap bitmap = drawable.getBitmap();
-//
-//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
-//        byte[] byteArray = stream.toByteArray();
-//        return byteArray;
-//    }
-//    public void takePicture(){
-//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        startActivityForResult(intent, REQUEST_TAKE_PHOTO);
-//    }
-//
-//    private void choosePhoto(){
-//        Intent intent = new Intent(Intent.ACTION_PICK);
-//        intent.setType("image/*");
-//        startActivityForResult(intent, REQUEST_CHOOSE_PHOTO);
-//    }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        if(resultCode == RESULT_OK){
-//            if(requestCode == REQUEST_CHOOSE_PHOTO){
-//                try {
-//                    Uri imageUri = data.getData();
-//                    InputStream is = getContentResolver().openInputStream(imageUri);
-//
-//                    byte[] imageBytes = getBytes(is);
-//
-//                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-//                    ima.setImageBitmap(bitmap);
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }else if(requestCode == REQUEST_TAKE_PHOTO){
-//                Bitmap bitmap = (Bitmap) data.getExtras() .get("data");
-//                edtBookImage.setImageBitmap(bitmap);
-//
-//            }
-//        }
-//
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
-//
-//    private byte[] getBytes(InputStream is) throws IOException {
-//        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-//        int bufferSize = 1024;
-//        byte[] buffer = new byte[bufferSize];
-//
-//        int len = 0;
-//        while ((len = is.read(buffer)) != -1) {
-//            byteBuffer.write(buffer, 0, len);
-//        }
-//
-//        return byteBuffer.toByteArray();
-//    }
+
+
 
     private void addEvents() {
         navigationView = findViewById(R.id.mn_home);
@@ -178,42 +120,43 @@ public class UserAccount_Info_Edit extends AppCompatActivity {
         navigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.item_product){
-                    Intent intent1 = new Intent(getApplicationContext(),Product_List.class);
+                if (item.getItemId() == R.id.item_product) {
+                    Intent intent1 = new Intent(getApplicationContext(), Product_List.class);
                     intent1.putExtra("key_email", email);
                     intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent1);
-                    overridePendingTransition(0,0);
+                    overridePendingTransition(0, 0);
                     return true;
                 } else if (item.getItemId() == R.id.item_blog) {
-                    Intent intent2 =new Intent(getApplicationContext(),BlogDetail.class);
+                    Intent intent2 = new Intent(getApplicationContext(), BlogDetail.class);
                     intent2.putExtra("key_email", email);
                     intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent2);
-                    overridePendingTransition(0,0);
+                    overridePendingTransition(0, 0);
                 } else if (item.getItemId() == R.id.item_store) {
-                    Intent intent3 =new Intent(getApplicationContext(),AboutUs.class);
+                    Intent intent3 = new Intent(getApplicationContext(), AboutUs.class);
                     intent3.putExtra("key_email", email);
                     intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent3);
-                    overridePendingTransition(0,0);
+                    overridePendingTransition(0, 0);
                     return true;
                 } else if (item.getItemId() == R.id.item_account) {
-                    Intent intent4 =new Intent(getApplicationContext(),UserAccount_Main.class);
+                    Intent intent4 = new Intent(getApplicationContext(), UserAccount_Main.class);
                     intent4.putExtra("key_email", email);
                     intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent4);
-                    overridePendingTransition(0,0);
+                    overridePendingTransition(0, 0);
                     return true;
                 } else if (item.getItemId() == R.id.item_home) {
-                    Intent intent5 =new Intent(getApplicationContext(),TrangChu.class);
+                    Intent intent5 = new Intent(getApplicationContext(), TrangChu.class);
                     intent5.putExtra("key_email", email);
                     intent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent5);
-                    overridePendingTransition(0,0);
+                    overridePendingTransition(0, 0);
                     return true;
                 }
-                return false;}
+                return false;
+            }
 
 
         });
@@ -224,24 +167,7 @@ public class UserAccount_Info_Edit extends AppCompatActivity {
                 finish();
             }
         });
-//        binding.iconpen.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showBottomSheet();
-//            }
-//        });
     }
-
-//    private void addEvents() {
-//        btnCancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(UserAccount_Info_Edit.this, UserAccount_Info.class);
-//                intent.putExtra("key_email", email);
-//                startActivity(intent);
-//            }
-//        });
-//    }
 
     public  void  upateUserProfile(View view){
 //        String gender1 = (String) binding.editgioitinh.getSelectedItem();
@@ -266,88 +192,8 @@ public class UserAccount_Info_Edit extends AppCompatActivity {
             Toast.makeText(this, "Lưu dữ liệu thất bại", Toast.LENGTH_SHORT).show();
         }
 
-//        btnCancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(UserAccount_Info_Edit.this, UserAccount_Info.class);
-//                intent.putExtra("key_email", email);
-//                startActivity(intent);
-//            }
-//        });
 
     }
 
-    private byte[] getByteArrayFromImageView(ImageView imageView) {
-        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return stream.toByteArray();
-    }
-    private void showBottomSheet() {
-        Dialog dialog = new Dialog(UserAccount_Info_Edit.this);
-        dialog.setContentView(R.layout.useraccount_avatar_dialog);
 
-        LinearLayout bsCam = dialog.findViewById(R.id.btnCamera);
-        bsCam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Open camera
-                openCam = true;
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra("key_email", email);
-                activityResultLauncher.launch(intent);
-
-
-                dialog.dismiss();
-            }
-        });
-        LinearLayout bsGal = dialog.findViewById(R.id.btnGallery);
-        bsGal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Open Gallery
-                openCam = false;
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                intent.putExtra("key_email", email);
-                activityResultLauncher.launch(intent);
-
-
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); // xoá background ban đầu
-//        dialog.getWindow().setWindowAnimations(R.style.DialogAnimtion);
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
-    }
-
-
-
-//    private void getUserDetails() {
-//        db = new R3cyDB(this);
-//        // Kiểm tra xem email có null không
-//        if (email != null) {
-//            // Lấy thông tin người dùng từ cơ sở dữ liệu
-//            ArrayList<UserInfo> customer = db.getLoggedinUserDetails(email);
-//
-//            // Kiểm tra xem danh sách khách hàng có trống không
-//            if (customer != null && customer.size() > 0) {
-//                UserInfo userInfo = customer.get(0);
-//                name.setText(userInfo.getFullName());
-//                username.setText(userInfo.getUserName());
-//                phone.setText(userInfo.getPhone());
-//                useremail.setText(userInfo.getEmail());
-//                gender.setText(userInfo.getGender());
-//                birthday.setText(userInfo.getBirthday());
-//            } else {
-//                // Xử lý trường hợp không tìm thấy thông tin người dùng
-//                Toast.makeText(this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
-//            }
-//        } else {
-//            // Xử lý trường hợp không nhận được email từ Intent
-//            Toast.makeText(this, "Không nhận được thông tin email", Toast.LENGTH_SHORT).show();
-//        }
-//
-//    }
 }
