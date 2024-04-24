@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="1. Giá cả"
-        android:textSize="13sp"
+        android:textSize="17sp"
         android:textStyle="bold"
         />
     <TextView
@@ -18,13 +18,13 @@
         android:layout_height="wrap_content"
         android:text="
     Giá sản phẩm niêm yết trên website là giá đã bao gồm thuế theo quy định pháp luật hiện hành, phí đóng gói và các chi phí khác liên quan đến việc mua hàng trừ các chi phí phát sinh khác được xác nhận qua Hotline hoặc Email của R3cy và được sự chấp thuận của khách hàng trong quá trình xác nhận đơn đặt hàng, giao nhận hàng hoá.\n"
-        android:textSize="11sp"
+        android:textSize="13sp"
         android:justificationMode="inter_word"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="2. Phí vận chuyển"
-        android:textSize="13sp"
+        android:textSize="17sp"
         android:textStyle="bold"/>
     <TextView
         android:id="@+id/txtpolicybanhang_phivanchuyen"
@@ -33,13 +33,13 @@
         android:text="
     • Với hóa đơn từ 500.000 VNĐ: miễn phí vận chuyển toàn quốc.\n
     • Với hóa đơn dưới 500.000 VNĐ: phí vận chuyển mặc định là 30.000 VNĐ áp dụng toàn quốc.\n"
-        android:textSize="11sp"
+        android:textSize="13sp"
         android:justificationMode="inter_word"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="3. Thời gian giao hàng"
-        android:textSize="13sp"
+        android:textSize="17sp"
         android:textStyle="bold"/>
     <TextView
         android:id="@+id/txtpolicybanhang_tggiaohang"
@@ -49,13 +49,13 @@
     • Khu vực TP.HCM: thời gian giao nhận hàng từ 1 – 3 ngày làm việc\n
     • Khu vực các tỉnh thành miền Nam: thời gian giao nhận hàng từ 2 – 4 ngày làm việc\n
     • Khu vực các tỉnh thành miền Trung, miền Bắc: thời gian giao nhận hàng từ 3 – 5 ngày làm việc.\n"
-        android:textSize="11sp"
+        android:textSize="13sp"
         android:justificationMode="inter_word"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="4. Quy trình giao nhận sản phẩm"
-        android:textSize="13sp"
+        android:textSize="17sp"
         android:textStyle="bold"/>
     <TextView
         android:layout_width="match_parent"
@@ -64,7 +64,7 @@
     • R3cy sẽ giao hàng tận nơi trên toàn quốc, áp dụng cho khách mua hàng trên Website, Fanpage và gọi điện thoại vào Hotline của R3cy. Đơn hàng sẽ được chuyển phát đến địa chỉ khách hàng cung cấp thông qua đơn vị vận chuyển trung gian là GIAO HÀNG TIẾT KIỆM hoặc 247EXPRESS.\n
     • Trong quá trình giao nhận hàng, nếu quý khách không có mặt trong đợt nhận hàng thì đơn vị vận chuyển sẽ liên lạc lại với quý khách để hẹn thời gian giao lại hàng (đối đa 2 lần hẹn). Sau 2 lần hẹn giao lại nhưng vẫn không giao thành công thì đơn vị vận chuyển sẽ hoàn hàng về cho R3cy và chúng tôi sẽ hoàn trả các chi phí mà bạn đã thanh toán trong vòng 15 ngày làm việc.\n
     • Trường hợp việc giao và nhận hàng không thành công do không thể liên lạc được với quý khách trong vòng 3 ngày, đơn vị vận chuyển sẽ hoàn hàng về lại cho R3cy và chúng tôi sẽ thông báo đến bạn qua thông tin liên lạc mà bạn đã cung cấp về việc hủy đơn hàng đồng thời hoàn trả các chi phí mà bạn đã thanh toán trong vòng 15 ngày làm việc."
-        android:textSize="11sp"
+        android:textSize="13sp"
         android:justificationMode="inter_word"/>
 
 

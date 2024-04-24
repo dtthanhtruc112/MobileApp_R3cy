@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="1. Quy định chung:"
-        android:textSize="13sp"
+        android:textSize="17sp"
         android:textStyle="bold"/>
     <TextView
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
     • Khách hàng phải đảm bảo đủ 18 tuổi, hoặc truy cập dưới sự giám sát của cha mẹ hay người giám hộ hợp pháp. Khách hàng đảm bảo có đầy đủ hành vi dân sự để thực hiện các giao dịch mua bán hàng hóa theo quy định của pháp luật.\n
     • Khách hàng truy cập website của R3cy phải có trách nhiệm bảo mật về mật khẩu, tài khoản và hoạt động của mình trên website. Đặc biệt, quý khách phải thông báo cho R3cy lập tức khi tài khoản bị truy cập trái phép.\n
     • Nếu phát hiện bất kỳ thông tin giả mạo nào từ tài khoản của bạn trên website, R3cy sẽ khóa tài khoản của bạn ngay lập tức và/hoặc áp dụng các biện pháp khác theo quy định của pháp luật.\n"
-        android:textSize="11sp"
+        android:textSize="13sp"
         android:justificationMode="inter_word"
         android:textAlignment="gravity"/>
 
@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="2. Trách nhiệm của các bên khi tham gia giao dịch:"
-        android:textSize="13sp"
+        android:textSize="17sp"
         android:textStyle="bold"/>
     <TextView
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
      - R3cy có trách nhiệm gửi xác nhận liên quan đến đơn đặt hàng của khách hàng qua email hoặc/và số điện thoại cho khách hàng và hỗ trợ khách hàng kịp thời nhất.\n
      - R3cy đảm bảo giao đúng số lượng, chất lượng sản phẩm theo đơn đặt hàng của quý khách. Trường hợp do lỗi của R3cy, của nhà sản xuất hoặc do lỗi của đơn vị vận chuyển, R3cy sẽ gửi bổ sung hoặc đổi trả, giải quyết kịp thời cho bạn theo quy định.\n
      - R3cy có trách nhiệm thực hiện mọi biện pháp để bảo mật thông tin cá nhân của khách hàng, sử dụng dữ liệu thông tin khách hàng đúng mục đích cho phép và theo quy định của pháp luật.\n"
-        android:textSize="11sp"
+        android:textSize="13sp"
         android:justificationMode="inter_word"
         android:textAlignment="gravity"/>
 
@@ -50,14 +50,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="3. Giải quyết tranh chấp:"
-        android:textSize="13sp"
+        android:textSize="17sp"
         android:textStyle="bold"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="
     Bất kỳ tranh cãi, khiếu nại hoặc tranh chấp phát sinh từ hoặc liên quan đến giao dịch tại website của R3cy đều được ưu tiên giải quyết bằng hình thức thương lượng, hòa giải. Trường hợp không giải quyết được thì có thể giải quyết tại trọng tài và/hoặc Tòa án theo quy định pháp luật Việt Nam hiện hành.\n"
-        android:textSize="11sp"
+        android:textSize="13sp"
         android:justificationMode="inter_word"
         android:textAlignment="gravity"/>
 
@@ -65,14 +65,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="4. Luật áp dụng:"
-        android:textSize="13sp"
+        android:textSize="17sp"
         android:textStyle="bold"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="
     Tất cả các điều khoản, điều kiện và hợp đồng, giao dịch được thực hiện tại website của R3cy hoặc có liên quan sẽ bị chi phối, giải quyết và được hiểu theo luật pháp của Việt Nam.\n"
-        android:textSize="11sp"
+        android:textSize="13sp"
         android:justificationMode="inter_word"
         android:textAlignment="gravity"/>
 

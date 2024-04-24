@@ -68,6 +68,7 @@ public class UserAccount_Policy extends AppCompatActivity {
         Log.d("Intent", "Email ở policy: " + email);
 
 
+
         tabLayout = findViewById(R.id.tabLayout);
         viewPager2 = findViewById(R.id.pager);
         adapter = new TabAdapter(this);
@@ -91,10 +92,12 @@ public class UserAccount_Policy extends AppCompatActivity {
                 }
             }
         }).attach();
-
         addEvents();
 
+
+
     }
+
 
     private void addEvents() {
         navigationView = findViewById(R.id.mn_home);
