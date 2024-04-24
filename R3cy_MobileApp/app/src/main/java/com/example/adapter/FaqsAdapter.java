@@ -21,12 +21,21 @@ public class FaqsAdapter extends BaseAdapter {
     ImageView imageView1;
     TextView txta1;
     boolean isHidden = false;
+    boolean[] itemVisibility;
+
 
 
     public FaqsAdapter(Activity context, int item_faqs, List<Faqs> faqsModels) {
         this.context = context;
         this.item_faqs = item_faqs;
         this.faqsModels = faqsModels;
+        itemVisibility = new boolean[faqsModels.size()];
+        // Set the first item visible
+        itemVisibility[0] = true;
+        // Hide the rest of the items
+        for (int i = 1; i < faqsModels.size(); i++) {
+            itemVisibility[i] = false;
+        }
 
     }
 
@@ -59,22 +68,26 @@ public class FaqsAdapter extends BaseAdapter {
         }else{
             holder = (FaqsAdapter.ViewHolder) view.getTag();
         }
-        Faqs m = faqsModels.get(position);
+
+            Faqs m = faqsModels.get(position);
         holder.btnhide.setImageResource(m.getBtnhide());
         holder.txta1.setText(m.getTxta1());
         holder.txtq1.setText(m.getTxtq1());
 
+        // Set visibility based on itemVisibility array
+        if (itemVisibility[position]) {
+            holder.txta1.setVisibility(View.VISIBLE);
+            holder.btnhide.setImageResource(R.drawable.icon_right);
+        } else {
+            holder.txta1.setVisibility(View.GONE);
+            holder.btnhide.setImageResource(R.drawable.icon_up);
+        }
+
         holder.btnhide.setOnClickListener(v -> {
-            int isvisible = holder.txta1.getVisibility();
-            if (isvisible == View.VISIBLE) {
-                holder.txta1.setVisibility(View.GONE);
-                holder.btnhide.setImageResource(R.drawable.icon_up);
-                isHidden = true;
-            } else {
-                holder.txta1.setVisibility(View.VISIBLE);
-                holder.btnhide.setImageResource(R.drawable.icon_right);
-                isHidden = false;
-            }
+            // Toggle visibility status for clicked item
+            itemVisibility[position] = !itemVisibility[position];
+            notifyDataSetChanged(); // Update UI
+
         });
 
         return view;

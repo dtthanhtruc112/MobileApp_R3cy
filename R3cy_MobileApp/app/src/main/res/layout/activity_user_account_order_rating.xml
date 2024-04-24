@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Móc khoá rùa biển"
-        android:textSize="13sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -27,15 +27,15 @@
         android:id="@+id/productprice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="90.000đ"
-        android:textSize="11sp"
+        android:text="90.000"
+        android:textSize="13sp"
         app:layout_constraintTop_toBottomOf="@id/productimg"/>
     <TextView
         android:id="@+id/productcount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="1"
-        android:textSize="11sp"
+        android:textSize="13sp"
         app:layout_constraintTop_toBottomOf="@id/productprice"/>
 
     <TextView
@@ -95,7 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Đánh giá tại đây"
-                android:textSize="11sp"
+                android:textSize="13sp"
                 android:padding="10dp"
                 android:background="@android:color/transparent"
                 android:textColor="@android:color/black"
@@ -131,6 +131,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_menu"
-        android:background="@color/white"/>
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/btnSaveRating"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

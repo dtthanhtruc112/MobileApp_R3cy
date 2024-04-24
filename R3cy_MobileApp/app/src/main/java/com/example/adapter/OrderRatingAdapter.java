@@ -57,8 +57,6 @@ public class OrderRatingAdapter extends BaseAdapter {
             holder.txtFeedbackContent = convertView.findViewById(R.id.txtdanhgiachitiet);
             holder.txtFeedbackRating = convertView.findViewById(R.id.txtproductRating);
 
-            holder.rdbSelected = convertView.findViewById(R.id.rdbSelected);
-
             convertView.setTag(holder);
         } else {
             holder = (ViewHolderFeedback) convertView.getTag();
@@ -78,7 +76,6 @@ public class OrderRatingAdapter extends BaseAdapter {
     }
 
     public static class ViewHolderFeedback{
-        Button rdbSelected;
 
         TextView txtFeedbackContent, txtFeedbackRating ;
     }
