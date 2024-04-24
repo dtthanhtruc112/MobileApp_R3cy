@@ -127,7 +127,7 @@ public class Checkout extends AppCompatActivity {
                     couponDiscount = couponOrder;
                 }else
                 {
-                    couponShipping = voucherCheckout.getCOUPON_VALUE()*totalAmount;
+                    couponShipping = voucherCheckout.getCOUPON_VALUE()*shippingFee;
                     if(couponShipping > voucherCheckout.getMAXIMUM_DISCOUNT()){
                         couponShipping = voucherCheckout.getMAXIMUM_DISCOUNT();
                         if (couponShipping > shippingFee) {
@@ -355,6 +355,7 @@ public class Checkout extends AppCompatActivity {
             public void onClick(View v) {
 //                Tạo đơn hàng, lưu xuống DB
                 makeOrder();
+                DeleteCusFromCoupon(customerId, voucherIdFromIntent);
             }
         });
         binding.voucherLayout.setOnClickListener(new View.OnClickListener() {
@@ -381,9 +382,6 @@ public class Checkout extends AppCompatActivity {
         notes = binding.edtNotes.getText().toString();
         boolean orderCreated = productDao.createOrder(customerId, totalOrderValue, shippingFee, couponOrder, couponShipping, totalAmount, couponid, notes,  selectedItems, selectedPaymentMethod, "Chờ xử lý", selectedAddress);
         if (orderCreated) {
-            // Sau khi đặt hàng thành công trong phương thức makeOrder()
-            Intent successIntent = new Intent("com.example.r3cy_mobileapp.ACTION_ORDER_SUCCESS");
-            sendBroadcast(successIntent);
 
             // Xóa các mục đã chọn khỏi giỏ hàng sau khi đặt hàng thành công
             for (CartItem item : selectedItems) {
@@ -394,21 +392,40 @@ public class Checkout extends AppCompatActivity {
             for (CartItem item : selectedItems) {
                 productDao.updateProductQuantity(item.getProductId(), item.getProductQuantity());
             }
-
             // Tích lũy điểm cho khách hàng
             productDao.accumulateMembershipScore(customerId, totalOrderValue);
+            double roundedValueScore = Math.round(totalOrderValue / 3000);
 
-            Toast.makeText(Checkout.this, "Đặt hàng thành công!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Checkout.this, "Đặt hàng thành công!" + " Quy đổi thành công " +roundedValueScore + "điểm", Toast.LENGTH_SHORT).show();
             // Đặt các thao tác hoặc chuyển hướng sau khi đặt hàng thành công
             Intent intent = new Intent(Checkout.this, TrangChu.class);
             intent.putExtra("key_email", email);
             startActivity(intent);
+
+
+            // Sau khi đặt hàng thành công trong phương thức makeOrder()
+            Intent successIntent = new Intent("com.example.r3cy_mobileapp.ACTION_ORDER_SUCCESS");
+            sendBroadcast(successIntent);
             
         } else {
             Toast.makeText(Checkout.this, "Đặt hàng thất bại! Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
         }
 
 
+    }
+    public void DeleteCusFromCoupon(int customerId, int couponid){
+        ArrayList<Integer> customerIds = voucherCheckout.getCustomerIds();
+//            xóa customerId đó ra khỏi customerIds
+        // Kiểm tra xem customerId có tồn tại trong danh sách customerIds không
+        if (customerIds.contains(customerId)) {
+            // Nếu tồn tại, thì xóa customerId đó ra khỏi danh sách customerIds
+            customerIds.remove(Integer.valueOf(customerId));
+            Log.d("RemoveCustomerId", "Đã xóa thành công");
+            db.execSql("UPDATE " + R3cyDB.TBl_COUPON + " SET " + "CUSTOMER_IDS" + " = '" + customerIds + "' " + " WHERE " + R3cyDB.COUPON_ID +  " = " + voucherCheckout.getCOUPON_ID());
+            Log.d("CustomerIds", "CustomerIds: " + customerIds);
+        } else {
+            Log.d("RemoveCustomerId", "Không thể tìm thấy customerId trong danh sách.");
+        }
     }
 
 
