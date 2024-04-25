@@ -258,8 +258,12 @@ public class Checkout extends AppCompatActivity {
                 displayAddressOnUI(selectedAddressFromIntent);
                 selectedAddress = selectedAddressFromIntent.getAddressId();
             }
+            else{
+                displayAddAddressButton();
+            }
+
+            }
         }
-    }
 
 
     // Hiển thị địa chỉ lên giao diện
@@ -368,64 +372,163 @@ public class Checkout extends AppCompatActivity {
             }
         });
     }
-
     private void makeOrder() {
-        // Kiểm tra xem đã chọn địa chỉ và phương thức thanh toán chưa
-        if (selectedAddress == -1) {
+        checkAddress();
+        if (selectedAddress == 0) {
             Toast.makeText(Checkout.this, "Vui lòng chọn địa chỉ nhận hàng", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (selectedPaymentMethod == null) {
-            Toast.makeText(Checkout.this, "Vui lòng chọn phương thức thanh toán", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        notes = binding.edtNotes.getText().toString();
-        boolean orderCreated = productDao.createOrder(customerId, totalOrderValue, shippingFee, couponOrder, couponShipping, totalAmount, couponid, notes,  selectedItems, selectedPaymentMethod, "Chờ xử lý", selectedAddress);
-        if (orderCreated) {
-
-            // Xóa các mục đã chọn khỏi giỏ hàng sau khi đặt hàng thành công
-            for (CartItem item : selectedItems) {
-                productDao.deleteCartItem(item.getLineId());
+        }else{
+            Log.d("selectedAddress", "selectedAddress" + selectedAddress);
+            // Nếu địa chỉ đã được chọn và hợp lệ
+            if (selectedPaymentMethod == null) {
+                Toast.makeText(Checkout.this, "Vui lòng chọn phương thức thanh toán", Toast.LENGTH_SHORT).show();
+                return;
             }
 
-            // Cập nhật số lượng sản phẩm tồn kho và số lượng đã bán
-            for (CartItem item : selectedItems) {
-                productDao.updateProductQuantity(item.getProductId(), item.getProductQuantity());
+            notes = binding.edtNotes.getText().toString();
+            boolean orderCreated = productDao.createOrder(customerId, totalOrderValue, shippingFee, couponOrder, couponShipping, totalAmount, couponid, notes, selectedItems, selectedPaymentMethod, "Chờ xử lý", selectedAddress);
+            if (orderCreated) {
+                // Xóa các mục đã chọn khỏi giỏ hàng sau khi đặt hàng thành công
+                for (CartItem item : selectedItems) {
+                    productDao.deleteCartItem(item.getLineId());
+                }
+
+                // Cập nhật số lượng sản phẩm tồn kho và số lượng đã bán
+                for (CartItem item : selectedItems) {
+                    productDao.updateProductQuantity(item.getProductId(), item.getProductQuantity());
+                }
+
+                // Tích lũy điểm cho khách hàng
+                productDao.accumulateMembershipScore(customerId, totalOrderValue);
+                double roundedValueScore = Math.round(totalOrderValue / 3000);
+
+                Toast.makeText(Checkout.this, "Đặt hàng thành công! Quy đổi thành công " + roundedValueScore + " điểm", Toast.LENGTH_SHORT).show();
+                // Đặt các thao tác hoặc chuyển hướng sau khi đặt hàng thành công
+                Intent intent = new Intent(Checkout.this, TrangChu.class);
+                intent.putExtra("key_email", email);
+                startActivity(intent);
+
+                // Sau khi đặt hàng thành công trong phương thức makeOrder()
+                Intent successIntent = new Intent("com.example.r3cy_mobileapp.ACTION_ORDER_SUCCESS");
+                sendBroadcast(successIntent);
+            } else {
+                Toast.makeText(Checkout.this, "Đặt hàng thất bại! Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
             }
-            // Tích lũy điểm cho khách hàng
-            productDao.accumulateMembershipScore(customerId, totalOrderValue);
-            double roundedValueScore = Math.round(totalOrderValue / 3000);
-
-            Toast.makeText(Checkout.this, "Đặt hàng thành công!" + " Quy đổi thành công " +roundedValueScore + "điểm", Toast.LENGTH_SHORT).show();
-            // Đặt các thao tác hoặc chuyển hướng sau khi đặt hàng thành công
-            Intent intent = new Intent(Checkout.this, TrangChu.class);
-            intent.putExtra("key_email", email);
-            startActivity(intent);
-
-
-            // Sau khi đặt hàng thành công trong phương thức makeOrder()
-            Intent successIntent = new Intent("com.example.r3cy_mobileapp.ACTION_ORDER_SUCCESS");
-            sendBroadcast(successIntent);
-            
-        } else {
-            Toast.makeText(Checkout.this, "Đặt hàng thất bại! Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
         }
-
-
     }
-    public void DeleteCusFromCoupon(int customerId, int couponid){
-        ArrayList<Integer> customerIds = voucherCheckout.getCustomerIds();
-//            xóa customerId đó ra khỏi customerIds
-        // Kiểm tra xem customerId có tồn tại trong danh sách customerIds không
-        if (customerIds.contains(customerId)) {
-            // Nếu tồn tại, thì xóa customerId đó ra khỏi danh sách customerIds
-            customerIds.remove(Integer.valueOf(customerId));
-            Log.d("RemoveCustomerId", "Đã xóa thành công");
-            db.execSql("UPDATE " + R3cyDB.TBl_COUPON + " SET " + "CUSTOMER_IDS" + " = '" + customerIds + "' " + " WHERE " + R3cyDB.COUPON_ID +  " = " + voucherCheckout.getCOUPON_ID());
-            Log.d("CustomerIds", "CustomerIds: " + customerIds);
-        } else {
-            Log.d("RemoveCustomerId", "Không thể tìm thấy customerId trong danh sách.");
+
+    private void checkAddress() {
+        if (selectedAddress == 0) {
+            Toast.makeText(Checkout.this, "Vui lòng chọn địa chỉ nhận hàng", Toast.LENGTH_SHORT).show();
         }
+        else{
+//            Toast.makeText(this, "Đã có địa chỉ nhận hàng" + selectedAddress, Toast.LENGTH_SHORT).show();
+            Log.d("checkAddress","Đã có địa chỉ nhận hàng" + selectedAddress);
+        }
+    }
+
+//    private void makeOrder() {
+//        if (selectedAddress == -1) {
+//            Toast.makeText(Checkout.this, "Vui lòng chọn địa chỉ nhận hàng", Toast.LENGTH_SHORT).show();
+//            finish();
+//        } else {
+//            if (selectedPaymentMethod == null) {
+//                Toast.makeText(Checkout.this, "Vui lòng chọn phương thức thanh toán", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//
+//            notes = binding.edtNotes.getText().toString();
+//            boolean orderCreated = productDao.createOrder(customerId, totalOrderValue, shippingFee, couponOrder, couponShipping, totalAmount, couponid, notes, selectedItems, selectedPaymentMethod, "Chờ xử lý", selectedAddress);
+//            if (orderCreated) {
+//                // Xóa các mục đã chọn khỏi giỏ hàng sau khi đặt hàng thành công
+//                for (CartItem item : selectedItems) {
+//                    productDao.deleteCartItem(item.getLineId());
+//                }
+//
+//                // Cập nhật số lượng sản phẩm tồn kho và số lượng đã bán
+//                for (CartItem item : selectedItems) {
+//                    productDao.updateProductQuantity(item.getProductId(), item.getProductQuantity());
+//                }
+//
+//                // Tích lũy điểm cho khách hàng
+//                productDao.accumulateMembershipScore(customerId, totalOrderValue);
+//                double roundedValueScore = Math.round(totalOrderValue / 3000);
+//
+//                Toast.makeText(Checkout.this, "Đặt hàng thành công! Quy đổi thành công " + roundedValueScore + " điểm", Toast.LENGTH_SHORT).show();
+//                // Đặt các thao tác hoặc chuyển hướng sau khi đặt hàng thành công
+//                Intent intent = new Intent(Checkout.this, TrangChu.class);
+//                intent.putExtra("key_email", email);
+//                startActivity(intent);
+//
+//                // Sau khi đặt hàng thành công trong phương thức makeOrder()
+//                Intent successIntent = new Intent("com.example.r3cy_mobileapp.ACTION_ORDER_SUCCESS");
+//                sendBroadcast(successIntent);
+//            } else {
+//                Toast.makeText(Checkout.this, "Đặt hàng thất bại! Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
+
+
+//        private void makeOrder() {
+//        if (selectedAddress == -1) {
+//            Toast.makeText(Checkout.this, "Vui lòng chọn địa chỉ nhận hàng", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//        if (selectedPaymentMethod == null) {
+//            Toast.makeText(Checkout.this, "Vui lòng chọn phương thức thanh toán", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//        notes = binding.edtNotes.getText().toString();
+//        boolean orderCreated = productDao.createOrder(customerId, totalOrderValue, shippingFee, couponOrder, couponShipping, totalAmount, couponid, notes,  selectedItems, selectedPaymentMethod, "Chờ xử lý", selectedAddress);
+//        if (orderCreated) {
+//
+//            // Xóa các mục đã chọn khỏi giỏ hàng sau khi đặt hàng thành công
+//            for (CartItem item : selectedItems) {
+//                productDao.deleteCartItem(item.getLineId());
+//            }
+//
+//            // Cập nhật số lượng sản phẩm tồn kho và số lượng đã bán
+//            for (CartItem item : selectedItems) {
+//                productDao.updateProductQuantity(item.getProductId(), item.getProductQuantity());
+//            }
+//            // Tích lũy điểm cho khách hàng
+//            productDao.accumulateMembershipScore(customerId, totalOrderValue);
+//            double roundedValueScore = Math.round(totalOrderValue / 3000);
+//
+//            Toast.makeText(Checkout.this, "Đặt hàng thành công!" + " Quy đổi thành công " +roundedValueScore + "điểm", Toast.LENGTH_SHORT).show();
+//            // Đặt các thao tác hoặc chuyển hướng sau khi đặt hàng thành công
+//            Intent intent = new Intent(Checkout.this, TrangChu.class);
+//            intent.putExtra("key_email", email);
+//            startActivity(intent);
+//
+//
+//            // Sau khi đặt hàng thành công trong phương thức makeOrder()
+//            Intent successIntent = new Intent("com.example.r3cy_mobileapp.ACTION_ORDER_SUCCESS");
+//            sendBroadcast(successIntent);
+//
+//        } else {
+//            Toast.makeText(Checkout.this, "Đặt hàng thất bại! Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+    public void DeleteCusFromCoupon(int customerId, int couponid){
+        if (voucherIdFromIntent != -1){
+            voucherCheckout = db.getCouponById(voucherIdFromIntent);
+            ArrayList<Integer> customerIds = voucherCheckout.getCustomerIds();
+//            xóa customerId đó ra khỏi customerIds
+            // Kiểm tra xem customerId có tồn tại trong danh sách customerIds không
+            if (customerIds.contains(customerId)) {
+                // Nếu tồn tại, thì xóa customerId đó ra khỏi danh sách customerIds
+                customerIds.remove(Integer.valueOf(customerId));
+                Log.d("RemoveCustomerId", "Đã xóa thành công");
+                db.execSql("UPDATE " + R3cyDB.TBl_COUPON + " SET " + "CUSTOMER_IDS" + " = '" + customerIds + "' " + " WHERE " + R3cyDB.COUPON_ID +  " = " + voucherCheckout.getCOUPON_ID());
+                Log.d("CustomerIds", "CustomerIds: " + customerIds);
+            } else {
+                Log.d("RemoveCustomerId", "Không thể tìm thấy customerId trong danh sách.");
+            }
+        }else{
+            Log.d("DeleteCusFromCoupon", "không có voucherCheckout");
+        }
+
     }
 
 
