@@ -509,21 +509,23 @@ public class Checkout extends AppCompatActivity {
     public void DeleteCusFromCoupon(int customerId, int couponid){
         if (voucherIdFromIntent != -1){
             voucherCheckout = db.getCouponById(voucherIdFromIntent);
-            ArrayList<Integer> customerIds = voucherCheckout.getCustomerIds();
+            if(voucherCheckout != null){
+                ArrayList<Integer> customerIds = voucherCheckout.getCustomerIds();
 //            xóa customerId đó ra khỏi customerIds
-            // Kiểm tra xem customerId có tồn tại trong danh sách customerIds không
-            if (customerIds.contains(customerId)) {
-                // Nếu tồn tại, thì xóa customerId đó ra khỏi danh sách customerIds
-                customerIds.remove(Integer.valueOf(customerId));
-                Log.d("RemoveCustomerId", "Đã xóa thành công");
-                db.execSql("UPDATE " + R3cyDB.TBl_COUPON + " SET " + "CUSTOMER_IDS" + " = '" + customerIds + "' " + " WHERE " + R3cyDB.COUPON_ID +  " = " + voucherCheckout.getCOUPON_ID());
-                Log.d("CustomerIds", "CustomerIds: " + customerIds);
-            } else {
-                Log.d("RemoveCustomerId", "Không thể tìm thấy customerId trong danh sách.");
+                // Kiểm tra xem customerId có tồn tại trong danh sách customerIds không
+                if (customerIds.contains(customerId)) {
+                    // Nếu tồn tại, thì xóa customerId đó ra khỏi danh sách customerIds
+                    customerIds.remove(Integer.valueOf(customerId));
+                    Log.d("RemoveCustomerId", "Đã xóa thành công");
+                    db.execSql("UPDATE " + R3cyDB.TBl_COUPON + " SET " + "CUSTOMER_IDS" + " = '" + customerIds + "' " + " WHERE " + R3cyDB.COUPON_ID +  " = " + voucherCheckout.getCOUPON_ID());
+                    Log.d("CustomerIds", "CustomerIds: " + customerIds);
+                } else {
+                    Log.d("RemoveCustomerId", "Không thể tìm thấy customerId trong danh sách.");
+                }
+            }else{
+                Log.d("DeleteCusFromCoupon", "không có voucherCheckout");
             }
-        }else{
-            Log.d("DeleteCusFromCoupon", "không có voucherCheckout");
-        }
+            }
 
     }
 
