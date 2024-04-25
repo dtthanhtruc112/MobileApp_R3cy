@@ -73,6 +73,7 @@ public class CartManage extends AppCompatActivity {
     VoucherCheckout voucherCheckout;
     private  int voucherIdFromIntent = -1;
     ArrayList<CartItem> selectedItems;
+    ArrayList<Integer> selectedItemIdsfromIntent;
     NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
 
 
@@ -129,6 +130,12 @@ public class CartManage extends AppCompatActivity {
         } else {
             Log.d("voucherIdFromIntent", "voucherIdFromIntent: " + voucherIdFromIntent);
             processVoucher();
+        }
+
+        if(selectedItemIdsfromIntent == null){
+            Log.d("selectedItemIdsfromIntent", "Không lấy được từ intent");
+        }else{
+            Log.d("selectedItemIdsfromIntent", "selectedItemIdsfromIntent: " + selectedItemIdsfromIntent);
         }
     }
 
@@ -470,6 +477,7 @@ public class CartManage extends AppCompatActivity {
                     Intent intent = new Intent(CartManage.this, Checkout.class);
                     intent.putExtra("key_email", email);
                     intent.putExtra("totalAmount", totalAmount);
+                    intent.putExtra("couponDiscount", couponDiscount);
                     startActivity(intent);
                 }
             }
@@ -480,10 +488,13 @@ public class CartManage extends AppCompatActivity {
             public void onClick(View v) {
                 selectedItems = new ArrayList<>();
 
+                ArrayList<Integer> selectedItemIds = new ArrayList<>();
+
                 // Duyệt qua danh sách sản phẩm và kiểm tra xem sản phẩm nào được chọn
                 for (CartItem item : cartItems) {
                     if (item.isSelected()) {
                         selectedItems.add(item);
+                        selectedItemIds.add(item.getLineId());
                     }
                 }
                 // Kiểm tra xem selectedItems đã được khởi tạo và có dữ liệu không
@@ -492,6 +503,7 @@ public class CartManage extends AppCompatActivity {
                     totalAmount = calculateTotalAmount(selectedItems);
                     Intent intent = new Intent(CartManage.this, Cart_Voucher.class);
                     intent.putExtra("key_email", email);
+                    intent.putIntegerArrayListExtra("selectedItemIds", selectedItemIds);
                     intent.putExtra("totalAmount", totalAmount);
                     startActivityForResult(intent, CART_VOUCHER_REQUEST_CODE);
                 } else {
@@ -507,7 +519,9 @@ public class CartManage extends AppCompatActivity {
         if (requestCode == CART_VOUCHER_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 voucherId = data.getIntExtra("COUPON_ID", -1);
+                selectedItemIdsfromIntent = data.getIntegerArrayListExtra("selectedItemIds");
                 Log.d("VoucherCheckout", "COUPON_ID: "+ voucherId);
+                Log.d("selectedItemIdsfromIntent", "selectedItemIdsfromIntent" + selectedItemIdsfromIntent);
 
             }
             if (voucherId != -1) {

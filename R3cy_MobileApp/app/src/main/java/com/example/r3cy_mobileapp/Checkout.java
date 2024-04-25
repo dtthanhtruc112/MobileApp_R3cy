@@ -67,6 +67,7 @@ public class Checkout extends AppCompatActivity {
     String notes;
     Customer customer;
     int voucherId;
+    double couponDiscountFromIntent;
 
     VoucherCheckout voucherCheckout;
     // Định dạng số
@@ -112,6 +113,13 @@ public class Checkout extends AppCompatActivity {
             processVoucher();
         }
 
+        couponDiscountFromIntent = getIntent().getDoubleExtra("couponDiscount", 0);
+        if(couponDiscountFromIntent != 0){
+            binding.txtDiscount.setText(numberFormat.format(couponDiscountFromIntent));
+            Log.d("couponDiscountFromIntent", "onResume: CouponFromIntentCart"+ couponDiscountFromIntent );
+        }
+//
+
     }
     private void processVoucher() {
         // Kiểm tra nếu voucherIdFromIntent không phải là giá trị mặc định (-1)
@@ -150,7 +158,7 @@ public class Checkout extends AppCompatActivity {
                 }
 
             }
-            binding.txtDiscount.setText(numberFormat.format(couponDiscount));
+            binding.txtDiscount.setText( numberFormat.format(couponDiscount));
             totalOrderValue = totalAmount + shippingFee -couponOrder - couponShipping;
             if(totalOrderValue < 0){
                 totalOrderValue = 0;
@@ -158,8 +166,8 @@ public class Checkout extends AppCompatActivity {
 
             // Gán giá trị định dạng vào TextView
             binding.txtTotalOrderValue.setText(numberFormat.format(totalOrderValue));
-            binding.txtCouponShipping.setText(numberFormat.format(couponShipping));
-            binding.txtDiscountOrder.setText(numberFormat.format(couponOrder));
+            binding.txtCouponShipping.setText("- " + numberFormat.format(couponShipping));
+            binding.txtDiscountOrder.setText("- " + numberFormat.format(couponOrder));
 
         } else {
             Log.d("processVoucher", "Không lấy được voucherId từ intent");

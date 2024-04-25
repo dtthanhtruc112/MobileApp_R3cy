@@ -29,6 +29,7 @@ public class Cart_Voucher extends AppCompatActivity {
     String email;
     ArrayList<VoucherCheckout> vouchers;
     double totalAmount;
+    ArrayList<Integer> selectedItemIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +40,10 @@ public class Cart_Voucher extends AppCompatActivity {
 
         email = getIntent().getStringExtra("key_email");
         totalAmount = getIntent().getDoubleExtra("totalAmount",totalAmount);
+        selectedItemIds = getIntent().getIntegerArrayListExtra("selectedItemIds");
         Log.d("totalAmount", "totalAmount ở voucher acc: " + totalAmount);
         Log.d("SharedPreferences", "Email ở voucher acc: " + email);
+        Log.d("selectedItemIds", "selectedItemIds in Cart_Voucher" + selectedItemIds);
 
         createDb();
         addEvents();
@@ -125,8 +128,11 @@ public class Cart_Voucher extends AppCompatActivity {
     public void openCartActivity(VoucherCheckout c){
         Intent intent = new Intent(this, CartManage.class);
         intent.putExtra("COUPON_ID", c.getCOUPON_ID());
+        intent.putIntegerArrayListExtra("selectedItemIds", selectedItemIds);
         intent.putExtra("key_email", email);
-        startActivity(intent);
+//        startActivity(intent);
+        setResult(RESULT_OK, intent);
+        finish();
 
     }
 }

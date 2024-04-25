@@ -100,10 +100,11 @@ public class EditAddress extends AppCompatActivity {
         // Lấy dữ liệu ban đầu của địa chỉ từ cơ sở dữ liệu
         Address initialAddress = db.getAddressById(addressId);
 
+
         // Kiểm tra và xử lý dữ liệu
         if (receiverName.isEmpty() || receiverPhone.isEmpty() || province.isEmpty() || district.isEmpty() || ward.isEmpty() || detailAddress.isEmpty()) {
             Toast.makeText(EditAddress.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-        } else if (initialAddress != null) {
+        } else if (initialAddress != null && initialAddress.getAddressType() != null) {
             // So sánh dữ liệu mới với dữ liệu ban đầu
             boolean dataChanged = !receiverName.equals(initialAddress.getReceiverName()) ||
                     !receiverPhone.equals(initialAddress.getReceiverPhone()) ||
@@ -111,8 +112,9 @@ public class EditAddress extends AppCompatActivity {
                     !district.equals(initialAddress.getDistrict()) ||
                     !ward.equals(initialAddress.getWard()) ||
                     !detailAddress.equals(initialAddress.getAddressDetails()) ||
-                    DefaultAddress != initialAddress.getIsDefault() ||
-                    !addressType.equals(initialAddress.getAddressType());
+                    DefaultAddress != initialAddress.getIsDefault()
+//                    || !addressType.equals(initialAddress.getAddressType())
+                    ;
 
             if (dataChanged) {
                 // Nếu có sự thay đổi, thực hiện cập nhật dữ liệu
