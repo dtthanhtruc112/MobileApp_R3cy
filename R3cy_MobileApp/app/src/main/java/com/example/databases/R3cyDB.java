@@ -1780,6 +1780,66 @@ public class R3cyDB extends SQLiteOpenHelper {
                     "Tái chế nhựa tại nhà không chỉ giúp giảm ô nhiễm môi trường mà còn mang lại lợi ích kinh tế và sáng tạo cho mỗi cá nhân. Bằng cách thực hiện những bước đơn giản này, chúng ta có thể đóng góp vào việc bảo vệ môi trường và hướng tới một tương lai bền vững hơn. Bắt đầu ngay hôm nay và hãy trở thành một phần của cuộc cách mạng tái chế nhựa!\n");
             db.insert(TBL_BLOG, null, values);
 
+            // Ví dụ 5
+            values.put(BLOG_TITLE, "Tái Chế Nhựa: Hành Động Nhỏ, Ý Nghĩa Lớn Cho Hành Tinh Của Chúng Ta \uD83C\uDF0D♻\uFE0F");
+            values.put(BLOG_THUMB, convertPhoto(context, R.drawable.pk_bongtai_hcn3));
+            values.put(BLOG_CREATE_DATE, "2024-03-22");
+            values.put(BLOG_AUTHOR, "Đặng Thị Thanh Trúc");
+            values.put(BLOG_CONTENT, "Chào các bạn thân yêu của R3cy! Hôm nay, chúng ta sẽ cùng nhau khám phá ý nghĩa sâu sắc đằng sau việc tái chế nhựa - một hành động nhỏ có thể tạo nên sự thay đổi lớn đối với hành tinh mà chúng ta đang sống. \uD83C\uDF31♻\uFE0F\n" +
+                    "\n" +
+                    "\n" +
+                    "1. Bảo Vệ Môi Trường: Mỗi tấm vật liệu nhựa tái chế không chỉ là việc giảm lượng rác thải mà còn là cơ hội để giữ cho đại dương trong xanh, rừng già xanh mướt và không khí sạch sẽ. Chúng ta đang góp phần vào việc giữ gìn vẻ đẹp tự nhiên của hành tinh chúng ta.\n" +
+                    "\n" +
+                    "2. Tiết Kiệm Năng Lượng và Tài Nguyên: Tái chế nhựa giúp tiết kiệm năng lượng và tài nguyên so với việc sản xuất nhựa mới. Bằng cách này, chúng ta đang hỗ trợ sự bền vững và giúp giảm lượng khí thải và ô nhiễm.\n" +
+                    "\n" +
+                    "3. Khuyến Khích Sự Sáng Tạo: Tái chế nhựa không chỉ giúp giữ gìn môi trường mà còn khuyến khích sự sáng tạo. Những sản phẩm nhựa tái chế có thể trở thành nguồn cảm hứng cho các nhà thiết kế và nghệ nhân, giúp họ tạo ra những tác phẩm độc đáo và thú vị.\n" +
+                    "\n" +
+                    "4. Đào Tạo Cộng Đồng và Tạo Ra Cơ Hội Việc Làm: Việc tái chế nhựa tạo ra cơ hội việc làm cho các cộng đồng địa phương. Đồng thời, nó còn giúp tăng cường nhận thức về vấn đề môi trường và khuyến khích hành động tích cực từ cộng đồng.\n" +
+                    "\n" +
+                    "5. Điều Chỉnh Thái Độ và Thay Đổi Lối Sống: Việc tham gia vào quá trình tái chế giúp chúng ta thay đổi lối sống và điều chỉnh thái độ của mình đối với việc sử dụng nhựa. Nó là bước đầu tiên để trở thành người tiêu dùng thông thái, chúng ta không chỉ tôn trọng môi trường mà còn giúp giữ cho hành tinh chúng ta xanh sạch và tươi mới.\n" +
+                    "\n" +
+                    "Hãy cùng nhau lan tỏa thông điệp về ý nghĩa của việc tái chế nhựa. Mỗi hành động nhỏ từ bạn đều có ý nghĩa lớn đối với tương lai của chúng ta. Hãy hợp tác và chia sẻ để tạo nên một môi trường sống bền vững cho tất cả mọi người!\n" +
+                    "#TáiChếNhựa #BảoVệMôiTrường #R3cyChămSócHànhTinh \uD83C\uDF3F♻\uFE0F\n" +
+                    "\n");
+            db.insert(TBL_BLOG, null, values);
+
+            // Ví dụ 6
+            values.put(BLOG_TITLE, "R3cy: Vấn nạn rác thải nhựa và giải pháp tái chế \uD83C\uDF0D♻\uFE0F");
+            values.put(BLOG_THUMB, convertPhoto(context, R.drawable.pk_mockhoakos2));
+            values.put(BLOG_CREATE_DATE, "2024-03-22");
+            values.put(BLOG_AUTHOR, "Nguyễn Thảo Nguyên");
+            values.put(BLOG_CONTENT, "Môi trường hiện nay đang bị ảnh hưởng nặng nề bởi rác thải, đặc biệt là rác thải nhựa. Để khắc phục điều đó nhiều tổ chức vì cộng đồng đã được lập ra nhằm kêu gọi mọi người nâng cao ý thức, trách nhiệm tái chế, tái sử dụng nhựa đã qua sử dụng. Vậy Recy đã làm gì để hạn chế rác thải nhựa và bảo vệ môi trường? Cùng chúng tôi tìm hiểu qua bài viết này nhé!!\n" +
+                    "\n" +
+                    "1. Thực trạng về rác thải nhựa hiện nay\n" +
+                    "Rác thải nhựa được định nghĩa là những sản phẩm được làm từ nhựa, khó phân hủy trong môi trường và đã qua sử dụng, bao gồm chai lọ, túi ni lông, đồ chơi cũ,…\n" +
+                    "\n" +
+                    "Mỗi năm, theo thống kê thế giới thải ra hơn 300 triệu tấn rác thải nhựa, trong đó có 8 triệu tấn chất thải nhựa được đổ ra đại dương. Theo báo cáo của Liên hợp quốc, lượng rác thải nhựa mỗi năm đủ bao quanh trái đất 4 lần.\n" +
+                    "Theo kết quả nghiên cứu của Đại học Georgia, Việt Nam là 1 trong 20 nước thải rác nhiều nhất, và là 1 trong 5 nước có lượng rác thải nhựa ra đại dương lớn nhất thế giới. Mỗi năm Việt Nam thải khoảng 1,8 triệu tấn rác thải nhựa ra biển.\n" +
+                    "\n" +
+                    "Căn cứ vào mức độ sử dụng hiện nay, các chuyên gia cho rằng sẽ có hơn 13 tỷ tấn rác thải nhựa được chôn lấp trong các bãi rác hoặc đổ xuống biển gây ô nhiễm môi trường nghiêm trọng.\n" +
+                    "2. Tác hại, hậu quả của rác thải nhựa đến môi trường\n" +
+                    "Rác thải nhựa rất khó phân hủy trong môi trường tự nhiên. Mỗi loại chất nhựa sẽ có thời gian phân hủy khác nhau từ vài chục năm cho đến hàng nghìn năm. Ví dụ chai nhựa sẽ phân hủy sau 450 – 1000 năm, nắp chai nhựa, ống hút sẽ phân hủy sau 100 – 500 năm…\n" +
+                    "Các loài động vật sau khi ăn phải rác thải nhựa có thể chết, dẫn đến tuyệt chủng, gây mất cân bằng hệ sinh thái\n" +
+                    "Rác thải nhựa không được xử lý đúng cách sẽ ảnh hưởng trực tiếp đến không khí và môi trường nước\n" +
+                    "Khi đốt: chất thải nhựa sẽ sinh ra khí độc đi-ô-xin, furan gây ô nhiễm không khí, gây ngộ độc, ảnh hưởng đến tuyến nội tiết, làm giảm hệ miễn dịch, gây ung thư\n" +
+                    "Khi chôn lấp: rác thải nhựa sẽ làm cho đất không giữ được nước, dinh dưỡng, gây cản trở đến sự sinh trưởng của cây trồng\n" +
+                    "Rác thải nhựa gây ra tình trạng “ô nhiễm trắng” tại các điểm du lịch, gây mất mỹ quan, ảnh hưởng đến sự nghỉ ngơi, thư giãn của con người.\n" +
+                    "\n" +
+                    "\n" +
+                    "Có thể thấy ảnh hưởng của rác thải nhựa vô cùng nghiêm trọng, ảnh hưởng sâu rộng đến tất cả sinh vật trong hệ sinh thái của chúng ta. Vì vậy không ít các hoạt động đã được tổ chức thường niên nhằm mục đích thu gom rác thải nhựa, nhiều biển báo, khẩu ngữ “phân loại rác đúng quy định”, “tái chế, tái sử dụng” đã xuất hiện ngày càng nhiều nhằm nhắc nhở mọi người nêu cao ý thức, trách nhiệm bảo vệ môi trường và cộng đồng.\n" +
+                    "\n" +
+                    "3. R3cy trong hành trình tái chế rác thải nhựa, góp phần bảo vệ môi trường\n" +
+                    "\n" +
+                    "Giờ đây những rác thải nhựa đã qua sử dụng thay vì bỏ đi gây hại cho môi trường đã được chúng tôi tái sinh một vòng đời mới. Những phụ kiện xinh xắn, những vật dụng nội thất mang lại cho chúng ta những sản phẩm trang trí và giúp ích cho cuộc sống hằng ngày, hơn thế nữa, đây là cách trực tiếp mang tới những giá trị tốt đẹp cho người dùng, cho xã hội và cho môi trường. Nói cách khác, sử dụng đồ tái chế R3cy cũng là một cách bạn góp phần tái chế, giảm thiểu rác thải nhựa ra môi trường.\n" +
+                    "\n" +
+                    " \n" +
+                    "Hành trình phát triển bền vững, lý tưởng ghi dấu những bước chân xanh của R3cy còn dài và nhiều thử thách. Chúng tôi tin rằng hành trình đó luôn có sự đồng hành và ủng hộ của các bạn như cách các bạn đang nỗ lực vì một môi trường xanh hơn, sạch hơn mỗi ngày. \n" +
+                    "\n" +
+                    "Thế hệ trẻ hôm nay là tôi, là bạn, là tất cả chúng ta hãy cùng chung tay hành động ngay hôm nay để góp phần bảo vệ thiên nhiên, phục hồi hệ sinh thái, bảo vệ môi trường sống của chính chúng ta cũng như để lại màu xanh bền vững cho thế hệ tương lai.\n");
+
+            db.insert(TBL_BLOG, null, values);
+
+
         }
 
     }
