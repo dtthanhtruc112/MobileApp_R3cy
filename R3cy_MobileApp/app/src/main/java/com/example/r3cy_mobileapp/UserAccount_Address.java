@@ -138,7 +138,7 @@ public class UserAccount_Address extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                Mở trang thêm địa chỉ mới, thêm địa chỉ mới và lưu xuống DB bảng Address
-                Intent intent = new Intent(UserAccount_Address.this, UserAccount_Adress_Edit.class);
+                Intent intent = new Intent(UserAccount_Address.this, UserAccount_Adress_Add.class);
                 intent.putExtra("key_email", email);
                 startActivity(intent);
             }
