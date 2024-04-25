@@ -94,6 +94,7 @@
 
 
             <LinearLayout
+                android:id="@+id/voucherLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -133,7 +134,7 @@
                         android:layout_height="wrap_content"
 
 
-                        android:text="50.000"
+                        android:text="0"
                         android:textSize="13sp" />
                 </LinearLayout>
 

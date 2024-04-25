@@ -20,6 +20,9 @@
             android:name=".UserAccount_Payment"
             android:exported="false" />
         <activity
+            android:name=".Cart_Voucher"
+            android:exported="false" />
+        <activity
             android:name=".Checkout_Voucher_Detail"
             android:exported="false" />
         <activity
