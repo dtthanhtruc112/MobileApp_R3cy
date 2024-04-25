@@ -378,7 +378,7 @@ public class R3cyDB extends SQLiteOpenHelper {
             BLOG_THUMB + " BLOB," +
             BLOG_CREATE_DATE + " DATE," +
             BLOG_AUTHOR + " TEXT," +
-            BLOG_CONTENT + " BLOB" +
+            BLOG_CONTENT + " TEXT" +
             ")";
     // Câu lệnh tạo bảng CUSTOMPRODUCT
     private static final String CREATE_TBL_CUSTOMPRODUCT = "CREATE TABLE IF NOT EXISTS " + TBL_CUSTOMPRODUCT + "(" +
