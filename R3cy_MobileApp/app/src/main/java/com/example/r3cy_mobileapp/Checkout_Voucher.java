@@ -183,7 +183,9 @@ public class Checkout_Voucher extends AppCompatActivity {
         Intent intent = new Intent(this, Checkout.class);
         intent.putExtra("COUPON_ID", c.getCOUPON_ID());
         intent.putExtra("key_email", email);
-        startActivity(intent);
+//        startActivity(intent);
+        setResult(RESULT_OK, intent);
+        finish();
 
     }
     public void openCartActivity(VoucherCheckout c){

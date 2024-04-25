@@ -105,23 +105,10 @@ public class Checkout extends AppCompatActivity {
         } else {
             displayAddress();
         }
-        voucherIdFromIntent = getIntent().getIntExtra("COUPON_ID", -1);
-        if (voucherIdFromIntent == -1) {
-            Log.d("voucherIdFromIntent", "Không lấy được từ intent");
-        } else {
-            Log.d("voucherIdFromIntent", "voucherIdFromIntent: " + voucherIdFromIntent);
-            processVoucher();
-        }
-
-        couponDiscountFromIntent = getIntent().getDoubleExtra("couponDiscount", 0);
-        if(couponDiscountFromIntent != 0){
-            binding.txtDiscount.setText(numberFormat.format(couponDiscountFromIntent));
-            Log.d("couponDiscountFromIntent", "onResume: CouponFromIntentCart"+ couponDiscountFromIntent );
-        }
 //
 
     }
-    private void processVoucher() {
+    private void processVoucher(int voucherIdFromIntent) {
         // Kiểm tra nếu voucherIdFromIntent không phải là giá trị mặc định (-1)
         if (voucherIdFromIntent != -1) {
             voucherCheckout = db.getCouponById(voucherIdFromIntent);
@@ -326,8 +313,9 @@ public class Checkout extends AppCompatActivity {
         }
         if (requestCode == CHECKOUT_VOUCHER_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                voucherId = data.getIntExtra("COUPON_ID", -1);
-                Log.d("VoucherCheckout", "COUPON_ID: "+ voucherId);
+                voucherIdFromIntent = data.getIntExtra("COUPON_ID", -1);
+                Log.d("VoucherCheckout", "COUPON_ID: "+ + voucherId+  voucherIdFromIntent);
+                processVoucher(voucherIdFromIntent);
 
             }
             if (voucherId != -1) {
