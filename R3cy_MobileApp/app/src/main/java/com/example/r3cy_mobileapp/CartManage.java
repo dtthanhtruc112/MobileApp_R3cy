@@ -17,6 +17,7 @@ import android.os.Parcelable;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -234,6 +235,8 @@ public class CartManage extends AppCompatActivity {
             adapter = new CartAdapter(this, R.layout.cartitem, cartItems);
             binding.lvCartList.setAdapter(adapter);
 
+
+
             // Set total amount TextView in adapter
             adapter.setTxtTotalAmount(binding.txtTotalAmount);
 
@@ -421,6 +424,12 @@ public class CartManage extends AppCompatActivity {
             Log.e("CartManage", "ProductDao is null. Cannot delete item.");
         }
     }
+    public void OpenDetailProduct(int productID){
+        Intent intent = new Intent(CartManage.this, Product_Detail.class);
+        intent.putExtra("ProductID",productID );
+        intent.putExtra("key_email", email);
+        startActivity(intent);
+    }
 
     private void addEvents() {
         binding.imvBack.setOnClickListener(new View.OnClickListener() {
@@ -512,6 +521,20 @@ public class CartManage extends AppCompatActivity {
                 }
             }
         });
+//        binding.lvCartList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                // Lấy CartItem tại vị trí được nhấn
+//                CartItem clickedCartItem = cartItems.get(position);
+//
+//                // Lấy productId của CartItem
+//                int productId = clickedCartItem.getProductId();
+//                // Chuyển sang trang DetailProduct với productId tương ứng
+//                Intent intent = new Intent(CartManage.this, Product_Detail.class);
+//                intent.putExtra("ProductID", productId);
+//                startActivity(intent);
+//            }
+//        });
 
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

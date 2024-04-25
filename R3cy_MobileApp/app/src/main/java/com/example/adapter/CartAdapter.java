@@ -2,11 +2,13 @@ package com.example.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -19,6 +21,7 @@ import com.example.models.CartItem;
 import com.example.models.Coupon;
 //import com.example.r3cy_mobileapp.CartManage;
 import com.example.r3cy_mobileapp.CartManage;
+import com.example.r3cy_mobileapp.Product.Product_Detail;
 import com.example.r3cy_mobileapp.R;
 
 import java.text.NumberFormat;
@@ -123,6 +126,20 @@ public class CartAdapter extends BaseAdapter {
             public void onClick(View v) {
                 int lineId = cartItem.getLineId(); // Lấy lineId của mục cần xóa
                 ((CartManage) v.getContext()).deleteCartItem(lineId);
+            }
+        });
+        holder.imv_ProductImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int productID =  cartItem.getProductId();
+                ((CartManage) v.getContext()).OpenDetailProduct(productID);
+            }
+        });
+        holder.txt_ProductName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int productID =  cartItem.getProductId();
+                ((CartManage) v.getContext()).OpenDetailProduct(productID);
             }
         });
 
