@@ -115,16 +115,13 @@ public class UserAccount_OrderRating extends AppCompatActivity {
         // Thực hiện lưu dữ liệu vào cơ sở dữ liệu
         long newRowId = db.insertDataFeedback( productId, content, rating);
 
-        // Kiểm tra xem dữ liệu đã được lưu thành công hay không
         if (newRowId != -1) {
-            // Nếu lưu thành công, hiển thị thông báo
             Toast.makeText(getApplicationContext(), "Gửi đánh giá thành công.", Toast.LENGTH_SHORT).show();
-            // Reload lại trang
-            Intent intent = getIntent();
-            finish(); // Đóng Activity hiện tại
-            startActivity(intent); // Mở lại Activity
+
+            Intent intent = new Intent(getApplicationContext(), User_account_manageOrder.class);
+            intent.putExtra("key_email", email);
+            startActivity(intent);
         } else {
-            // Nếu lưu không thành công, hiển thị thông báo
             Toast.makeText(getApplicationContext(), "Lỗi! Đánh giá chưa được gửi.", Toast.LENGTH_SHORT).show();
         }
     }

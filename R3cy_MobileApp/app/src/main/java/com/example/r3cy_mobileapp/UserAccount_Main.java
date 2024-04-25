@@ -401,6 +401,14 @@ public class UserAccount_Main extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        binding.usPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserAccount_Main.this, UserAccount_Payment.class);
+                intent.putExtra("key_email", email);
+                startActivity(intent);
+            }
+        });
         binding.usSignout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -512,6 +520,14 @@ public class UserAccount_Main extends AppCompatActivity {
             }
         });
         binding.txtcholayhang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(getApplicationContext(), User_account_manageOrder.class);
+                intent.putExtra("key_email", email);
+                startActivity(intent);
+            }
+        });
+        binding.btncholayhang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent =new Intent(getApplicationContext(), User_account_manageOrder.class);

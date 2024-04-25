@@ -159,7 +159,6 @@ public class UserAccount_Info extends AppCompatActivity {
                 birthday.setText(userInfos.getBirthday());
                 Bitmap bitmap = BitmapFactory.decodeByteArray(userInfos.getThumb(), 0, userInfos.getThumb().length);
                 thumb.setImageBitmap(bitmap);
-//                imv_useravar.setImageBitmap(userInfo.get);
             } else {
                 // Xử lý trường hợp không tìm thấy thông tin người dùng
                 Toast.makeText(this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
