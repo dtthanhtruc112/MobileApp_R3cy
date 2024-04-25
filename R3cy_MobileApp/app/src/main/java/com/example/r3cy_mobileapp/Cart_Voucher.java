@@ -128,11 +128,10 @@ public class Cart_Voucher extends AppCompatActivity {
     public void openCartActivity(VoucherCheckout c){
         Intent intent = new Intent(this, CartManage.class);
         intent.putExtra("COUPON_ID", c.getCOUPON_ID());
-        intent.putIntegerArrayListExtra("selectedItemIds", selectedItemIds);
+//        intent.putIntegerArrayListExtra("selectedItemIds", selectedItemIds);
         intent.putExtra("key_email", email);
 //        startActivity(intent);
         setResult(RESULT_OK, intent);
         finish();
-
     }
 }
