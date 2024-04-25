@@ -153,8 +153,8 @@ public class Checkout extends AppCompatActivity {
 
             // Gán giá trị định dạng vào TextView
             binding.txtTotalOrderValue.setText(numberFormat.format(totalOrderValue));
-            binding.txtCouponShipping.setText("- " + numberFormat.format(couponShipping));
-            binding.txtDiscountOrder.setText("- " + numberFormat.format(couponOrder));
+            binding.txtCouponShipping.setText(numberFormat.format(couponShipping));
+            binding.txtDiscountOrder.setText(numberFormat.format(couponOrder));
 
         } else {
             Log.d("processVoucher", "Không lấy được voucherId từ intent");
