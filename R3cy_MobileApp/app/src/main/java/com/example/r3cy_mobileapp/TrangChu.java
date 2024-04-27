@@ -12,8 +12,10 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.CursorWindow;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -340,11 +342,69 @@ public class TrangChu extends AppCompatActivity {
             Intent intentNoti = new Intent(TrangChu.this, Notification.class);
             intentNoti.putExtra("key_email", email);
             startActivity(intentNoti);
+        } else if (item.getItemId() == R.id.action_mes) {
+            String facebookUrl = "https://www.facebook.com/r3cyofficial";
+            String messengerUrl = "fb-messenger://user/";
+
+            // Kiểm tra xem ứng dụng Messenger đã được cài đặt trên thiết bị hay chưa
+            if (isMessengerInstalled()) {
+                // Lấy ID của người dùng từ URL Facebook
+                String userId = getUserIdFromFacebookUrl(facebookUrl);
+
+                // Tạo URI cho việc mở Messenger và bắt đầu cuộc trò chuyện với người dùng cụ thể
+                Uri uri = Uri.parse(messengerUrl + userId);
+
+                // Tạo một Intent để mở ứng dụng Messenger
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+
+                // Kiểm tra xem có ứng dụng nào có thể xử lý Intent này không
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    // Mở ứng dụng Messenger
+                    startActivity(intent);
+                } else {
+                    // Nếu không tìm thấy ứng dụng Messenger, bạn có thể thông báo cho người dùng
+                    Toast.makeText(this, "Ứng dụng Messenger không được cài đặt.", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                // Nếu Messenger chưa được cài đặt, bạn có thể yêu cầu người dùng cài đặt Messenger
+                Toast.makeText(this, "Vui lòng cài đặt ứng dụng Messenger.", Toast.LENGTH_SHORT).show();
+            }
         }
 
 
         return super.onOptionsItemSelected(item);
     }
+
+    // Hàm kiểm tra xem Messenger đã được cài đặt hay chưa
+    private boolean isMessengerInstalled() {
+        try {
+            // Kiểm tra xem có Activity nào có thể xử lý Intent mở Messenger không
+            getPackageManager().getPackageInfo("com.facebook.orca", PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            // Nếu không tìm thấy ứng dụng Messenger, trả về false
+            return false;
+        }
+    }
+
+    // Hàm để lấy ID của người dùng từ URL Facebook
+    private String getUserIdFromFacebookUrl(String facebookUrl) {
+        // Kiểm tra xem URL có chứa "/profile.php?id=" không
+        if (facebookUrl.contains("/profile.php?id=")) {
+            // Nếu có, trích xuất ID từ chuỗi URL
+            int startIndex = facebookUrl.indexOf("/profile.php?id=") + "/profile.php?id=".length();
+            int endIndex = facebookUrl.indexOf("&", startIndex);
+            if (endIndex == -1) {
+                endIndex = facebookUrl.length();
+            }
+            return facebookUrl.substring(startIndex, endIndex);
+        } else {
+            // Nếu không có, giả định rằng URL có dạng "/{user_id}" và lấy phần cuối cùng của URL
+            String[] parts = facebookUrl.split("/");
+            return parts[parts.length - 1];
+        }
+    }
+
     private void addEvents() {
         binding.btnDangnhap.setOnClickListener(new View.OnClickListener() {
             @Override

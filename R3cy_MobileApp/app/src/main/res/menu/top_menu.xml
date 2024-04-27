@@ -19,4 +19,10 @@
         android:orderInCategory="100"
         app:showAsAction="always"/>
 
+    <item android:id="@+id/action_mes"
+        android:icon="@drawable/mes"
+        android:title="Mes"
+        android:orderInCategory="100"
+        app:showAsAction="always"/>
+
 </menu>
