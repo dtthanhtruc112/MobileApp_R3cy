@@ -165,9 +165,11 @@ public class Checkout_AddressList extends AppCompatActivity {
     }
     public void openCheckoutActivity(Address a){
         Intent intent = new Intent(this, Checkout.class);
-        intent.putExtra("ADDRESS_ID", a.getAddressId());
+        intent.putExtra("SELECTED_ADDRESS_ID", a.getAddressId());
         intent.putExtra("key_email", email);
-        startActivity(intent);
+//        startActivity(intent);
+        setResult(RESULT_OK, intent);
+        finish();
 
     }
 

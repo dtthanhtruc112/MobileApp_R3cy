@@ -72,6 +72,9 @@ public class Checkout extends AppCompatActivity {
     VoucherCheckout voucherCheckout;
     // Định dạng số
     NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
+    private boolean isAddressReceived = false;
+    private boolean isFirstTime = true;
+
 
 
     @Override
@@ -97,17 +100,14 @@ public class Checkout extends AppCompatActivity {
         Log.i("test", "onResume");
         loadDataCart();
 
-        // Lấy ID của địa chỉ từ Intent
-        addressIdFromIntent = getIntent().getIntExtra("ADDRESS_ID", -1);
-        if (addressIdFromIntent == -1) {
-            Log.d("addressIdFromIntent", "Không lấy được addressId từ intent");
+        // Kiểm tra nếu chưa nhận được addressIdFromIntent và là lần đầu tiên mở trang ra, thì mới hiển thị địa chỉ mặc định hoặc button
+        if (!isAddressReceived && isFirstTime) {
             displayAddress();
-        } else {
-            displayAddress();
+            isFirstTime = false; // Đánh dấu là đã mở trang ra lần đầu tiên
         }
-//
 
     }
+
     private void processVoucher(int voucherIdFromIntent) {
         // Kiểm tra nếu voucherIdFromIntent không phải là giá trị mặc định (-1)
         if (voucherIdFromIntent != -1) {
@@ -231,6 +231,7 @@ public class Checkout extends AppCompatActivity {
         customer = db.getCustomerByEmail1(email);
         Log.d("customer", "customer ở checkout: " + customer.getFullName());
         customerId = customer.getCustomerId();
+        addressIdFromIntent = getIntent().getIntExtra("ADDRESS_ID", -1);
         // Nếu chưa có addressIdFromIntent (tức là chưa chọn địa chỉ từ trang danh sách địa chỉ)
         if (addressIdFromIntent == -1) {
             Address defaultAddress = db.getDefaultAddress(customerId);
@@ -292,11 +293,15 @@ public class Checkout extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Nhận addressId được chọn từ trang danh sách địa chỉ
                 int selectedAddressId = data.getIntExtra("SELECTED_ADDRESS_ID", -1);
+                Log.d("Checkout - selectedAddressId ", "onActivityResult: SELECTED_ADDRESS_ID" +selectedAddressId );
                 if (selectedAddressId != -1) {
                     // Cập nhật addressIdFromIntent với địa chỉ được chọn
                     addressIdFromIntent = selectedAddressId;
+                    Address address1 = db.getAddressById(addressIdFromIntent);
+                    isAddressReceived = true;
                     // Hiển thị địa chỉ đã được chọn
-                    displayAddress();
+//                    displayAddress();
+                    displayAddressOnUI(address1);
                 }
             }
         }
