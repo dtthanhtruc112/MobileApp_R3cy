@@ -134,17 +134,16 @@ public class Checkout extends AppCompatActivity {
             } else {
                 if("order".equals(voucherCheckout.getCOUPON_CATEGORY())){
                     couponOrder = voucherCheckout.getCOUPON_VALUE();
-                    couponDiscount = couponOrder;
                 }else
                 {
                     couponShipping = voucherCheckout.getCOUPON_VALUE();
                     if (couponShipping > shippingFee) {
                         couponShipping = shippingFee;
                     }
-                    couponDiscount = couponShipping;
                 }
 
             }
+            couponDiscount = couponOrder + couponShipping;
             binding.txtDiscount.setText( numberFormat.format(couponDiscount));
             totalOrderValue = totalAmount + shippingFee -couponOrder - couponShipping;
             if(totalOrderValue < 0){
