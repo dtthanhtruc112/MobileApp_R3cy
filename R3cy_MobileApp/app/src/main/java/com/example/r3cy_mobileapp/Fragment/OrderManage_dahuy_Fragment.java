@@ -9,7 +9,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +20,7 @@ import com.example.databases.R3cyDB;
 import com.example.models.Order;
 import com.example.r3cy_mobileapp.R;
 import com.example.r3cy_mobileapp.databinding.FragmentOrderManageCholayhangBinding;
+import com.example.r3cy_mobileapp.databinding.FragmentOrderManageDahuyBinding;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -28,10 +28,10 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link OrderManage_cholayhang_Fragment#newInstance} factory method to
+ * Use the {@link OrderManage_dahuy_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OrderManage_cholayhang_Fragment extends Fragment {
+public class OrderManage_dahuy_Fragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,7 +41,7 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    FragmentOrderManageCholayhangBinding binding;
+    FragmentOrderManageDahuyBinding binding;
     List<Order> orders;
 
 
@@ -49,9 +49,7 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
     OrderAdapter adapter;
     String email;
 
-
-
-    public OrderManage_cholayhang_Fragment() {
+    public OrderManage_dahuy_Fragment() {
         // Required empty public constructor
     }
 
@@ -61,19 +59,20 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
      *
 //     * @param param1 Parameter 1.
 //     * @param param2 Parameter 2.
-//     * @return A new instance of fragment OrderManage_cholayhang_Fragment.
+//     * @return A new instance of fragment OrderManage_dahuy_Fragment.
 //     */
-//    // TODO: Rename and change types and number of parameters
-//    public static OrderManage_cholayhang_Fragment newInstance(String param1, String param2) {
-//        OrderManage_cholayhang_Fragment fragment = new OrderManage_cholayhang_Fragment();
+    // TODO: Rename and change types and number of parameters
+//    public static OrderManage_dahuy_Fragment newInstance(String param1, String param2) {
+//        OrderManage_dahuy_Fragment fragment = new OrderManage_dahuy_Fragment();
 //        Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
 //        args.putString(ARG_PARAM2, param2);
 //        fragment.setArguments(args);
 //        return fragment;
 //    }
-    public static OrderManage_cholayhang_Fragment newInstance(String email) {
-        OrderManage_cholayhang_Fragment fragment = new OrderManage_cholayhang_Fragment();
+
+    public static OrderManage_dahuy_Fragment newInstance(String email) {
+        OrderManage_dahuy_Fragment fragment = new OrderManage_dahuy_Fragment();
         Bundle args = new Bundle();
         args.putString("key_email", email);
         fragment.setArguments(args);
@@ -84,19 +83,22 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         createDb();
-//        addEvents();
-
+//        if (getArguments() != null) {
+//            mParam1 = getArguments().getString(ARG_PARAM1);
+//            mParam2 = getArguments().getString(ARG_PARAM2);
+//        }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentOrderManageCholayhangBinding.inflate(inflater, container, false);
+        // Inflate the layout for this fragment
+        binding = FragmentOrderManageDahuyBinding.inflate(inflater, container, false);
         email = getArguments().getString("key_email");
         Log.d("SharedPreferences", "Email : " + email);
         return binding.getRoot();
     }
+
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -106,15 +108,13 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
 
     }
 
-
-
-
     private void createDb() {
         dbR3cy = new R3cyDB(getContext());
         dbR3cy.createSampleDataOrder();
         dbR3cy.createSampleDataOrderLine();
         dbR3cy.createSampleProduct();
     }
+
     public List<Order> getOrder() {
         int customerId = dbR3cy.getCustomerIdFromCustomer(email);
         Log.d("SharedPreferences", "Email ở Fragment: " + email);
@@ -195,10 +195,8 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
         List<Order> Order;
         orders = (List<Order>) getOrder();
         adapter = new OrderAdapter(getContext(), R.layout.item_quanlydonhang, orders);
-        binding.lvOrderCholayhang.setAdapter(adapter);
+        binding.lvOrderDahuy.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
     }
-
-
 }

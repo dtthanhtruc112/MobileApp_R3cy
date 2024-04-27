@@ -135,6 +135,8 @@ public class R3cyDB extends SQLiteOpenHelper {
     public static final String TOTAL_AMOUNT = "TotalAmount";
     public static final String PAYMENT_STATUS = "Paymentstatus";
     public static final String ADDRESS_ID = "AddressID";
+    public static final String CANCELLATION_REASON = "CancellationReason";
+
     // Các cột của bảng Address
     public static final String ADDRESS_CUSTOMER_ID = "CustomerID";
     public static final String RECEIVER_NAME = "ReceiverName";
@@ -294,8 +296,10 @@ public class R3cyDB extends SQLiteOpenHelper {
             TOTAL_AMOUNT + " REAL," +
             PAYMENT_STATUS + " INTEGER DEFAULT 0," +
             ADDRESS_ID + " INTEGER REFERENCES " + TBl_ADDRESS + "(" + ADDRESS_ID + ")," +
+            CANCELLATION_REASON + " TEXT DEFAULT NULL," +
             "PRIMARY KEY (" + ORDER_ID + ")" +
             ")";
+
 
     // Câu lệnh tạo bảng OrderLine
     private static final String CREATE_TBL_ORDER_LINE = "CREATE TABLE IF NOT EXISTS " + TBl_ORDER_LINE + "(" +
@@ -568,11 +572,13 @@ public class R3cyDB extends SQLiteOpenHelper {
 //        return success;
 //    }
     public void createSampleDataOrder() {
-        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 1, '14-04-2024', 'COD', null, null, 236000, 'Đang giao', 'Che tên sản phẩm', '15-04-2024', '0', 35000, 20000, 200000, 0, null)");
-        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 2, '15-04-2024', 'COD', null, null, 232000, 'Chờ xử lý', 'Che tên sản phẩm', '16-04-2024', '0', 20000,20000, 220000, 0, null)");
-        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 3, '16-04-2024', 'COD', null, null, 205000, 'Chờ lấy hàng', 'Che tên sản phẩm', '17-04-2024', '0', 25000,20000, 210000, 0, null)");
-        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 4, '17-04-2024', 'COD', null, null, 135000, 'Hoàn thành', 'Che tên sản phẩm', '18-04-2024', '0', 15000,20000, 250000, 0, null)");
-        execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 5, '18-04-2024', 'COD', null, null, 165000, 'Đang giao', 'Che tên sản phẩm', '19-04-2024', '0', 35000,20000, 260000, 0, null)");
+        if (numbOfRowsOrder() == 0) {
+            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 1, '14-04-2024', 'COD', null, null, 236000, 'Đang giao', 'Che tên sản phẩm', '15-04-2024', '0', 35000, 20000, 200000, 0, null, null)");
+            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 2, '15-04-2024', 'COD', null, null, 232000, 'Chờ xử lý', 'Che tên sản phẩm', '16-04-2024', '0', 20000,20000, 220000, 0, null, null)");
+            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 3, '16-04-2024', 'COD', null, null, 205000, 'Chờ lấy hàng', 'Che tên sản phẩm', '17-04-2024', '0', 25000,20000, 210000, 0, null, null)");
+            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 4, '17-04-2024', 'COD', null, null, 135000, 'Hoàn thành', 'Che tên sản phẩm', '18-04-2024', '0', 15000,20000, 250000, 0, null, null)");
+            execSql("INSERT INTO " + TBl_ORDER + " VALUES(null, 5, '18-04-2024', 'COD', null, null, 165000, 'Đang giao', 'Che tên sản phẩm', '19-04-2024', '0', 35000,20000, 260000, 0, null, null)");
+        }
     }
 
     public int numbOfRowsOrderLine() {
@@ -608,11 +614,13 @@ public class R3cyDB extends SQLiteOpenHelper {
 //        return success;
 //    }
     public void createSampleDataOrderLine() {
-        execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, 1, 1, 160000, 4)");
+        if (numbOfRowsOrderLine() == 0){
+            execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, 1, 1, 160000, 4)");
         execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, 2, 2, 150000, 3)");
         execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, 3, 3, 140000, 3)");
         execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, 4, 4, 150000, 2)");
         execSql("INSERT INTO " + TBl_ORDER_LINE + " VALUES(null, 5, 5, 170000, 1)");
+        }
     }
 
     @SuppressLint("Range")

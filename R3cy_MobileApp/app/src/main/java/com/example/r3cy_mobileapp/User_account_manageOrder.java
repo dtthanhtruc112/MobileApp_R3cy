@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.example.databases.R3cyDB;
 import com.example.r3cy_mobileapp.Fragment.OrderManage_cholayhang_Fragment;
 import com.example.r3cy_mobileapp.Fragment.OrderManage_choxuly_Fragment;
+import com.example.r3cy_mobileapp.Fragment.OrderManage_dahuy_Fragment;
 import com.example.r3cy_mobileapp.Fragment.OrderManage_danggiao_Fragment;
 import com.example.r3cy_mobileapp.Fragment.OrderManage_hoanthanh_Fragment;
 import com.example.r3cy_mobileapp.Fragment.OrderManage_tatca_Fragment;
@@ -96,6 +97,8 @@ public class User_account_manageOrder extends AppCompatActivity {
                         break;
                     case 4:
                         tab.setText("Hoàn thành");
+                    case 5:
+                        tab.setText("Đã hủy");
                         break;
                 }
             }
@@ -119,6 +122,7 @@ public class User_account_manageOrder extends AppCompatActivity {
         fragments.add(new OrderManage_danggiao_Fragment().newInstance(email)); // Khởi tạo fragment và truyền email
         fragments.add(new OrderManage_cholayhang_Fragment().newInstance(email)); // Khởi tạo fragment và truyền email
         fragments.add(new OrderManage_choxuly_Fragment().newInstance(email)); // Khởi tạo fragment và truyền email
+        fragments.add(new OrderManage_dahuy_Fragment().newInstance(email)); // Khởi tạo fragment và truyền email
         return fragments;
     }
 
@@ -208,15 +212,17 @@ public class User_account_manageOrder extends AppCompatActivity {
                     return new OrderManage_cholayhang_Fragment().newInstance(email);
                 case 3:
                     return new OrderManage_danggiao_Fragment().newInstance(email);
-                default:
+                case 4:
                     return new OrderManage_hoanthanh_Fragment().newInstance(email);
+                default:
+                    return new OrderManage_dahuy_Fragment().newInstance(email);
 
             }
         }
 
         @Override
         public int getItemCount() {
-            return 5;
+            return 6;
         }
     }
 
