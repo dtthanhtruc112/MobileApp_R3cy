@@ -101,8 +101,13 @@ public class OrderManage_danggiao_Fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         createDb();
-        loadData();
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadData();
     }
 
 

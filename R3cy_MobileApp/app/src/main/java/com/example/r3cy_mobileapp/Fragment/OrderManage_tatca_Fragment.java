@@ -124,8 +124,13 @@ public class OrderManage_tatca_Fragment extends Fragment {
 
 
         createDb();
-        loadData();
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadData();
     }
 
 

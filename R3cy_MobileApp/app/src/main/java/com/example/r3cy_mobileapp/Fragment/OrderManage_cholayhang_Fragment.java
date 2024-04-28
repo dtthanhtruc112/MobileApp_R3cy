@@ -101,13 +101,16 @@ public class OrderManage_cholayhang_Fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         createDb();
-        loadData();
+
 
 
     }
 
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadData();
+    }
 
     private void createDb() {
         dbR3cy = new R3cyDB(getContext());

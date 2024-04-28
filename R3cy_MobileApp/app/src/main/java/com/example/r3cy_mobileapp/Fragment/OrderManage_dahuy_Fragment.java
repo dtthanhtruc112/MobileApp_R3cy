@@ -103,9 +103,15 @@ public class OrderManage_dahuy_Fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         createDb();
+
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         loadData();
-
-
     }
 
     private void createDb() {
