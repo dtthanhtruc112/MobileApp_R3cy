@@ -114,8 +114,19 @@ public class User_account_manageOrder extends AppCompatActivity {
         createDB();
 
         addEvents();
+        addEvents2();
 
     }
+
+    private void addEvents2() {
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
     private List<Fragment> getFragments() {
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(new OrderManage_tatca_Fragment().newInstance(email)); // Khởi tạo fragment và truyền email

@@ -22,6 +22,7 @@ import com.example.databases.R3cyDB;
 import com.example.models.Coupon;
 import com.example.models.Order;
 import com.example.r3cy_mobileapp.DoiDiem_ChiTiet;
+import com.example.r3cy_mobileapp.Order_Details;
 import com.example.r3cy_mobileapp.R;
 import com.example.r3cy_mobileapp.UserAccount_OrderRating;
 import com.example.r3cy_mobileapp.User_account_manageOrder;
@@ -86,6 +87,25 @@ public class OrderAdapter extends BaseAdapter{
         holder.orderProductCount.setText(String.valueOf(o.getQuantity()));
         holder.orderProductPrice.setText(String.valueOf(o.getProductPrice()));
         holder.orderTotalPrice.setText(String.format(Locale.getDefault(), "%.0f đ", o.getTotalOrderValue()));
+
+        holder.orderProductName.setTag(position);
+        holder.orderProductName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int clickedPosition = (int) v.getTag();
+
+                Order clickedOrder = orders.get(clickedPosition);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("ORDER", (Serializable) clickedOrder);
+                bundle.putString("key_email", email);
+
+                Intent intent = new Intent(context, Order_Details.class);
+                intent.putExtra("Package", bundle);
+                intent.putExtra("ORDER_ID", o.getOrderID());
+                context.startActivity(intent);
+            }
+        });
 
 
         holder.btndanhgia.setTag(position);

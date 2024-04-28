@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import com.example.models.Address;
 import com.example.models.Blog;
 import com.example.models.Customer;
+import com.example.models.Order;
 import com.example.models.Product;
 import com.example.models.ProductAtb;
 import com.example.models.UserInfo;
@@ -1997,6 +1998,48 @@ public class R3cyDB extends SQLiteOpenHelper {
         }
         db.close();
         return productId;// Close the database
+    }
+    @SuppressLint("Range")
+    public  int getOrderByID (int OrderId){
+        SQLiteDatabase db = getReadableDatabase();
+        Order order = null;
+        Cursor cursor = null;
+//        try {
+            int orderId = -1;
+            String query = "SELECT * FROM " + TBl_ORDER + " WHERE " + ORDER_ID + " = ?";
+            cursor = db.rawQuery(query, new String[]{String.valueOf(OrderId)});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                // Lấy dữ liệu từ cột trong Cursor và tạo đối tượng
+                orderId = cursor.getInt(cursor.getColumnIndex(R3cyDB.ORDER_ID));
+//                @SuppressLint("Range") int OrderLineID = cursor.getInt(cursor.getColumnIndex(R3cyDB.ORDER_LINE_ID));
+//                @SuppressLint("Range") int OrderLineProductID = cursor.getInt(cursor.getColumnIndex(R3cyDB.ORDER_LINE_PRODUCT_ID));
+//                @SuppressLint("Range") double OrderSalePrice = cursor.getDouble(cursor.getColumnIndex(R3cyDB.ORDER_SALE_PRICE));
+//                @SuppressLint("Range") double ProductPrice = cursor.getDouble(cursor.getColumnIndex(R3cyDB.PRODUCT_PRICE));
+//                @SuppressLint("Range") String Quantity = cursor.getString(cursor.getColumnIndex(R3cyDB.QUANTITY));
+//                @SuppressLint("Range") int OrderCustomerID = cursor.getInt(cursor.getColumnIndex(R3cyDB.ORDER_CUSTOMER_ID));
+//                @SuppressLint("Range") double TotalOrderValue = cursor.getDouble(cursor.getColumnIndex(R3cyDB.TOTAL_ORDER_VALUE));
+//                @SuppressLint("Range") String OrderStatus = cursor.getString(cursor.getColumnIndex(R3cyDB.ORDER_STATUS));
+//                @SuppressLint("Range") double TotalAmount = cursor.getDouble(cursor.getColumnIndex(R3cyDB.TOTAL_AMOUNT));
+//                @SuppressLint("Range") byte[] ProductImg = cursor.getBlob(cursor.getColumnIndex(R3cyDB.PRODUCT_THUMB));
+//                @SuppressLint("Range") String ProductName = cursor.getString(cursor.getColumnIndex(R3cyDB.PRODUCT_NAME));
+//
+//                // Khởi tạo đối tượng với dữ liệu từ cơ sở dữ liệu
+//                 order = new Order(orderId, OrderLineID, OrderLineProductID, OrderSalePrice, Quantity, OrderCustomerID, ProductPrice, TotalOrderValue, OrderStatus, TotalAmount, ProductImg, ProductName);
+
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            // Xử lý ngoại lệ nếu có
+//        } finally {
+//            // Đóng Cursor
+//            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+//        }
+        return orderId;
+
     }
 
 }
