@@ -28,24 +28,46 @@
         app:layout_constraintVertical_bias="0.15"
         />
 
+
+<!--    <TextView-->
+<!--        android:id="@+id/order_productcount"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textSize="18sp"-->
+<!--        android:text="x1"-->
+<!--        android:layout_marginTop="25dp"-->
+<!--        app:layout_constraintStart_toEndOf="@id/order_productimg"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/order_productname"-->
+<!--        app:layout_constraintVertical_bias="0.55"-->
+<!--        />-->
+    <TextView
+        android:id="@+id/txt_productcount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="Số lượng: "
+        app:layout_constraintStart_toEndOf="@id/order_productimg"
+        app:layout_constraintTop_toBottomOf="@id/order_productname"
+        app:layout_constraintVertical_bias="0.05"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
     <TextView
         android:id="@+id/order_productcount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:text="x1"
-        android:layout_marginTop="25dp"
-        app:layout_constraintStart_toEndOf="@id/order_productimg"
+        app:layout_constraintStart_toEndOf="@id/txt_productcount"
         app:layout_constraintTop_toBottomOf="@id/order_productname"
-        app:layout_constraintVertical_bias="0.55"
-        />
+        app:layout_constraintVertical_bias="0.05"
+        app:layout_constraintBottom_toBottomOf="parent"/>
     <TextView
         android:id="@+id/order_productprice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:text="126.000đ"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="35dp"
         app:layout_constraintStart_toEndOf="@id/order_productcount"
         app:layout_constraintTop_toBottomOf="@id/order_productname"
         app:layout_constraintVertical_bias="0.35"

@@ -10,27 +10,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/faqs_item_question_background">
+        android:background="@drawable/faqs_item_question_background"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="10">
             <TextView
                 android:padding="10dp"
                 android:id="@+id/txtq1"
-                android:layout_width="320dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Phải làm gì khi sản phẩm hư hỏng quá hạn bảo hành ?"
                 android:textStyle="bold"
                 android:textSize="13sp"
-                />
+                android:layout_weight="7"/>
             <ImageView
                 android:id="@+id/btnhide"
                 android:layout_width="40dp"
                 android:layout_height="50dp"
                 android:src="@drawable/icon_right"
-                />
+                android:layout_weight="3"/>
         </LinearLayout>
 
         <TextView
