@@ -68,6 +68,8 @@ public class OrderManage_tatca_Fragment extends Fragment {
     String email;
     Customer customer;
     Context context;
+    int OrderLineId;
+    int OrderId;
 
 
 
@@ -146,7 +148,9 @@ public class OrderManage_tatca_Fragment extends Fragment {
 
         int customerId = dbR3cy.getCustomerIdFromCustomer(email);
         Log.d("SharedPreferences", "Email ở Fragment: " + email);
-        String orderStatus = dbR3cy.getOrderStatus("Chờ xử lý");
+//        String orderStatus = dbR3cy.getOrderStatus("Chờ xử lý");
+        int OrderIDs = dbR3cy.getOrderByID(OrderId);
+//        int orderLineId = dbR3cy.getFirstOrderLineByID(OrderLineId);
         List<Order> orders = new ArrayList<>();
         SQLiteDatabase db = dbR3cy.getReadableDatabase();
         Cursor cursor = null;
@@ -155,29 +159,27 @@ public class OrderManage_tatca_Fragment extends Fragment {
         try {
 
             String query = "SELECT " +
-                        "o." + R3cyDB.ORDER_ID + ", " +
-                        "ol." + R3cyDB.ORDER_LINE_ID + ", " +
-                        "ol." + R3cyDB.ORDER_LINE_ORDER_ID + ", " +
-                        "ol." + R3cyDB.ORDER_LINE_PRODUCT_ID + ", " +
-                        "ol." + R3cyDB.ORDER_SALE_PRICE + ", " +
-                        "ol." + R3cyDB.QUANTITY + ", " +
-                        "o." + R3cyDB.ORDER_CUSTOMER_ID + ", " +
-                        "o." + R3cyDB.TOTAL_ORDER_VALUE + ", " +
-                        "o." + R3cyDB.ORDER_STATUS + ", " +
-                        "o." + R3cyDB.TOTAL_AMOUNT + ", " +
-                        "p." + R3cyDB.PRODUCT_THUMB + ", " +
-                        "p." + R3cyDB.PRODUCT_NAME + ", " +
-                        "p." + R3cyDB.PRODUCT_PRICE + ", " +
-                        "c." + R3cyDB.CUSTOMER_ID + ", " +
-                        "p." + R3cyDB.PRODUCT_ID +
-                        " FROM " + R3cyDB.TBl_ORDER + " o " + " " +
-                        " INNER JOIN " + R3cyDB.TBl_ORDER_LINE + " ol " +
-                        " ON o." + R3cyDB.ORDER_ID + " = ol." + R3cyDB.ORDER_LINE_ORDER_ID + " " +
-                        " INNER JOIN " + R3cyDB.TBl_PRODUCT + " p " +
-                        " ON ol." + R3cyDB.ORDER_LINE_PRODUCT_ID + " = p." + R3cyDB.PRODUCT_ID +
-                        " INNER JOIN " + R3cyDB.TBL_CUSTOMER + " c " +
-                        " ON o." + R3cyDB.ORDER_CUSTOMER_ID + " = c." + R3cyDB.CUSTOMER_ID +
-                        " WHERE o. " + R3cyDB.ORDER_CUSTOMER_ID + " = " + customerId ;
+                    "o." + R3cyDB.ORDER_ID + ", " +
+                    "MIN(ol." + R3cyDB.ORDER_LINE_ID + ") AS " + R3cyDB.ORDER_LINE_ID + ", " +
+                    "ol." + R3cyDB.ORDER_LINE_ORDER_ID + ", " +
+                    "ol." + R3cyDB.ORDER_LINE_PRODUCT_ID + ", " +
+                    "ol." + R3cyDB.ORDER_SALE_PRICE + ", " +
+                    "ol." + R3cyDB.QUANTITY + ", " +
+                    "o." + R3cyDB.ORDER_CUSTOMER_ID + ", " +
+                    "o." + R3cyDB.TOTAL_ORDER_VALUE + ", " +
+                    "o." + R3cyDB.ORDER_STATUS + ", " +
+                    "o." + R3cyDB.TOTAL_AMOUNT + ", " +
+                    "p." + R3cyDB.PRODUCT_THUMB + ", " +
+                    "p." + R3cyDB.PRODUCT_NAME + ", " +
+                    "p." + R3cyDB.PRODUCT_PRICE + ", " +
+                    "p." + R3cyDB.PRODUCT_ID +
+                    " FROM " + R3cyDB.TBl_ORDER + " o " +
+                    " INNER JOIN " + R3cyDB.TBl_ORDER_LINE + " ol" +
+                    " ON o." + R3cyDB.ORDER_ID + " = ol." + R3cyDB.ORDER_LINE_ORDER_ID +
+                    " INNER JOIN " + R3cyDB.TBl_PRODUCT + " p" +
+                    " ON ol." + R3cyDB.ORDER_LINE_PRODUCT_ID + " = p." + R3cyDB.PRODUCT_ID +
+                    " WHERE o." + R3cyDB.ORDER_CUSTOMER_ID + " = " + customerId +
+                    " GROUP BY o." + R3cyDB.ORDER_ID;
 
 
             cursor = db.rawQuery(query, null);
@@ -186,7 +188,7 @@ public class OrderManage_tatca_Fragment extends Fragment {
             {
 
                 do {
-                    @SuppressLint("Range") int OrderId = cursor.getInt(cursor.getColumnIndex(R3cyDB.ORDER_ID));
+                    @SuppressLint("Range") int OrderID = cursor.getInt(cursor.getColumnIndex(R3cyDB.ORDER_ID));
                     @SuppressLint("Range") int OrderLineID = cursor.getInt(cursor.getColumnIndex(R3cyDB.ORDER_LINE_ID));
                     @SuppressLint("Range") int OrderLineProductID = cursor.getInt(cursor.getColumnIndex(R3cyDB.ORDER_LINE_PRODUCT_ID));
                     @SuppressLint("Range") double OrderSalePrice = cursor.getDouble(cursor.getColumnIndex(R3cyDB.ORDER_SALE_PRICE));
@@ -199,7 +201,7 @@ public class OrderManage_tatca_Fragment extends Fragment {
                     @SuppressLint("Range") byte[] ProductImg = cursor.getBlob(cursor.getColumnIndex(R3cyDB.PRODUCT_THUMB));
                     @SuppressLint("Range") String ProductName = cursor.getString(cursor.getColumnIndex(R3cyDB.PRODUCT_NAME));
 
-                    Order order = new Order(OrderId, OrderLineID, OrderLineProductID, OrderSalePrice, Quantity, OrderCustomerID, ProductPrice, TotalOrderValue, OrderStatus, TotalAmount, ProductImg, ProductName);
+                    Order order = new Order(OrderID, OrderLineID, OrderLineProductID, OrderSalePrice, Quantity, OrderCustomerID, ProductPrice, TotalOrderValue, OrderStatus, TotalAmount, ProductImg, ProductName);
                     orders.add(order);
                 } while (cursor.moveToNext());
             } else {

@@ -128,7 +128,7 @@ public class OrderManage_choxuly_Fragment extends Fragment {
         try {
             String query = "SELECT " +
                     "o." + R3cyDB.ORDER_ID + ", " +
-                    "ol." + R3cyDB.ORDER_LINE_ID + ", " +
+                    "MIN(ol." + R3cyDB.ORDER_LINE_ID + ") AS " + R3cyDB.ORDER_LINE_ID + ", " +
                     "ol." + R3cyDB.ORDER_LINE_ORDER_ID + ", " +
                     "ol." + R3cyDB.ORDER_LINE_PRODUCT_ID + ", " +
                     "ol." + R3cyDB.ORDER_SALE_PRICE + ", " +
@@ -147,7 +147,8 @@ public class OrderManage_choxuly_Fragment extends Fragment {
                     " INNER JOIN " + R3cyDB.TBl_PRODUCT + " p" +
                     " ON ol." + R3cyDB.ORDER_LINE_PRODUCT_ID + " = p." + R3cyDB.PRODUCT_ID +
                     " WHERE o. " + R3cyDB.ORDER_CUSTOMER_ID + " = " + customerId + " AND o."
-                    + R3cyDB.ORDER_STATUS + " LIKE '%" + orderStatus + "%'";
+                    + R3cyDB.ORDER_STATUS + " LIKE '%" + orderStatus + "%'"
+                    + " GROUP BY o." + R3cyDB.ORDER_ID;
 
             cursor = db.rawQuery(query, null);
 

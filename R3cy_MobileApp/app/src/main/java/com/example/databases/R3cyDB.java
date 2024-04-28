@@ -2041,5 +2041,23 @@ public class R3cyDB extends SQLiteOpenHelper {
         return orderId;
 
     }
+//    @SuppressLint("Range")
+//    public int getFirstOrderLineByID(int OrderLineId) {
+//        SQLiteDatabase db = getReadableDatabase();
+//        int minOrderLineId = -1;
+//        Cursor cursor = null;
+//
+//            String query = "SELECT MIN(" + ORDER_LINE_ID + ") FROM " + TBl_ORDER_LINE + " WHERE " + ORDER_LINE_ORDER_ID + " = ?";
+//            cursor = db.rawQuery(query, new String[]{String.valueOf(OrderLineId)});
+//
+//            if (cursor != null && cursor.moveToFirst()) {
+//                minOrderLineId = cursor.getInt(0);
+//                cursor.close();
+//            }
+//            db.close();
+////
+//
+//        return minOrderLineId;
+//    }
 
 }
