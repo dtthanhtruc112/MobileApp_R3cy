@@ -97,6 +97,7 @@ public class User_account_manageOrder extends AppCompatActivity {
                         break;
                     case 4:
                         tab.setText("Hoàn thành");
+                        break;
                     case 5:
                         tab.setText("Đã hủy");
                         break;
