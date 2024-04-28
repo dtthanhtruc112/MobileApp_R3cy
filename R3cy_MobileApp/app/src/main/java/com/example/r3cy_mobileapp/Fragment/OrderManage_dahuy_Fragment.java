@@ -119,7 +119,7 @@ public class OrderManage_dahuy_Fragment extends Fragment {
         int customerId = dbR3cy.getCustomerIdFromCustomer(email);
         Log.d("SharedPreferences", "Email ở Fragment: " + email);
 
-        String orderStatus = dbR3cy.getOrderStatus("Chờ lấy hàng");
+        String orderStatus = dbR3cy.getOrderStatus("Đã hủy");
         List<Order> orders = new ArrayList<>();
         SQLiteDatabase db = dbR3cy.getReadableDatabase();
         Cursor cursor = null;
