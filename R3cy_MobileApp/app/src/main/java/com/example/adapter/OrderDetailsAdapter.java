@@ -24,6 +24,7 @@ import com.example.r3cy_mobileapp.UserAccount_OrderRating;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -76,7 +77,9 @@ public class OrderDetailsAdapter extends BaseAdapter {
         Order o = orders.get(position);
         holder.orderProductName.setText(o.getProductName());
         holder.orderProductCount.setText(String.valueOf(o.getQuantity()));
-        holder.orderProductPrice.setText(String.valueOf(o.getProductPrice()));
+
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
+        holder.orderProductPrice.setText(numberFormat.format(o.getProductPrice()));
 
         byte[] productImg = o.getProductImg();
         if (productImg != null) {

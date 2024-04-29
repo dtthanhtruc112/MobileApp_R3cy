@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorWindow;
 import android.database.sqlite.SQLiteDatabase;
@@ -39,17 +40,26 @@ public class Order_Details extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityOrderDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("Package");
-        email = bundle.getString("key_email");
-//        OrderId = bundle.getInt("ORDER_ID");
-        OrderId = getIntent().getIntExtra("ORDER_ID", OrderId);
-        Log.d("Intent", "OrderId: " + OrderId);
+//        Intent intent = getIntent();
+//        Bundle bundle = intent.getBundleExtra("Package");
+//        email = bundle.getString("key_email");
+////        OrderId = bundle.getInt("ORDER_ID");
+//        OrderId = getIntent().getIntExtra("ORDER_ID", OrderId);
+//        Log.d("Intent", "OrderId: " + OrderId);
+//
+////        email = getIntent().getStringExtra("key_email");
+//        Log.d("Intent", "Email ở orderrating: " + email);
+////        email = getIntent().getStringExtra("key_email");
+//        Log.d("SharedPreferences", "Email : " + email);
 
-//        email = getIntent().getStringExtra("key_email");
-        Log.d("Intent", "Email ở orderrating: " + email);
-//        email = getIntent().getStringExtra("key_email");
-        Log.d("SharedPreferences", "Email : " + email);
+        // Lấy dữ liệu từ SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        email = sharedPreferences.getString("EMAIL", "");
+        OrderId = sharedPreferences.getInt("ORDER_ID", -1); // -1 là giá trị mặc định nếu không tìm thấy orderId
+
+        Log.d("OrderDetails", "Email: " + email);
+        Log.d("OrderDetails", "OrderId: " + OrderId);
+
         try {
             Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
             field.setAccessible(true);

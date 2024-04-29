@@ -3,6 +3,7 @@ package com.example.adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.example.r3cy_mobileapp.UserAccount_OrderRating;
 import com.example.r3cy_mobileapp.User_account_manageOrder;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -85,27 +87,50 @@ public class OrderAdapter extends BaseAdapter{
         holder.orderStatus.setText(o.getOrderStatus());
         holder.orderProductName.setText(o.getProductName());
         holder.orderProductCount.setText(String.valueOf(o.getQuantity()));
-        holder.orderProductPrice.setText(String.valueOf(o.getProductPrice()));
-        holder.orderTotalPrice.setText(String.format(Locale.getDefault(), "%.0f đ", o.getTotalOrderValue()));
+
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
+        holder.orderProductPrice.setText(numberFormat.format(o.getProductPrice()));
+        holder.orderTotalPrice.setText(numberFormat.format(o.getTotalOrderValue()));
+
 
         holder.orderProductName.setTag(position);
+//        holder.orderProductName.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                int clickedPosition = (int) v.getTag();
+//
+//                Order clickedOrder = orders.get(clickedPosition);
+//
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("ORDER", (Serializable) clickedOrder);
+//                bundle.putString("key_email", email);
+//
+//                Intent intent = new Intent(context, Order_Details.class);
+//                intent.putExtra("Package", bundle);
+//                intent.putExtra("ORDER_ID", o.getOrderID());
+//                context.startActivity(intent);
+//            }
+//        });
+
         holder.orderProductName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int clickedPosition = (int) v.getTag();
-
                 Order clickedOrder = orders.get(clickedPosition);
 
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("ORDER", (Serializable) clickedOrder);
-                bundle.putString("key_email", email);
+                // Lưu dữ liệu vào SharedPreferences
+                SharedPreferences sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("ORDER_ID", clickedOrder.getOrderID());
+                editor.putString("EMAIL", email);
+                editor.apply();
 
+                // Khởi tạo Intent và chuyển sang Activity mới
                 Intent intent = new Intent(context, Order_Details.class);
-                intent.putExtra("Package", bundle);
-                intent.putExtra("ORDER_ID", o.getOrderID());
                 context.startActivity(intent);
             }
         });
+
 
 
         holder.btndanhgia.setTag(position);
