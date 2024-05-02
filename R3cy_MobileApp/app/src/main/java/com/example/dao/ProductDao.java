@@ -219,7 +219,7 @@ public class ProductDao {
         // Chuyển đổi thành chuỗi theo định dạng đã xác định
         return dateFormat.format(currentDate);
     }
-    public boolean createOrder(int customerId, double totalOrderValue, double shippingFee, double  couponOrder, double couponShipping, double totalAmount, int couponId, String notes, ArrayList<CartItem> cartItems, String selectedPaymentMethod, String orderStatus, int addressId ) {
+    public long createOrder(int customerId, double totalOrderValue, double shippingFee, double  couponOrder, double couponShipping, double totalAmount, int couponId, String notes, ArrayList<CartItem> cartItems, String selectedPaymentMethod, String orderStatus, int addressId ) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues orderValues = new ContentValues();
         orderValues.put(R3cyDB.ORDER_CUSTOMER_ID, customerId);
@@ -238,7 +238,7 @@ public class ProductDao {
 
         long orderId = db.insert(R3cyDB.TBl_ORDER, null, orderValues);
         if (orderId == -1) {
-            return false;
+            return -1;
         }
 
         for (CartItem item : cartItems) {
@@ -250,12 +250,12 @@ public class ProductDao {
 
             long orderLineId = db.insert(TBl_ORDER_LINE, null, orderLineValues);
             if (orderLineId == -1) {
-                return false;
+                return -1;
             }
         }
 
         db.close();
-        return true;
+        return orderId;
     }
 
     @SuppressLint("Range")
