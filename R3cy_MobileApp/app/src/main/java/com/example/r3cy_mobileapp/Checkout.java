@@ -401,8 +401,8 @@ public class Checkout extends AppCompatActivity {
             }
 
             notes = binding.edtNotes.getText().toString();
-            boolean orderCreated = productDao.createOrder(customerId, totalOrderValue, shippingFee, couponOrder, couponShipping, totalAmount, couponid, notes, selectedItems, selectedPaymentMethod, "Chờ xử lý", selectedAddress);
-            if (orderCreated) {
+            long orderCreated = productDao.createOrder(customerId, totalOrderValue, shippingFee, couponOrder, couponShipping, totalAmount, couponid, notes, selectedItems, selectedPaymentMethod, "Chờ xử lý", selectedAddress);
+            if (orderCreated != -1) {
                 // Xóa các mục đã chọn khỏi giỏ hàng sau khi đặt hàng thành công
                 for (CartItem item : selectedItems) {
                     productDao.deleteCartItem(item.getLineId());
@@ -425,6 +425,8 @@ public class Checkout extends AppCompatActivity {
 
                 // Sau khi đặt hàng thành công trong phương thức makeOrder()
                 Intent successIntent = new Intent("com.example.r3cy_mobileapp.ACTION_ORDER_SUCCESS");
+                successIntent.putExtra("message", "Bạn đã đặt hàng " + orderCreated + " thành công");
+                Log.d("CheckOut","Đã gửi broadcast với ID đơn hàng là " + orderCreated);
                 sendBroadcast(successIntent);
             } else {
                 Toast.makeText(Checkout.this, "Đặt hàng thất bại! Vui lòng thử lại.", Toast.LENGTH_SHORT).show();

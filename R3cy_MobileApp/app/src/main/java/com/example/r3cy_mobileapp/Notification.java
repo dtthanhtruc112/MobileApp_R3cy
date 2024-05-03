@@ -38,6 +38,7 @@ public class Notification extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
+            Log.d("Notification","Message receiver: " + message);
             if (message != null) {
                 notifications.add(message);
                 adapter.notifyDataSetChanged();
@@ -49,9 +50,14 @@ public class Notification extends AppCompatActivity {
     private BroadcastReceiver orderSuccessReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String message = "Đơn hàng đã tạo thành công";
-            notifications.add(message);
-            adapter.notifyDataSetChanged();
+            String message = intent.getStringExtra("message");
+            Log.d("Notification","Message orderSuccessReceiver: " + message);
+            if (message != null) {
+                notifications.add(message);
+                adapter.notifyDataSetChanged();
+                Log.d("Notification","Add message vào noti thành công và thông báo adapter thay đổi data");
+            }
+            recreate();
         }
     };
 

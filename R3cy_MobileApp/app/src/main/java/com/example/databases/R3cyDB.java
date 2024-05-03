@@ -42,7 +42,7 @@ public class R3cyDB extends SQLiteOpenHelper {
     ArrayList<Product> products;
     public static final String DATABASE_NAME = "r3cy_database.db";
     // Phiên bản cơ sở dữ liệu
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     // Tên các bảng trong cơ sở dữ liệu
     public static final String TBL_CUSTOMER = "CUSTOMER";
