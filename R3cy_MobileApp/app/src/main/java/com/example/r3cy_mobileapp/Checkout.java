@@ -130,7 +130,6 @@ public class Checkout extends AppCompatActivity {
                     if(couponOrder > voucherCheckout.getMAXIMUM_DISCOUNT()){
                         couponOrder = voucherCheckout.getMAXIMUM_DISCOUNT();
                     }
-                    couponDiscount = couponOrder;
                 }else
                 {
                     couponShipping = voucherCheckout.getCOUPON_VALUE()*shippingFee;
@@ -140,7 +139,6 @@ public class Checkout extends AppCompatActivity {
                             couponShipping = shippingFee;
                         }
                     }
-                    couponDiscount = couponShipping;
                 }
             } else {
                 if("order".equals(voucherCheckout.getCOUPON_CATEGORY())){
@@ -338,7 +336,6 @@ public class Checkout extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 voucherIdFromIntent = data.getIntExtra("COUPON_ID", -1);
                 Log.d("VoucherCheckout", "COUPON_ID: "+   voucherIdFromIntent);
-//                processVoucher(voucherIdFromIntent);
                 displayVoucher();
 
             }
