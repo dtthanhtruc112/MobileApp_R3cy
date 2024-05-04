@@ -160,9 +160,9 @@ public class UserAccount_Main extends AppCompatActivity {
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
 
-                byte[] BookImage = cursor.getBlob(1);
+                byte[] ImgAva = cursor.getBlob(1);
 
-                Bitmap bitmap = BitmapFactory.decodeByteArray(BookImage, 0, BookImage.length);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(ImgAva, 0, ImgAva.length);
                 editavar.setImageBitmap(bitmap);
 
             } else {
@@ -170,8 +170,7 @@ public class UserAccount_Main extends AppCompatActivity {
                 finish();
             }
         } catch (Exception e) {
-            Log.e("EditBook", "Lỗi truy vấn database: " + e.getMessage());
-            Toast.makeText(this, "Lỗi xảy ra, vui lòng thử lại", Toast.LENGTH_SHORT).show();
+            Log.e("MainAccount", "Lỗi truy vấn database: " + e.getMessage());
         } finally {
             db.close(); // Đóng database
         }
