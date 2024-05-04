@@ -30,7 +30,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Locale;
 
 public class Checkout extends AppCompatActivity {
@@ -401,21 +403,43 @@ public class Checkout extends AppCompatActivity {
                 productDao.accumulateMembershipScore(customerId, totalOrderValue);
                 double roundedValueScore = Math.round(totalOrderValue / 3000);
 
+                // Lưu thông báo xuống SQLite
+                String headerOrderSuccess = "Đặt hàng thành công!";
+                String contentOrderSuccess = "Bạn đã đặt đơn hàng " + orderCreated + " thành công.";
+                String createdAtOrderSuccess = getCurrentDateTime();
+                db.saveNotification(customerId, headerOrderSuccess, contentOrderSuccess, createdAtOrderSuccess);
+                Log.d("CheckOut","OrderSuccess - customer id: " + customerId + ", header: " + headerOrderSuccess + ", content: " + contentOrderSuccess + ", createdAt: " + createdAtOrderSuccess);
+
+                String headerAccScore = "Tích điểm thành công!";
+                String contentAccScore = "Bạn đã tích " + roundedValueScore + " điểm thành công.";
+                String createdAtAccScore = getCurrentDateTime();
+                db.saveNotification(customerId, headerAccScore, contentAccScore, createdAtAccScore);
+                Log.d("CheckOut","AccScore - customer id: " + customerId + ", header: " + headerAccScore + ", content: " + contentAccScore + ", createdAt: " + createdAtAccScore);
+
                 Toast.makeText(Checkout.this, "Đặt hàng thành công! Quy đổi thành công " + roundedValueScore + " điểm", Toast.LENGTH_SHORT).show();
+
+                // Sau khi đặt hàng thành công trong phương thức makeOrder()
+                Log.d("CheckOut","Đã gửi broadcast với ID đơn hàng là " + orderCreated);
+
                 // Đặt các thao tác hoặc chuyển hướng sau khi đặt hàng thành công
                 Intent intent = new Intent(Checkout.this, TrangChu.class);
                 intent.putExtra("key_email", email);
                 startActivity(intent);
-
-                // Sau khi đặt hàng thành công trong phương thức makeOrder()
-                Intent successIntent = new Intent("com.example.r3cy_mobileapp.ACTION_ORDER_SUCCESS");
-                successIntent.putExtra("message", "Bạn đã đặt hàng " + orderCreated + " thành công");
-                Log.d("CheckOut","Đã gửi broadcast với ID đơn hàng là " + orderCreated);
-                sendBroadcast(successIntent);
             } else {
                 Toast.makeText(Checkout.this, "Đặt hàng thất bại! Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public String getCurrentDateTime() {
+        // Tạo đối tượng Calendar để lấy thời gian hiện tại
+        Calendar calendar = Calendar.getInstance();
+
+        // Định dạng ngày giờ
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy", Locale.getDefault());
+
+        // Lấy thời gian hiện tại và định dạng theo dateFormat
+        return dateFormat.format(calendar.getTime());
     }
 
     private void checkAddress() {

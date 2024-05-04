@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import com.example.models.Address;
 import com.example.models.Blog;
 import com.example.models.Customer;
+import com.example.models.Notification;
 import com.example.models.Order;
 import com.example.models.Product;
 import com.example.models.ProductAtb;
@@ -29,9 +30,13 @@ import com.example.r3cy_mobileapp.R;
 
 import java.io.ByteArrayOutputStream;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +47,7 @@ public class R3cyDB extends SQLiteOpenHelper {
     ArrayList<Product> products;
     public static final String DATABASE_NAME = "r3cy_database.db";
     // Phiên bản cơ sở dữ liệu
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
 
     // Tên các bảng trong cơ sở dữ liệu
     public static final String TBL_CUSTOMER = "CUSTOMER";
@@ -58,6 +63,8 @@ public class R3cyDB extends SQLiteOpenHelper {
     public static final String TBL_WISHLIST = "WISHLIST";
     public static final String TBL_BLOG = "BLOG";
     public static final String TBL_CUSTOMPRODUCT = "CUSTOMPRODUCT";
+    public static final String TBL_NOTIFICATION = "NOTIFICATION";
+
 
     // Các cột của bảng Customer
     public static final String CUSTOMER_ID = "CustomerID";
@@ -193,6 +200,11 @@ public class R3cyDB extends SQLiteOpenHelper {
     public static final String CUSTOMPRODUCT_TITLE = "CustomTitle";
     public static final String CUSTOMPRODUCT_DESFILE = "DesFile";
 
+    // Các cột của bảng Notification
+    public static final String NOTIFICATION_ID = "NotificationID";
+    public static final String HEADER = "Header";
+    public static final String CONTENT = "Content";
+    public static final String CREATED_AT = "CreatedAt";
 
 //    Tạo constructor
 
@@ -217,6 +229,7 @@ public class R3cyDB extends SQLiteOpenHelper {
         db.execSQL(CREATE_TBL_BLOG);
         db.execSQL(CREATE_TBL_CUSTOMPRODUCT);
         db.execSQL(CREATE_TBL_CUSTOMER);
+        db.execSQL(CREATE_TBL_NOTIFICATION);
     }
 
     @Override
@@ -235,10 +248,20 @@ public class R3cyDB extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TBL_BLOG);
         db.execSQL("DROP TABLE IF EXISTS " + TBL_CUSTOMPRODUCT);
         db.execSQL("DROP TABLE IF EXISTS " + TBL_CUSTOMER);
+        db.execSQL("DROP TABLE IF EXISTS " + TBL_NOTIFICATION);
 
         // Tạo lại bảng mới
         onCreate(db);
     }
+
+    // Câu lệnh tạo bảng Notification
+    private static final String CREATE_TBL_NOTIFICATION = "CREATE TABLE IF NOT EXISTS " + TBL_NOTIFICATION + "(" +
+            NOTIFICATION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            HEADER + " TEXT," +
+            CONTENT + " TEXT," +
+            CUSTOMER_ID + " INTEGER REFERENCES " + TBL_CUSTOMER + "(" + CUSTOMER_ID + ")," +
+            CREATED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP" +
+            ")";
 
     // Câu lệnh tạo bảng PRODUCT
     private static final String CREATE_TBL_PRODUCT = "CREATE TABLE IF NOT EXISTS " + TBl_PRODUCT + "(" +
@@ -2060,4 +2083,60 @@ public class R3cyDB extends SQLiteOpenHelper {
 //        return minOrderLineId;
 //    }
 
+    public long saveNotification(int customerId, String header, String content, String createdAt) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(CUSTOMER_ID, customerId);
+        values.put(HEADER, header);
+        values.put(CONTENT, content);
+        values.put(CREATED_AT, createdAt);
+        long id = db.insert(TBL_NOTIFICATION, null, values);
+        db.close();
+        Log.d("Notification DB","Lưu notification xuống database thành công");
+        return id;
+    }
+    public ArrayList<String[]> getNotificationsByCustomerId(int customerId) {
+        ArrayList<String[]> notifications = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT Header, Content, CreatedAt FROM notification WHERE customerId = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(customerId)});
+
+        if (cursor.moveToFirst()) {
+            int headerIndex = cursor.getColumnIndexOrThrow("Header");
+            int contentIndex = cursor.getColumnIndexOrThrow("Content");
+            int createdAtIndex = cursor.getColumnIndexOrThrow("CreatedAt");
+
+            do {
+                String header = cursor.getString(headerIndex);
+                String content = cursor.getString(contentIndex);
+                String createdAt = cursor.getString(createdAtIndex);
+
+                String[] notification = {header, content, createdAt};
+                notifications.add(notification);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        // Sắp xếp danh sách theo createdAt từ gần đây nhất đến xa nhất
+        Collections.sort(notifications, new Comparator<String[]>() {
+            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+
+            @Override
+            public int compare(String[] notification1, String[] notification2) {
+                try {
+                    Date date1 = dateFormat.parse(notification1[2]);
+                    Date date2 = dateFormat.parse(notification2[2]);
+                    return date2.compareTo(date1); // So sánh theo thứ tự giảm dần
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    return 0;
+                }
+            }
+        });
+
+        return notifications;
+    }
 }

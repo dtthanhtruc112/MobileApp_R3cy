@@ -26,6 +26,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -263,10 +264,16 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
             builder.setIcon(android.R.drawable.checkbox_on_background);
             builder.setMessage("Bạn đã đổi điểm Coupon " + coupon.getCOUPON_CODE() + " thành công. Hãy kiểm tra trong trang tài khoản nhé!");
 
-            Intent intent = new Intent("com.example.r3cy_mobileapp.ACTION_POINTS_ACCUMULATED");
-            intent.putExtra("message", "Đổi điểm thành công" + coupon.getCOUPON_CODE());
-            // Gửi broadcast
-            sendBroadcast(intent);
+            String headerDoiDiem = "Nhận voucher thành công!";
+            String contentDoiDiem = "Bạn đã nhận được voucher " + coupon.getCOUPON_TITLE() + " thành công.";
+            String createdAtDoiDiem = getCurrentDateTime();
+            db.saveNotification(customerId, headerDoiDiem, contentDoiDiem, createdAtDoiDiem);
+            Log.d("DoiDiem_ChiTiet","DoiDiem - customer id: " + customerId + ", header: " + headerDoiDiem + ", content: " + contentDoiDiem + ", createdAt: " + createdAtDoiDiem);
+
+//            Intent intent = new Intent("com.example.r3cy_mobileapp.ACTION_POINTS_ACCUMULATED");
+//            intent.putExtra("message", "Đổi điểm thành công" + coupon.getCOUPON_CODE());
+//            // Gửi broadcast
+//            sendBroadcast(intent);
 
             builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
@@ -291,6 +298,16 @@ public class DoiDiem_ChiTiet extends AppCompatActivity {
 
         reloadData();
 
+    }
+    public String getCurrentDateTime() {
+        // Tạo đối tượng Calendar để lấy thời gian hiện tại
+        Calendar calendar = Calendar.getInstance();
+
+        // Định dạng ngày giờ
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy", Locale.getDefault());
+
+        // Lấy thời gian hiện tại và định dạng theo dateFormat
+        return dateFormat.format(calendar.getTime());
     }
 
     private void reloadData() {
