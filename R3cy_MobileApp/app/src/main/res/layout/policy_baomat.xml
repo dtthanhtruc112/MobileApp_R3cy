@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:layout_height="match_parent">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="1. Mục đích và phạm vi thu thập thông tin:"
-        android:textSize="17sp"
-        android:textStyle="bold"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1. Mục đích và phạm vi thu thập thông tin:"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="
     R3cy thu thập thông tin cá nhân của khách hàng trên website nhằm mục đích:\n
       • Cung cấp sản phẩm theo đơn đặt hàng của khách hàng;\n
       • Liên hệ, xác nhận thông tin đơn đặt hàng và vận chuyển sản phẩm đến khách hàng;\n
@@ -22,114 +26,115 @@
       • Trả lời câu hỏi hoặc gửi tài liệu và thông tin theo yêu cầu của khách hàng;\n
       • Gửi đến khách hàng những thông tin khuyến mãi, ưu đãi, tri ân.\n
     Ngoài ra, R3cy cũng thu thập thông tin cá nhân của khách hàng để phục vụ cho mục tiêu bảo vệ môi trường, cụ thể là để khảo sát ý kiến khách hàng về các sản phẩm tái chế của R3cy.\n"
-        android:textSize="13sp"
-        android:justificationMode="inter_word"
-        />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="2. Phạm vi sử dụng thông tin:"
-        android:textSize="17sp"
-        android:textStyle="bold"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="
+            android:textSize="13sp"
+            android:justificationMode="inter_word"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2. Phạm vi sử dụng thông tin:"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="
    R3cy chỉ sử dụng thông tin cá nhân của khách hàng cho các mục đích đã thông báo và được sự đồng ý của khách hàng.\n
     • Đối với thông tin cá nhân thu thập cho mục đích cung cấp sản phẩm, R3cy sẽ sử dụng thông tin này để thực hiện các giao dịch mua bán, thanh toán, giao hàng, hỗ trợ khách hàng,...\n
     • Đối với thông tin cá nhân thu thập cho mục đích bảo vệ môi trường, R3cy sẽ sử dụng thông tin này để khảo sát ý kiến khách hàng về các sản phẩm tái chế của R3cy, nhằm cải thiện chất lượng sản phẩm và dịch vụ của R3cy.\n"
-        android:textSize="13sp"
-        android:justificationMode="inter_word"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="3. Thời gian lưu trữ thông tin:"
-        android:textSize="17sp"
-        android:textStyle="bold"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="
+            android:textSize="13sp"
+            android:justificationMode="inter_word"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="3. Thời gian lưu trữ thông tin:"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="
     Thông tin cá nhân của khách hàng sẽ được R3cy lưu trữ trên hệ thống máy chủ của R3cy cho đến khi có yêu cầu hủy bỏ từ chính khách hàng hoặc các trường hợp khác theo quy định của chính sách này hoặc theo quy định của pháp luật.\n"
-        android:textSize="13sp"
-        android:textAlignment="gravity"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="4. Những người hoặc tổ chức có thể được tiếp cận với thông tin:"
-        android:textSize="17sp"
-        android:textStyle="bold"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="
+            android:textSize="13sp"
+            android:textAlignment="gravity"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="4. Những người hoặc tổ chức có thể được tiếp cận với thông tin:"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="
     Thông tin cá nhân của khách hàng có thể bị tiết lộ trong những trường hợp sau:\n
     • Để vận chuyển hàng hóa đến khách hàng và/hoặc xử lý các vấn đề phát sinh liên quan đến đơn đặt hàng.\n
     • Thực hiện các nghĩa vụ cung cấp thông tin cá nhân theo yêu cầu của cơ quan Nhà nước có thẩm quyền hoặc theo quy định của pháp luật.\n
     • Để bảo vệ R3cy và các bên thứ ba khác: R3cy chỉ đưa ra thông tin tài khoản và những thông tin cá nhân khác khi tin chắc rằng việc đưa những thông tin đó là phù hợp với luật pháp, bảo vệ quyền lợi, tài sản của khách hàng và các bên thứ ba khác.\n
     • Ngoài những trường hợp được tiết lộ thông tin nêu trên, R3cy sẽ không cung cấp thông tin cá nhân của khách hàng cho một bên thứ ba mà không được sự cho phép của khách hàng.\n"
-        android:textSize="13sp"
-        android:justificationMode="inter_word"/>
+            android:textSize="13sp"
+            android:justificationMode="inter_word"/>
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="5. Địa chỉ của đơn vị thu thập và quản lý thông tin:"
-        android:textSize="17sp"
-        android:textStyle="bold"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="5. Địa chỉ của đơn vị thu thập và quản lý thông tin:"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="
     R3cy có trụ sở chính tại địa chỉ: Số 669 QL 1, KP. 3, P. Linh Xuân, TP. Thủ Đức, TP. Hồ Chí Minh\n
     • Email: infor3cy.com\n
     • Thực hiện các nghĩa vụ cung cấp thông tin cá nhân theo yêu cầu của cơ quan Nhà nước có thẩm quyền hoặc theo quy định của pháp luật.\n
     • Số điện thoại: 0123-456-789\n"
-        android:textSize="13sp"
-        android:justificationMode="inter_word"/>
+            android:textSize="13sp"
+            android:justificationMode="inter_word"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="6. Phương thức và công cụ tiếp cận và chỉnh sửa dữ liệu cá nhân:"
-        android:textSize="17sp"
-        android:textStyle="bold"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="6. Phương thức và công cụ tiếp cận và chỉnh sửa dữ liệu cá nhân:"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="
     Khách hàng có thể tiếp cận và chỉnh sửa dữ liệu cá nhân của mình đã cung cấp cho R3cy bằng cách liên hệ với R3cy theo thông tin liên hệ tại Mục 5 Chính sách này.\n"
-        android:textSize="13sp"
-        android:justificationMode="inter_word"/>
+            android:textSize="13sp"
+            android:justificationMode="inter_word"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="7. Cơ chế tiếp nhận và giải quyết khiếu nại của khách hàng:"
-        android:textSize="17sp"
-        android:textStyle="bold"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="7. Cơ chế tiếp nhận và giải quyết khiếu nại của khách hàng:"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="
     Các khiếu nại từ khách hàng về việc thông tin cá nhân bị sử dụng sai mục đích hoặc phạm vi đã thông báo sẽ được R3cy tiếp nhận thông qua các phương thức liên lạc tại Mục 5 Chính sách này. R3cy sẽ cử nhân sự có liên quan giải quyết khiếu nại của khách hàng trong thời hạn 10 ngày làm việc kể từ thời điểm R3cy nhận được khiếu nại.\n"
-        android:textSize="13sp"
-        android:justificationMode="inter_word"/>
+            android:textSize="13sp"
+            android:justificationMode="inter_word"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="8. Cam kết bảo mật thông tin cá nhân của khách hàng:"
-        android:textSize="17sp"
-        android:textStyle="bold"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="8. Cam kết bảo mật thông tin cá nhân của khách hàng:"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="
     R3cy cam kết bảo mật thông tin cá nhân của khách hàng theo đúng quy định của pháp luật Việt Nam.\n"
-        android:textSize="13sp"
-        android:justificationMode="inter_word"
-        android:textAlignment="gravity"/>
+            android:textSize="13sp"
+            android:layout_marginBottom="200dp"
+            android:textAlignment="gravity"/>
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -66,14 +66,20 @@
 <!--                android:layout_width="match_parent"-->
 <!--                android:layout_height="match_parent"-->
 <!--                >-->
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/pagerfaq"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+
+
 
 <!--            </ScrollView>-->
         <!--    </com.example.customs.NonScrollListView>-->
     </LinearLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/pagerfaq"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="60dp"
+        />
 <!--    </ScrollView>-->
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
