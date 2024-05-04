@@ -39,6 +39,7 @@ public class OrderAdapter extends BaseAdapter{
     List<Order> orders;
     String email;
     R3cyDB db;
+    NumberFormat numberFormat;
 
     public OrderAdapter(Context context, int item_quanlydonhang, List<Order> orders) {
         this.context = context;
@@ -83,6 +84,7 @@ public class OrderAdapter extends BaseAdapter{
             holder = (ViewHolder) view.getTag();
         }
         Order o = orders.get(position);
+//        holder.orderID.setText(String.valueOf(o.getOrderID()) + "/ " + o.getOrderdate());
         holder.orderID.setText(String.valueOf(o.getOrderID()));
         holder.orderStatus.setText(o.getOrderStatus());
         holder.orderProductName.setText(o.getProductName());
@@ -94,6 +96,8 @@ public class OrderAdapter extends BaseAdapter{
 
 
         holder.orderProductName.setTag(position);
+        holder.orderProducImg.setTag(position);
+        holder.orderProductCount.setTag(position);
 //        holder.orderProductName.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -113,6 +117,43 @@ public class OrderAdapter extends BaseAdapter{
 //        });
 
         holder.orderProductName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int clickedPosition = (int) v.getTag();
+                Order clickedOrder = orders.get(clickedPosition);
+
+                // Lưu dữ liệu vào SharedPreferences
+                SharedPreferences sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("ORDER_ID", clickedOrder.getOrderID());
+                editor.putString("EMAIL", email);
+                editor.apply();
+
+                // Khởi tạo Intent và chuyển sang Activity mới
+                Intent intent = new Intent(context, Order_Details.class);
+                context.startActivity(intent);
+            }
+        });
+        holder.orderProducImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int clickedPosition = (int) v.getTag();
+                Order clickedOrder = orders.get(clickedPosition);
+
+                // Lưu dữ liệu vào SharedPreferences
+                SharedPreferences sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("ORDER_ID", clickedOrder.getOrderID());
+                editor.putString("EMAIL", email);
+                editor.apply();
+
+                // Khởi tạo Intent và chuyển sang Activity mới
+                Intent intent = new Intent(context, Order_Details.class);
+                context.startActivity(intent);
+            }
+        });
+
+        holder.orderProductCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int clickedPosition = (int) v.getTag();

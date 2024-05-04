@@ -47,7 +47,8 @@ public class Checkout extends AppCompatActivity {
 
     Address address;
     private int addressIdFromIntent;
-    private  int voucherIdFromIntent;
+    private  int voucherIdFromIntent = -1;
+    int voucherIdFromCartIntent;
     private int selectedAddress;
     private String selectedPaymentMethod = "COD";
 //    address khi đổi địa chỉ nhận hàng
@@ -87,7 +88,6 @@ public class Checkout extends AppCompatActivity {
 
 
         email = getIntent().getStringExtra("key_email");
-
         Log.d("SharedPreferences", "Email ở checkout: " + email);
 
 
@@ -108,20 +108,30 @@ public class Checkout extends AppCompatActivity {
             isFirstTime = false; // Đánh dấu là đã mở trang ra lần đầu tiên
         }
 
+        voucherIdFromCartIntent = getIntent().getIntExtra("voucherIdFromCartIntent", -1);
+        if(voucherIdFromCartIntent != -1){
+            Log.d("voucherIdFromCartIntent", "voucherIdFromCartIntent"+ voucherIdFromCartIntent);
+            displayVoucher();
+        }else{
+            Log.d("voucherIdFromCartIntent", "Không lấy được voucherIdFromCartIntent" + voucherIdFromCartIntent);
+        }
+
+
     }
 
-    private void processVoucher(int voucherIdFromIntent) {
+    private void processVoucher(int voucherId) {
         // Kiểm tra nếu voucherIdFromIntent không phải là giá trị mặc định (-1)
-        if (voucherIdFromIntent != -1) {
-            voucherCheckout = db.getCouponById(voucherIdFromIntent);
-            Log.d("voucherCheckout", "voucherCheckout" + voucherCheckout);
+        voucherCheckout = db.getCouponById(voucherId);
+        Log.d("voucherCheckout", "voucherCheckout" + voucherCheckout);
+
+        if (voucherCheckout != null){
+
             if("percent".equals(voucherCheckout.getCOUPON_TYPE())) {
                 if("order".equals(voucherCheckout.getCOUPON_CATEGORY())) {
                     couponOrder = voucherCheckout.getCOUPON_VALUE()*totalAmount;
                     if(couponOrder > voucherCheckout.getMAXIMUM_DISCOUNT()){
                         couponOrder = voucherCheckout.getMAXIMUM_DISCOUNT();
                     }
-                    couponDiscount = couponOrder;
                 }else
                 {
                     couponShipping = voucherCheckout.getCOUPON_VALUE()*shippingFee;
@@ -131,7 +141,6 @@ public class Checkout extends AppCompatActivity {
                             couponShipping = shippingFee;
                         }
                     }
-                    couponDiscount = couponShipping;
                 }
             } else {
                 if("order".equals(voucherCheckout.getCOUPON_CATEGORY())){
@@ -160,6 +169,7 @@ public class Checkout extends AppCompatActivity {
         } else {
             Log.d("processVoucher", "Không lấy được voucherId từ intent");
         }
+
     }
 
 
@@ -263,7 +273,14 @@ public class Checkout extends AppCompatActivity {
         }
 
 
-    // Hiển thị địa chỉ lên giao diện
+    private void displayVoucher(){
+        if (voucherIdFromIntent != -1){
+            processVoucher(voucherIdFromIntent);
+        }else{
+            processVoucher(voucherIdFromCartIntent);
+        }
+
+    }
 
     private void displayAddressOnUI(Address address) {
         binding.txtAddAddress.setVisibility(View.GONE);
@@ -320,14 +337,10 @@ public class Checkout extends AppCompatActivity {
         if (requestCode == CHECKOUT_VOUCHER_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 voucherIdFromIntent = data.getIntExtra("COUPON_ID", -1);
-                Log.d("VoucherCheckout", "COUPON_ID: "+ + voucherId+  voucherIdFromIntent);
-                processVoucher(voucherIdFromIntent);
+                Log.d("VoucherCheckout", "COUPON_ID: "+   voucherIdFromIntent);
+                displayVoucher();
 
             }
-            if (voucherId != -1) {
-                voucherIdFromIntent = voucherId;
-            }
-
         }
     }
     private void addEvents() {

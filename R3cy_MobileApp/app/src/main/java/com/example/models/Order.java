@@ -49,9 +49,17 @@ public class Order implements Serializable {
     }
 
     String productName;
+    String orderdate;
 
+    public String getOrderdate() {
+        return orderdate;
+    }
 
-    public Order(int orderID, int orderLineID, int orderLineProductID, double orderSalePrice, String quantity, int orderCusID, double productPrice, double totalOrderValue, String orderStatus, double totalAmount, byte[] productImg, String productName) {
+    public void setOrderdate(String orderdate) {
+        this.orderdate = orderdate;
+    }
+
+    public Order(int orderID, int orderLineID, int orderLineProductID, double orderSalePrice, String quantity, int orderCusID, double productPrice, double totalOrderValue, String orderStatus, double totalAmount, byte[] productImg, String productName, String orderdate) {
         OrderID = orderID;
         OrderLineID = orderLineID;
         OrderLineProductID = orderLineProductID;
@@ -64,6 +72,7 @@ public class Order implements Serializable {
         TotalAmount = totalAmount;
         this.productImg = productImg;
         this.productName = productName;
+        this.orderdate = orderdate;
     }
 
     public int getOrderID() {

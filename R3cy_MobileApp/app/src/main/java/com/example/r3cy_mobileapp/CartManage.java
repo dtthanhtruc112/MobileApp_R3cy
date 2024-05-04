@@ -72,7 +72,7 @@ public class CartManage extends AppCompatActivity {
     public static final int CART_VOUCHER_REQUEST_CODE = 1;
     int voucherId;
     VoucherCheckout voucherCheckout;
-    private  int voucherIdFromIntent = -1;
+
     ArrayList<CartItem> selectedItems;
     ArrayList<Integer> selectedItemIdsfromIntent;
     NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
@@ -126,13 +126,6 @@ public class CartManage extends AppCompatActivity {
         Log.i("test", "onResume");
         loadDataSuggest();
 
-        if (voucherIdFromIntent == -1) {
-            Log.d("voucherIdFromIntent", "Không lấy được từ intent");
-        } else {
-            Log.d("voucherIdFromIntent", "voucherIdFromIntent: " + voucherIdFromIntent);
-            processVoucher();
-        }
-
         if(selectedItemIdsfromIntent == null){
             Log.d("selectedItemIdsfromIntent", "Không lấy được từ intent");
         }else{
@@ -140,10 +133,10 @@ public class CartManage extends AppCompatActivity {
         }
     }
 
-    private void processVoucher() {
+    private void processVoucher(int voucherId) {
         // Kiểm tra nếu voucherIdFromIntent không phải là giá trị mặc định (-1)
-        if (voucherIdFromIntent != -1) {
-            voucherCheckout = db.getCouponById(voucherIdFromIntent);
+        if (voucherId != -1) {
+            voucherCheckout = db.getCouponById(voucherId);
             Log.d("voucherCheckout", "voucherCheckout" + voucherCheckout);
             if("percent".equals(voucherCheckout.getCOUPON_TYPE())) {
                 if("order".equals(voucherCheckout.getCOUPON_CATEGORY())) {
@@ -485,7 +478,7 @@ public class CartManage extends AppCompatActivity {
                     // Chuyển sang trang Checkout
                     Intent intent = new Intent(CartManage.this, Checkout.class);
                     intent.putExtra("key_email", email);
-                    intent.putExtra("totalAmount", totalAmount);
+                    intent.putExtra("voucherIdFromCartIntent", voucherId);
                     intent.putExtra("couponDiscount", couponDiscount);
                     startActivity(intent);
                 }
@@ -543,12 +536,14 @@ public class CartManage extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 voucherId = data.getIntExtra("COUPON_ID", -1);
                 selectedItemIdsfromIntent = data.getIntegerArrayListExtra("selectedItemIds");
-                Log.d("VoucherCheckout", "COUPON_ID: "+ voucherId);
+                Log.d("VoucherCart", "COUPON_ID: "+ voucherId);
                 Log.d("selectedItemIdsfromIntent", "selectedItemIdsfromIntent" + selectedItemIdsfromIntent);
+                processVoucher(voucherId);
 
             }
-            if (voucherId != -1) {
-                voucherIdFromIntent = voucherId;
+            if (voucherId == -1) {
+//                voucherIdFromIntent = voucherId;
+                Log.d("VoucherCart", "COUPON_ID: "+ voucherId +"Khng lấy được");
             }
 
         }

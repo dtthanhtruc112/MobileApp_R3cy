@@ -121,6 +121,7 @@ public class Order_Details extends AppCompatActivity {
                     "o." + R3cyDB.TOTAL_ORDER_VALUE + ", " +
                     "o." + R3cyDB.ORDER_STATUS + ", " +
                     "o." + R3cyDB.TOTAL_AMOUNT + ", " +
+                    "o." + R3cyDB.ORDER_DATE + ", " +
                     "p." + R3cyDB.PRODUCT_THUMB + ", " +
                     "p." + R3cyDB.PRODUCT_NAME + ", " +
                     "p." + R3cyDB.PRODUCT_PRICE + ", " +
@@ -149,8 +150,9 @@ public class Order_Details extends AppCompatActivity {
                     @SuppressLint("Range") double TotalAmount = cursor.getDouble(cursor.getColumnIndex(R3cyDB.TOTAL_AMOUNT));
                     @SuppressLint("Range") byte[] ProductImg = cursor.getBlob(cursor.getColumnIndex(R3cyDB.PRODUCT_THUMB));
                     @SuppressLint("Range") String ProductName = cursor.getString(cursor.getColumnIndex(R3cyDB.PRODUCT_NAME));
+                    @SuppressLint("Range") String OrderDate = cursor.getString(cursor.getColumnIndex(R3cyDB.ORDER_DATE));
 
-                    Order order = new Order(OrderId, OrderLineID, OrderLineProductID, OrderSalePrice, Quantity, OrderCustomerID, ProductPrice, TotalOrderValue, OrderStatus, TotalAmount, ProductImg, ProductName);
+                    Order order = new Order(OrderId, OrderLineID, OrderLineProductID, OrderSalePrice, Quantity, OrderCustomerID, ProductPrice, TotalOrderValue, OrderStatus, TotalAmount, ProductImg, ProductName, OrderDate);
                     orders.add(order);
                 } while (cursor.moveToNext());
             } else {
