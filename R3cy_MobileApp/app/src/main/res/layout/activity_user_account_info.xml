@@ -328,7 +328,6 @@
         android:text="Chỉnh sửa"
         android:textSize="15sp"
         android:textStyle="bold"
-        android:textAllCaps="false"
         android:textColor="@color/white"
         android:onClick="updateProfile"
         android:layout_weight="5"

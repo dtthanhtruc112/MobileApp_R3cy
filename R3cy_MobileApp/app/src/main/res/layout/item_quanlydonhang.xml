@@ -20,6 +20,17 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/txtorder_ID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mã đơn hàng: "
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBaseline_toBaselineOf="@id/order_status"/>
             <TextView
                 android:id="@+id/order_ID"
                 android:layout_width="wrap_content"
@@ -27,8 +38,10 @@
                 android:text="#845082"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/txtorder_ID"
                 app:layout_constraintBaseline_toBaselineOf="@id/order_status"/>
+
+
 
 
                 <TextView
@@ -131,11 +144,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Đánh giá"
-                    android:textSize="14sp"
+                    android:textSize="15sp"
                     android:textColor="@color/blue"
                     app:layout_constraintTop_toBottomOf="@+id/divider2"
                     android:background="@drawable/faqs_item_question_background"
-
+                    android:textAllCaps="false"
                     android:layout_marginTop="10dp"
                     app:flow_verticalBias="0.2"
 

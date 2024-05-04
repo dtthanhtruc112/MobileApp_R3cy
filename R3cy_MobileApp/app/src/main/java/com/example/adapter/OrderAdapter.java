@@ -39,6 +39,7 @@ public class OrderAdapter extends BaseAdapter{
     List<Order> orders;
     String email;
     R3cyDB db;
+    NumberFormat numberFormat;
 
     public OrderAdapter(Context context, int item_quanlydonhang, List<Order> orders) {
         this.context = context;
@@ -83,6 +84,7 @@ public class OrderAdapter extends BaseAdapter{
             holder = (ViewHolder) view.getTag();
         }
         Order o = orders.get(position);
+//        holder.orderID.setText(String.valueOf(o.getOrderID()) + "/ " + o.getOrderdate());
         holder.orderID.setText(String.valueOf(o.getOrderID()));
         holder.orderStatus.setText(o.getOrderStatus());
         holder.orderProductName.setText(o.getProductName());
