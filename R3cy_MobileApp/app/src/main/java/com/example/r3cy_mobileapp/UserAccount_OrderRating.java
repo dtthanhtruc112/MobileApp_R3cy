@@ -12,7 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorWindow;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.adapter.OrderAdapter;
 import com.example.databases.R3cyDB;
 import com.example.models.CartItem;
 import com.example.models.Coupon;
@@ -33,6 +36,7 @@ import com.example.models.Order;
 import com.example.r3cy_mobileapp.Product.Product_List;
 import com.example.r3cy_mobileapp.databinding.ActivityUserAccountOrderRatingBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -45,6 +49,7 @@ public class UserAccount_OrderRating extends AppCompatActivity {
     String email;
     Customer customer;
     int customerId;
+    String orderJson;
 
 
     @Override
@@ -60,9 +65,15 @@ public class UserAccount_OrderRating extends AppCompatActivity {
         actionBar.setCustomView(R.layout.custom_action_bar);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        Intent intent =  getIntent();
-        Bundle bundle = intent.getBundleExtra("Package");
-        email = bundle.getString("key_email");
+//        Intent intent =  getIntent();
+//        Bundle bundle = intent.getBundleExtra("Package");
+//        email = bundle.getString("key_email");
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        orderJson = sharedPreferences.getString("ORDER_JSON", "");
+        email = sharedPreferences.getString("EMAIL", null);
+//        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+//        int orderId = sharedPreferences.getInt("ORDER_ID", -1);
+//        String email = sharedPreferences.getString("EMAIL", "");
 
 //        email = getIntent().getStringExtra("key_email");
         Log.d("Intent", "Email ở orderrating: " + email);
@@ -191,16 +202,44 @@ public class UserAccount_OrderRating extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Intent intent = getIntent();
-            Bundle bundle = intent.getBundleExtra("Package");
-            if (bundle != null && bundle.containsKey("ORDER")) {
-                order = (Order) bundle.getSerializable("ORDER");
-                if (order != null) {
-                    binding.txtproductname.setText(order.getProductName());
-                    binding.productcount.setText(String.valueOf(order.getQuantity()));
-                    binding.productprice.setText(String.valueOf(order.getProductPrice()));
-                    byte[] imageData = order.getProductImg();
-                    Bitmap bitmap = decodeSampledBitmapFromByteArray(imageData, 100, 100);
+//            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+//            String orderJson = sharedPreferences.getString("ORDER_JSON", null);
+//            String email = sharedPreferences.getString("EMAIL", null);
+//            Intent intent = getIntent();
+//            Bundle bundle = intent.getBundleExtra("Package");
+//            if (bundle != null && bundle.containsKey("ORDER")) {
+//                order = (Order) bundle.getSerializable("ORDER");
+//            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+//            int orderId = sharedPreferences.getInt("ORDER_ID", -1);
+//            String email = sharedPreferences.getString("EMAIL", "");
+//
+//            // Kiểm tra orderId và email có tồn tại
+//            if (orderId != -1 ) {
+//            if (orderJson != null && email != null) {
+//                Gson gson = new Gson();
+//                Order clickedOrder = gson.fromJson(orderJson, Order.class);
+//                if (order != null) {
+//                    binding.txtproductname.setText(order.getProductName());
+//                    binding.productcount.setText(String.valueOf(order.getQuantity()));
+//                    binding.productprice.setText(String.valueOf(order.getProductPrice()));
+//                    byte[] imageData = order.getProductImg();
+//                    Bitmap bitmap = decodeSampledBitmapFromByteArray(imageData, 100, 100);
+//                    binding.productimg.setImageBitmap(bitmap);
+//                }
+//            }
+            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+            String orderJson = sharedPreferences.getString("ORDER_JSON", null);
+            String email = sharedPreferences.getString("EMAIL", null);
+
+            if (orderJson != null) {
+                Gson gson = new Gson();
+                Order clickedOrder = gson.fromJson(orderJson, Order.class);
+                if (clickedOrder != null) {
+                    binding.txtproductname.setText(clickedOrder.getProductName());
+                    binding.productcount.setText(String.valueOf(clickedOrder.getQuantity()));
+                    binding.productprice.setText(String.valueOf(clickedOrder.getProductPrice()));
+                    byte[] imageData = clickedOrder.getProductImg();
+                    Bitmap bitmap = decodeSampledBitmapFromByteArray(imageData, 150, 150);
                     binding.productimg.setImageBitmap(bitmap);
                 }
             }
@@ -228,8 +267,8 @@ public class UserAccount_OrderRating extends AppCompatActivity {
             int inSampleSize = 1;
 
             if (height > reqHeight || width > reqWidth) {
-                final int halfHeight = height / 2;
-                final int halfWidth = width / 2;
+                final int halfHeight = height / 3;
+                final int halfWidth = width / 3;
 
                 // Calculate the largest inSampleSize value that is a power of 2 and keeps both
                 // height and width larger than the requested height and width.

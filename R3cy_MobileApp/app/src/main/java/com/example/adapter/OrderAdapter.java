@@ -27,6 +27,7 @@ import com.example.r3cy_mobileapp.Order_Details;
 import com.example.r3cy_mobileapp.R;
 import com.example.r3cy_mobileapp.UserAccount_OrderRating;
 import com.example.r3cy_mobileapp.User_account_manageOrder;
+import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.text.NumberFormat;
@@ -189,13 +190,40 @@ public class OrderAdapter extends BaseAdapter{
 
                     Order clickedOrder = orders.get(clickedPosition);
 
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("ORDER", (Serializable) clickedOrder);
-                    bundle.putString("key_email", email);
+//                    SharedPreferences sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = sharedPreferences.edit();
+//                    editor.putInt("ORDER_ID", clickedOrder.getOrderID());
+//                    editor.putString("EMAIL", email);
+//                    editor.apply();
+//
+//                    // Mở Activity mới
+//                    Intent intent = new Intent(context, UserAccount_OrderRating.class);
+//                    context.startActivity(intent);
+                    // Lưu dữ liệu vào SharedPreferences
+                    SharedPreferences sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
 
+                    // Chuyển đối tượng Order thành chuỗi JSON
+                    Gson gson = new Gson();
+                    String orderJson = gson.toJson(clickedOrder);
+
+                    // Lưu chuỗi JSON và email vào SharedPreferences
+                    editor.putString("ORDER_JSON", orderJson);
+                    editor.putString("EMAIL", email);
+                    editor.apply();
+
+                    // Mở activity UserAccount_OrderRating
                     Intent intent = new Intent(context, UserAccount_OrderRating.class);
-                    intent.putExtra("Package", bundle);
                     context.startActivity(intent);
+
+
+//                    Bundle bundle = new Bundle();
+//                    bundle.putSerializable("ORDER", (Serializable) clickedOrder);
+//                    bundle.putString("key_email", email);
+//
+//                    Intent intent = new Intent(context, UserAccount_OrderRating.class);
+//                    intent.putExtra("Package", bundle);
+//                    context.startActivity(intent);
                 }
             });
         } else if (o.getOrderStatus().equals("Chờ xử lý")) {

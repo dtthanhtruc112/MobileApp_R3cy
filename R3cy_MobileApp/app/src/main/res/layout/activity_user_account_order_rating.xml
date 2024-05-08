@@ -51,7 +51,7 @@
         android:id="@+id/txtproductRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="4"
+        android:hint=" "
         android:textSize="13sp"
         android:background="@drawable/btn_blue_stroke"
         android:padding="10dp"
