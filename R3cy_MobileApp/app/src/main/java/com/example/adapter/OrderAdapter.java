@@ -24,6 +24,7 @@ import com.example.models.Coupon;
 import com.example.models.Order;
 import com.example.r3cy_mobileapp.DoiDiem_ChiTiet;
 import com.example.r3cy_mobileapp.Order_Details;
+import com.example.r3cy_mobileapp.Order_Rating;
 import com.example.r3cy_mobileapp.R;
 import com.example.r3cy_mobileapp.UserAccount_OrderRating;
 import com.example.r3cy_mobileapp.User_account_manageOrder;
@@ -41,6 +42,7 @@ public class OrderAdapter extends BaseAdapter{
     String email;
     R3cyDB db;
     NumberFormat numberFormat;
+
 
     public OrderAdapter(Context context, int item_quanlydonhang, List<Order> orders) {
         this.context = context;
@@ -190,31 +192,34 @@ public class OrderAdapter extends BaseAdapter{
 
                     Order clickedOrder = orders.get(clickedPosition);
 
-//                    SharedPreferences sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-//                    SharedPreferences.Editor editor = sharedPreferences.edit();
-//                    editor.putInt("ORDER_ID", clickedOrder.getOrderID());
-//                    editor.putString("EMAIL", email);
-//                    editor.apply();
-//
-//                    // Mở Activity mới
-//                    Intent intent = new Intent(context, UserAccount_OrderRating.class);
-//                    context.startActivity(intent);
+
+
                     // Lưu dữ liệu vào SharedPreferences
                     SharedPreferences sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                    // Chuyển đối tượng Order thành chuỗi JSON
-                    Gson gson = new Gson();
-                    String orderJson = gson.toJson(clickedOrder);
-
-                    // Lưu chuỗi JSON và email vào SharedPreferences
-                    editor.putString("ORDER_JSON", orderJson);
+                    editor.putInt("ORDER_ID", clickedOrder.getOrderID());
                     editor.putString("EMAIL", email);
                     editor.apply();
 
-                    // Mở activity UserAccount_OrderRating
-                    Intent intent = new Intent(context, UserAccount_OrderRating.class);
+                    // Khởi tạo Intent và chuyển sang Activity mới
+                    Intent intent = new Intent(context, Order_Rating.class);
                     context.startActivity(intent);
+                    // Lưu dữ liệu vào SharedPreferences
+//                    SharedPreferences sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = sharedPreferences.edit();
+//
+//                    // Chuyển đối tượng Order thành chuỗi JSON
+//                    Gson gson = new Gson();
+//                    String orderJson = gson.toJson(clickedOrder);
+//
+//                    // Lưu chuỗi JSON và email vào SharedPreferences
+//                    editor.putString("ORDER_JSON", orderJson);
+//                    editor.putString("EMAIL", email);
+//                    editor.apply();
+//
+//                    // Mở activity UserAccount_OrderRating
+//                    Intent intent = new Intent(context, Order_Rating.class);
+//                    context.startActivity(intent);
 
 
 //                    Bundle bundle = new Bundle();
@@ -267,6 +272,7 @@ public class OrderAdapter extends BaseAdapter{
         }
 
 
+
         byte[] productImg = o.getProductImg();
         if (productImg != null) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(productImg, 0, productImg.length);
@@ -275,12 +281,23 @@ public class OrderAdapter extends BaseAdapter{
 
 
 
+
+
+
+
         return view;
     }
+
+
 
     public static class ViewHolder{
         TextView orderID, orderStatus, orderProductName, orderProductCount, orderProductPrice, orderTotalPrice;
         Button btndanhgia;
         ImageView orderProducImg;
     }
+    public void updateOrderStatus(int position) {
+        orders.get(position).setOrderStatus("Đã đánh giá"); // Cập nhật trạng thái của đơn hàng
+        notifyDataSetChanged(); // Cập nhật lại ListView
+    }
+
 }

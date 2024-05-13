@@ -85,6 +85,7 @@ public class Order_Details extends AppCompatActivity {
         dbR3cy.createSampleDataOrder();
         dbR3cy.createSampleDataOrderLine();
         dbR3cy.createSampleProduct();
+        dbR3cy.createSampleDataFeedback();
     }
     public void onResume() {
         super.onResume();
