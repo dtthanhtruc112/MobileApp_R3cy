@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.databases.R3cyDB;
@@ -67,6 +68,13 @@ public class EditAddress extends AppCompatActivity {
     }
 
     private void addEvents() {
+        // Khởi tạo Adapter và gắn dữ liệu vào Spinner
+        // Khai báo mảng chứa các lựa chọn
+        String[] addressTypes = {"nhà riêng", "văn phòng"};
+        ArrayAdapter<String> adapterAddress = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, addressTypes);
+        binding.addressTypeSpinner.setAdapter(adapterAddress);
+
+
         binding.btnSaveAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,7 +121,7 @@ public class EditAddress extends AppCompatActivity {
                     !ward.equals(initialAddress.getWard()) ||
                     !detailAddress.equals(initialAddress.getAddressDetails()) ||
                     DefaultAddress != initialAddress.getIsDefault()
-//                    || !addressType.equals(initialAddress.getAddressType())
+                    || !addressType.equals(initialAddress.getAddressType())
                     ;
 
             if (dataChanged) {
@@ -142,7 +150,9 @@ public class EditAddress extends AppCompatActivity {
                     // Chuyển đến màn hình khác (ví dụ: Danh sách địa chỉ)
                     Intent intent = new Intent(EditAddress.this, Checkout_AddressList.class);
                     intent.putExtra("key_email", email);
-                    startActivity(intent);
+                    intent.putExtra("SELECTED_ADDRESS_ID", addressId);
+                    setResult(RESULT_OK, intent);
+                    finish();
 
                 } else {
                     // Hiển thị thông báo cập nhật thất bại

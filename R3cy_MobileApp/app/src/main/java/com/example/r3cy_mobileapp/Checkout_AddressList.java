@@ -31,8 +31,10 @@ public class Checkout_AddressList extends AppCompatActivity {
     ArrayList<Address> addresses;
     String email;
     Customer customer;
+    int ADD_ADDRESS_REQUEST_CODE;
     // Lấy CUSTOMER_ID từ SharedPreferences hoặc bất kỳ nguồn dữ liệu nào khác
     int customerId ; // Thay bằng cách lấy CUSTOMER_ID thích hợp
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,12 +166,19 @@ public class Checkout_AddressList extends AppCompatActivity {
 
     }
     public void openCheckoutActivity(Address a){
-        Intent intent = new Intent(this, Checkout.class);
+//        Intent intent = new Intent(this, Checkout.class);
+//        intent.putExtra("SELECTED_ADDRESS_ID", a.getAddressId());
+//        intent.putExtra("key_email", email);
+////        startActivity(intent);
+//        setResult(RESULT_OK, intent);
+//        finish();
+        Intent intent = new Intent(Checkout_AddressList.this, Checkout.class);
         intent.putExtra("SELECTED_ADDRESS_ID", a.getAddressId());
         intent.putExtra("key_email", email);
-//        startActivity(intent);
         setResult(RESULT_OK, intent);
         finish();
+//        startActivity(intent);
+
 
     }
 

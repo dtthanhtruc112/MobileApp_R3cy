@@ -38,6 +38,7 @@ import java.util.Locale;
 public class Checkout extends AppCompatActivity {
 
     ActivityCheckoutBinding binding;
+    int selectedAddressId;
 
     R3cyDB db;
     private ProductDao productDao;
@@ -46,7 +47,7 @@ public class Checkout extends AppCompatActivity {
     ArrayList<CartItem> selectedItems;
 
     Address address;
-    private int addressIdFromIntent;
+    private int addressIdFromIntent = -1;
     private  int voucherIdFromIntent = -1;
     int voucherIdFromCartIntent;
     private int selectedAddress;
@@ -107,6 +108,7 @@ public class Checkout extends AppCompatActivity {
             displayAddress();
             isFirstTime = false; // Đánh dấu là đã mở trang ra lần đầu tiên
         }
+
 
         voucherIdFromCartIntent = getIntent().getIntExtra("voucherIdFromCartIntent", -1);
         if(voucherIdFromCartIntent != -1){
@@ -232,6 +234,57 @@ public class Checkout extends AppCompatActivity {
         }
         return totalAmount;
     }
+
+
+    private void displayVoucher(){
+        if (voucherIdFromIntent != -1){
+            processVoucher(voucherIdFromIntent);
+        }else{
+            processVoucher(voucherIdFromCartIntent);
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADDRESS_SELECTION_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                // Nhận addressId được chọn từ trang danh sách địa chỉ
+                addressIdFromIntent = data.getIntExtra("SELECTED_ADDRESS_ID", -1);
+                Log.d("addressIdFromIntentOnActiviTy", "addressIdFromIntent "+ addressIdFromIntent );
+                if ( addressIdFromIntent  != -1) {
+                    // Cập nhật addressIdFromIntent với địa chỉ được chọn
+//                    addressIdFromIntent = selectedAddressId;
+                    Address address1 = db.getAddressById(addressIdFromIntent);
+                    isAddressReceived = true;
+                    // Hiển thị địa chỉ đã được chọn
+//                    displayAddressOnUI(address1);
+                    displayAddress();
+
+                }
+            }
+        }
+        if (requestCode == PAYMENT_METHOD_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                String paymentMethodFromIntent = data.getStringExtra("PAYMENT_METHOD");
+                if(paymentMethodFromIntent != null){
+                    selectedPaymentMethod = paymentMethodFromIntent;
+                    // Gán giá trị phương thức thanh toán vào TextView
+                    binding.txtPaymentMethod.setText(paymentMethodFromIntent);
+                }
+
+            }
+        }
+        if (requestCode == CHECKOUT_VOUCHER_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                voucherIdFromIntent = data.getIntExtra("COUPON_ID", -1);
+                Log.d("VoucherCheckout", "COUPON_ID: "+   voucherIdFromIntent);
+                displayVoucher();
+
+            }
+        }
+    }
     private void displayAddress() {
         // Nếu không có email từ SharedPreferences, không thực hiện gì cả
         if (email == null) {
@@ -242,7 +295,9 @@ public class Checkout extends AppCompatActivity {
         customer = db.getCustomerByEmail1(email);
         Log.d("customer", "customer ở checkout: " + customer.getFullName());
         customerId = customer.getCustomerId();
-        addressIdFromIntent = getIntent().getIntExtra("ADDRESS_ID", -1);
+//        addressIdFromIntent = getIntent().getIntExtra("ADDRESS_ID", -1);
+//        addressIdFromIntent = getIntent().getIntExtra("SELECTED_ADDRESS_ID", -1);
+        Log.d("addressIdFromIntent = selectedAddressId;", " addressIdFromIntent"+  addressIdFromIntent);
         // Nếu chưa có addressIdFromIntent (tức là chưa chọn địa chỉ từ trang danh sách địa chỉ)
         if (addressIdFromIntent == -1) {
             Address defaultAddress = db.getDefaultAddress(customerId);
@@ -269,21 +324,13 @@ public class Checkout extends AppCompatActivity {
                 displayAddAddressButton();
             }
 
-            }
         }
-
-
-    private void displayVoucher(){
-        if (voucherIdFromIntent != -1){
-            processVoucher(voucherIdFromIntent);
-        }else{
-            processVoucher(voucherIdFromCartIntent);
-        }
-
     }
-
     private void displayAddressOnUI(Address address) {
+        // Hiển thị layout chứa địa chỉ và ẩn Button thêm địa chỉ
+        binding.addressLayout.setVisibility(View.VISIBLE);
         binding.txtAddAddress.setVisibility(View.GONE);
+//        binding.txtAddAddress.setVisibility(View.GONE);
         // Cập nhật TextViews với thông tin địa chỉ
         binding.txtReceiver.setText(address.getReceiverName() + " | " + address.getReceiverPhone());
         binding.txtAddress.setText(address.getAddressDetails() + ", " + address.getWard() + ", " + address.getDistrict() + ", " + address.getProvince());
@@ -303,45 +350,6 @@ public class Checkout extends AppCompatActivity {
             }
         });
 
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADDRESS_SELECTION_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                // Nhận addressId được chọn từ trang danh sách địa chỉ
-                int selectedAddressId = data.getIntExtra("SELECTED_ADDRESS_ID", -1);
-                Log.d("Checkout - selectedAddressId ", "onActivityResult: SELECTED_ADDRESS_ID" +selectedAddressId );
-                if (selectedAddressId != -1) {
-                    // Cập nhật addressIdFromIntent với địa chỉ được chọn
-                    addressIdFromIntent = selectedAddressId;
-                    Address address1 = db.getAddressById(addressIdFromIntent);
-                    isAddressReceived = true;
-                    // Hiển thị địa chỉ đã được chọn
-//                    displayAddress();
-                    displayAddressOnUI(address1);
-                }
-            }
-        }
-        if (requestCode == PAYMENT_METHOD_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                String paymentMethodFromIntent = data.getStringExtra("PAYMENT_METHOD");
-                if(paymentMethodFromIntent != null){
-                    selectedPaymentMethod = paymentMethodFromIntent;
-                    // Gán giá trị phương thức thanh toán vào TextView
-                    binding.txtPaymentMethod.setText(paymentMethodFromIntent);
-                }
-
-            }
-        }
-        if (requestCode == CHECKOUT_VOUCHER_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                voucherIdFromIntent = data.getIntExtra("COUPON_ID", -1);
-                Log.d("VoucherCheckout", "COUPON_ID: "+   voucherIdFromIntent);
-                displayVoucher();
-
-            }
-        }
     }
     private void addEvents() {
         binding.addressLayout.setOnClickListener(new View.OnClickListener() {
