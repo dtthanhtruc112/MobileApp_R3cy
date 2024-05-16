@@ -25,6 +25,7 @@ public class Checkout_Address extends AppCompatActivity {
     R3cyDB db;
     String email;
     Customer customer;
+    int newAddressId = -1;
     // Lấy CUSTOMER_ID từ SharedPreferences hoặc bất kỳ nguồn dữ liệu nào khác
     int customerId ; // Thay bằng cách lấy CUSTOMER_ID thích hợp
 
@@ -290,15 +291,22 @@ public class Checkout_Address extends AppCompatActivity {
 
                     // Đặt địa chỉ mới làm địa chỉ mặc định nếu được chọn
                     if (defaultAddress == 1) {
-                        int newAddressId = db.getLastInsertedAddressId(); // Lấy ID của địa chỉ vừa được thêm vào
+                        newAddressId = db.getLastInsertedAddressId(); // Lấy ID của địa chỉ vừa được thêm vào
                         setDefaultAddress(customerId, newAddressId);
                     }
 
                     // Chuyển đến màn hình khác (ví dụ: Danh sách địa chỉ)
-                    Intent intent = new Intent(Checkout_Address.this, Checkout_AddressList.class);
-                    intent.putExtra("key_email", email);
-                    intent.putExtra("ADDED_ADDRESS_ID", db.getLastInsertedAddressId());
-                    startActivity(intent);
+//                    Intent intent = new Intent();
+////                    Intent intent = new Intent(Checkout_Address.this, Checkout_AddressList.class);
+//                    intent.putExtra("key_email", email);
+//                    intent.putExtra("ADDED_ADDRESS_ID", newAddressId);
+////                    startActivity(intent);
+//                    setResult(RESULT_OK, intent);
+//                    finish();
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("key_email", email);
+                    resultIntent.putExtra("ADDED_ADDRESS_ID", db.getLastInsertedAddressId());
+                    setResult(RESULT_OK, resultIntent);
                     finish();
                 } else {
                     Log.e("Lỗi", "Lưu địa chỉ thất bại: " + insertQuery);

@@ -177,7 +177,6 @@ public class Checkout_AddressList extends AppCompatActivity {
         intent.putExtra("key_email", email);
         setResult(RESULT_OK, intent);
         finish();
-//        startActivity(intent);
 
 
     }

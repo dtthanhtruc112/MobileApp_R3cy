@@ -54,6 +54,7 @@ public class Checkout extends AppCompatActivity {
     private String selectedPaymentMethod = "COD";
 //    address khi đổi địa chỉ nhận hàng
     private static final int ADDRESS_SELECTION_REQUEST_CODE = 1;
+    public static final int REQUEST_CODE_FROM_ADDADDRESS = 5;
     private static final int PAYMENT_METHOD_REQUEST_CODE = 2;
     public static final  int CHECKOUT_VOUCHER_REQUEST_CODE = 3;
 
@@ -254,8 +255,6 @@ public class Checkout extends AppCompatActivity {
                 addressIdFromIntent = data.getIntExtra("SELECTED_ADDRESS_ID", -1);
                 Log.d("addressIdFromIntentOnActiviTy", "addressIdFromIntent "+ addressIdFromIntent );
                 if ( addressIdFromIntent  != -1) {
-                    // Cập nhật addressIdFromIntent với địa chỉ được chọn
-//                    addressIdFromIntent = selectedAddressId;
                     Address address1 = db.getAddressById(addressIdFromIntent);
                     isAddressReceived = true;
                     // Hiển thị địa chỉ đã được chọn
@@ -263,6 +262,18 @@ public class Checkout extends AppCompatActivity {
                     displayAddress();
 
                 }
+            }
+        }
+        if (requestCode == REQUEST_CODE_FROM_ADDADDRESS && resultCode == RESULT_OK) {
+            int addedAddressId = data.getIntExtra("ADDED_ADDRESS_ID", -1);
+            Log.d("addedAddressId on Activity", "addedAddressId "+ addedAddressId );
+            if (addedAddressId != -1) {
+                Address address1 = db.getAddressById(addedAddressId);
+                isAddressReceived = true;
+                // Hiển thị địa chỉ đã được chọn
+                displayAddressOnUI(address1);
+//                displayAddress();
+
             }
         }
         if (requestCode == PAYMENT_METHOD_REQUEST_CODE) {
@@ -346,7 +357,8 @@ public class Checkout extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Checkout.this, Checkout_Address.class);
                 intent.putExtra("key_email", email);
-                startActivity(intent);
+//                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_FROM_ADDADDRESS);
             }
         });
 
