@@ -271,8 +271,8 @@ public class Checkout extends AppCompatActivity {
                 Address address1 = db.getAddressById(addedAddressId);
                 isAddressReceived = true;
                 // Hiển thị địa chỉ đã được chọn
-                displayAddressOnUI(address1);
-//                displayAddress();
+//                displayAddressOnUI(address1);
+                displayAddress();
 
             }
         }
