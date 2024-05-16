@@ -100,12 +100,10 @@ public class OrderRatingAdapter extends BaseAdapter {
             e.printStackTrace();
         }
 
-        // Lấy đối tượng Address tương ứng với vị trí hiện tại
-//        Feedback feedback = feedbacks.get(position);
 
-        // Đổ dữ liệu từ đối tượng Address vào các thành phần của layout item
-        holder.txtFeedbackRating.setText(String.valueOf(o.getFeedbackrating()));
         holder.txtFeedbackContent.setText( o.getFeedbackcontent());
+        holder.txtFeedbackRating.setText(String.valueOf(o.getFeedbackrating()));
+
 
 
 

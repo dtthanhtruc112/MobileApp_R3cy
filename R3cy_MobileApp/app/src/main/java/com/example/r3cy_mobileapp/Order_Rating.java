@@ -173,8 +173,8 @@ public class Order_Rating extends AppCompatActivity {
                         @SuppressLint("Range") String ProductName = cursor.getString(cursor.getColumnIndex(R3cyDB.PRODUCT_NAME));
                         @SuppressLint("Range") String Quantity = cursor.getString(cursor.getColumnIndex(R3cyDB.QUANTITY));
                         @SuppressLint("Range") double ProductPrice = cursor.getDouble(cursor.getColumnIndex(R3cyDB.PRODUCT_PRICE));
-                        @SuppressLint("Range") String FeedbackRating = cursor.getString(cursor.getColumnIndex(R3cyDB.FEEDBACK_RATING));
                         @SuppressLint("Range") String FeedbackContent = cursor.getString(cursor.getColumnIndex(R3cyDB.FEEDBACK_CONTENT));
+                        @SuppressLint("Range") String FeedbackRating = cursor.getString(cursor.getColumnIndex(R3cyDB.FEEDBACK_RATING));
 
                         @SuppressLint("Range") int FeedbackID = cursor.getInt(cursor.getColumnIndex(R3cyDB.FEEDBACK_ID));
 //                    @SuppressLint("Range") double OrderSalePrice = cursor.getDouble(cursor.getColumnIndex(R3cyDB.ORDER_SALE_PRICE));
@@ -191,7 +191,7 @@ public class Order_Rating extends AppCompatActivity {
                         }
 
 
-                        order_rating order = new order_rating(OrderId, OrderLineID, OrderLineProductID, ProductImg, ProductName, Quantity, ProductPrice, FeedbackRating, FeedbackContent, FeedbackID, OrderStatus);
+                        order_rating order = new order_rating(OrderId, OrderLineID, OrderLineProductID, ProductImg, ProductName, Quantity, ProductPrice, FeedbackContent, FeedbackRating, FeedbackID, OrderStatus);
                         orders.add(order);
                     } while (cursor.moveToNext());
                 } else {
@@ -239,10 +239,12 @@ public class Order_Rating extends AppCompatActivity {
                 String content = feedbackData.getFeedbackcontent();
                 String rating = feedbackData.getFeedbackrating();
 
+
                 ContentValues values = new ContentValues();
                 values.put(R3cyDB.FEEDBACK_PRODUCT_ID, productId);
                 values.put(R3cyDB.FEEDBACK_CONTENT, content);
                 values.put(R3cyDB.FEEDBACK_RATING, rating);
+
 
                 long newRowId = db.insert(R3cyDB.TBl_FEEDBACK, null, values);
 
@@ -326,9 +328,8 @@ public class Order_Rating extends AppCompatActivity {
                     OrderRatingAdapter.ViewHolder holder = (OrderRatingAdapter.ViewHolder) view.getTag();
                     String feedbackContent = holder.txtFeedbackContent.getText().toString();
                     String feedbackRating = holder.txtFeedbackRating.getText().toString();
-
                     order_rating order = (order_rating) adapter.getItem(i);
-                    order_rating feedbackData = new order_rating(OrderId, order.getOrderID(), order.getProductID(), order.getProductImg(), order.getProductname(), order.getProductquantity(), order.getProductprice(), String.valueOf(feedbackRating), feedbackContent, order.getFeedbackID(), order.getOrderStatus());
+                    order_rating feedbackData = new order_rating(OrderId, order.getOrderID(), order.getProductID(), order.getProductImg(), order.getProductname(), order.getProductquantity(), order.getProductprice(),feedbackContent, String.valueOf(feedbackRating),  order.getFeedbackID(), order.getOrderStatus());
                     feedbackDataList.add(feedbackData);
                 }
 

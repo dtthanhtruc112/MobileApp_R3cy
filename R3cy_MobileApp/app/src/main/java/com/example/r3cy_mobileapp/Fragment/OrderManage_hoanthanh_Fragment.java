@@ -150,7 +150,7 @@ public class OrderManage_hoanthanh_Fragment extends Fragment {
                     " INNER JOIN " + R3cyDB.TBl_PRODUCT + " p" +
                     " ON ol." + R3cyDB.ORDER_LINE_PRODUCT_ID + " = p." + R3cyDB.PRODUCT_ID +
                     " WHERE o. " + R3cyDB.ORDER_CUSTOMER_ID + " = " + customerId + " AND o."
-                    + R3cyDB.ORDER_STATUS + " LIKE '%" + orderStatus + "%'"
+                    + R3cyDB.ORDER_STATUS + " IN ('Đã đánh giá', 'Hoàn thành') "
                     + " GROUP BY o." + R3cyDB.ORDER_ID;
 
             cursor = db.rawQuery(query, null);
