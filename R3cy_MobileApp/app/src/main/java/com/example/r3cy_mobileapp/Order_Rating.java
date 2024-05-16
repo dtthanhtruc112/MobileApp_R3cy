@@ -255,6 +255,44 @@ public class Order_Rating extends AppCompatActivity {
                 }else{
 
                     Toast.makeText(getApplicationContext(), "Gửi thành công.", Toast.LENGTH_SHORT).show();
+
+                    String query = "SELECT AVG(" + R3cyDB.FEEDBACK_RATING + ") AS avg_rating " +
+                            "FROM " + R3cyDB.TBl_FEEDBACK + " " +
+                            "WHERE " + R3cyDB.FEEDBACK_PRODUCT_ID + " = ?";
+                    Cursor cursor = db.rawQuery(query, new String[] { String.valueOf(productId) });
+
+                    if (cursor.moveToFirst()) {
+                        @SuppressLint("Range") double avgRating = cursor.getDouble(cursor.getColumnIndex("avg_rating"));
+                        cursor.close();
+
+                        // Update product rating in the PRODUCT table
+                        ContentValues productValues = new ContentValues();
+                        productValues.put(R3cyDB.PRODUCT_RATE, avgRating);
+
+                        String selection = R3cyDB.PRODUCT_ID + " = ?";
+                        String[] selectionArgs = { String.valueOf(productId) };
+
+                        int count = db.update(
+                                R3cyDB.TBl_PRODUCT,
+                                productValues,
+                                selection,
+                                selectionArgs);
+
+                        if (count == 0) {
+                            // Handle the error
+                            Log.e("Database", "Lỗi update rating product");
+                        } else {
+                            // Product rating updated successfully
+                            Log.i("Database", "Đã update rating: " + productId);
+                        }
+                    } else {
+                        cursor.close();
+                        // Handle the case where no ratings are found
+                        Log.e("Database", "Không có rating: " + productId);
+                    }
+
+
+
 //            Intent intent = new Intent(getApplicationContext(), User_account_manageOrder.class);
 ////            intent.putExtra("EMAIL", email);
 //            startActivity(intent);
@@ -272,7 +310,7 @@ public class Order_Rating extends AppCompatActivity {
 
 
         } catch (Exception e) {
-            Log.e("INSERT_FEEDBACK", "Error inserting feedback: " + e.getMessage());
+            Log.e("INSERT_FEEDBACK", "Lỗi insert feedback: " + e.getMessage());
         } finally {
             db.endTransaction();
             db.close();
@@ -292,7 +330,6 @@ public class Order_Rating extends AppCompatActivity {
 //        email = sharedPreferences.getString("EMAIL", "");
 //        OrderId = sharedPreferences.getInt("ORDER_ID", -1);
 
-        // After inserting feedback, start the next activity
 
     }
     private void updateOrderStatus(int orderId, String status) {
@@ -304,12 +341,12 @@ public class Order_Rating extends AppCompatActivity {
 
             int rowsAffected = db.update(R3cyDB.TBl_ORDER, values, R3cyDB.ORDER_ID + "=?", new String[]{String.valueOf(orderId)});
             if (rowsAffected == 1) {
-                Log.d("UPDATE_ORDER_STATUS", "Order status updated successfully");
+                Log.d("UPDATE_ORDER_STATUS", "Order status update thành công ");
             } else {
-                Log.e("UPDATE_ORDER_STATUS", "Failed to update order status");
+                Log.e("UPDATE_ORDER_STATUS", "Order status update thất bại");
             }
         } catch (Exception e) {
-            Log.e("UPDATE_ORDER_STATUS", "Error updating order status: " + e.getMessage());
+            Log.e("UPDATE_ORDER_STATUS", "Lỗi update: " + e.getMessage());
         } finally {
 //            db.close();
         }
@@ -333,8 +370,6 @@ public class Order_Rating extends AppCompatActivity {
                     feedbackDataList.add(feedbackData);
                 }
 
-
-                // Call btnSaveFeedbackClicked with email and feedbackDataList
                 btnSaveFeedbackClicked(email, feedbackDataList);
             }
         });
