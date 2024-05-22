@@ -6,4 +6,7 @@
 - Quản lý đơn hàng, đánh giá đơn hàng, hủy đơn
 - Chương trình tích điểm nhận voucher
 - Notification
-- Quản lý tài khoản, đăng xuất 
+- Quản lý tài khoản, đăng xuất
+
+Link drawio: https://drive.google.com/file/d/1zbn1HGB3EN3wCSRsc9sUD8L51dsq9Yms/view?usp=sharing
+Link figma: https://www.figma.com/design/5cJJeCgwQxnB8FA5d1QKrk/Wireframe-%2B-UI?node-id=0%3A1&t=xeSPhdGE6hRi3jcT-1
